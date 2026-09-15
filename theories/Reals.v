@@ -4,11 +4,12 @@
 
   Formalizes Abbott §1.2–1.4: upper/lower bounds, supremum/infimum,
   the axiom of completeness, and its consequences (Archimedean property,
-  nested interval property, absolute value).
+  nested interval property, absolute value). *)
 
-  Re-exports the core Waterproof infrastructure so that files importing
+(* begin hide *)
+
+(* Re-exports the core Waterproof infrastructure so that files importing
   [Analysis.Reals] do not need to separately import Waterproof. *)
-
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import ZArith.ZArith.
 
@@ -34,6 +35,8 @@ Hint Resolve Rinv_0_lt_compat : wp_reals.
 Hint Resolve Rinv_lt_contravar : wp_reals.
 Hint Resolve Rinv_le_contravar : wp_reals.
 
+(* end hide *)
+
 (** ** Supremum *)
 
 (** The ε-characterization of the supremum: if [s] is an upper bound for [A],
@@ -46,12 +49,12 @@ Proof.
 
   - We need to show that s is the _supremum_ of A ⇨ ∀ ε > 0, ∃ a ∈ A, s - ε < a.
     Assume that s is the _supremum_ of A as (Hsup).
-    (* Withouth the following line, Waterproof would need a few
+    (** Withouth the following line, Waterproof would need a few
        seconds to be able to confirm the claim at line 65. *)
     By Hsup it holds that
       (s is an _upper bound_ for A)
       ∧ (∀ b ∈ ℝ, b is an _upper bound_ for A ⇒ s ≤ b).
-    
+
     Take ε : ℝ; such that ε > 0.
     It holds that s - ε < s as (Hsupeps).
 
@@ -61,20 +64,20 @@ Proof.
     It holds that ∀ x ∈ A, x ≤ s - ε.
     It holds that s - ε is an _upper bound_ for A as (Hubs_eps).
 
-    (* any_upp_bd_ge_sup is in Waterproof, can you guess what it says? *)
+    (** [any_upp_bd_ge_sup] is in Waterproof, can you guess what it says? *)
     By Hubs_eps and any_upp_bd_ge_sup it holds that s ≤ s - ε.
     It holds that ¬ (s ≤ s - ε).
     Contradiction.
 
   - We need to show that (∀ ε > 0, ∃ a ∈ A, s - ε < a) ⇨ s is the _supremum_ of A.
     Assume that ∀ ε > 0, ∃ a ∈ A, s - ε < a.
-   
+
     We need to show that
       (s is an _upper bound_ for A) ∧ (∀ b ∈ ℝ, b is an _upper bound_ for A ⇒ s ≤ b).
-    
+
     We show both statements.
     - We conclude that s is an _upper bound_ for A.
-    
+
     - We need to show that ∀ b ∈ ℝ, b is an _upper bound_ for A ⇒ s ≤ b.
       Take b ∈ ℝ.
       Assume that b is an _upper bound_ for A as (Hub).
@@ -109,37 +112,37 @@ Proof.
     By Hinf it holds that
       i is a _lower bound_ for A
       ∧ (∀ l ∈ ℝ, l is a _lower bound_ for A ⇨ l ≤ i).
-    
+
     Take ε : ℝ; such that ε > 0.
     It holds that i < i + ε as (Hiepslt).
-    
+
     We argue by contradiction.
-    
+
     Assume that ¬ (∃ a ∈ A, a < i + ε).
     It holds that ∀ x ∈ A, i + ε ≤ x as (Hnotlb).
     By (Hnotlb) it holds that i + ε is a _lower bound_ for A.
 
-    (* any_upp_bd_ge_sup is in Waterproof, can you guess what it says? *)
+    (** [any_upp_bd_ge_sup] is in Waterproof, can you guess what it says? *)
     By any_low_bd_le_inf it holds that i + ε ≤ i.
     It holds that ¬ (i + ε ≤ i).
     Contradiction.
 
   - We need to show that (∀ ε > 0, ∃ a ∈ A, a < i + ε) ⇨ i is the _infimum_ of A.
     Assume that ∀ ε > 0, ∃ a ∈ A, a < i + ε.
-    
+
     We need to show that
       (i is a _lower bound_ for A) ∧ (∀ l ∈ ℝ, l is a _lower bound_ for A ⇒ l ≤ i).
-    
+
     We show both statements.
     - We conclude that i is a _lower bound_ for A.
-    
+
     - We need to show that ∀ l ∈ ℝ, l is a _lower bound_ for A ⇒ l ≤ i.
       Take l ∈ ℝ.
       Assume that l is a _lower bound_ for A.
-    
+
       We argue by contradiction.
       Assume that ¬ (l ≤ i) as (Hcontra).
-    
+
       It holds that i < l.
       Define ε := l - i.
       It holds that ε > 0.
@@ -158,32 +161,31 @@ Lemma nondecr_ge (a : ℕ → ℝ) (Hmono : ∀ n ∈ ℕ, a n ≤ a (n + 1)%nat
     ∀ n ∈ ℕ, ∀ m ∈ ℕ, (m ≤ n)%nat → a m ≤ a n.
 Proof.
   We use induction on n.
-  
+
   + We first show the base case
       ∀ m ∈ ℕ, (m ≤ 0)%nat → a m ≤ a 0%nat.
     Take m ∈ ℕ.
     Assume that (m ≤ 0)%nat as (Hm0).
     It holds that (m = 0)%nat as (Hm).
 
-    (* This claim is not strictly necessary
-       but helps speed up the proof checker,
-       similarly on line 188. *)
+    (** This claim is not strictly necessary but helps speeding up
+        the proof checker, similarly as before. *)
     It holds that a m = a 0%nat.
     We conclude that a m ≤ a 0%nat.
-  
+
   + We now show the induction step.
     Take n ∈ ℕ.
     Assume that (∀ m ∈ ℕ, (m ≤ n)%nat → a m ≤ a n) as (IH).
     Take m ∈ ℕ.
     Assume that (m ≤ n + 1)%nat as (Hmn).
-    
+
     Either (m ≤ n)%nat or (m = n + 1)%nat.
-    
+
     - Case (m ≤ n)%nat.
       It holds that a m ≤ a n as (H1).
       It holds that a n ≤ a (n + 1)%nat as (H2).
       We conclude that (& a m ≤ a n ≤ a (n + 1)%nat).
-    
+
     - Case (m = n + 1)%nat.
       It holds that a m = a (n + 1)%nat.
       We conclude that a m ≤ a (n + 1)%nat.
@@ -195,7 +197,7 @@ Lemma nonincr_le (b : ℕ → ℝ) (Hmono : ∀ n ∈ ℕ, b (n + 1)%nat ≤ b n
 Proof.
   We use induction on n.
 
-  + We first show the base case 
+  + We first show the base case
       ∀ m ∈ ℕ, (m ≤ 0)%nat → b 0%nat ≤ b m.
     Take m ∈ ℕ.
     Assume that (m ≤ 0)%nat as (Hm0).
@@ -248,15 +250,15 @@ Proof.
     It holds that y = a n.
 
     Either (n ≤ k)%nat or (k ≤ n)%nat.
-    
+
     - Case (n ≤ k)%nat.
-      (* nondecr_ge: ∀ a,
-          (∀ n ∈ ℕ, a(n) ≤ a((n + 1)%nat))
-          ⇨ ∀ n ∈ ℕ, ∀ m ∈ ℕ, (m ≤ n)%nat ⇨ a(m) ≤ a(n) *)
+      (** [nondecr_ge: ∀ a,
+            ∀ n ∈ ℕ, a(n) ≤ a((n + 1)%nat)
+            ⇨ ∀ n ∈ ℕ, ∀ m ∈ ℕ, (m ≤ n)%nat ⇨ a(m) ≤ a(n)] *)
       By nondecr_ge it holds that a n ≤ a k as (H1).
       It holds that a k ≤ bseq k as (H2).
       We conclude that (& y = a n ≤ a k ≤ bseq k).
-    
+
     - Case (k ≤ n)%nat.
       By nonincr_le it holds that bseq n ≤ bseq k as (H1).
       It holds that a n ≤ bseq n as (H2).
@@ -264,18 +266,20 @@ Proof.
   }
 
   We claim that A is bounded from above as (HboundedA).
-  { We need to show that ∃ M ∈ ℝ, M is an _upper bound_ for A.
+  {
+    We need to show that ∃ M ∈ ℝ, M is an _upper bound_ for A.
     Choose M := bseq 0%nat. { Indeed, M ∈ ℝ. }
     By Hallub we conclude that M is an _upper bound_ for A.
   }
 
   We claim that a 0%nat ∈ A as (Ha0).
-  { We need to show that ∃ n : ℕ, a 0%nat = a n.
+  {
+    We need to show that ∃ n : ℕ, a 0%nat = a n.
     Choose n := 0%nat.
     We conclude that a 0%nat = a n.
   }
-  
-  (* R_complete is the name in the Waterproof.Analysis.SupAndInf
+
+  (** [R_complete] is the name in the Waterproof.Analysis.SupAndInf
      module of the axiom of completeness *)
   By R_complete it holds that ∃ x ∈ ℝ, x is the _supremum_ of A as (Hsup).
   Obtain such an x.
@@ -284,7 +288,7 @@ Proof.
   It holds that
     x is an _upper bound_ for A
     ∧ (∀ L ∈ ℝ, L is an _upper bound_ for A ⇨ x ≤ L).
-  
+
   By sup_is_upp_bd it holds that
     x is an _upper bound_ for A as (Hxub).
   Choose (x).
@@ -313,27 +317,26 @@ Qed.
 (** For any [x : ℝ], there exists a natural number [n] with [n > x]. *)
 Lemma archimedean_1 (x : ℝ) : ∃ n : ℕ, INR n > x.
 Proof.
-  (* This is tricky to formalize due to the use of subsets.
+  (** This is tricky to formalize due to the use of subsets.
      If you are curious about how it can be done in Rocq,
-     have a look at archimedN in Waterproof.Libs.Reals.ArchimedN
-  *)
+     have a look at [archimedN] in [Waterproof.Libs.Reals.ArchimedN] *)
   By archimedN we conclude that ∃ n : ℕ, INR n > x.
 Qed.
 
 (** For any [y > 0], there exists [n : ℕ] with [1/(n+1) < y]. *)
 Lemma archimedean_2 (y : ℝ) (Hy : y > 0) : ∃ n : ℕ, 1 / (n + 1) < y.
 Proof.
-  (* Look at the way we use the division: in Rocq it is defined
-     as x / y  :=  x  *  / y. Where / y denotes the reciprocal 
-     of y. *)
+  (** Look at the way we use the division: in Rocq it is defined
+      as [x / y  :=  x  *  / y]. Where [/ y] denotes the reciprocal
+      of [y]. *)
   It holds that 0 < / y as (Hy_inv_pos).
   By the Archimedean property it holds that
     ∃ n1 ∈ ℕ, n1 > / y as (HN).
-  
+
   Obtain such an n1.
   It holds that (& n1 + 1 > n1 > / y > 0).
   It holds that / (n1 + 1) < / (/ y).
-  
+
   Choose n := n1.
   We conclude that (&
     1 / (n1 + 1) = / (n1 + 1) < / (/ y) = y
@@ -359,9 +362,9 @@ Qed.
 (** [|xy| = |x| |y|]. *)
 Lemma abs_mult (x y : ℝ) : |x * y| = |x| * |y|.
 Proof.
-  (* All these properties are already in Rocq or Waterproof,
-     but it can be a good exercise to try and prove it explicitly
-     as we did for abs_eq_max *)
+  (** All these properties are already in Rocq or Waterproof,
+      but it can be a good exercise to try and prove it explicitly
+      as we did for [abs_eq_max] *)
   By Rabs_mult we conclude that |x * y| = |x| * |y|.
 Qed.
 
@@ -383,9 +386,9 @@ Qed.
 Lemma reverse_triangle_inequality (x y : ℝ) :
   Rabs (|x| - |y|) ≤ |x - y|.
 Proof.
-  (* If you want to nest absolute values, you need to be
-     careful with parentheses. Under the curtains, Rocq is
-     replacing any |x| with Rabs x *)
+  (** If you want to nest absolute values, you need to be
+      careful with parentheses. Under the curtains, Rocq is
+      replacing any [|x|] with [Rabs x] *)
   By Rabs_triang_inv2 we conclude that
     |(|x| - |y|)| ≤ |x - y|.
 Qed.
@@ -394,8 +397,7 @@ Qed.
 
     Proof idea: if [|x| ≤ a] then both [x ≤ |x| ≤ a] and [-x ≤ |x| ≤ a], the
     latter giving [-a ≤ x]. Conversely, [|x| = max{x, -x} ≤ a] whenever both
-    [x ≤ a] and [-x ≤ a]. This is the standard "unfolding" of an absolute-value
-    inequality used throughout the ε-arguments. *)
+    [x ≤ a] and [-x ≤ a]. *)
 Lemma abs_le_iff (x a : ℝ) :
     |x| ≤ a ⇔ (- a ≤ x ∧ x ≤ a).
 Proof.
@@ -414,16 +416,18 @@ Lemma density_of_rationals (lo hi : ℝ) (H : lo < hi) :
       (q > 0)%Z ∧
       lo < IZR p / IZR q < hi.
 Proof.
-  (* TODO: Simplify *)
+  (** TODO: Simplify. As it is now, this proof uses rocq syntax directly,
+      likely we can rewrite it fully in Waterproof as we did in may other
+      places. *)
   It holds that hi - lo > 0 as (Hpos).
   By archimedean_2 it holds that ∃ n : ℕ, 1 / (n + 1) < hi - lo as (Hn).
   Obtain such an n.
   It holds that (& 0 < / (n + 1) < hi - lo).
-  
+
   It holds that (n + 1) * 1 / (n + 1) = 1.
   It holds that (n + 1) > 0 as (Hn_pos).
   It holds that (n + 1) * (hi - lo) > 1 as (Hfar).
-  
+
   By archimed it holds that
     IZR (up ((n + 1) * lo)) > (n + 1) * lo
     ∧ IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1.
@@ -434,23 +438,23 @@ Proof.
     IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1 as (Hceil_le).
   It holds that
     IZR (up ((n + 1) * lo)) ≤ (n + 1) * lo + 1 as (Hceil_ub).
-  
+
   It holds that (n + 1) * hi > (n + 1) * lo + 1.
 
   (* Chain: IZR m ≤ (n+1)*lo + 1 < (n+1)*hi *)
   It holds that
     IZR (up ((n + 1) * lo)) < (n + 1) * hi as (Hceil_lt).
 
-  (* Therefore we have an integer satisfying both bounds *)
+  (** Therefore we have an integer satisfying both bounds *)
   Define m := up ((n + 1) * lo).
   It holds that
     (IZR m > (n + 1) * lo) ∧ (IZR m < (n + 1) * hi) as (Hm).
 
-  (* Now construct the rational p/q *)
+  (** Now construct the rational p/q *)
   Choose p := m.
   Choose q := Z.of_nat (n + 1)%nat. It holds that (q > 0)%Z.
 
-  (* From Hm we have IZR m > (n+1)*lo and IZR m < (n+1)*hi *)
+  (** From Hm we have IZR m > (n+1)*lo and IZR m < (n+1)*hi *)
   By (Hm) it holds that IZR m > (n + 1) * lo as (Hlo).
   By (Hm) it holds that IZR m < (n + 1) * hi as (Hhi).
 
@@ -491,7 +495,7 @@ Proof.
   {
     apply (Rmult_lt_reg_r (IZR q)).
     + exact Hq_pos.
-    + rewrite Rmult_comm with (r1 := p / q) (r2 := q). 
+    + rewrite Rmult_comm with (r1 := p / q) (r2 := q).
       rewrite Rmult_div_assoc.
       rewrite Rmult_div_r with (r1 := q) (r2 := p).
       * exact Hhiq.
@@ -501,4 +505,3 @@ Proof.
   By Hq_pos, Hlo_div and Hhi_div we conclude that
     (q > 0)%Z ∧ lo < IZR p / IZR q < hi.
 Qed.
-

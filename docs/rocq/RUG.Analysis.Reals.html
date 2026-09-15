@@ -33,45 +33,11 @@
 
   Formalizes Abbott §1.2–1.4: upper/lower bounds, supremum/infimum,
   the axiom of completeness, and its consequences (Archimedean property,
-  nested interval property, absolute value).
-
-<div class="paragraph"> </div>
-
-  Re-exports the core Waterproof infrastructure so that files importing
-  <span class="inlinecode"><span class="id" title="var">Analysis.Reals</span></span> do not need to separately import Waterproof. 
+  nested interval property, absolute value). 
 </div>
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Reals.Reals</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">ZArith.ZArith</span>.<br/>
-
-<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Tactics</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Notations.Common</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Notations.Reals</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Notations.Sets</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Chains</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Automation</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Libs.Analysis.SupAndInf</span>.<br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Libs.Reals.ArchimedN</span>.<br/>
-
-<br/>
-<span class="id" title="var">Waterproof</span> <span class="id" title="var">Enable</span> <span class="id" title="var">Automation</span> <span class="id" title="var">RealsAndIntegers</span>.<br/>
-<span class="id" title="var">Waterproof</span> <span class="id" title="var">Enable</span> <span class="id" title="var">Automation</span> <span class="id" title="var">Intuition</span>.<br/>
-
-<br/>
-<span class="id" title="keyword">Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">R_scope</span>.<br/>
-<span class="id" title="keyword">Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">subset_scope</span>.<br/>
-
-<br/>
-<span class="id" title="keyword">Set</span> <span class="id" title="var">Default</span> <span class="id" title="keyword">Goal</span> <span class="id" title="var">Selector</span> "!".<br/>
-<span class="id" title="keyword">Set</span> <span class="id" title="var">Bullet</span> <span class="id" title="var">Behavior</span> "Waterproof Relaxed Subproofs".<br/>
-
-<br/>
-<span class="id" title="keyword">Hint Resolve</span> <span class="id" title="var">Rinv_0_lt_compat</span> : <span class="id" title="var">wp_reals</span>.<br/>
-<span class="id" title="keyword">Hint Resolve</span> <span class="id" title="var">Rinv_lt_contravar</span> : <span class="id" title="var">wp_reals</span>.<br/>
-<span class="id" title="keyword">Hint Resolve</span> <span class="id" title="var">Rinv_le_contravar</span> : <span class="id" title="var">wp_reals</span>.<br/>
 
 <br/>
 </div>
@@ -94,6 +60,13 @@
 <br/>
 &nbsp;&nbsp;- <span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span> <span class="id" title="var">s</span> <span class="id" title="notation">is</span> <span class="id" title="notation">the</span> <span class="id" title="notation">_supremum_</span> <span class="id" title="notation">of</span> <span class="id" title="var">A</span> <span class="id" title="notation">⇨</span> <span class="id" title="notation">∀</span> <a id="439331efb31223a5d259ee9ca54e3caf" class="idref" href="#439331efb31223a5d259ee9ca54e3caf"><span class="id" title="binder"><span id="df197b48193683435b9f58ae1781e4c8" class="id"><span id="26c4e64f975f262a3dd3328ec7ac6368" class="id"><span id="5df855696ad67c2b8cc0f323754d9d09" class="id">ε</span></span></span></span></a> <span class="id" title="notation">&gt;</span> 0<span class="id" title="notation">,</span> <span class="id" title="notation">∃</span> <a id="a:16" class="idref" href="#a:16"><span class="id" title="binder"><span id="a:17" class="id"><span id="a:18" class="id"><span id="a:19" class="id">a</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="var">A</span><span class="id" title="notation">,</span> <span class="id" title="var">s</span> <span class="id" title="notation">-</span> <a class="idref" href="RUG.Analysis.Reals.html#439331efb31223a5d259ee9ca54e3caf"><span class="id" title="variable">ε</span></a> <span class="id" title="notation">&lt;</span> <a class="idref" href="RUG.Analysis.Reals.html#a:16"><span class="id" title="variable">a</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">s</span> <span class="id" title="notation">is</span> <span class="id" title="notation">the</span> <span class="id" title="notation">_supremum_</span> <span class="id" title="notation">of</span> <span class="id" title="var">A</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hsup</span>).<br/>
+</div>
+
+<div class="doc">
+Withouth the following line, Waterproof would need a few
+       seconds to be able to confirm the claim at line 65. 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">Hsup</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">(</span><span class="id" title="var">s</span> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span><span class="id" title="notation">)</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∧</span> <span class="id" title="notation">(</span><span class="id" title="notation">∀</span> <a id="b:20" class="idref" href="#b:20"><span class="id" title="binder"><span id="b:21" class="id"><span id="b:22" class="id"><span id="b:23" class="id">b</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.Reals.html#b:20"><span class="id" title="variable">b</span></a> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span> <span class="id" title="notation">⇒</span> <span class="id" title="var">s</span> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.Reals.html#b:20"><span class="id" title="variable">b</span></a><span class="id" title="notation">)</span>.<br/>
@@ -111,6 +84,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">s</span> <span class="id" title="notation">-</span> <span class="id" title="var">ε</span> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hubs_eps</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">any_upp_bd_ge_sup</span></span> is in Waterproof, can you guess what it says? 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">Hubs_eps</span> <span class="id" title="var">and</span> <span class="id" title="lemma">any_upp_bd_ge_sup</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">s</span> <span class="id" title="notation">≤</span> <span class="id" title="var">s</span> <span class="id" title="notation">-</span> <span class="id" title="var">ε</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="notation">(</span><span class="id" title="var">s</span> <span class="id" title="notation">≤</span> <span class="id" title="var">s</span> <span class="id" title="notation">-</span> <span class="id" title="var">ε</span><span class="id" title="notation">)</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
@@ -188,6 +167,12 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> (<span class="id" title="var">Hnotlb</span>) <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">i</span> <span class="id" title="notation">+</span> <span class="id" title="var">ε</span> <span class="id" title="notation">is</span> <span class="id" title="notation">a</span> <span class="id" title="notation">_lower</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">any_upp_bd_ge_sup</span></span> is in Waterproof, can you guess what it says? 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">any_low_bd_le_inf</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">i</span> <span class="id" title="notation">+</span> <span class="id" title="var">ε</span> <span class="id" title="notation">≤</span> <span class="id" title="var">i</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="notation">(</span><span class="id" title="var">i</span> <span class="id" title="notation">+</span> <span class="id" title="var">ε</span> <span class="id" title="notation">≤</span> <span class="id" title="var">i</span><span class="id" title="notation">)</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
@@ -249,6 +234,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">m</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> 0)%<span class="id" title="var">nat</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hm</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+This claim is not strictly necessary but helps speeding up
+        the proof checker, similarly as before. 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> <span class="id" title="var">m</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> <span class="id" title="var">m</span> <span class="id" title="notation">≤</span> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span>.<br/>
 
@@ -287,7 +279,7 @@ A nonincreasing sequence satisfies <span class="inlinecode"><span class="id" tit
 &nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">use</span> <span class="id" title="tactic">induction</span> <span class="id" title="var">on</span> <span class="id" title="var">n</span>.<br/>
 
 <br/>
-&nbsp;&nbsp;+ <span class="id" title="var">We</span> <span class="id" title="tactic">first</span> <span class="id" title="var">show</span> <span class="id" title="var">the</span> <span class="id" title="var">base</span> <span class="id" title="tactic">case</span> <br/>
+&nbsp;&nbsp;+ <span class="id" title="var">We</span> <span class="id" title="tactic">first</span> <span class="id" title="var">show</span> <span class="id" title="var">the</span> <span class="id" title="var">base</span> <span class="id" title="tactic">case</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∀</span> <a id="m:155" class="idref" href="#m:155"><span class="id" title="binder"><span id="m:156" class="id"><span id="m:157" class="id"><span id="m:158" class="id">m</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℕ</span><span class="id" title="notation">,</span> (<a class="idref" href="RUG.Analysis.Reals.html#m:155"><span class="id" title="variable">m</span></a> <span class="id" title="notation">≤</span> 0)%<span class="id" title="var">nat</span> <span class="id" title="notation">→</span> <span class="id" title="var">b</span> 0%<span class="id" title="var">nat</span> <span class="id" title="notation">≤</span> <span class="id" title="var">b</span> <a class="idref" href="RUG.Analysis.Reals.html#m:155"><span class="id" title="variable">m</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Take</span> <span class="id" title="var">m</span> ∈ <span class="id" title="notation">ℕ</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> (<span class="id" title="var">m</span> <span class="id" title="notation">≤</span> 0)%<span class="id" title="var">nat</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hm0</span>).<br/>
@@ -357,6 +349,14 @@ A nonincreasing sequence satisfies <span class="inlinecode"><span class="id" tit
 
 <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="var">Case</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">k</span>)%<span class="id" title="var">nat</span>.<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">nondecr_ge</span>:</span> <span class="inlinecode">∀</span> <span class="inlinecode"><span class="id" title="var">a</span>,</span>
+            <span class="inlinecode">∀</span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">∈</span> <span class="inlinecode"><span class="id" title="var">ℕ</span>,</span> <span class="inlinecode"><span class="id" title="var">a</span>(<span class="id" title="var">n</span>)</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span>((<span class="id" title="var">n</span></span> <span class="inlinecode">+</span> <span class="inlinecode">1)%<span class="id" title="var">nat</span>)</span>
+            <span class="inlinecode">⇨</span> <span class="inlinecode">∀</span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">∈</span> <span class="inlinecode"><span class="id" title="var">ℕ</span>,</span> <span class="inlinecode">∀</span> <span class="inlinecode"><span class="id" title="var">m</span></span> <span class="inlinecode">∈</span> <span class="inlinecode"><span class="id" title="var">ℕ</span>,</span> <span class="inlinecode">(<span class="id" title="var">m</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">n</span>)%<span class="id" title="var">nat</span></span> <span class="inlinecode">⇨</span> <span class="inlinecode"><span class="id" title="var">a</span>(<span class="id" title="var">m</span>)</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span>(<span class="id" title="var">n</span>)</span> 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.Reals.html#nondecr_ge"><span class="id" title="lemma">nondecr_ge</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">a</span> <span class="id" title="var">k</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">H1</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> <span class="id" title="var">k</span> <span class="id" title="notation">≤</span> <span class="id" title="var">bseq</span> <span class="id" title="var">k</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">H2</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> (<span class="id" title="notation">&amp;</span> <span class="id" title="var">y</span> <span class="id" title="notation">=</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">a</span> <span class="id" title="var">k</span> <span class="id" title="notation">≤</span> <span class="id" title="var">bseq</span> <span class="id" title="var">k</span>).<br/>
@@ -369,18 +369,26 @@ A nonincreasing sequence satisfies <span class="inlinecode"><span class="id" tit
 &nbsp;&nbsp;}<br/>
 <br/>
 &nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="var">A</span> <span class="id" title="notation">is</span> <span class="id" title="notation">bounded</span> <span class="id" title="notation">from</span> <span class="id" title="notation">above</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HboundedA</span>).<br/>
-&nbsp;&nbsp;{ <span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="M:201" class="idref" href="#M:201"><span class="id" title="binder"><span id="M:202" class="id"><span id="M:203" class="id"><span id="M:204" class="id">M</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.Reals.html#M:201"><span class="id" title="variable">M</span></a> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span>.<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="M:201" class="idref" href="#M:201"><span class="id" title="binder"><span id="M:202" class="id"><span id="M:203" class="id"><span id="M:204" class="id">M</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.Reals.html#M:201"><span class="id" title="variable">M</span></a> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Choose</span> <span class="id" title="var">M</span> := <span class="id" title="var">bseq</span> 0%<span class="id" title="var">nat</span>. { <span class="id" title="var">Indeed</span>, <span class="id" title="var">M</span> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span>. }<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">Hallub</span> <span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">M</span> <span class="id" title="notation">is</span> <span class="id" title="notation">an</span> <span class="id" title="notation">_upper</span> <span class="id" title="notation">bound_</span> <span class="id" title="notation">for</span> <span class="id" title="var">A</span>.<br/>
 &nbsp;&nbsp;}<br/>
 <br/>
 &nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span> <span class="id" title="notation">∈</span> <span class="id" title="var">A</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Ha0</span>).<br/>
-&nbsp;&nbsp;{ <span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="n:205" class="idref" href="#n:205"><span class="id" title="binder"><span id="n:206" class="id">n</span></span></a> <a id="n:206" class="idref" href="#n:206"><span class="id" title="binder">:</span></a> <a id="n:206" class="idref" href="#n:206"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">a</span> <a class="idref" href="RUG.Analysis.Reals.html#n:205"><span class="id" title="variable">n</span></a>.<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="n:205" class="idref" href="#n:205"><span class="id" title="binder"><span id="n:206" class="id">n</span></span></a> <a id="n:206" class="idref" href="#n:206"><span class="id" title="binder">:</span></a> <a id="n:206" class="idref" href="#n:206"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">a</span> <a class="idref" href="RUG.Analysis.Reals.html#n:205"><span class="id" title="variable">n</span></a>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Choose</span> <span class="id" title="var">n</span> := 0%<span class="id" title="var">nat</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> 0%<span class="id" title="var">nat</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">a</span> <span class="id" title="var">n</span>.<br/>
 &nbsp;&nbsp;}<br/>
-&nbsp;&nbsp;<br/>
-&nbsp;&nbsp;<br/>
+<br/>
+&nbsp;&nbsp;</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">R_complete</span></span> is the name in the Waterproof.Analysis.SupAndInf
+     module of the axiom of completeness 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">R_complete</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="x:207" class="idref" href="#x:207"><span class="id" title="binder"><span id="x:208" class="id"><span id="x:209" class="id"><span id="x:210" class="id">x</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.Reals.html#x:207"><span class="id" title="variable">x</span></a> <span class="id" title="notation">is</span> <span class="id" title="notation">the</span> <span class="id" title="notation">_supremum_</span> <span class="id" title="notation">of</span> <span class="id" title="var">A</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hsup</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">x</span>.<br/>
 
@@ -428,6 +436,14 @@ A nonincreasing sequence satisfies <span class="inlinecode"><span class="id" tit
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="archimedean_1" class="idref" href="#archimedean_1"><span class="id" title="lemma">archimedean_1</span></a> (<a id="x:221" class="idref" href="#x:221"><span class="id" title="binder">x</span></a> : <span class="id" title="notation">ℝ</span>) : <span class="id" title="notation">∃</span> <a id="n:222" class="idref" href="#n:222"><span class="id" title="binder"><span id="n:223" class="id">n</span></span></a> <a id="n:223" class="idref" href="#n:223"><span class="id" title="binder">:</span></a> <a id="n:223" class="idref" href="#n:223"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> <span class="id" title="definition">INR</span> <a class="idref" href="RUG.Analysis.Reals.html#n:222"><span class="id" title="variable">n</span></a> <span class="id" title="notation">&gt;</span> <a class="idref" href="RUG.Analysis.Reals.html#x:221"><span class="id" title="variable">x</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+This is tricky to formalize due to the use of subsets.
+     If you are curious about how it can be done in Rocq,
+     have a look at <span class="inlinecode"><span class="id" title="var">archimedN</span></span> in <span class="inlinecode"><span class="id" title="var">Waterproof.Libs.Reals.ArchimedN</span></span> 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">archimedN</span> <span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="n:224" class="idref" href="#n:224"><span class="id" title="binder"><span id="n:225" class="id">n</span></span></a> <a id="n:225" class="idref" href="#n:225"><span class="id" title="binder">:</span></a> <a id="n:225" class="idref" href="#n:225"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> <span class="id" title="definition">INR</span> <a class="idref" href="RUG.Analysis.Reals.html#n:224"><span class="id" title="variable">n</span></a> <span class="id" title="notation">&gt;</span> <span class="id" title="var">x</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -440,6 +456,14 @@ For any <span class="inlinecode"><span class="id" title="var">y</span></span> <s
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="archimedean_2" class="idref" href="#archimedean_2"><span class="id" title="lemma">archimedean_2</span></a> (<a id="y:226" class="idref" href="#y:226"><span class="id" title="binder">y</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hy:227" class="idref" href="#Hy:227"><span class="id" title="binder">Hy</span></a> : <a class="idref" href="RUG.Analysis.Reals.html#y:226"><span class="id" title="variable">y</span></a> <span class="id" title="notation">&gt;</span> 0) : <span class="id" title="notation">∃</span> <a id="n:228" class="idref" href="#n:228"><span class="id" title="binder"><span id="n:229" class="id">n</span></span></a> <a id="n:229" class="idref" href="#n:229"><span class="id" title="binder">:</span></a> <a id="n:229" class="idref" href="#n:229"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> 1 <span class="id" title="notation">/</span> <span class="id" title="notation">(</span><a class="idref" href="RUG.Analysis.Reals.html#n:228"><span class="id" title="variable">n</span></a> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">&lt;</span> <a class="idref" href="RUG.Analysis.Reals.html#y:226"><span class="id" title="variable">y</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+Look at the way we use the division: in Rocq it is defined
+      as <span class="inlinecode"><span class="id" title="var">x</span></span> <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" title="var">y</span></span>  <span class="inlinecode">:=</span>  <span class="inlinecode"><span class="id" title="var">x</span></span>  <span class="inlinecode">×</span>  <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" title="var">y</span></span>. Where <span class="inlinecode">/</span> <span class="inlinecode"><span class="id" title="var">y</span></span> denotes the reciprocal
+      of <span class="inlinecode"><span class="id" title="var">y</span></span>. 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> 0 <span class="id" title="notation">&lt;</span> <span class="id" title="notation">/</span> <span class="id" title="var">y</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hy_inv_pos</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="notation">the</span> <span class="id" title="notation">Archimedean</span> <span class="id" title="notation">property</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∃</span> <a id="n1:230" class="idref" href="#n1:230"><span class="id" title="binder"><span id="n1:231" class="id"><span id="n1:232" class="id"><span id="n1:233" class="id">n1</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℕ</span><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.Reals.html#n1:230"><span class="id" title="variable">n1</span></a> <span class="id" title="notation">&gt;</span> <span class="id" title="notation">/</span> <span class="id" title="var">y</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HN</span>).<br/>
@@ -489,6 +513,14 @@ For any <span class="inlinecode"><span class="id" title="var">y</span></span> <s
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="abs_mult" class="idref" href="#abs_mult"><span class="id" title="lemma">abs_mult</span></a> (<a id="x:235" class="idref" href="#x:235"><span class="id" title="binder">x</span></a> <a id="y:236" class="idref" href="#y:236"><span class="id" title="binder">y</span></a> : <span class="id" title="notation">ℝ</span>) : <span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#x:235"><span class="id" title="variable">x</span></a> <span class="id" title="notation">×</span> <a class="idref" href="RUG.Analysis.Reals.html#y:236"><span class="id" title="variable">y</span></a><span class="id" title="notation">|</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#x:235"><span class="id" title="variable">x</span></a><span class="id" title="notation">|</span> <span class="id" title="notation">×</span> <span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#y:236"><span class="id" title="variable">y</span></a><span class="id" title="notation">|</span>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+All these properties are already in Rocq or Waterproof,
+      but it can be a good exercise to try and prove it explicitly
+      as we did for <span class="inlinecode"><span class="id" title="var">abs_eq_max</span></span> 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">Rabs_mult</span> <span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="notation">|</span><span class="id" title="var">x</span> <span class="id" title="notation">×</span> <span class="id" title="var">y</span><span class="id" title="notation">|</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="notation">|</span><span class="id" title="var">x</span><span class="id" title="notation">|</span> <span class="id" title="notation">×</span> <span class="id" title="notation">|</span><span class="id" title="var">y</span><span class="id" title="notation">|</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
@@ -528,6 +560,14 @@ Reverse triangle inequality: <span class="inlinecode">||<span class="id" title="
 <span class="id" title="keyword">Lemma</span> <a id="reverse_triangle_inequality" class="idref" href="#reverse_triangle_inequality"><span class="id" title="lemma">reverse_triangle_inequality</span></a> (<a id="x:242" class="idref" href="#x:242"><span class="id" title="binder">x</span></a> <a id="y:243" class="idref" href="#y:243"><span class="id" title="binder">y</span></a> : <span class="id" title="notation">ℝ</span>) :<br/>
 &nbsp;&nbsp;<span class="id" title="definition">Rabs</span> <span class="id" title="notation">(</span><span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#x:242"><span class="id" title="variable">x</span></a><span class="id" title="notation">|</span> <span class="id" title="notation">-</span> <span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#y:243"><span class="id" title="variable">y</span></a><span class="id" title="notation">|</span><span class="id" title="notation">)</span> <span class="id" title="notation">≤</span> <span class="id" title="notation">|</span><a class="idref" href="RUG.Analysis.Reals.html#x:242"><span class="id" title="variable">x</span></a> <span class="id" title="notation">-</span> <a class="idref" href="RUG.Analysis.Reals.html#y:243"><span class="id" title="variable">y</span></a><span class="id" title="notation">|</span>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+If you want to nest absolute values, you need to be
+      careful with parentheses. Under the curtains, Rocq is
+      replacing any <span class="inlinecode">|<span class="id" title="var">x</span>|</span> with <span class="inlinecode"><span class="id" title="var">Rabs</span></span> <span class="inlinecode"><span class="id" title="var">x</span></span> 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">Rabs_triang_inv2</span> <span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">|(|</span><span class="id" title="var">x</span><span class="id" title="notation">|</span> <span class="id" title="notation">-</span> <span class="id" title="notation">|</span><span class="id" title="var">y</span><span class="id" title="notation">|)|</span> <span class="id" title="notation">≤</span> <span class="id" title="notation">|</span><span class="id" title="var">x</span> <span class="id" title="notation">-</span> <span class="id" title="var">y</span><span class="id" title="notation">|</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -542,8 +582,7 @@ Absolute-value bound: <span class="inlinecode">|<span class="id" title="var">x</
 
     Proof idea: if <span class="inlinecode">|<span class="id" title="var">x</span>|</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span> then both <span class="inlinecode"><span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode">|<span class="id" title="var">x</span>|</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span> and <span class="inlinecode">-<span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode">|<span class="id" title="var">x</span>|</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span>, the
     latter giving <span class="inlinecode">-<span class="id" title="var">a</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">x</span></span>. Conversely, <span class="inlinecode">|<span class="id" title="var">x</span>|</span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">max</span>{<span class="id" title="var">x</span>,</span> <span class="inlinecode">-<span class="id" title="var">x</span>}</span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span> whenever both
-    <span class="inlinecode"><span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span> and <span class="inlinecode">-<span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span>. This is the standard "unfolding" of an absolute-value
-    inequality used throughout the ε-arguments. 
+    <span class="inlinecode"><span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span> and <span class="inlinecode">-<span class="id" title="var">x</span></span> <span class="inlinecode">≤</span> <span class="inlinecode"><span class="id" title="var">a</span></span>. 
 </div>
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="abs_le_iff" class="idref" href="#abs_le_iff"><span class="id" title="lemma">abs_le_iff</span></a> (<a id="x:244" class="idref" href="#x:244"><span class="id" title="binder">x</span></a> <a id="a:245" class="idref" href="#a:245"><span class="id" title="binder">a</span></a> : <span class="id" title="notation">ℝ</span>) :<br/>
@@ -574,6 +613,14 @@ Absolute-value bound: <span class="inlinecode">|<span class="id" title="var">x</
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RUG.Analysis.Reals.html#q:251"><span class="id" title="variable">q</span></a> <span class="id" title="notation">&gt;</span> 0)%<span class="id" title="var">Z</span> <span class="id" title="notation">∧</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RUG.Analysis.Reals.html#lo:246"><span class="id" title="variable">lo</span></a> <span class="id" title="notation">&lt;</span> <span class="id" title="definition">IZR</span> <a class="idref" href="RUG.Analysis.Reals.html#p:249"><span class="id" title="variable">p</span></a> <span class="id" title="notation">/</span> <span class="id" title="definition">IZR</span> <a class="idref" href="RUG.Analysis.Reals.html#q:251"><span class="id" title="variable">q</span></a> <span class="id" title="notation">&lt;</span> <a class="idref" href="RUG.Analysis.Reals.html#hi:247"><span class="id" title="variable">hi</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+TODO: Simplify. As it is now, this proof uses rocq syntax directly,
+      likely we can rewrite it fully in Waterproof as we did in may other
+      places. 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">hi</span> <span class="id" title="notation">-</span> <span class="id" title="var">lo</span> <span class="id" title="notation">&gt;</span> 0 <span class="id" title="keyword">as</span> (<span class="id" title="var">Hpos</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.Reals.html#archimedean_2"><span class="id" title="lemma">archimedean_2</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="n:253" class="idref" href="#n:253"><span class="id" title="binder"><span id="n:254" class="id">n</span></span></a> <a id="n:254" class="idref" href="#n:254"><span class="id" title="binder">:</span></a> <a id="n:254" class="idref" href="#n:254"><span class="id" title="binder">ℕ</span></a><span class="id" title="notation">,</span> 1 <span class="id" title="notation">/</span> <span class="id" title="notation">(</span><a class="idref" href="RUG.Analysis.Reals.html#n:253"><span class="id" title="variable">n</span></a> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">&lt;</span> <span class="id" title="var">hi</span> <span class="id" title="notation">-</span> <span class="id" title="var">lo</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hn</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">n</span>.<br/>
@@ -605,15 +652,33 @@ Absolute-value bound: <span class="inlinecode">|<span class="id" title="var">x</
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="definition">IZR</span> <span class="id" title="notation">(</span><span class="id" title="definition">up</span> <span class="id" title="notation">(</span><span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">lo</span><span class="id" title="notation">))</span> <span class="id" title="notation">&lt;</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">hi</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hceil_lt</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+Therefore we have an integer satisfying both bounds 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">Define</span> <span class="id" title="var">m</span> := <span class="id" title="definition">up</span> <span class="id" title="notation">(</span><span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">lo</span><span class="id" title="notation">)</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">(</span><span class="id" title="definition">IZR</span> <span class="id" title="var">m</span> <span class="id" title="notation">&gt;</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">lo</span><span class="id" title="notation">)</span> <span class="id" title="notation">∧</span> <span class="id" title="notation">(</span><span class="id" title="definition">IZR</span> <span class="id" title="var">m</span> <span class="id" title="notation">&lt;</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">hi</span><span class="id" title="notation">)</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hm</span>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+Now construct the rational p/q 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">Choose</span> <span class="id" title="var">p</span> := <span class="id" title="var">m</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">Choose</span> <span class="id" title="var">q</span> := <span class="id" title="definition">Z.of_nat</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#0dacc1786c5ba797d47dd85006231633"><span class="id" title="notation">+</span></a> 1<span class="id" title="notation">)</span>%<span class="id" title="var">nat</span>. <span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">q</span> <span class="id" title="notation">&gt;</span> 0)%<span class="id" title="var">Z</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+From Hm we have IZR m &gt; (n+1)*lo and IZR m &lt; (n+1)*hi 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> (<span class="id" title="var">Hm</span>) <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="definition">IZR</span> <span class="id" title="var">m</span> <span class="id" title="notation">&gt;</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">lo</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hlo</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">By</span> (<span class="id" title="var">Hm</span>) <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="definition">IZR</span> <span class="id" title="var">m</span> <span class="id" title="notation">&lt;</span> <span class="id" title="notation">(</span><span class="id" title="var">n</span> <span class="id" title="notation">+</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">hi</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hhi</span>).<br/>
 
@@ -661,8 +726,6 @@ Absolute-value bound: <span class="inlinecode">|<span class="id" title="var">x</
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">Hq_pos</span>, <span class="id" title="var">Hlo_div</span> <span class="id" title="var">and</span> <span class="id" title="var">Hhi_div</span> <span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="var">q</span> <span class="id" title="notation">&gt;</span> 0)%<span class="id" title="var">Z</span> <span class="id" title="notation">∧</span> <span class="id" title="var">lo</span> <span class="id" title="notation">&lt;</span> <span class="id" title="definition">IZR</span> <span class="id" title="var">p</span> <span class="id" title="notation">/</span> <span class="id" title="definition">IZR</span> <span class="id" title="var">q</span> <span class="id" title="notation">&lt;</span> <span class="id" title="var">hi</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
-
-<br/>
 </div>
 </div>
 

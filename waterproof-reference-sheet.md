@@ -169,9 +169,11 @@ We use induction on k.
 
 | Sentence | What it does |
 |---|---|
-| `Expand the definition of (f).` / `Expand (f).` | Prints suggested `That is, write ...` rewrites with `f` unfolded. Interactive only; delete before submitting. |
-| `Expand All.` | Suggestions for all recognized definitions in the goal. Delete from final script. |
-| `Help.` | Prints tactics that might make progress on the current goal. Interactive only. |
+| `Expand the definition of (f).` / `Expand (f).` | Prints suggested `That is, write ...` rewrites with `f` unfolded. |
+| `Expand All.` | Suggestions for all recognized definitions in the goal. |
+| `Help.` | Prints tactics that might make progress on the current goal. |
+
+All three are for interactive inspection. Delete them before submitting a proof.
 
 ---
 
@@ -201,12 +203,12 @@ By f_increasing we conclude that & 2 < f(0) ≤ f(1).
 
 ---
 
-## 5. Pitfalls and failure modes
+## 5. Pitfalls
 
 1. **`Take` on an existential goal.** `Take` is strictly for `∀`. Use `Choose` for `∃`.
 2. **Renaming binders.** If the goal says `∀ x, ...`, running `Take y : ℝ` throws a warning (*"Expected variable name x instead of y"*). In course grading, treat warnings as fatal errors. Same for `Obtain such an m` when the binder was `n`.
 3. **Mismatched types in `Take`.** `Take n : bool` against `∀ n : ℕ` fails immediately. Don't supply more variables than the goal's quantifier prefix contains.
-4. **Skipping side-goals on bounded quantifiers.** `Choose y := 2` on `∃ y ∈ ℝ, ...` generates a membership subproof. Close it on the spot: `{ Indeed, y ∈ ℝ. }`. Note the space before `}`. Same deal after `Use ε := 1/2 in (i)`.
+4. **Skipping side-goals on bounded quantifiers.** `Choose y := 2` on `∃ y ∈ ℝ, ...` generates a membership subproof. Close it on the spot: `{ Indeed, y ∈ ℝ. }`, or `{ We need to verify that y ∈ ℝ. … }` (note `verify`, not `show`, and note the space before `}`). Same deal after `Use ε := 1/2 in (i)`. `Choose` also enters `y` into the context as a let-binding, so everything downstream must refer to `y` rather than to `2`.
 5. **Drift in `Assume that`.** The text inside `Assume that (P)` must match the actual antecedent term-for-term. `Assume` also rejects goals that aren't implications or negations.
 6. **Automation running out of gas.** `We conclude that` runs a depth-bounded search. When it gets stuck: add intermediate `It holds that` statements, hand it the key lemma (`By lem we conclude that ...`), or check which dataset is active. `By magic it holds that` skips the search limits, but nobody grades that kindly.
 7. **The automation shield.** With the shield on, `It holds that` won't instantiate quantifiers or split iffs. You have to write `Use`, `Obtain`, `Choose`, and `We show both directions` yourself.
@@ -216,20 +218,18 @@ By f_increasing we conclude that & 2 < f(0) ≤ f(1).
 11. **Direction flipping in chains.** `& a < b > c` fails to parse. Split it into two statements. When you need the end-to-end inequality from a previous chain hypothesis, extract it with a separate `It holds that`.
 12. **Missing case signposts.** Every bullet under `Either ... or ...` must begin with `Case (...)`. Every bullet under `We show both statements` must begin with `We need to show that (...)`. Drop them and the proof script fails.
 13. **`Obtain` target confusion.** `Obtain such an n` grabs only the most recently introduced existential. If you need an older one, call `Obtain n according to (label)`.
-14. **Leftover interactive commands.** `Help.` and `Expand ...` exist for interactive inspection. Delete them from submitted proofs.
-15. **Grouped quantifiers in `∀` / `∃`.** The unicode notations reject multiple names in one binder block: `∀ x y : ℝ, P` and `∃ (phi : ℕ → ℕ) (x : ℝ), P` fail with *"The reference y/x was not found"*. Write `∀ x, ∀ y` or `∀ x ∈ ℝ, ∀ y ∈ ℝ, P`. (`Take x, y : ℝ` is fine—this limit applies to propositions, not tactics.)
-16. **`Type`-sorted binders.** `∀ I : Type, P` chokes the unicode notation with an internal `True`/`pat` error. Fall back to ASCII `forall (I : Type), P` when quantifying over index types or sets.
-17. **Variable names hijacked by the standard library.** In lines like `It holds that`, `We need to show`, or `Define`, single-letter names often resolve to Stdlib globals rather than your local binder. Common traps: `f` hits `Rtopology.f` (a family), `N` hits `BinNums.N`, `I` hits `Logic.I`, `d` hits `Sequences.d`, `d1` hits `Ranalysis1.d1`, and `E1` hits `Exp_prop.E1` (which breaks rewrites with *"Cannot find a relation to rewrite"*). Rename your parameters to `f'`, `Nn`, `Idx`, `dlt`, `Ea1` to stay out of trouble.
-18. **Goal restatements after `Choose`.** After `Choose δ := ...`, a trailing bounded `∀` needs a fresh `We need to show that ∀ x ∈ ℝ, ...` before `Take x ∈ ℝ` will work.
-19. **Bounded binders produce subset types.** Writing `∀ ε > 0, P` binds `ε : subset_type ℝ (> 0)`. That breaks nat arithmetic on binders (`(n + p)%nat` becomes subset addition) and prevents feeding the variable to `mkposreal`. Write `∀ n : ℕ` / `Take n : ℕ`, or expand to `∀ ε : ℝ, ε > 0 → …`.
-20. **Scope leakage in lambdas.** Writing `partial_sums (fun k => 1 / (INR k + 1)) (n + p)%nat` fails with *"INR(k) has type ℝ while it is expected to have type ℕ"*. Use `(Nat.add n p)` instead.
-21. **Unsupported Ltac plumbing.** Expressions like `refine (conj _ _)` and goal selectors like `split; [|split]` fail to parse. Build conjunctions by proving each piece (`By … it holds that … as (Hk)`) and finishing with `We conclude that (A ∧ B)`. `eq_sym` also fails in term position; use the `symmetry.` tactic instead.
-22. **Search hangs on implicit arguments.** Calling `By … we conclude that …` with uninstantiated arguments can stall the prover for minutes. Pass arguments explicitly, or use `exact (lemma a b c H)`.
-23. **Interval notation breaks pairs.** In `R_scope`, `(a, b)` and `[a, b]` represent intervals. `Choose p := (x, r)` throws *"has type ℝ ⇨ Prop"*. Wrap pair creation in a helper: `Definition idx (c r : ℝ) : ball_index := pair c r.` Same for `ℝ * ℝ`, which gets parsed as multiplication; hide it with `Definition ball_index : Type := (ℝ * ℝ)%type.`
-24. **`Choose` creates a local definition.** For `∃ a ∈ A, P a`, `Choose a := t.` sets up `{ Indeed, a ∈ A. }` (or `{ We need to verify that a ∈ A. … }` — note `verify`, not `show`). The variable `a` enters the context as a let-binding, so subsequent statements must refer to `a`, not `t`.
-25. **`Obtain` order with nested existentials.** `Obtain such a y` pulls from the most recent existential in the context list, not the one you wrote last in the script. For `∃ x, ∃ y, …`, restate the inner existential (`It holds that (∃ y : ℝ, …) as (Hy).`) before running the second `Obtain`.
-26. **Archimedean notation syntax.** `By the Archimedean property it holds that …` cannot take an `as (label)` suffix (it is notation for `Waterproof.Libs.Reals.ArchimedN.archimedN_exists`). Label it on the next line with `It holds that … as (H).` if you need a handle.
-27. **`Use` blocked during contradictions.** When the goal is "Derive a contradiction", `Use x := t in (H)` gets rejected. Restate the instance directly: `By (H) it holds that (<instance>) as (H1).`, proving the bounding condition first.
+14. **Grouped quantifiers in `∀` / `∃`.** The unicode notations reject multiple names in one binder block: `∀ x y : ℝ, P` and `∃ (phi : ℕ → ℕ) (x : ℝ), P` fail with *"The reference y/x was not found"*. Write `∀ x, ∀ y` or `∀ x ∈ ℝ, ∀ y ∈ ℝ, P`. (`Take x, y : ℝ` is fine; the limit applies to propositions, not tactics.)
+15. **`Type`-sorted binders.** `∀ I : Type, P` chokes the unicode notation with an internal `True`/`pat` error. Fall back to ASCII `forall (I : Type), P` when quantifying over index types or sets.
+16. **Variable names hijacked by the standard library.** In lines like `It holds that`, `We need to show`, or `Define`, single-letter names often resolve to Stdlib globals rather than your local binder. Common traps: `f` hits `Rtopology.f` (a family), `N` hits `BinNums.N`, `I` hits `Logic.I`, `d` hits `Sequences.d`, `d1` hits `Ranalysis1.d1`, and `E1` hits `Exp_prop.E1` (which breaks rewrites with *"Cannot find a relation to rewrite"*). Rename your parameters to `f'`, `Nn`, `Idx`, `dlt`, `Ea1` to stay out of trouble.
+17. **Goal restatements after `Choose`.** After `Choose δ := ...`, a trailing bounded `∀` needs a fresh `We need to show that ∀ x ∈ ℝ, ...` before `Take x ∈ ℝ` will work.
+18. **Bounded binders produce subset types.** Writing `∀ ε > 0, P` binds `ε : subset_type ℝ (> 0)`. That breaks nat arithmetic on binders (`(n + p)%nat` becomes subset addition) and prevents feeding the variable to `mkposreal`. Write `∀ n : ℕ` / `Take n : ℕ`, or expand to `∀ ε : ℝ, ε > 0 → …`.
+19. **Scope leakage in lambdas.** Writing `partial_sums (fun k => 1 / (INR k + 1)) (n + p)%nat` fails with *"INR(k) has type ℝ while it is expected to have type ℕ"*. Use `(Nat.add n p)` instead.
+20. **Unsupported Ltac plumbing.** Expressions like `refine (conj _ _)` and goal selectors like `split; [|split]` fail to parse. Build conjunctions by proving each piece (`By … it holds that … as (Hk)`) and finishing with `We conclude that (A ∧ B)`. `eq_sym` also fails in term position; use the `symmetry.` tactic instead.
+21. **Search hangs on implicit arguments.** Calling `By … we conclude that …` with uninstantiated arguments can stall the prover for minutes. Pass arguments explicitly, or use `exact (lemma a b c H)`.
+22. **Interval notation breaks pairs.** In `R_scope`, `(a, b)` and `[a, b]` represent intervals. `Choose p := (x, r)` throws *"has type ℝ ⇨ Prop"*. Wrap pair creation in a helper: `Definition idx (c r : ℝ) : ball_index := pair c r.` Same for `ℝ * ℝ`, which gets parsed as multiplication; hide it with `Definition ball_index : Type := (ℝ * ℝ)%type.`
+23. **`Obtain` order with nested existentials.** `Obtain such a y` pulls from the most recent existential in the context list, not the one you wrote last in the script. For `∃ x, ∃ y, …`, restate the inner existential (`It holds that (∃ y : ℝ, …) as (Hy).`) before running the second `Obtain`.
+24. **Archimedean notation syntax.** `By the Archimedean property it holds that …` cannot take an `as (label)` suffix (it is notation for `Waterproof.Libs.Reals.ArchimedN.archimedN_exists`). Label it on the next line with `It holds that … as (H).` if you need a handle.
+25. **`Use` blocked during contradictions.** When the goal is "Derive a contradiction", `Use x := t in (H)` gets rejected. Restate the instance directly: `By (H) it holds that (<instance>) as (H1).`, proving the bounding condition first.
 
 ---
 
@@ -355,12 +355,15 @@ Qed.
 
 ### Course design tips
 
-1. **Pair examples with exercises.** Provide a completed `Lemma example_...`, then give an identical structure in `Lemma exercise_...` with an empty `<input-area>`.
-2. **Lock statements.** Keep `Lemma ... Proof.` and `Qed.` outside `<input-area>` so students cannot alter what they are proving.
-3. **Pace sentence introduction.** Follow the canonical sequence: `We conclude that` → `We need to show that` → `Take` → `Choose`/`Indeed` → `Assume` → inequality chains → `It suffices` → `It holds` → `Use` → `Obtain` → contradiction → `Either` → `∧`/`⇔` → induction → `Expand`.
-4. **Hide administrative setup.** Wrap `Waterproof Register Expand` commands and imports inside collapsible `<hint>` blocks.
-5. **Autocompletion.** Remind students that Ctrl+Space / Cmd+Space displays the available sentence templates.
-6. **Verify end-to-end.** Solve every input area before assigning the notebook. The concatenated file must compile cleanly with `coqc`.
+Pair every exercise with an example. Give a completed `Lemma example_...`, then an identically structured `Lemma exercise_...` with an empty `<input-area>`.
+
+Keep `Lemma ... Proof.` and `Qed.` outside the input area so students can't alter what they are proving, and wrap imports and `Waterproof Register Expand` commands in collapsible `<hint>` blocks to keep the administrative noise out of the way.
+
+Introduce sentences in a fixed order across the course: `We conclude that` → `We need to show that` → `Take` → `Choose`/`Indeed` → `Assume` → inequality chains → `It suffices` → `It holds` → `Use` → `Obtain` → contradiction → `Either` → `∧`/`⇔` → induction → `Expand`. Students who meet `Obtain` before `Take` tend to flounder.
+
+Remind students that Ctrl+Space (Cmd+Space) lists the available sentence templates.
+
+Solve every input area yourself before assigning the notebook. The concatenated file has to compile cleanly with `coqc`.
 
 ---
 
