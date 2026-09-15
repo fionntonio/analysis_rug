@@ -5,11 +5,12 @@
   Formalizes Abbott §2.6 (Cauchy criterion) and §2.7 (series, comparison test,
   absolute convergence, alternating series test, geometric series).
 
-  The Cauchy criterion for sequences ([convergent_is_cauchy],
+  Note that the Cauchy criterion for sequences ([convergent_is_cauchy],
   [cauchy_is_convergent]) and the underlying Cauchy-sequence machinery are
   developed in [Analysis.CauchySequences] (which re-exports
   [Analysis.Subsequences]) and reused here. *)
 
+(* begin hide *)
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Reals.PartSum.
 From Stdlib Require Import Reals.Rpower.
@@ -28,6 +29,8 @@ Open Scope subset_scope.
 
 Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
+
+(* end hide *)
 
 (** ** Series and partial sums *)
 
@@ -48,20 +51,28 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 Lemma series_convergent_terms_zero (a : ℕ → ℝ) (L : ℝ)
     (Hcv : partial_sums a ⟶ L) : a ⟶ 0.
 Proof.
-  We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - 0 | < ε.
+  We need to show that
+    ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - 0 | < ε.
   By convergent_is_cauchy it holds that partial_sums a is _Cauchy_ as (HpsC).
+  
   Take ε > 0.
   By HpsC it holds that ∃ N2 ∈ ℕ, ∀ n ≥ N2, ∀ m ≥ N2,
     | (partial_sums a) n - (partial_sums a) m | < ε.
+  
   Obtain such a N2.
   Choose N1 := S N2. { Indeed, N1 ∈ ℕ. }
   We need to show that ∀ n ≥ N1, |a(n) - 0| < ε.
-  We claim that ∀ n ∈ ℕ, (partial_sums a) (n + 1)%nat - (partial_sums a) n = a (n+1)%nat as (Hrec).
+  
+  We claim that ∀ n ∈ ℕ,
+    (partial_sums a) (n + 1)%nat - (partial_sums a) n = a (n+1)%nat as (Hrec).
   {
     We use induction on n.
-    + We first show the base case partial_sums a (0 + 1) - partial_sums a 0 = a((0 + 1)%nat).
+    + We first show the base case
+        partial_sums a (0 + 1) - partial_sums a 0 = a((0 + 1)%nat).
+      
       We need to show that (a 0%nat + a 1%nat)%R - a 0%nat = a 1%nat.
       We conclude that (a 0%nat + a 1%nat - a 0%nat) = a 1%nat.
+    
     + We now show the induction step.
       Take n ∈ ℕ.
       Assume that partial_sums a (n + 1)%nat - partial_sums a n = a((n + 1)%nat).
@@ -86,17 +97,21 @@ Proof.
   It holds that (n - 1)%nat ≥ N2.
 
   Use n := (n - 1)%nat in (Hrec). { Indeed, (n - 1)%nat ∈ ℕ. }
-  It holds that partial_sums a (n - 1 + 1) - partial_sums a (n - 1) = a((n - 1 + 1)%nat).
+  It holds that
+    partial_sums a (n - 1 + 1) - partial_sums a (n - 1) = a((n - 1 + 1)%nat).
   It holds that (n - 1 + 1)%nat = n.
-  It holds that partial_sums a n - partial_sums a (n - 1)%nat = a n.
+  It holds that
+    partial_sums a n - partial_sums a (n - 1)%nat = a n.
 
-  By Hrec it holds that partial_sums a n - partial_sums a (n - 1)%nat =  a n.
+  By Hrec it holds that
+    partial_sums a n - partial_sums a (n - 1)%nat =  a n.
   It holds that (&
       | a n - 0 |
       = | a n |
       = | partial_sums a n - partial_sums a (n - 1)%nat |
    ).
-  By HpsC it holds that | partial_sums a n - partial_sums a (n - 1)%nat |  < ε.
+  By HpsC it holds that
+    | partial_sums a n - partial_sums a (n - 1)%nat |  < ε.
   We conclude that | a n - 0 | < ε.
 Qed.
 
@@ -109,8 +124,17 @@ Lemma sprod_comm (a : ℕ → ℝ) (c : ℝ) :
   ∀ n ∈ ℕ, partial_sums (sprod a c) n = sprod (partial_sums a) c n.
 Proof.
       Take n ∈ ℕ.
-      By scal_sum it holds that c * sum_f_R0 a n = sum_f_R0 (fun i : nat => a i * c) n.
+      (** This looks a bit unreadable because I am relying on Rocq Stdlib:
+          
+          - [sum_f_R0 f n] := ∑_{i=0}^{n} f i
+          - [scal_sum f n] says that [c * sum_f_R0 f n = sum_f_R0 (fun i : nat => c * f i) n]
+
+          the latter is what we are trying to show with our own notation. *)
+      By scal_sum it holds that
+        c * sum_f_R0 a n = sum_f_R0 (fun i : nat => a i * c) n.
       It holds that ∀ i ∈ ℕ, c * a i = a i * c.
+      (** Here [sum_eq] says that if [∀ i, (i ≤ N)%nat ⇨ An(i) = Bn(i)]
+          then [partial_sums An N = partial_sums Bn N]*)
       By sum_eq it holds that
         sum_f_R0 (fun i : nat => c * a i) n = sum_f_R0 (fun i : nat => a i * c) n.
       It holds that sum_f_R0 (fun i : nat => c * a i) n = c * sum_f_R0 a n.
@@ -119,7 +143,8 @@ Qed.
 
 Definition ssum (a b : ℕ → ℝ) := fun n : ℕ ↦ a n + b n.
 
-(** If [∑ aₙ = A] and [∑ bₙ = B], then [∑ (c·aₙ) = c·A] and [∑ (aₙ + bₙ) = A + B]. *)
+(** If [∑ aₙ = A] and [∑ bₙ = B],
+    then [∑ (c·aₙ) = c·A] and [∑ (aₙ + bₙ) = A + B]. *)
 Lemma series_algebraic_limit (a b : ℕ → ℝ) (A B : ℝ) :
     (partial_sums a) ⟶ A →
     (partial_sums b) ⟶ B →
@@ -129,6 +154,11 @@ Lemma series_algebraic_limit (a b : ℕ → ℝ) (A B : ℝ) :
 Proof.
   Assume that (partial_sums a) ⟶ A as (Ha).
   Assume that (partial_sums b) ⟶ B as (Hb).
+
+  (** This is needed because our theorem includes both
+      the scalar multiplication and the sum of series.
+      In general it would be more convenient to state
+      and prove them separately. *)
   We show both statements.
   + We need to show that ∀ c ∈ ℝ, partial_sums (sprod a c) ⟶ (c * A).
     Take c ∈ ℝ.
@@ -139,7 +169,7 @@ Proof.
         | c * (partial_sums a) n - c * A | < ε.
       Take ε > 0.
 
-      (* Case c = 0 is trivial *)
+      (** Case c = 0 is trivial, though it takes some care to handle the formalities. *)
       Either c = 0 or c ≠ 0.
       - Case c = 0.
         Choose N1 := 0%nat. { Indeed, N1 ∈ ℕ. }
@@ -153,7 +183,7 @@ Proof.
         We conclude that |c * partial_sums a n - c * A| < ε.
 
       - Case c ≠ 0.
-        (* Use convergence of (partial_sums a) with ε/|c| *)
+        (** Use convergence of (partial_sums a) with ε/|c| *)
         It holds that |c| > 0.
         It holds that  / |c| > 0.
         It holds that ε / |c| > 0.
@@ -175,31 +205,35 @@ Proof.
     }
     It holds that sprod (partial_sums a) c ⟶ (c * A) as (HSc).
 
-    By sprod_comm it holds that ∀ n ∈ ℕ, partial_sums (sprod a c) n = sprod (partial_sums a) c n.
-    It holds that ∀ n ∈ ℕ, sprod (partial_sums a) c n = partial_sums (sprod a c) n as (HComm).
+    By sprod_comm it holds that
+      ∀ n ∈ ℕ, partial_sums (sprod a c) n = sprod (partial_sums a) c n.
+    It holds that
+      ∀ n ∈ ℕ, sprod (partial_sums a) c n = partial_sums (sprod a c) n as (HComm).
 
-    We claim that partial_sums (sprod(a, c)) ⟶ (c * A).
+    We claim that partial_sums (sprod a c) ⟶ (c * A) as (Hfin).
     {
+      (** I could not figure out how to formalize this step in Waterproof yet. *)
       apply eq_seq_conv_to_same_lim with
         (a := sprod (partial_sums a) c)
         (b := partial_sums (sprod a c))
         (l := c * A).
-      { exact HComm. }
-      exact HSc.
+      { By HComm we conclude that
+          ∀ n ∈ ℕ, sprod (partial_sums a) c n = partial_sums (sprod a c) n. }
+      By HSc we conclude that sprod (partial_sums a) c ⟶ (c * A).
     }
 
-    We conclude that partial_sums (sprod a c)  ⟶ (c * A).
+    By Hfin we conclude that partial_sums (sprod a c)  ⟶ (c * A).
 
   + We need to show that (partial_sums (ssum a b)) ⟶ (A + B).
 
     By convergence_plus it holds that
       (fun n : ℕ => (partial_sums a) n + (partial_sums b) n) ⟶ (A + B) as (Hsum).
-    We claim that ∀ n ∈ ℕ, partial_sums (ssum a b) n = (partial_sums a) n + (partial_sums b) n as (Hpointwise).
+    We claim that
+      ∀ n ∈ ℕ, partial_sums (ssum a b) n = (partial_sums a) n + (partial_sums b) n 
+      as (Hpointwise).
     {
-      Take n ∈ ℕ.
-      By plus_sum it holds that
+      By plus_sum we conclude that ∀ n ∈ ℕ,
         partial_sums (ssum a b) n = (partial_sums a) n + (partial_sums b) n.
-      We conclude that partial_sums (ssum a b) n = (partial_sums a) n + (partial_sums b) n.
     }
     It holds that ∀ n ∈ ℕ,
       (partial_sums a) n + (partial_sums b) n = ssum (partial_sums a) (partial_sums b) n
@@ -215,11 +249,10 @@ Proof.
         (b:= partial_sums (ssum a b))
         (l:= A + B).
       {
-        Take n ∈ ℕ.
-        By Hpt2 we conclude that
-          ssum(partial_sums a, partial_sums b, n) = partial_sums (ssum(a, b)) n.
+        By Hpt2 we conclude that ∀ n ∈ ℕ,
+          ssum (partial_sums a) (partial_sums b) n = partial_sums (ssum a b) n.
       }
-      We conclude that ssum(partial_sums a, partial_sums b) ⟶ (A + B).
+      We conclude that ssum (partial_sums a) (partial_sums b) ⟶ (A + B).
     }
     We conclude that (partial_sums (ssum a b)) ⟶ (A + B).
 Qed.
@@ -244,8 +277,7 @@ Proof.
     Assume that ∃ L ∈ ℝ, partial_sums a ⟶ L as (HpsConv).
     Obtain such a L.
     It holds that partial_sums a ⟶ L as (HpsConv2).
-    By (convergent_is_cauchy (partial_sums a) L HpsConv2)
-    it holds that
+    By convergent_is_cauchy it holds that
       (partial_sums a) is _Cauchy_ as (HpsCau).
     By HpsCau it holds that
       ∀ ε > 0,
@@ -355,8 +387,8 @@ Proof.
   By convergence_equivalence it holds that
     (partial_sums a ⟶ L ⇔ Un_cv (partial_sums a) L) as (Ha_iff).
   By Ha_iff it holds that partial_sums a ⟶ L as (Ha_cv).
-  Choose l1 := L. { Indeed, l1 ∈ ℝ. }
-  We conclude that partial_sums a ⟶ l1.
+  Choose l0 := L. { Indeed, l0 ∈ ℝ. }
+  We conclude that partial_sums a ⟶ l0.
 Qed.
 
 (** ** Absolute convergence (left as an exercise in the lecture) *)
@@ -447,8 +479,8 @@ Proof.
     (partial_sums (fun n ↦ ((-1) ^ n) * b n) ⟶ l
       ⇔ Un_cv (partial_sums (fun n ↦ ((-1) ^ n) * b n)) l) as (Hiff).
   By Hiff it holds that partial_sums (fun n ↦ ((-1) ^ n) * b n) ⟶ l as (Hcv).
-  Choose l1 := l. { Indeed, l1 ∈ ℝ. }
-  We conclude that partial_sums (fun n ↦ ((-1) ^ n) * b n) ⟶ l1.
+  Choose l0 := l. { Indeed, l0 ∈ ℝ. }
+  We conclude that partial_sums (fun n ↦ ((-1) ^ n) * b n) ⟶ l0.
 Qed.
 
 (** ** Geometric series (left as an exercise in the lecture) *)
@@ -469,28 +501,39 @@ Proof.
   unfold Pser, infinite_sum in Hgp.
   We claim that partial_sums (fun n ↦ r ^ n) ⟶ (/ (1 - r)) as (Hcv).
   {
-    We need to show that ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N,
+    We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1,
       R_dist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε.
     Take ε > 0.
     By Hgp it holds that ∃ M : ℕ, ∀ n ≥ M,
       Rdist (partial_sums (fun k : ℕ ↦ 1 * r ^ k) n) (/ (1 - r)) < ε as (HN).
     Obtain such a M.
-    Choose n1 := M. { Indeed, n1 ∈ ℕ. }
-    We need to show that ∀ n ≥ n1,
+    Choose N1 := M. { Indeed, N1 ∈ ℕ. }
+    We need to show that ∀ n ≥ N1,
       R_dist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε.
-    Take n ≥ n1.
-    We claim that partial_sums (fun k : ℕ ↦ 1 * r ^ k) n = partial_sums (fun k : ℕ ↦ r ^ k) n as (Heq).
+    Take n ≥ N1.
+    We claim that
+      partial_sums (fun k : ℕ ↦ 1 * r ^ k) n = partial_sums (fun k : ℕ ↦ r ^ k) n
+    as (Heq).
     {
       By sum_eq it suffices to show that ∀ i ≤ n, 1 * r ^ i = r ^ i.
       Take i ≤ n. We conclude that 1 * r ^ i = r ^ i.
     }
-    By HN it holds that Rdist (partial_sums (fun k : ℕ ↦ 1 * r ^ k) n) (/ (1 - r)) < ε.
-    It holds that Rdist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε as (Hfin).
-    We conclude that R_dist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε.
+    By HN it holds that
+      Rdist (partial_sums (fun k : ℕ ↦ 1 * r ^ k) n) (/ (1 - r)) < ε.
+    It holds that
+      Rdist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε as (Hfin).
+    We conclude that
+      R_dist (partial_sums (fun k : ℕ ↦ r ^ k) n) (/ (1 - r)) < ε.
   }
   It holds that 1 / (1 - r) = / (1 - r) as (HL).
-  We claim that partial_sums (fun n ↦ r ^ n) ⟶ (1 / (1 - r)) as (Hcv2).
-  { rewrite HL. We conclude that partial_sums (fun n ↦ r ^ n) ⟶ (/ (1 - r)). }
+  We claim that
+    partial_sums (fun n ↦ r ^ n) ⟶ (1 / (1 - r)) as (Hcv2).
+  {
+    It holds that partial_sums (fun n ↦ r ^ n) ⟶ (/ (1 - r)).
+    It holds that (1 / (1 - r)) = / (1 - r).
+    We conclude that partial_sums (fun n ↦ r ^ n) ⟶ (1 / (1 - r)).
+  }
+  
   Choose L := 1 / (1 - r).
   We show both statements.
   + We conclude that L = 1 / (1 - r).
@@ -510,11 +553,16 @@ Lemma telescoping_series (b : ℕ → ℝ) (L : ℝ) (Hb : b ⟶ L) :
                    ps ⟶ (b 0%nat - L).
 Proof.
   (* The telescoping identity: sₙ = b 0 - b (n+1). *)
-  We claim that ∀ n : ℕ, partial_sums (fun k ↦ b k - b (k + 1)%nat) n = b 0%nat - b (n + 1)%nat as (Htel).
+  We claim that ∀ n : ℕ,
+    partial_sums (fun k ↦ b k - b (k + 1)%nat) n = b 0%nat - b (n + 1)%nat as (Htel).
   {
     We use induction on n.
-    + We first show the base case partial_sums (fun k ↦ b k - b (k + 1)%nat) 0 = b 0%nat - b (0 + 1)%nat.
-      We conclude that (b 0%nat - b (0 + 1)%nat) = b 0%nat - b (0 + 1)%nat.
+    + We first show the base case
+        partial_sums (fun k ↦ b k - b (k + 1)%nat) 0 = b 0%nat - b (0 + 1)%nat.
+      (* It holds that partial_sums (fun k ↦ b k - b (k + 1)%nat) 0 = b 0%nat - b (0 + 1)%nat.
+      It holds that (b 0%nat - b (0 + 1)%nat) = b 0%nat - b (0 + 1)%nat. *) 
+      We conclude that partial_sums (fun k ↦ b k - b (k + 1)%nat) 0 = b(0%nat) - b((0 + 1)%nat).
+
     + We now show the induction step.
       Take n : ℕ.
       Assume that partial_sums (fun k ↦ b k - b (k + 1)%nat) n = b 0%nat - b (n + 1)%nat as (IH).
@@ -525,13 +573,14 @@ Proof.
       It holds that
         partial_sums (fun k ↦ b k - b (k + 1)%nat) (S n)
         = (b 0%nat - b (n + 1)%nat) + (b (S n) - b (S n + 1)%nat) as (Hstep).
+      It holds that partial_sums (fun k ↦ b k - b (k + 1)%nat) (S n) = b 0%nat - b (S n + 1)%nat.
       We conclude that
-        partial_sums (fun k ↦ b k - b (k + 1)%nat) (S n) = b 0%nat - b (S n + 1)%nat.
+        partial_sums (fun k ↦ b k - b (k + (0 + 1))%nat) (S n) = b 0%nat - b (S n + (0 + 1))%nat.
   }
   (* The shifted sequence n ↦ b (n+1) still converges to L. *)
   We claim that (fun n ↦ b (n + 1)%nat) ⟶ L as (Hshift).
   {
-    We need to show that ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N, | b (n + 1)%nat - L | < ε.
+    We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | b (n + 1)%nat - L | < ε.
     Take ε > 0.
     By Hb it holds that ∃ M ∈ ℕ, ∀ n ≥ M, | b n - L | < ε as (HN).
     Obtain such a M.
@@ -628,22 +677,29 @@ Proof.
     partial_sums (fun k => 1 / (INR k + 1) ^ 2) n ≤ 2 - 1 / (INR n + 1) as (Hbnd).
   {
     We use induction on n.
+
     + We first show the base case
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0 ≤ 2 - 1 / (INR 0 + 1).
-      It holds that INR 0%nat = 0 as (H0).
+      It holds that INR 0%nat = 0.
       We conclude that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0 ≤ 2 - 1 / (INR 0 + 1).
+  
     + We now show the induction step.
       Take n ∈ ℕ.
       Assume that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) n ≤ 2 - 1 / (INR n + 1) as (IH).
-      It holds that partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
+      
+      It holds that
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
         = partial_sums (fun k => 1 / (INR k + 1) ^ 2) n
-          + 1 / (INR (S n) + 1) ^ 2 as (Hstep).
+          + 1 / (INR (S n) + 1) ^ 2.
+      
       By S_INR it holds that INR (S n) = INR n + 1 as (HI).
-      rewrite HI in Hstep.
-      By Nat.add_1_r it holds that (n + 1)%nat = S n as (Hsn).
-      rewrite Hsn. rewrite HI.
+      It holds that
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
+        = partial_sums (fun k => 1 / (INR k + 1) ^ 2) n
+          + 1 / (INR n + 1 + 1) ^ 2.
+      rewrite Nat.add_1_r. rewrite HI.
       By pos_INR it holds that 0 ≤ INR n as (Hpos).
       It holds that 1 ≤ INR n + 1 as (Hge).
       By inv_sq_telescope it holds that
@@ -651,14 +707,17 @@ Proof.
       We conclude that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n) ≤ 2 - 1 / (INR n + 1 + 1).
   }
+
   (* Nonnegative terms, so the partial sums are nondecreasing. *)
   We claim that ∀ n ∈ ℕ, 0 ≤ 1 / (INR n + 1) ^ 2 as (Hnn).
   {
     Take n ∈ ℕ.
-    By pos_INR it holds that 0 ≤ INR n as (Hn).
-    It holds that 0 < (INR n + 1) ^ 2 as (Hsq).
-    We conclude that 0 ≤ 1 / (INR n + 1) ^ 2.
+    By pos_INR it holds that 0 ≤ INR n.
+    It holds that 0 < (INR n + 1) ^ 2.
+    It holds that 0 < / (INR n + 1) ^ 2.
+    By Rlt_le we conclude that 0 ≤ 1 / (INR n + 1) ^ 2.
   }
+
   By partial_sums_pos_incr it holds that
     Un_growing (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) as (Hgrow).
   (* [2] is an upper bound for the range of the partial sums. *)
@@ -686,8 +745,8 @@ Proof.
     (partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L
       ⇔ Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L) as (Hiff).
   By Hiff it holds that partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L as (Hcv).
-  Choose L1 := L.
-  We conclude that partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L1.
+  Choose L0 := L.
+  We conclude that partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L0.
 Qed.
 
 (** _The harmonic series [∑ 1/k] diverges_.
