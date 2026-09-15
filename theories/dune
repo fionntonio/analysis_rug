@@ -1,11 +1,11 @@
 ; Waterproof is installed in user-contrib and found automatically by coqc.
 ; We load its OCaml plugin explicitly to enable Waterproof vernacular commands.
-(coq.theory
+(rocq.theory
  (name RUG.Analysis)
  (package coq-analysis)
  (synopsis "Undergraduate real analysis formalized in Waterproof")
  (theories Stdlib Ltac2 Waterproof)
  (plugins coq-waterproof.plugin rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2)
- (coqdoc_flags :standard --utf8))
+ (rocqdoc_flags :standard --utf8))
 
 (include_subdirs qualified)
