@@ -183,15 +183,17 @@ Proof.
         We conclude that |c * partial_sums a n - c * A| < ε.
 
       - Case c ≠ 0.
-        (** Use convergence of (partial_sums a) with ε/|c| *)
+        (** Use convergence of [partial_sums a] with [ε/|c|] *)
         It holds that |c| > 0.
         It holds that  / |c| > 0.
         It holds that ε / |c| > 0.
         By Ha it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1,
           | (partial_sums a) n - A | < ε / |c|.
+        
         Obtain such an N1.
         Choose N2 := N1. { Indeed, N2 ∈ ℕ. }
         We need to show that ∀ n ≥ N2, |c * partial_sums a n - c * A| < ε.
+       
         Take n ≥ N2.
         It holds that
           | c * (partial_sums a) n - c * A | = |c| * | (partial_sums a) n - A |.
@@ -271,28 +273,33 @@ Lemma series_cauchy_criterion (a : ℕ → ℝ) :
        |partial_sums a n - partial_sums a m| < ε.
 Proof.
   We show both directions.
-  + We need to show that (∃ L ∈ ℝ, partial_sums a ⟶ L)
+
+  + We need to show that
+      (∃ L ∈ ℝ, partial_sums a ⟶ L)
       ⇨ ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
           |partial_sums a n - partial_sums a m| < ε.
+    
     Assume that ∃ L ∈ ℝ, partial_sums a ⟶ L as (HpsConv).
+    
     Obtain such a L.
     It holds that partial_sums a ⟶ L as (HpsConv2).
     By convergent_is_cauchy it holds that
       (partial_sums a) is _Cauchy_ as (HpsCau).
     By HpsCau it holds that
-      ∀ ε > 0,
-      ∃ N1 ∈ ℕ,
-      ∀ n ≥ N1,
-      ∀ m ≥ N1, |partial_sums a n - partial_sums a m| < ε
+      ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
+        |partial_sums a n - partial_sums a m| < ε
     as (HpsCauExp).
+    
     Take ε > 0.
     By HpsCauExp it holds that ∃ N1 ∈ ℕ,
-      ∀ n ≥ N1,
-      ∀ m ≥ N1, |partial_sums a n - partial_sums a m | < ε.
+      ∀ n ≥ N1, ∀ m ≥ N1, 
+        |partial_sums a n - partial_sums a m | < ε.
+    
     Obtain such a N1.
     Choose N2 := N1. { Indeed, N2 ∈ ℕ. }
     We need to show that ∀ n ≥ N2, ∀ m ≥ N2,
       |partial_sums a n - partial_sums a m| < ε.
+    
     Take n ≥ N2. Take m ≥ N2.
     We conclude that
       |partial_sums a n - partial_sums a m| < ε.
@@ -303,19 +310,25 @@ Proof.
       ⇨ ∃ L ∈ ℝ, partial_sums a ⟶ L.
     Assume that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
         |partial_sums a n - partial_sums a m| < ε as (HpsC).
+    
     We claim that partial_sums a is _Cauchy_.
     {
-      unfold is_cauchy.
+      We need to show that
+        ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
+          |partial_sums a n - partial_sums a m| < ε.
+      
       Take ε > 0.
       We need to show
         ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
           |partial_sums a n - partial_sums a m | < ε.
       By HpsC it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
         |partial_sums a n - partial_sums a m| < ε.
+      
       Obtain such a N1.
       Choose N2 := N1. { Indeed, N2 ∈ ℕ. }
       We need to show that ∀ n ≥ N1, ∀ m ≥ N1,
         |partial_sums a n - partial_sums a m| < ε.
+      
       Take n ≥ N2. Take m ≥ N2.
       We conclude that
         |partial_sums a n - partial_sums a m| < ε.
@@ -342,51 +355,66 @@ Lemma series_comparison_test (a b : ℕ → ℝ)
 Proof.
   Obtain such a l.
   It holds that partial_sums b ⟶ l as (Hbl).
-  (* Both partial-sum sequences are nondecreasing (nonnegative terms). *)
-  By partial_sums_pos_incr it holds that Un_growing (partial_sums a) as (Hgrow_a).
-  We claim that ∀ n ∈ ℕ, b n ≥ 0 as (Hb_nn).
+
+  (** Both partial-sum sequences are nondecreasing (nonnegative terms). 
+      
+      Here we use Rocq Stdlib jargon to avoid reinventing the wheel,
+      [Un_growing Un] means that for all n, [Un n <= Un (S n)]
+  *)
+  By partial_sums_pos_incr it holds that
+    Un_growing (partial_sums a).
+
+  We claim that ∀ n ∈ ℕ, b n ≥ 0.
   {
     Take n ∈ ℕ.
     It holds that 0 ≤ a n.
     It holds that a n ≤ b n.
     We conclude that b n ≥ 0.
   }
-  By partial_sums_pos_incr it holds that Un_growing (partial_sums b) as (Hgrow_b).
-  (* The partial sums of b are bounded above by their limit l. *)
+
+  By partial_sums_pos_incr it holds that Un_growing (partial_sums b).
+  
+  (** The partial sums of b are bounded above by their limit l. *)
   By convergence_equivalence it holds that
     (partial_sums b ⟶ l ⇔ Un_cv (partial_sums b) l) as (Hb_iff).
-  By Hb_iff it holds that Un_cv (partial_sums b) l as (Hb_cv).
-  By growing_ineq it holds that ∀ n : ℕ, partial_sums b n ≤ l as (Hb_le).
-  (* Hence the partial sums of a are bounded above by l as well. *)
+  By Hb_iff it holds that Un_cv (partial_sums b) l.
+  By growing_ineq it holds that
+    ∀ n : ℕ, partial_sums b n ≤ l as (Hb_le).
+  
+  (** Hence the partial sums of a are bounded above by l as well. *)
   We claim that ∀ n : ℕ, partial_sums a n ≤ l as (Ha_le).
   {
     Take n : ℕ.
-    We claim that ∀ m : ℕ, (m ≤ n)%nat ⇒ a m ≤ b m as (Hpre).
+    We claim that ∀ m : ℕ, (m ≤ n)%nat ⇒ a m ≤ b m.
     { Take m : ℕ. Assume that (m ≤ n)%nat. We conclude that a m ≤ b m. }
-    By sum_Rle it holds that partial_sums a n ≤ partial_sums b n as (Hstep).
+    By sum_Rle it holds that partial_sums a n ≤ partial_sums b n.
     By Hb_le it holds that partial_sums b n ≤ l.
     We conclude that partial_sums a n ≤ l.
   }
-  (* [l] is an upper bound for the range of [partial_sums a]. *)
-  We claim that bound (EUn (partial_sums a)) as (Hbound).
+  (** [l] is an upper bound for the range of [partial_sums a]. *)
+  We claim that bound (EUn (partial_sums a)).
   {
     We need to show that ∃ m : ℝ, ∀ x : ℝ, EUn (partial_sums a) x ⇒ x ≤ m.
     Choose m := l.
     Take x : ℝ.
     Assume that EUn (partial_sums a) x as (Hx).
     It holds that ∃ i : ℕ, x = partial_sums a i.
+
     Obtain such an i.
     It holds that x = partial_sums a i.
     By Ha_le it holds that partial_sums a i ≤ l.
     We conclude that x ≤ m.
   }
   (* Monotone convergence gives the limit. *)
-  By Un_cv_crit it holds that ∃ L : ℝ, Un_cv (partial_sums a) L as (Hex).
+  By Un_cv_crit it holds that
+    ∃ L : ℝ, Un_cv (partial_sums a) L.
+  
   Obtain such a L.
   It holds that Un_cv (partial_sums a) L as (HL).
   By convergence_equivalence it holds that
     (partial_sums a ⟶ L ⇔ Un_cv (partial_sums a) L) as (Ha_iff).
-  By Ha_iff it holds that partial_sums a ⟶ L as (Ha_cv).
+  By Ha_iff it holds that partial_sums a ⟶ L.
+  
   Choose l0 := L. { Indeed, l0 ∈ ℝ. }
   We conclude that partial_sums a ⟶ l0.
 Qed.
@@ -404,34 +432,40 @@ Lemma absolute_convergence_implies_convergence (a : ℕ → ℝ)
     (labs : ℝ) (Habs : partial_sums (fun n ↦ |a n|) ⟶ labs) :
     ∃ l ∈ ℝ, partial_sums a ⟶ l.
 Proof.
-  (* The series of absolute values satisfies the Cauchy criterion for series. *)
+  (** The series of absolute values satisfies the Cauchy criterion for series. *)
   By convergence_equivalence it holds that
-    (partial_sums (fun n ↦ |a n|) ⟶ labs ⇔ Un_cv (partial_sums (fun n ↦ |a n|)) labs) as (Habs_iff).
+    partial_sums (fun n ↦ |a n|) ⟶ labs ⇔ Un_cv (partial_sums (fun n ↦ |a n|)) labs
+  as (Habs_iff).
+
   By Habs_iff it holds that Un_cv (partial_sums (fun n ↦ |a n|)) labs as (Habs_cv).
   We claim that Cauchy_crit_series (fun n ↦ |a n|) as (Hcs_abs).
+  (** One can prove this in Rocq by doing
+      [apply cv_cauchy_1. exists labs. exact Habs_cv.]
+  *)
   {
-    (* TODO: raw Rocq — [cv_cauchy_1] consumes a [{l | Un_cv …}] sig, which has
-       no direct Waterproof phrasing. Revisit to Waterproof-ify. *)
-    apply cv_cauchy_1.
-    exists labs.
-    exact Habs_cv.
+    We need to show that
+      Cauchy_crit_series(｛ n: ℕ | |a(n)| ｝).
+    (** You can define intermediate variables to make the proofs more legible. *)
+    Define An := (fun n ↦ |a n|).
+    By Habs_cv it holds that
+      Un_cv (partial_sums An) labs.
+    By cv_cauchy_1 it holds that Cauchy_crit_series An.
+    We conclude that Cauchy_crit_series (fun n ↦ |a n|).
   }
-  (* By the triangle inequality the plain series is Cauchy as well. *)
-  By cauchy_abs it holds that Cauchy_crit_series a as (Hcs).
-  (* Completeness of ℝ turns the Cauchy criterion back into convergence. *)
-  We claim that ∃ l : ℝ, Un_cv (partial_sums a) l as (Hex).
+
+  We claim that ∃ l ∈ ℝ, (partial_sums a) ⟶ l.
   {
-    (* TODO: raw Rocq — [cv_cauchy_2] returns a [{l | Un_cv …}] sig that we
-       repackage as a plain existential. Revisit to Waterproof-ify. *)
-    destruct (cv_cauchy_2 a Hcs) as [l Hl].
-    exists l. exact Hl.
+    By cauchy_abs it holds that Cauchy_crit_series a as (Hcs).
+    It holds that Cauchy_crit (fun N => (partial_sums a) N).
+    By Cauchy_iff_CauchyCrit it holds that
+      (partial_sums a) is _Cauchy_ ↔ Cauchy_crit (partial_sums a) as (Hc_iff).
+    It holds that (partial_sums a) is _Cauchy_.
+    By cauchy_is_convergent it holds that
+      (partial_sums a) is _Cauchy_ ⇨ ∃ l ∈ ℝ, (partial_sums a) ⟶ l.
+    We conclude that ∃ l ∈ ℝ, (partial_sums a) ⟶ l.
   }
-  Obtain such a l.
-  It holds that Un_cv (partial_sums a) l as (Hl).
-  By convergence_equivalence it holds that
-    (partial_sums a ⟶ l ⇔ Un_cv (partial_sums a) l) as (Hiff).
-  By Hiff it holds that partial_sums a ⟶ l as (Hcv).
-  Choose l0 := l. { Indeed, l0 ∈ ℝ. }
+
+  Obtain such a l. Choose l0 := l. { Indeed, l0 ∈ ℝ. }
   We conclude that partial_sums a ⟶ l0.
 Qed.
 
@@ -457,7 +491,7 @@ Proof.
   {
     We need to show that ∀ n : ℕ, b (S n) ≤ b n.
     Take n : ℕ.
-    It holds that b (S n) = b (n + 1)%nat as (He).
+    It holds that b (S n) = b (n + 1)%nat.
     By Hdecr it holds that b (n + 1)%nat ≤ b n.
     We conclude that b (S n) ≤ b n.
   }
@@ -672,7 +706,7 @@ Qed.
 Lemma sum_one_over_k_sq_converges :
     ∃ L : ℝ, partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L.
 Proof.
-  (* The telescoping bound [Sₙ ≤ 2 - 1/(n+1)], by induction on [n]. *)
+  (** The telescoping bound [Sₙ ≤ 2 - 1/(n+1)], by induction on [n]. *)
   We claim that ∀ n ∈ ℕ,
     partial_sums (fun k => 1 / (INR k + 1) ^ 2) n ≤ 2 - 1 / (INR n + 1) as (Hbnd).
   {
@@ -681,29 +715,55 @@ Proof.
     + We first show the base case
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0 ≤ 2 - 1 / (INR 0 + 1).
       It holds that INR 0%nat = 0.
-      We conclude that
+
+      (** The proof completes also without explicitly computing LHS and RHS,
+          but it takes substantially longer. *)
+      It holds that (&
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0
+        = 1 / (INR 0 + 1) ^ 2
+        = 1
+      ).
+      It holds that partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0 = 1 as (LHS).
+      It holds that 2 - 1 / (INR 0 + 1) = 1 as (RHS).
+      
+      By LHS and RHS we conclude that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) 0 ≤ 2 - 1 / (INR 0 + 1).
   
     + We now show the induction step.
       Take n ∈ ℕ.
       Assume that
-        partial_sums (fun k => 1 / (INR k + 1) ^ 2) n ≤ 2 - 1 / (INR n + 1) as (IH).
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) n
+        ≤ 2 - 1 / (INR n + 1) as (IH).
+
+      We need to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (n + 1)
+          ≤ 2 - 1 / ((n + 1)%nat + 1).
+      rewrite Nat.add_1_r.
+      By Nat.add_1_r it suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (S(n))
+          ≤ 2 - 1 / (S(n) + 1).
+      
+      By S_INR it holds that INR (S n) = INR n + 1 as (HI).
+      By HI it suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (S(n))
+          ≤ 2 - 1 / (n + 1 + 1).
       
       It holds that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
         = partial_sums (fun k => 1 / (INR k + 1) ^ 2) n
           + 1 / (INR (S n) + 1) ^ 2.
       
-      By S_INR it holds that INR (S n) = INR n + 1 as (HI).
       It holds that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
         = partial_sums (fun k => 1 / (INR k + 1) ^ 2) n
           + 1 / (INR n + 1 + 1) ^ 2.
-      rewrite Nat.add_1_r. rewrite HI.
-      By pos_INR it holds that 0 ≤ INR n as (Hpos).
-      It holds that 1 ≤ INR n + 1 as (Hge).
+
+      By pos_INR it holds that 0 ≤ INR n.
+      It holds that 1 ≤ INR n + 1.
+
       By inv_sq_telescope it holds that
         1 / (INR n + 1 + 1) ^ 2 ≤ 1 / (INR n + 1) - 1 / (INR n + 1 + 1) as (Htel).
+      
       We conclude that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n) ≤ 2 - 1 / (INR n + 1 + 1).
   }
@@ -720,15 +780,19 @@ Proof.
 
   By partial_sums_pos_incr it holds that
     Un_growing (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) as (Hgrow).
-  (* [2] is an upper bound for the range of the partial sums. *)
-  We claim that bound (EUn (partial_sums (fun k => 1 / (INR k + 1) ^ 2))) as (Hbound).
+
+  (** [2] is an upper bound for the range of the partial sums. *)
+  We claim that
+    bound (EUn (partial_sums (fun k => 1 / (INR k + 1) ^ 2)))
+  as (Hbound).
   {
     We need to show that ∃ m : ℝ,
       ∀ x : ℝ, EUn (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) x ⇒ x ≤ m.
     Choose m := 2.
     Take x : ℝ.
     Assume that EUn (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) x as (Hx).
-    It holds that ∃ i : ℕ, x = partial_sums (fun k => 1 / (INR k + 1) ^ 2) i.
+    It holds that ∃ i : ℕ,
+      x = partial_sums (fun k => 1 / (INR k + 1) ^ 2) i.
     Obtain such an i.
     It holds that x = partial_sums (fun k => 1 / (INR k + 1) ^ 2) i.
     By Hbnd it holds that
@@ -737,14 +801,19 @@ Proof.
     It holds that 0 < 1 / (INR i + 1) as (Hinv).
     We conclude that x ≤ m.
   }
+
   By Un_cv_crit it holds that
-    ∃ L : ℝ, Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L as (Hex).
+    ∃ L : ℝ, Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L.
+  
   Obtain such a L.
-  It holds that Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L as (HL).
+  It holds that Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L.
+
   By convergence_equivalence it holds that
     (partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L
       ⇔ Un_cv (partial_sums (fun k => 1 / (INR k + 1) ^ 2)) L) as (Hiff).
-  By Hiff it holds that partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L as (Hcv).
+  By Hiff it holds that
+    partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L
+  as (Hcv).
   Choose L0 := L.
   We conclude that partial_sums (fun k => 1 / (INR k + 1) ^ 2) ⟶ L0.
 Qed.
@@ -781,82 +850,145 @@ Proof.
   We claim that ∀ n : ℕ, ∀ p : ℕ,
     partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add n p)
       - partial_sums (fun k => 1 / (INR k + 1)) n
-    ≥ INR p * (1 / (INR (n + p)%nat + 1)) as (Hblock).
+    ≥ INR p * (1 / (INR (n + p)%nat + 1))
+  as (Hblock).
   {
     Take n : ℕ.
     We use induction on p.
+
     + We first show the base case
         partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add n 0)
           - partial_sums (fun k => 1 / (INR k + 1)) n
         ≥ INR 0 * (1 / (INR (n + 0)%nat + 1)).
       It holds that (n + 0)%nat = n as (Hn0).
-      rewrite Hn0.
-      It holds that INR 0%nat = 0 as (Hi0).
+      It suffices to show 
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ n
+          - partial_sums｛ k : ℕ | 1 / (k + 1) ｝ n
+        ≥ 0%nat * (1 / (n + 1)).
+      
+      It holds that INR 0%nat = 0.
       We conclude that
         partial_sums (fun k => 1 / (INR k + 1)) n
           - partial_sums (fun k => 1 / (INR k + 1)) n
         ≥ INR 0 * (1 / (INR n + 1)).
+  
     + We now show the induction step.
       Take p : ℕ.
       Assume that
         partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add n p)
           - partial_sums (fun k => 1 / (INR k + 1)) n
         ≥ INR p * (1 / (INR (n + p)%nat + 1)) as (IH).
+
       It holds that (n + (p + 1))%nat = S (n + p)%nat as (Hidx).
-      rewrite Hidx.
-      It holds that partial_sums (fun k : ℕ => 1 / (INR k + 1)) (S (Nat.add n p))
-        = partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add n p)
-          + 1 / (INR (S (n + p)%nat) + 1) as (Hrec).
-      By S_INR it holds that INR (S (n + p)%nat) = INR (n + p)%nat + 1 as (HS).
-      rewrite HS in Hrec. rewrite HS.
-      By plus_INR it holds that INR (p + 1)%nat = INR p + INR 1%nat as (Hp1).
-      It holds that INR 1%nat = 1 as (H1).
-      It holds that INR (p + 1)%nat = INR p + 1 as (Hp1').
-      rewrite Hp1'.
-      By pos_INR it holds that 0 ≤ INR p as (Hpp).
-      By pos_INR it holds that 0 ≤ INR (n + p)%nat as (Hnp).
-      By inv_succ_decr it holds that
-        1 / (INR (n + p)%nat + 1 + 1) ≤ 1 / (INR (n + p)%nat + 1) as (Hdec).
-      We conclude that
+      It suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (S((n + p)%nat))
+          - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ n
+        ≥ (p + 1)%nat * (1 / (S((n + p)%nat) + 1)).
+
+      It holds that
         partial_sums (fun k : ℕ => 1 / (INR k + 1)) (S (Nat.add n p))
-          - partial_sums (fun k => 1 / (INR k + 1)) n
-        ≥ (INR p + 1) * (1 / (INR (n + p)%nat + 1 + 1)).
+        = partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add n p)
+          + 1 / (INR (S (n + p)%nat) + 1).
+      
+      By S_INR it holds that
+        INR (S (n + p)%nat) = INR (n + p)%nat + 1 
+      as (HS).
+      By HS it suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (S((n + p)%nat))
+          - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ n
+        ≥ (p + 1)%nat * (1 / ((n + p)%nat + 1 + 1)).
+      By HS it holds that 
+          partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (S((n + p)%nat))
+          = partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (n + p) + 1 / (S((n + p)%nat) + 1)
+      as (Hrec).
+      
+      By plus_INR it holds that
+        INR (p + 1)%nat = INR p + INR 1%nat.
+      It holds that INR 1%nat = 1.
+      It holds that INR (p + 1)%nat = INR p + 1 as (Hp1).
+      By Hp1 it suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (S((n + p)%nat))
+          - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ n
+        ≥ (p + 1) * (1 / ((n + p)%nat + 1 + 1)).
+
+      By Hrec it suffices to show that
+        partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (n + p)
+          - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ n
+          + 1 / (S((n + p)%nat) + 1)
+        ≥ (p + 1) * (1 / ((n + p)%nat + 1 + 1)).
+      
+      By IH it suffices to show that
+        p * (1 / ((n + p)%nat + 1))
+          + 1 / (S((n + p)%nat) + 1)
+        ≥ (p + 1) * (1 / ((n + p)%nat + 1 + 1)).
+
+      By pos_INR it holds that 0 ≤ INR p.
+      By pos_INR it holds that 0 ≤ INR (n + p)%nat.
+      By inv_succ_decr it holds that
+        1 / ((n + p)%nat + 1 + 1) ≤ 1 / ((n + p)%nat + 1)
+      as (Hdec).
+      By Hdec it holds that
+        1 / ((n + p)%nat + 1) ≥ 1 / ((n + p)%nat + 1 + 1).
+
+      By Rmult_plus_distr_r it holds that
+        p * (1 / (S((n + p)%nat) + 1))
+          + 1 / (S((n + p)%nat) + 1)
+        = (p + 1) * (1 / (S((n + p)%nat) + 1)).
+      
+      It holds that
+        p * (1 / ((n + p)%nat + 1))
+          + 1 / (S((n + p)%nat) + 1)
+        ≥ p * (1 / (S((n + p)%nat) + 1))
+          + 1 / (S((n + p)%nat) + 1).
+
+      We conclude that
+        p * (1 / ((n + p)%nat + 1)) +
+          1 / (S((n + p)%nat) + 1)
+        ≥ (p + 1) * (1 / ((n + p)%nat + 1 + 1)).
   }
-  (* If the series converged its partial sums would be Cauchy, contradicting
+
+  (** If the series converged its partial sums would be Cauchy, contradicting
      the fact that the block from [N] to [2N+1] has length ≥ 1/2. *)
-  Assume that ∃ L : ℝ, partial_sums (fun k => 1 / (INR k + 1)) ⟶ L as (Hcv).
+  Assume that ∃ L : ℝ, partial_sums (fun k => 1 / (INR k + 1)) ⟶ L.
   Obtain such an L.
+
   By convergent_is_cauchy it holds that
     partial_sums (fun k => 1 / (INR k + 1)) is _Cauchy_ as (HC).
   It holds that 1 / 2 > 0 as (Hhalf).
   By HC it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
     | partial_sums (fun k => 1 / (INR k + 1)) n
       - partial_sums (fun k => 1 / (INR k + 1)) m | < 1 / 2 as (HCa).
+
   Obtain such a N1.
   By Hblock it holds that
     partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add N1 (Nat.add N1 1))
       - partial_sums (fun k => 1 / (INR k + 1)) N1
-    ≥ INR (N1 + 1)%nat * (1 / (INR (N1 + (N1 + 1))%nat + 1)) as (Hb).
-  By pos_INR it holds that 0 ≤ INR N1 as (HN0).
-  By plus_INR it holds that INR (N1 + 1)%nat = INR N1 + INR 1%nat as (E1).
-  It holds that INR 1%nat = 1 as (E2).
+    ≥ INR (N1 + 1)%nat * (1 / (INR (N1 + (N1 + 1))%nat + 1)).
+  
   By plus_INR it holds that
-    INR (N1 + (N1 + 1))%nat = INR N1 + INR (N1 + 1)%nat as (E3).
-  It holds that INR (N1 + 1)%nat = INR N1 + 1 as (E1').
-  It holds that INR (N1 + (N1 + 1))%nat = 2 * INR N1 + 1 as (E5).
-  rewrite E5 in Hb. rewrite E1' in Hb.
+    INR (N1 + (N1 + 1))%nat = INR N1 + INR (N1 + 1)%nat.
+  It holds that INR (N1 + 1)%nat = INR N1 + 1 as (HS1).
+  It holds that INR (N1 + (N1 + 1))%nat = 2 * INR N1 + 1 as (Hd).
+  
+  By Hd and HS1 it holds that
+    partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (N1 + (N1 + 1))
+      - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ N1
+    ≥ (N1 + 1) * (1 / (2 * N1 + 1 + 1)) as (Hb).
+
   By harmonic_block_value it holds that
-    (INR N1 + 1) * (1 / (2 * INR N1 + 1 + 1)) = 1 / 2 as (E4).
-  rewrite E4 in Hb.
-  It holds that (N1 + (N1 + 1))%nat ≥ N1 as (Hge1).
+    (INR N1 + 1) * (1 / (2 * INR N1 + 1 + 1)) = 1 / 2 as (H12).
+  
+  By H12 it holds that
+    partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ (N1 + (N1 + 1))
+      - partial_sums ｛ k : ℕ | 1 / (k + 1) ｝ N1
+    ≥ 1 / 2.
+  
+  It holds that (N1 + (N1 + 1))%nat ≥ N1.
+  
   By HCa it holds that
     | partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add N1 (Nat.add N1 1))
-      - partial_sums (fun k => 1 / (INR k + 1)) N1 | < 1 / 2 as (Hlt).
-  By Rle_abs it holds that
-    partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add N1 (Nat.add N1 1))
-      - partial_sums (fun k => 1 / (INR k + 1)) N1
-    ≤ | partial_sums (fun k : ℕ => 1 / (INR k + 1)) (Nat.add N1 (Nat.add N1 1))
-      - partial_sums (fun k => 1 / (INR k + 1)) N1 | as (Habs).
+      - partial_sums (fun k => 1 / (INR k + 1)) N1 | < 1 / 2.
+
   Contradiction.
 Qed.
 

@@ -22,6 +22,7 @@ Open Scope subset_scope.
 Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
+Set Warnings "-non-reference-hint-using".
 (* end hide *)
 
 (** ** Some helpful lemmas
@@ -100,6 +101,7 @@ Proof.
 
     By le_succ_cases it holds that n = S N1 ∨ n ≤ N1.
     Either n = S N1 or n ≤ N1.
+
     * Case n = S N1.
       It holds that (&
         |a(n)|
@@ -109,6 +111,7 @@ Proof.
       ).
       It holds that partial_max(a, S N1) = partial_max(a, (N1 + 1)%nat).
       We conclude that |a(n)| ≤ partial_max(a, (N1 + 1)%nat).
+
     * Case n ≤ N1.
       By IHN1 it holds that |a(n)| ≤ partial_max(a, N1).
       It holds that (&
@@ -126,7 +129,7 @@ Qed.
     [∀ ε > 0, ∃ N, ∀ n ≥ N, |aₙ - a| < ε].
     We write [aₙ → a] or [a = lim_{n→∞} aₙ].
 
-    In Waterproof, [a_n ⟶ a] is equivalent to [Un_cv a_n a]. *)
+    In Waterproof, [aₙ ⟶ a] is equivalent to [Un_cv aₙ a]. *)
 
 (** ** Constant and harmonic sequences *)
 
@@ -137,7 +140,7 @@ Definition constant_seq (c : ℝ) := fun (n : ℕ) => c.
 Lemma constant_seq_converges (c : ℝ) : (fun _ : ℕ => c) ⟶ c.
 Proof.
   (** This is in Waterproof already, so we could just do
-     By lim_const_seq we conclude that (fun _ : ℕ => c) ⟶ c.*)
+     [By lim_const_seq we conclude that (fun _ : ℕ => c) ⟶ c.]*)
   Define s := constant_seq c.
   We need to show
     ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜s(n) - c｜ < ε.
@@ -160,7 +163,7 @@ Definition harmonic := fun (n : ℕ) => 1 / (n + 1).
 Lemma harmonic_to_0 : (fun n : ℕ => Rdiv 1 (INR n + 1)) ⟶ 0.
 Proof.
   (** This is in Waterproof already, we could prove it with
-      By lim_d_0 we conclude that (fun n : ℕ => Rdiv 1 (INR n + 1)) ⟶ 0.
+      [By lim_d_0 we conclude that (fun n : ℕ => Rdiv 1 (INR n + 1)) ⟶ 0.]
       The proof below is an adaptation of the proof in Waterproof. *)
   We need to show
       ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜harmonic(n) - 0｜ < ε.
@@ -173,7 +176,7 @@ Proof.
   We need to show that Rabs (1 / (n + 1) - 0) < ε.
   It suffices to show that -ε < 1 / (n + 1) - 0 < ε.
   We show both -ε < 1 / (n + 1) - 0 and 1 / (n + 1) - 0 < ε.
-  - It holds that 0 < n + 1. (* n + 1 > 0 is difficult?*)
+  - It holds that 0 < n + 1. (* n + 1 > 0 is difficult? *)
     We conclude that (&
       -ε < 0 < / (n + 1) = 1 / (n + 1) - 0
     ).
@@ -308,7 +311,7 @@ Proof.
 
   (** Some algebraic operation need to be aided a bit,
       for instance, here we need first to show that
-      division by 2 * Ma and 2 * | l | is positive. *)
+      division by [2 * Ma] and [2 * | l |] is positive. *)
   It holds that / (2 * Ma) > 0.
   It holds that / (2 * (| l | + 1)) > 0.
   It holds that ε / (2 * Ma) > 0. It holds that ε / (2 * (| l | + 1)) > 0.
@@ -618,7 +621,7 @@ Proof.
   It holds that (/ b n - / l) * (b n * l) = l - b n as (Hfield).
 
   We claim that | / b n - / l | * (| b n | * | l |) = | b n - l | as (Hmul).
-  { 
+  {
     By Rabs_mult it holds that (| b n | * | l |) = | b n * l |.
     It holds that
       |/ b(n) - / l| * (|b(n)| * |l|) = |/ b(n) - / l| * |b(n) * l|.
@@ -665,7 +668,7 @@ Lemma limit_unique (a : ℕ → ℝ) (L1 L2 : ℝ) :
 Proof.
   Assume that a ⟶ L1.
   Assume that a ⟶ L2.
-  
+
   We argue by contradiction.
 
   Assume that L1 ≠ L2.
@@ -675,17 +678,17 @@ Proof.
   Since (| L1 - L2 | / 2 > 0) it holds that
     (∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - L1 | < | L1 - L2 | / 2) as (HA).
   Obtain such a N1.
-  
+
   Since (| L1 - L2 | / 2 > 0) it holds that
     (∃ N2 ∈ ℕ, ∀ n ≥ N2, | a n - L2 | < | L1 - L2 | / 2) as (HB).
   Obtain such a N2.
-  
+
   Define n := max N1 N2.
-  
+
   It holds that n ≥ N1. It holds that n ≥ N2.
   By HA it holds that | a n - L1 | < | L1 - L2 | / 2.
   By HB it holds that | a n - L2 | < | L1 - L2 | / 2.
-  
+
   By Rabs_triang it holds that
     | L1 - L2 | ≤ | L1 - a n | + | a n - L2 |.
   It holds that | L1 - a n | = | a n - L1 |.
@@ -704,14 +707,14 @@ Qed.
     contradiction. *)
 Lemma pm_1_diverges : ¬ (∃ L ∈ ℝ, (fun n => (-1) ^ n) ⟶ L).
 Proof.
-  (* Due to ¬ we are already in a contradiction-like setting *)
+  (** Due to ¬ we are already in a contradiction-like setting *)
   Assume that ∃ L ∈ ℝ, (fun n ↦ (-1)^n) ⟶ L as (H).
   Obtain such an L.
   It holds that (1 > 0).
   By H it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, | (-1)^n - L | < 1 as (HN).
   Obtain such an N1.
 
-  (* Even case: n = 2*N1 *)
+  (** Even case: [n = 2*N1] *)
   It holds that (2 * N1)%nat ≥ N1.
   By HN it holds that (| (-1)^(2 * N1) - L | < 1).
   By pow_1_even it holds that ((-1)^(2 * N1) = 1).
@@ -721,10 +724,10 @@ Proof.
   - It holds that (1 - L < 1).
   - It holds that (-1 < 1 - L).
 
-  (* Odd case: n = 2*N1+1) *)
+  (** Odd case: [n = 2*N1+1] *)
   It holds that (S (2 * N1)%nat ≥ N1).
   By HN it holds that (| (-1)^(S(2 * N1)%nat) - L | < 1).
-  (* To remove the warning above you can instead do this: *)
+  (** Without the following line it gets very slow *)
   By pow_1_odd it holds that ((-1)^(S (2 * N1)%nat) = - 1).
   It holds that (| -1 - L | < 1).
 
@@ -732,7 +735,7 @@ Proof.
   - It holds that (-1 - L < 1).
   - It holds that (-1 < -1 - L).
 
-  (* Contradiction: 1 - L < 1  ⇨  L > 0   and   -1 < -1 - L  ⇨  L < 0 *)
+  (** Contradiction: [1 - L < 1  ⇨  L > 0] and [-1 < -1 - L  ⇨  L < 0] *)
   Since (1 - L < 1) ∧ (-1 < -1 - L) it holds that
     (0 < L ∧ L < 0).
   Contradiction.

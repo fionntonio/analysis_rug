@@ -64,7 +64,7 @@ Lemma cauchy_is_convergent (a : ℕ → ℝ) :
 Proof.
   Assume that a is _Cauchy_.
   It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε as (HC).
-  By cauchy_is_bounded a it holds that a is bounded.
+  By cauchy_is_bounded it holds that a is bounded.
   By is_bounded_equivalence it holds that (a is bounded ⇔ is_bounded_equivalent a) as (Hequiv).
   By Hequiv it holds that ∃ M > 0, ∀ n ∈ ℕ, | a n | ≤ M as (HB).
   Obtain such a M.
@@ -133,8 +133,10 @@ Proof.
 
   It holds that (K ≤ N2)%nat.
   It holds that (K ≤ Nat.max K N1)%nat.
-  It holds that (N1 ≤ N2)%nat.
-  It holds that (N1 ≤ Nat.max K N1)%nat.
+  It holds that (N1 ≤ N2)%nat as (HleN1N2).
+  (** These extra two lines help to speed up the proof substantially *)
+  By HleN1N2 it holds that (N1 ≤ Nat.max K N1)%nat.
+  By index_seq_grows_0 it holds that (phi N2 ≥ N2)%nat.
   It holds that (phi N2 ≥ N1)%nat.
 
   Take n ≥ N2.
@@ -153,4 +155,50 @@ Proof.
     ≤ |a n - a (phi N2)| + |a (phi N2) - L|
     < ε/2 + ε/2 = ε
   ).
+Qed.
+
+(** This is a convenient helper to be able to use the
+    Cauchy criterion also from Rocq standard library. *)
+Lemma Cauchy_iff_CauchyCrit (a : ℕ → ℝ) :
+    a is _Cauchy_ ↔ Cauchy_crit a.
+Proof.
+  split.
+  - Assume that a is _Cauchy_ as (Hc).
+    It holds that ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N, ∀ m ≥ N, |a n - a m| < ε.
+    We need to show that forall eps:R,
+      eps > 0 ->
+      exists N1 : nat,
+        (forall n m:nat,
+          (n >= N1)%nat -> (m >= N1)%nat 
+          -> Rdist (a n) (a m) < eps).
+    Take eps > 0.
+    By Hc it holds that ∃ N1 ∈ ℕ,
+      ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < eps.
+    Obtain such an N1. Choose (N1).
+    We need to show that 
+        forall n m:nat,
+          (n >= N1)%nat -> (m >= N1)%nat -> Rdist (a n) (a m) < eps.
+    Take n : nat. Take m : nat.
+    Assume that (n >= N1)%nat and (m >= N1)%nat.
+    By Hc we conclude that Rdist (a n) (a m) < eps.
+    
+  - Assume that Cauchy_crit a as (Hcc).
+    It holds that forall eps:R,
+      eps > 0 ->
+      exists N1 : nat,
+        (forall n m:nat,
+          (n >= N1)%nat -> (m >= N1)%nat 
+          -> Rdist (a n) (a m) < eps).
+    We need to show that a is _Cauchy_.
+    We need to show that
+      ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N, ∀ m ≥ N, |a n - a m| < ε.
+    Take ε > 0.
+    By Hcc it holds that exists N1 : nat,
+        (forall n m:nat,
+          (n >= N1)%nat -> (m >= N1)%nat 
+          -> Rdist (a n) (a m) < ε).
+    Obtain such an N1. Choose (N1). { Indeed, N1 ∈ ℕ. }
+    We need to show that ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε.
+    Take n ≥ N1. Take m ≥ N1.
+    By Hcc we conclude that |a n - a m| < ε.
 Qed.
