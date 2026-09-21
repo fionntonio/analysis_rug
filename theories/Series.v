@@ -647,8 +647,11 @@ Proof.
       (a := fun m ↦ constant_sequence (b 0%nat) m - b (m + 1)%nat)
       (b := ps)
       (l := b 0%nat - L).
-    { exact Heqseq. }
-    exact Hdiff.
+    { By Heqseq we conclude that ∀ n ∈ ℕ,
+        constant_sequence(b(0%nat), n) -b((n + 1)%nat) = ps(n). }
+    By Hdiff we conclude that  
+      (fun m ↦ constant_sequence (b 0%nat) m - b (m + 1)%nat)
+      ⟶ (b 0%nat - L).
 Qed.
 
 (** ** The nth-term test for divergence *)
