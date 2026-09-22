@@ -401,8 +401,24 @@ Qed.
 Lemma abs_le_iff (x a : ℝ) :
     |x| ≤ a ⇔ (- a ≤ x ∧ x ≤ a).
 Proof.
-  Admitted.
+  We show both directions. 
+  ++ We need to show that (|x| ≤ a ⇨ - a <= x <= a). 
+     Assume that (|x| ≤ a).  
+       By abs_eq_max it holds that (Rmax x (-x) = |x|).
+       It holds that (Rmax x (-x) <= a). 
+       It holds that (x <= a). 
+       It holds that (-x <= a). 
+       It holds that (x >= -a). 
+       We conclude that (- a <= x <= a). 
+  
+  ++ We need to show that (- a <= x <= a ⇨ |x| ≤ a). 
+   Assume that (- a <= x <= a). 
+     It holds that (x >= -a). 
+     It holds that (Rmax x (-x) <= a). 
+     By abs_eq_max it holds that (|x| ≤ a).
+     We conclude that (|x| ≤ a).
 
+  Qed.
 (** ** Density of the rationals *)
 
 (** Density of the rationals: between any two reals [lo < hi] there is a rational
