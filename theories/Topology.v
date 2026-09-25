@@ -266,7 +266,7 @@ Qed.
     [0 < |aₙ - x| < 1/n], so [aₙ → x]. (⇐) given such a sequence and [ε > 0],
     convergence provides a term within [ε] of [x] and distinct from it. *)
 Lemma limit_point_characterization (A : ℝ → Prop) (x : ℝ) :
-    (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) ⇔
+    (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) ⇔
     (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x).
 Proof.
   (* Admitted: the (⇒) direction picks, for each n, a point aₙ ∈ A with
@@ -298,56 +298,56 @@ Proof.
     contradicting that [x] is a limit point. *)
 Lemma closed_iff_contains_limit_points (A : ℝ → Prop) :
     A is _closed_ ⇔
-    (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) → A x).
+    (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x).
 Proof.
   We show both directions.
   - We need to show that
       (A is _closed_) ⇨
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) → A x).
+      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x).
     Assume that (A is _closed_) as (Hcl).
     Take x : ℝ.
-    Assume that (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) as (Hlp).
+    Assume that (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) as (Hlp).
     We argue by contradiction.
     Assume that ¬ A x as (Hnx).
     It holds that x ∈ (ℝ\A) as (HxC).
     By Hcl it holds that is_interior_point x (ℝ\A) as (Hint).
     It holds that (∃ ε > 0, ∀ z ∈ (open_ball x ε), z ∈ (ℝ\A)) as (Hint').
     Obtain such a ε.
-    By Hlp it holds that (∃ y ∈ A, 0 < Rabs (y - x) < ε) as (Hy).
-    Obtain such a y. It holds that y ∈ A ∧ 0 < Rabs (y - x) < ε as (Hy').
-    It holds that y ∈ A as (HyA). It holds that 0 < Rabs (y - x) < ε as (Hyb).
-    It holds that Rabs (y - x) < ε as (Hylt).
+    By Hlp it holds that (∃ y ∈ A, 0 < | y - x | < ε) as (Hy).
+    Obtain such a y. It holds that y ∈ A ∧ 0 < | y - x | < ε as (Hy').
+    It holds that y ∈ A as (HyA). It holds that 0 < | y - x | < ε as (Hyb).
+    It holds that | y - x | < ε as (Hylt).
     It holds that y ∈ (open_ball x ε) as (Hyball).
     By Hint' it holds that y ∈ (ℝ\A) as (HyC).
     It holds that ¬ A y as (HnyA).
     Contradiction.
   - We need to show that
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) → A x) ⇨
+      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x) ⇨
       (A is _closed_).
     Assume that
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) → A x) as (Hlp).
+      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x) as (Hlp).
     We need to show that ∀ a ∈ (ℝ\A), is_interior_point a (ℝ\A).
     Take a ∈ (ℝ\A).
     It holds that ¬ A a as (Hna).
-    We claim that ¬ (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - a) < ε) as (Hnlp).
+    We claim that ¬ (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hnlp).
     { We argue by contradiction.
-      Assume that ¬ ¬ (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - a) < ε) as (Hnn).
-      It holds that (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - a) < ε) as (Hlpa).
+      Assume that ¬ ¬ (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hnn).
+      It holds that (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hlpa).
       By Hlp it holds that A a as (HAa).
       Contradiction. }
     By not_all_ex_not it holds that
-      (∃ ε, ¬ (ε > 0 → (∃ y ∈ A, 0 < Rabs (y - a) < ε))) as (Hex).
+      (∃ ε, ¬ (ε > 0 → (∃ y ∈ A, 0 < | y - a | < ε))) as (Hex).
     Obtain such a ε.
     By imply_to_and it holds that
-      (ε > 0 ∧ ¬ (∃ y ∈ A, 0 < Rabs (y - a) < ε)) as (Hand).
+      (ε > 0 ∧ ¬ (∃ y ∈ A, 0 < | y - a | < ε)) as (Hand).
     It holds that ε > 0 as (Heps).
-    It holds that ¬ (∃ y ∈ A, 0 < Rabs (y - a) < ε) as (Hno).
+    It holds that ¬ (∃ y ∈ A, 0 < | y - a | < ε) as (Hno).
     We need to show that (∃ r > 0, ∀ x ∈ (open_ball a r), x ∈ (ℝ\A)).
     Choose r := ε.
     + Indeed, ε > 0.
     + We need to show that ∀ x ∈ (open_ball a r), x ∈ (ℝ\A).
       Take x ∈ (open_ball a r).
-      It holds that Rabs (x - a) < r as (Hxa).
+      It holds that | x - a | < r as (Hxa).
       We argue by contradiction.
       Assume that ¬ (x ∈ (ℝ\A)) as (HxnC).
       It holds that ¬ ¬ A x as (Hnn).
@@ -355,12 +355,12 @@ Proof.
       It holds that x ∈ A as (HxA).
       It holds that x ≠ a as (Hxne).
       It holds that x - a ≠ 0 as (Hsub).
-      By Rabs_no_R0 it holds that Rabs (x - a) ≠ 0 as (Hnz).
-      It holds that 0 < Rabs (x - a) as (Hpos).
-      We claim that (∃ y ∈ A, 0 < Rabs (y - a) < ε) as (Hyes).
+      By Rabs_no_R0 it holds that | x - a | ≠ 0 as (Hnz).
+      It holds that 0 < | x - a | as (Hpos).
+      We claim that (∃ y ∈ A, 0 < | y - a | < ε) as (Hyes).
       { Choose y := x.
         - Indeed, x ∈ A.
-        - We conclude that 0 < Rabs (x - a) < ε. }
+        - We conclude that 0 < | x - a | < ε. }
       Contradiction.
 Qed.
 
@@ -369,12 +369,12 @@ Qed.
 (** [x] is a *limit point* of [A] if every neighbourhood of [x] contains a
     point of [A] distinct from [x]. *)
 Definition is_limit_point (A : ℝ → Prop) (x : ℝ) : Prop :=
-    ∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε.
+    ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
 
 (** A point [x ∈ A] is *isolated* in [A] if some neighbourhood of [x] meets [A]
     only at [x] itself — equivalently, [x ∈ A] is not a limit point of [A]. *)
 Definition is_isolated_point (A : ℝ → Prop) (x : ℝ) : Prop :=
-    A x ∧ ∃ ε > 0, ∀ y ∈ A, Rabs (y - x) < ε → y = x.
+    A x ∧ ∃ ε > 0, ∀ y ∈ A, | y - x | < ε → y = x.
 
 (** ** Closure *)
 
@@ -391,44 +391,44 @@ Definition closure (A : ℝ → Prop) : ℝ → Prop :=
     Conversely, if every ball meets [A] then either [x ∈ A] or [x] is a limit
     point of [A]. *)
 Lemma closure_characterization (A : ℝ → Prop) (x : ℝ) :
-    closure A x ⇔ (∀ ε > 0, ∃ y ∈ A, Rabs (y - x) < ε).
+    closure A x ⇔ (∀ ε > 0, ∃ y ∈ A, | y - x | < ε).
 Proof.
   We show both directions.
   - We need to show that
-      (A x ∨ is_limit_point A x) ⇨ (∀ ε > 0, ∃ y ∈ A, Rabs (y - x) < ε).
+      (A x ∨ is_limit_point A x) ⇨ (∀ ε > 0, ∃ y ∈ A, | y - x | < ε).
     Assume that (A x ∨ is_limit_point A x) as (Hcl').
     Take ε > 0.
     Either (A x) or (is_limit_point A x).
     + Case (A x).
       Choose y := x.
       * Indeed, x ∈ A.
-      * We conclude that Rabs (x - x) < ε.
+      * We conclude that | x - x | < ε.
     + Case (is_limit_point A x).
-      By H it holds that (∃ y ∈ A, 0 < Rabs (y - x) < ε) as (Hy).
-      Obtain such a y. It holds that y ∈ A ∧ 0 < Rabs (y - x) < ε as (Hy').
-      It holds that y ∈ A as (HyA). It holds that 0 < Rabs (y - x) < ε as (Hyb).
+      By H it holds that (∃ y ∈ A, 0 < | y - x | < ε) as (Hy).
+      Obtain such a y. It holds that y ∈ A ∧ 0 < | y - x | < ε as (Hy').
+      It holds that y ∈ A as (HyA). It holds that 0 < | y - x | < ε as (Hyb).
       Choose y0 := y.
       * Indeed, y ∈ A.
-      * We conclude that Rabs (y - x) < ε.
+      * We conclude that | y - x | < ε.
   - We need to show that
-      (∀ ε > 0, ∃ y ∈ A, Rabs (y - x) < ε) ⇨ (A x ∨ is_limit_point A x).
-    Assume that (∀ ε > 0, ∃ y ∈ A, Rabs (y - x) < ε) as (Hnb).
+      (∀ ε > 0, ∃ y ∈ A, | y - x | < ε) ⇨ (A x ∨ is_limit_point A x).
+    Assume that (∀ ε > 0, ∃ y ∈ A, | y - x | < ε) as (Hnb).
     Either (A x) or (¬ A x).
     + Case (A x). It holds that A x ∨ is_limit_point A x. We conclude that closure A x.
     + Case (¬ A x).
       It suffices to show that is_limit_point A x.
-      We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε.
+      We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
       Take ε > 0.
-      By Hnb it holds that (∃ y ∈ A, Rabs (y - x) < ε) as (Hy).
-      Obtain such a y. It holds that y ∈ A ∧ Rabs (y - x) < ε as (Hy').
-      It holds that y ∈ A as (HyA). It holds that Rabs (y - x) < ε as (Hyd).
+      By Hnb it holds that (∃ y ∈ A, | y - x | < ε) as (Hy).
+      Obtain such a y. It holds that y ∈ A ∧ | y - x | < ε as (Hy').
+      It holds that y ∈ A as (HyA). It holds that | y - x | < ε as (Hyd).
       It holds that y ≠ x as (Hne).
       It holds that y - x ≠ 0 as (Hsub).
-      By Rabs_no_R0 it holds that Rabs (y - x) ≠ 0 as (Hnz).
-      It holds that 0 < Rabs (y - x) as (Hpos).
+      By Rabs_no_R0 it holds that | y - x | ≠ 0 as (Hnz).
+      It holds that 0 < | y - x | as (Hpos).
       Choose y0 := y.
       * Indeed, y ∈ A.
-      * We conclude that 0 < Rabs (y - x) < ε.
+      * We conclude that 0 < | y - x | < ε.
 Qed.
 
 (** The closure [Ā] is a closed set.
@@ -443,28 +443,28 @@ Lemma closure_is_closed (A : ℝ → Prop) :
 Proof.
   apply (closed_iff_contains_limit_points (closure A)).
   Take x : ℝ.
-  Assume that (∀ ε > 0, ∃ y ∈ (closure A), 0 < Rabs (y - x) < ε) as (Hlp).
+  Assume that (∀ ε > 0, ∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hlp).
   apply (closure_characterization A x).
   Take ε > 0.
-  By Hlp it holds that (∃ y ∈ (closure A), 0 < Rabs (y - x) < ε) as (Hy).
+  By Hlp it holds that (∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hy).
   Obtain such a y.
-  It holds that y ∈ (closure A) ∧ 0 < Rabs (y - x) < ε as (Hy').
+  It holds that y ∈ (closure A) ∧ 0 < | y - x | < ε as (Hy').
   It holds that closure A y as (HclY).
-  It holds that 0 < Rabs (y - x) < ε as (Hyb).
-  It holds that Rabs (y - x) < ε as (Hylt).
-  Define δ := ε - Rabs (y - x).
+  It holds that 0 < | y - x | < ε as (Hyb).
+  It holds that | y - x | < ε as (Hylt).
+  Define δ := ε - | y - x |.
   It holds that δ > 0 as (Hd).
   By (closure_characterization A y) it holds that
-    (∀ ε' > 0, ∃ z ∈ A, Rabs (z - y) < ε') as (Hcy).
-  By Hcy it holds that (∃ z ∈ A, Rabs (z - y) < δ) as (Hz).
+    (∀ ε' > 0, ∃ z ∈ A, | z - y | < ε') as (Hcy).
+  By Hcy it holds that (∃ z ∈ A, | z - y | < δ) as (Hz).
   Obtain such a z.
-  It holds that z ∈ A ∧ Rabs (z - y) < δ as (Hz').
-  It holds that z ∈ A as (HzA). It holds that Rabs (z - y) < δ as (Hzlt).
+  It holds that z ∈ A ∧ | z - y | < δ as (Hz').
+  It holds that z ∈ A as (HzA). It holds that | z - y | < δ as (Hzlt).
   By Rabs_triang it holds that
-    Rabs ((z - y) + (y - x)) ≤ Rabs (z - y) + Rabs (y - x) as (Htri).
-  It holds that Rabs (z - x) ≤ Rabs (z - y) + Rabs (y - x) as (Htri2).
-  It holds that Rabs (z - x) < ε as (Hfin).
+    |(z - y) + (y - x)| ≤ | z - y | + | y - x | as (Htri).
+  It holds that | z - x | ≤ | z - y | + | y - x | as (Htri2).
+  It holds that | z - x | < ε as (Hfin).
   Choose z0 := z.
   - Indeed, z ∈ A.
-  - We conclude that Rabs (z0 - x) < ε.
+  - We conclude that | z0 - x | < ε.
 Qed.
