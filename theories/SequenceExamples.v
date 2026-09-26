@@ -235,3 +235,48 @@ Lemma standard_limit_n_factorial_over_n_to_n :
     (fun n : ℕ => INR (Stdlib.Arith.Factorial.fact (S n)) / (INR (S n))^(S n)) ⟶ 0.
 Proof.
   Admitted.
+
+(** ** A divergent sequence *)
+
+(** Theorem 3.6: the alternating sequence [(-1)ⁿ] does not converge.
+
+    Proof idea: suppose [aₙ → L]. Taking [ε = 1], there is an [N] beyond which
+    [|aₙ - L| < 1]. But for even [n] we have [aₙ = 1] and for odd [n] we have
+    [aₙ = -1], so both [|1 - L| < 1] and [|-1 - L| < 1] would hold. By the
+    triangle inequality [2 = |1 - (-1)| ≤ |1 - L| + |L - (-1)| < 2], a
+    contradiction. *)
+Lemma pm_1_diverges : ¬ (∃ L ∈ ℝ, (fun n => (-1) ^ n) ⟶ L).
+Proof.
+  (** Due to ¬ we are already in a contradiction-like setting *)
+  Assume that ∃ L ∈ ℝ, (fun n ↦ (-1)^n) ⟶ L as (H).
+  Obtain such an L.
+  It holds that (1 > 0).
+  By H it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, | (-1)^n - L | < 1 as (HN).
+  Obtain such an N1.
+
+  (** Even case: [n = 2*N1] *)
+  It holds that (2 * N1)%nat ≥ N1.
+  By HN it holds that (| (-1)^(2 * N1) - L | < 1).
+  By pow_1_even it holds that ((-1)^(2 * N1) = 1).
+  It holds that (| 1 - L | < 1).
+
+  By Rabs_def2 it holds that (1 - L < 1 ∧ -1 < 1 - L).
+  - It holds that (1 - L < 1).
+  - It holds that (-1 < 1 - L).
+
+  (** Odd case: [n = 2*N1+1] *)
+  It holds that (S (2 * N1)%nat ≥ N1).
+  By HN it holds that (| (-1)^(S(2 * N1)%nat) - L | < 1).
+  (** Without the following line it gets very slow *)
+  By pow_1_odd it holds that ((-1)^(S (2 * N1)%nat) = - 1).
+  It holds that (| -1 - L | < 1).
+
+  By Rabs_def2 it holds that (-1 - L < 1 ∧ -1 < -1 - L).
+  - It holds that (-1 - L < 1).
+  - It holds that (-1 < -1 - L).
+
+  (** Contradiction: [1 - L < 1  ⇨  L > 0] and [-1 < -1 - L  ⇨  L < 0] *)
+  Since (1 - L < 1) ∧ (-1 < -1 - L) it holds that
+    (0 < L ∧ L < 0).
+  Contradiction.
+Qed.
