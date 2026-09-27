@@ -21,6 +21,16 @@ Open Scope subset_scope.
 Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
+(** Temporary Axiom of Countable choice*)
+
+(** States that For any relation or proposition P, if it holds that 
+    [∀ n : ℕ, ∃ y : ℝ, P n y] then there is a sequence which enumerates
+    a specific choice of y; ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n)  *)
+
+Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
+  (∀ n : ℕ, ∃ y : ℝ, P n y) → ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n).
+
+
 (** A set [O ⊆ ℝ] is *open* if every point of [O] is interior:
     [∀ a ∈ O, ∃ ε > 0, V_ε(a) ⊆ O], where [V_ε(a) = {x : |x - a| < ε}].
     A set [F] is *closed* if its complement is open, equivalently if it contains
@@ -274,7 +284,102 @@ Proof.
      a : ℕ → ℝ requires a form of the axiom of choice (dependent/countable
      choice), consistent with how [sequential_limit_characterization] in
      Limits.v is left. *)
-  Admitted.
+
+ We show both directions.
+++ We need to show that 
+    (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) ⇨ 
+     (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x).
+
+   Assume that (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) as (Hlp). 
+   We claim that 
+    (∀ n : ℕ, ∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) as (Hsteps).
+     {Take n : ℕ.
+     Use ε := 1/( INR n +1) in (Hlp) .
+       { Indeed, 1/( INR n +1) > 0. } 
+     It holds that ( ∃ y ∈ A, 0 < |y - x| < 1 / ( INR n + 1) ) . 
+     It holds that (∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) .
+
+     Indeed, ( ∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)). }
+
+  
+   (* Define the relation locally here *)
+   By (Hsteps) it holds that ((∀ n : ℕ, ∃ y : ℝ, R n y)).  
+     By (countable_choice (fun n y => y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) (Hsteps)) 
+     it holds that (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ A ∧ 0 < | a n - x | < 1 / (INR n + 1)) as (H_seq).
+   Obtain a according to (H_seq)  .
+
+   (* Now we must confirm the properties of a by unwrapping the for all statement *)
+   We claim that (∀ n ∈ ℕ, a n ∈ A) as (H_A).  
+   {Take n ∈ ℕ . 
+    Use n0 := n in (_H). 
+    It holds that (a(n) ∈ A
+      ∧ 0 < |a(n) - x| < 1 / (n + 1) ).  
+      Indeed, (a(n) ∈ A). } 
+  
+   We claim that (∀ n ∈ ℕ, a(n) ≠ x) as (H_neq).  
+   {Take n ∈ ℕ . 
+    Use n0 := n in (_H). 
+    It holds that (a(n) ∈ A
+      ∧ 0 < |a(n) - x| < 1 / (n + 1) ).  
+    It holds that (|a(n) - x| > 0 ).  
+    Indeed, (a(n) ≠ x). } 
+
+   We claim that (a ⟶ x) as (H_lim). 
+   { We need to show
+      (∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε). 
+     Take ε > 0. 
+      By the Archimedean property it holds that 
+       (∃ n1 ∈ ℕ, n1 > / ε) as (Arch_N).
+     Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
+     
+     We need to show that ∀ n ≥ N1, ｜a(n) - x｜ < ε. 
+         By (Arch_N) it holds that (INR N1 > / ε) as (H_arch_bound). 
+     Take n ≥ N1. 
+     It holds that (n >= N1) as (Order_N).
+     
+
+     By (Order_N) it holds that (INR n >= INR N1) as (H_real_order).
+     By (H_real_order) and (H_arch_bound) it holds that (INR n + 1 > / ε) as (H_inv_bound).   
+     By (H_inv_bound) it holds that (1 / (INR n + 1) < ε) as (H_eps_bound).
+     
+     Use n0 := n in (_H). 
+     It holds that (a(n) ∈ A ∧ 0 < |a(n) - x| < 1 /(n + 1)) as (seq_n).
+     By (seq_n) it holds that (0 < |a(n) - x| < 1 /(n + 1)) as (seq_bound). 
+     By (seq_bound) and (H_inv_bound) it holds that
+      (& |a(n) - x| < 1 /(n + 1) < ε) as (seq_lim).
+      Indeed, (｜a(n) - x｜ < ε).
+      }
+     Choose a0 := a. 
+     By (H_A) and (H_neq) it holds that 
+     ((∀ n ∈ ℕ, a0(n) ∈ A) ∧ (∀ n ∈ ℕ, a0(n) ≠ x) ∧ a0 ⟶ x).  
+     We conclude that ((∀ n ∈ ℕ, a0(n) ∈ A) ∧ (∀ n ∈ ℕ, a0(n) ≠ x) ∧ a0 ⟶ x).
+    
+++ We need to show that (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x) ⇒ 
+      (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) . 
+     Assume that (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x) as (Hrp).
+     Take ε > 0. 
+     Obtain a according to (Hrp). 
+     By (Hrp) it holds that (a ⟶ x) as (lim_a).  
+     By (lim_a) it holds that (∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε0) as (eps_a). 
+     Use ε0 := ε in (eps_a). 
+       {Indeed, ε > 0 . } 
+     It holds that ( ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε) as (N_eps). 
+     Obtain N1 according to (N_eps). 
+     It holds that (｜a(N1) - x｜ < ε).
+     By (Hrp) it holds that (∀ n ∈ ℕ, a n ∈ A) as (a_in). 
+     Use n:= N1 in (a_in). 
+       { Indeed, N1 ∈ ℕ. } 
+      It holds that a(N1) ∈ A.  
+      By (Hrp) it holds that (∀ n ∈ ℕ, a n ≠ x) as (a_neq). 
+       Use n:= N1 in (a_neq). 
+       {Indeed, N1 ∈ ℕ. } 
+       It holds that a(N1) ≠ x. 
+       It holds that (Rabs( a(N1) - x) > 0) as (N_neq) .
+     Choose y := a(N1).   
+     { Indeed, y ∈ A. }  
+     We conclude that (0 < Rabs (y - x) < ε).
+
+  Qed. 
 
 (** ** Open/closed duality *)
 
