@@ -9,6 +9,8 @@ From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import micromega.Lra.
 From Stdlib Require Import Logic.Classical_Pred_Type.
 From Stdlib Require Import Logic.Classical_Prop.
+From Stdlib Require Import Logic.FunctionalExtensionality.
+From Stdlib Require Import Logic.PropExtensionality.
 From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 Require Export RUG.Analysis.Sequences.
 Require Export RUG.Analysis.Lib.Compactness.
@@ -39,6 +41,8 @@ Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
     all its limit points. *)
 
 (** ** Open intervals are open *)
+
+
 
 (** Theorem 6.1: the open interval [(a, b)] is an open set.
 
@@ -175,19 +179,90 @@ Qed.
 
 (** ** Closed intervals are closed *)
 
+(** Lemma: Upper half-interval (a, +∞) is open. 
+Proof idea: For any y in (a, +∞), we can find an ε > 0 such that V_ε(y) ⊆ (a, +∞). *)
+
+Lemma Upper_half_interval_is_open (a : ℝ) :
+    (fun x => a < x) is _open_.
+Proof. 
+  We need to show that
+    ∀ y ∈ (fun x => a < x), ∃ r > 0, ∀ x ∈ (open_ball y r), x ∈ (fun x => a < x).
+  Take y ∈ (fun x => a < x).
+  It holds that a < y as (Hy).
+  Choose r := y - a.
+  - Indeed, y - a > 0.
+  - We need to show that ∀ x ∈ (open_ball y r), x ∈ (fun x => a < x).
+    Take x ∈ (open_ball y r).
+    It holds that | x - y | < r as (Hxy).
+    By Rabs_def2 it holds that x - y < r as (Hbd).
+    We conclude that a < x.
+Qed.
+
+Lemma Lower_half_interval_is_open (b : ℝ) :
+    (fun x => x < b) is _open_.
+Proof.
+  We need to show that
+    ∀ y ∈ (fun x => x < b), ∃ r > 0, ∀ x ∈ (open_ball y r), x ∈ (fun x => x < b).
+  Take y ∈ (fun x => x < b).
+  It holds that y < b as (Hy).
+  Choose r := b - y.
+  - Indeed, b - y > 0.
+  - We need to show that ∀ x ∈ (open_ball y r), x ∈ (fun x => x < b).
+    Take x ∈ (open_ball y r).
+    It holds that | x - y | < r as (Hxy).
+    By Rabs_def2 it holds that - r < x - y as (Hbd).
+    We conclude that x < b.
+Qed.
+
+
 (** Theorem 6.4: the closed interval [[a, b]] is a closed set.
 
-    Proof idea: the complement [(-∞, a) ∪ (b, ∞)] is open — for [x < a] the ball
-    [V_{a-x}(x)] lies in [(-∞, a)], and for [x > b] the ball [V_{x-b}(x)] lies in
-    [(b, ∞)]. *)
+    Proof idea: the complement [(-∞, a) ∪ (b, ∞)] is open as it is the union 
+    of two open sets. Using then Lemma open_union and Lemma half_interval_is_open 
+    it follows that interval is closed. *)
 Lemma closed_interval_is_closed (a b : ℝ) (Hab : a ≤ b) :
-    closed_set (fun x => a ≤ x ∧ x ≤ b).
+   (fun x => a ≤ x ∧ x ≤ b) is _closed_.
 Proof.
-  (* Admitted: [closed_set] is Stdlib's [Rtopology] notion (defined via
-     [neighbourhood]/[disc]), a different framework from Waterproof's
-     [is_closed]/[open_ball]. Proving this requires a bridge between the two
-     definitions of "open"; left for a dedicated framework-compatibility layer. *)
-  Admitted.
+
+ We need to show that 
+    complement (fun x => a ≤ x ∧ x ≤ b) is _open_. 
+ We need to show that 
+   (fun x => ¬ (a ≤ x ∧ x ≤ b)) is _open_. 
+
+ (* Using some rocq to allow waterproof to understand the equivalence of
+   the sets as described by logical propositions. Not important to understand, 
+   it is essentially Demorgan's law. *)
+
+    assert (Hcomp :
+    (fun x : ℝ => ¬ (a ≤ x ∧ x ≤ b)) =
+    (fun x : ℝ => x < a ∨ b < x)).
+  {
+    apply functional_extensionality; intro x.
+    apply propositional_extensionality.
+    split.
+    - intro Hn.
+      apply not_and_or in Hn.
+      destruct Hn as [Hna | Hnb].
+      + left. exact (Rnot_le_lt _ _ Hna).
+      + right. exact (Rnot_le_lt _ _ Hnb).
+    - intros [Hxa | Hbx] Hinterval.
+      + destruct Hinterval as [Hax Hxb].
+        exact (Rlt_not_le _ _ Hxa Hax).
+      + destruct Hinterval as [Hax Hxb].
+        exact (Rlt_not_le _ _ Hbx Hxb).
+
+  } 
+
+  It holds that ((fun x => ¬ (a ≤ x ∧ x ≤ b)) = (fun x => x < a ∨ b < x)).
+ It suffices to show that (fun x => x < a ∨ b < x) is _open_.
+
+  By open_union it suffices to show that
+    ((fun x => x < a) is _open_) ∧ ((fun x => b < x) is _open_).
+  By Lower_half_interval_is_open it holds that (fun x => x < a) is _open_.
+  By Upper_half_interval_is_open it holds that (fun x => b < x) is _open_. 
+  We conclude that ((fun x => x < a) is _open_) ∧  ((fun x => b < x) is _open_).
+
+  Qed.
 
 (** ** Closed sets under finite union *)
 
@@ -281,11 +356,6 @@ Lemma limit_point_characterization (A : ℝ → Prop) (x : ℝ) :
     (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε) ⇔
     (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x).
 Proof.
-  (* Admitted: the (⇒) direction picks, for each n, a point aₙ ∈ A with
-     0 < |aₙ - x| < 1/n. Assembling these choices into a single sequence
-     a : ℕ → ℝ requires a form of the axiom of choice (dependent/countable
-     choice), consistent with how [sequential_limit_characterization] in
-     Limits.v is left. *)
 
  We show both directions.
 ++ We need to show that 
@@ -382,18 +452,61 @@ Proof.
 
   Qed. 
 
-(** ** Open/closed duality *)
+(** ** Open/closed duality *) 
+
+Lemma complement_of_complement_is_identity (A : ℝ → Prop) :
+    complement (complement A) = A.
+Proof.
+
+      apply functional_extensionality; intro x.
+      apply propositional_extensionality.
+      split.
+      - intro H.
+        apply NNPP.
+        exact H.
+      - intro HA.
+        intro Hnot.
+        exact (Hnot HA).
+ Qed.
 
 (** Complementation: [A] is open iff its complement is closed. This is immediate
     from the definition of closed as "complement is open". *)
 Lemma open_iff_complement_closed (A : ℝ → Prop) :
-    A is _open_ ⇔ closed_set (fun x => ¬ A x).
+    A is _open_ ⇔  (fun x => ¬ A x)is _closed_.
 Proof.
-  (* Admitted: mixes Waterproof's [is_open] with Stdlib's [closed_set]
-     (Rtopology). Bridging the two "open" definitions
-     ([open_ball]/[is_interior_point] vs. [neighbourhood]/[disc]) is the same
-     framework-compatibility gap as in [closed_interval_is_closed]. *)
-  Admitted.
+    We show both directions.
+  - We need to show that (A is _open_) ⇨ ((fun x => ¬ A x) is _closed_).
+    Assume that (A is _open_) as (Hopen).
+    It holds that ((fun x => ¬ A x) = complement A) as (Hcomp).
+    By Hcomp it holds that ((fun x => ¬ A x) = complement A).
+
+ By complement_of_complement_is_identity it holds that 
+   complement (complement A) = A as (Hcomp2).
+
+    By Hcomp2 it holds that complement (complement A) = A.
+    By Hopen it holds that (complement (complement A)) 
+     is _open_ as (Hclosed). 
+    By Hclosed it holds that (complement A) is _closed_ as (Hclosed2).
+    By Hcomp it holds that ((fun x => ¬ A x) is _closed_). 
+    We conclude that ((fun x => ¬ A x) is _closed_).
+
+  - We need to show that ((fun x => ¬ A x) is _closed_) ⇨ (A is _open_). 
+    Assume that ((fun x => ¬ A x) is _closed_) as (Hclosed).
+   It holds that ((fun x => ¬ A x) = complement A) as (Hcomp).
+    By Hcomp it holds that ((fun x => ¬ A x) = complement A).
+    By Hclosed it holds that (complement A) is _closed_ as (Hclosed2).
+    By Hclosed2 it holds that complement (complement A) is _open_ as (Hopen).
+
+   By complement_of_complement_is_identity it holds that 
+   complement (complement A) = A as (Hcomp2).
+
+    By Hcomp2 it holds that complement (complement A) = A.
+    It holds that A = complement (complement A) as (Hopen3). 
+
+
+    By Hopen it holds that A is _open_.
+    We conclude that (A is _open_). 
+  Qed.
 
 (** ** Closure characterization *)
 
