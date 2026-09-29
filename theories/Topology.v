@@ -23,6 +23,14 @@ Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 
+(** Temporary Axiom of Countable choice*)
+
+(** States that For any relation or proposition P, if it holds that 
+    [∀ n : ℕ, ∃ y : ℝ, P n y] then there is a sequence which enumerates
+    a specific choice of y; ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n)  *)
+
+Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
+  (∀ n : ℕ, ∃ y : ℝ, P n y) → ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n).
 
 
 (** A set [O ⊆ ℝ] is *open* if every point of [O] is interior:
@@ -297,7 +305,6 @@ Proof.
 
   
    (* Define the relation locally here *)
-   By (Hsteps) it holds that ((∀ n : ℕ, ∃ y : ℝ, R n y)).  
      By (countable_choice (fun n y => y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) (Hsteps)) 
      it holds that (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ A ∧ 0 < | a n - x | < 1 / (INR n + 1)) as (H_seq).
    Obtain a according to (H_seq)  .
