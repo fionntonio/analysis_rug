@@ -79,6 +79,78 @@ Qed.
    next two lemmas, but it breaks in a weird way if I do. *)
 
 (** Closed and bounded subsets of [ℝ] are compact. *)
+
+Lemma open_iff_is_open (A : subset ℝ) :
+    open_set A <-> A is open.
+Proof.
+ We show both directions.
+  - We need to show that (open_set A) -> (A is open).
+    Assume that open_set A as (openA).
+    We need to show that A is open.
+    We need to show that 
+    ( ∀ a ∈ A, is_interior_point a A). 
+    We need to show that 
+    (∀ a ∈ A, ∃ r > 0, ∀ x ∈ (open_ball a r), x ∈ A).  
+    Take a ∈ A.
+    By (openA) it holds that (a ∈ A) -> (neighbourhood A a) as (aNeigh).
+    It holds that (neighbourhood A a) as (aNeigh').
+    By (aNeigh') it holds that (∃ r : posreal, included (disc a r) A) as (DiscA).
+    Obtain r according to (DiscA).
+    It holds that (included (disc a r) A) as (DiscA').
+    We need to show that ∃ r0 > 0, ∀ x ∈ (open_ball a r0), x ∈ A.
+    Choose r0 := pos r. { We need to verify that r0 > 0.  
+     By cond_pos it holds that 0 < pos r as (Hrpos). 
+     We conclude that r0 > 0. } 
+    We need to show that ∀ x ∈ (open_ball a r0), x ∈ A. 
+    Take x ∈ (open_ball a r0).
+    We need to show that x ∈ A.
+    By (DiscA') it holds that x ∈ A.
+    We conclude that x ∈ A.
+
+
+  - We need to show that (A is open) -> (open_set A).
+    Assume that A is open as (Aopen).
+    We need to show that open_set A.
+    We need to show that ∀ a ∈ A, neighbourhood A a.
+    Take a ∈ A.
+    By (Aopen) it holds that is_interior_point a A as (aInt).
+    It holds that ∃ r > 0, ∀ x ∈ (open_ball a r), x ∈ A as (aInt').
+    Obtain r according to (aInt').
+    It holds that r > 0 as (cond_posr).
+    It holds that ∀ x ∈ (open_ball a r), x ∈ A as (aInt'').
+    We need to show that neighbourhood A a.
+    We need to show that ∃ r0 : posreal, included (disc a r0) A.
+    Choose r0 := mkposreal r cond_posr.  
+    We need to show that included (disc a r0) A. 
+    We need to show that ∀ x ∈ (disc a r0), x ∈ A.
+    Take x ∈ disc a r0.
+    We need to show that x ∈ A.
+    By (aInt'') it holds that x ∈ A.
+    We conclude that x ∈ A.
+Qed.
+
+Lemma closed_iff_is_closed (A : subset ℝ) :
+    closed_set A <-> A is closed.
+Proof.
+  We show both directions.
+  - We need to show that (closed_set A) -> (A is closed).
+    Assume that closed_set A as (closedA).
+    We need to show that A is closed.
+    By (closedA) it holds that (open_set (complementary A)) as (openComplA).
+    We need to show that (complementary A) is open.
+    By (open_iff_is_open) it holds that 
+    (open_set (complementary A) <-> complementary A is open) as (openComplA_iff).
+    We conclude that (complementary A) is open.
+
+  - We need to show that (A is closed) -> (closed_set A).
+    Assume that A is closed as (Aopen).
+    We need to show that closed_set A.
+    By (Aopen) it holds that (complementary A) is open as (ComplAopen).
+    By (open_iff_is_open) it holds that
+    (open_set (complementary A) <-> complementary A is open) as (openComplA_iff).
+    We conclude that closed_set A.
+Qed.
+
 Lemma closed_and_bounded_is_compact (A : subset ℝ) :
     closed_set A ->
     A is bounded ->
