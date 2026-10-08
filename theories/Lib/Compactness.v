@@ -152,19 +152,35 @@ Proof.
 Qed.
 
 Lemma closed_and_bounded_is_compact (A : subset ℝ) :
-    closed_set A ->
+    A is closed ->
     A is bounded ->
     A is compact.
 Proof.
+We need to show that (A is closed) -> (A is bounded) -> (A is compact).
+  Assume that A is closed as (Aclosed).
+  Assume that A is bounded as (Abounded).
+  We need to show that A is compact.
+ By (closed_iff_is_closed) it holds that (closed_set A <-> A is closed) as (Aclosed_).
+ By (Aclosed_) it holds that closed_set A as (Aclosed').
   apply compact_P5.
+   - exact Aclosed'.
+   - exact Abounded.
+
 Qed.
 
 (** Compact subsets of [ℝ] are closed. *)
 Lemma compact_is_closed (A : subset ℝ) :
     A is compact ->
-    closed_set A.
+    A is closed.
 Proof.
-  apply compact_P2.
+ We need to show that (A is compact) -> (A is closed).
+  Assume that A is compact as (Acompact).
+  By (compact_P2) it holds that closed_set A as (Aclosed).
+  We need to show that A is closed.
+  By (closed_iff_is_closed) it holds that (closed_set A <-> A is closed) as (Aclosed_).
+  By (Aclosed_) it holds that A is closed. 
+  We conclude that A is closed.
+
 Qed.
 
 (** Compact subsets of [ℝ] are bounded. *)
