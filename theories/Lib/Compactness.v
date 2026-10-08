@@ -25,6 +25,16 @@ Waterproof Enable Automation Intuition.
 Open Scope R_scope.
 Open Scope subset_scope.
 
+(** Temporary Axiom of Countable choice*)
+
+(** States that For any relation or proposition P, if it holds that 
+    [∀ n : ℕ, ∃ y : ℝ, P n y] then there is a sequence which enumerates
+    a specific choice of y; ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n)  *)
+
+
+Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
+  (∀ n : ℕ, ∃ y : ℝ, P n y) → ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n).
+
 
 (** * Limit points of sets
 
