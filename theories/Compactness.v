@@ -14,6 +14,8 @@ From Waterproof Require Export Notations.Sets.
 From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 From Waterproof Require Import Libs.Analysis.Subsequences.
 Require Export RUG.Analysis.Topology.
+Require Export RUG.Analysis.Sequences.
+Require Export RUG.Analysis.Reals.
 Require Export RUG.Analysis.Subsequences.
 Require Export RUG.Analysis.Lib.Compactness.
 
@@ -156,10 +158,176 @@ By (x_eq) and x_in_K it holds that
   (K x0) as (x0_in_K).
 We conclude that K x0.
 
-
-
 Qed.
 
+(** Every compact set is bounded.
+
+    Proof idea: if [K] were unbounded, pick [xₙ ∈ K] with [|xₙ| > n]; this
+    sequence has no convergent subsequence (convergent sequences are bounded),
+    contradicting compactness. *)
+
+Lemma Sequentially_compact_implies_bounded (K : ℝ → Prop) (HK : sequentially_compact K) :
+    K is _bounded_.
+Proof.
+We need to show that K is bounded.
+We argue by contradiction. Assume that ¬(K is _bounded_).
+It holds that (¬( ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M))))  as (Hnot_bounded).
+By (Hnot_bounded) it holds that (∀ m : ℝ, ¬(∃ M : ℝ, ∀ x : ℝ, 
+ K x → (& m ≤ x ≤ M))) as (Hnot_bounded').
+By (Hnot_bounded') it holds that (∀ m : ℝ, ∀ M : ℝ, 
+ ¬(∀ x : ℝ, K x → (& m ≤ x ≤ M))) as (Hnot_bounded'').
+By (Hnot_bounded'') it holds that (∀ m : ℝ, ∀ M : ℝ, 
+ ∃ x : ℝ, K x ∧ ¬(& m ≤ x ≤ M)) as (Hnot_bounded''').
+
+
+We claim that
+  (∀ n : ℕ, ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))) as (Hnot_bounded_seq).
+  {We need to show that
+    ∀ n : ℕ, ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n)).
+  Take n : ℕ.
+  Use m :=  -1*(INR n) in (Hnot_bounded''').
+  It holds that (∀ M : ℝ, ∃ x : ℝ, K(x) ∧ ¬ (& -1* n ≤ x ≤ M)) as (m1).
+
+  Use M :=  (INR n) in (m1). 
+  It holds that (∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))) as (m2).
+  It holds that (∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))).
+  We conclude that
+    (∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))).
+
+  }
+
+We claim that
+  (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq).
+  {We need to show that 
+    ∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n)).
+   By (countable_choice (fun n x => (K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))))(Hnot_bounded_seq)) 
+    it holds that
+    (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
+  We conclude that
+    (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
+  } 
+  Obtain a according to (Hseq).
+  It holds that (∀ n : ℕ, a n ∈ K ∧
+   ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq_prop). 
+
+
+  We claim that
+    (∀ n : ℕ, a n ∈ K) as (Hseq_in_K).
+    {We need to show that
+      ∀ n : ℕ, a n ∈ K.
+    Take n : ℕ.
+   
+    It holds that (a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
+    It holds that (a n ∈ K).
+    We conclude that a n ∈ K.
+
+    } 
+ We claim that 
+    (∀ n : ℕ, ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq_not_bounded).
+    {We need to show that
+      ∀ n : ℕ, ¬(& -1*(INR n) ≤ a n ≤  (INR n)).
+    Take n : ℕ.
+   
+    It holds that (a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
+    It holds that (¬(& -1*(INR n) ≤ a n ≤  (INR n))).
+    We conclude that ¬(& -1*(INR n) ≤ a n ≤  (INR n)).
+
+    } 
+  By (HK a Hseq_in_K) it holds that
+    (∃ phi : ℕ → ℕ, ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K x ∧
+      (fun k => a (phi k)) ⟶ x)
+    as (Hsubseq). 
+  Obtain phi according to (Hsubseq).
+  It holds that (∃ x, (∀ n, (phi(n) < phi(S(n)))%nat)
+    ∧ K(x) ∧ ｛ k : ℕ | a(phi(k)) ｝ ⟶ x) as (phi_lim).
+
+  Obtain x according to (phi_lim).
+  It holds that (∀ n, (phi(n) < phi(S(n)))%nat) as (Hphi_strict).
+ We claim that (is_index_seq phi) as (Hphi).
+{
+  We need to show that
+    ∀ k ∈ ℕ, (phi k < phi (S k))%nat.
+  Take k ∈ ℕ.
+  Use n := k in (Hphi_strict).
+  It holds that (phi k < phi (S k))%nat.
+  We conclude that (phi k < phi (S k))%nat.
+}
+  It holds that ((fun k => a (phi k)) ⟶ x) as (subseq_converges_to_x). 
+  By (convergent_sequence_is_bounded((fun k => a (phi k)))(x)) it holds that
+    (bounded_sequence ((fun k => a (phi k)))) as (subseq_is_bounded). 
+  By (subseq_is_bounded) it holds that
+    (∃ M ∈ ℝ, M > 0 ∧ ∀ n ∈ ℕ, | a(phi(n)) | ≤ M)
+    as (Hbounded). 
+ 
+  Obtain M according to (Hbounded).
+  It holds that (M > 0) as (Hbounded_M).
+  It holds that
+    ∀ n ∈ ℕ, | a(phi(n)) | ≤ M as (Hbounded'). 
+
+  By the Archimedean property it holds that 
+    (∃ n0 ∈ ℕ,  M < INR n0) as (Harch).
+  Obtain n0 according to (Harch).
+  It holds that (M < INR n0) as (Harch'). 
+  It holds that (∀ n ∈ ℕ, | a(phi(n)) | ≤ M) as (Hbounded'').
+ By index_seq_grows_0 it holds that (phi n0 ≥ n0)%nat as (Hphi_n0).
+  
+  Use n := n0 in (Hbounded''). { Indeed, n0 ∈ ℕ. }
+  It holds that (| a(phi(n0)) | ≤ M). 
+  Use n := (phi n0) in (Hseq_not_bounded).
+It holds that
+  ¬(& -1 * INR (phi n0) ≤ a (phi n0) ≤ INR (phi n0))
+  as (Hnot_bounded_phi_n0). 
+
+  By (abs_le_iff( a (phi n0)) (M)) it holds that
+    (| a(phi(n0)) | ≤ M ⇔ ( - M ≤ a(phi n0) ∧ a(phi n0) ≤ M))
+    as (Habs_le). 
+
+  By (Habs_le) and (Hbounded'') it holds that
+    (- M ≤ a(phi(n0)) ∧ a(phi(n0)) ≤ M) as (Hbounded_phi_n0). 
+
+ (** Waterproof had a really hard time parsing the inequalities 
+     So we had to split them up in an inefficient way*)
+  We claim that (- INR n0 <= a(phi(n0))) as (Hlower_n0).
+  {
+    We need to show that - INR n0 <= a(phi(n0)).
+    By (Harch') and (Hbounded_phi_n0) it holds that
+      - INR n0 < a(phi(n0)).
+    We conclude that - INR n0 <= a(phi(n0)).
+  }
+  We claim that (a(phi(n0)) <= INR n0) as (Hupper_n0).
+  {
+    We need to show that a(phi(n0)) <= INR n0.
+    By (Harch') and (Hbounded_phi_n0) it holds that
+      a(phi(n0)) < INR n0.
+    We conclude that a(phi(n0)) <= INR n0.
+  }
+
+  By (le_INR n0 (phi n0) Hphi_n0) it holds that
+    (INR n0 ≤ INR (phi n0)) as (Hphi_real).
+  We claim that (- INR (phi n0) <= a(phi(n0))) as (Hlower_phi_n0).
+
+  {
+    We need to show that - INR (phi n0) <= a(phi(n0)).
+    By (Hphi_real) and (Hlower_n0) it holds that
+      - INR (phi n0) < a(phi(n0)).
+    We conclude that - INR (phi n0) <= a(phi(n0)).
+  }
+
+  We claim that (a(phi(n0)) <= INR (phi n0)) as (Hupper_phi_n0).
+  {
+    We need to show that a(phi(n0)) <= INR (phi n0).
+    By (Hphi_real) and (Hupper_n0) it holds that
+      a(phi(n0)) <= INR (phi n0).
+    We conclude that a(phi(n0)) <= INR (phi n0).
+  }
+
+  By (Hlower_phi_n0) and (Hupper_phi_n0) it holds that
+    (& -1 * INR (phi n0) <= a(phi(n0)) <= INR (phi n0))  
+    as (Hbounded_phi_n0'). 
+  Contradiction. 
+
+Qed.
 (** Every compact set is closed.
 
     Proof idea: if [x] is a limit point of [K], take a sequence in [K] converging
