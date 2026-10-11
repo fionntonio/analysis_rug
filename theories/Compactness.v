@@ -7,6 +7,7 @@
 
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Lists.List.
+From Stdlib Require Import Logic.Classical_Prop.
 
 From Waterproof Require Export Notations.Common.
 From Waterproof Require Export Notations.Reals.
@@ -196,16 +197,10 @@ We claim that
 
   }
 
-We claim that
-  (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq).
-  {We need to show that 
-    ∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n)).
-   By (countable_choice (fun n x => (K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))))(Hnot_bounded_seq)) 
+By (countable_choice (fun n x =>  
+   (K x ∧ ¬(& -1*(INR n) ≤ x ≤  (INR n))))(Hnot_bounded_seq)) 
     it holds that
-    (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
-  We conclude that
-    (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))).
-  } 
+    (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq).
   Obtain a according to (Hseq).
   It holds that (∀ n : ℕ, a n ∈ K ∧
    ¬(& -1*(INR n) ≤ a n ≤  (INR n))) as (Hseq_prop). 
@@ -326,6 +321,171 @@ It holds that
     (& -1 * INR (phi n0) <= a(phi(n0)) <= INR (phi n0))  
     as (Hbounded_phi_n0'). 
   Contradiction. 
+
+Qed. 
+
+(** ** Heine-Borel theorem *)
+
+(** Heine–Borel theorem: a subset of ℝ is compact iff it is closed and bounded.
+
+    Proof idea: (⇒) is the two theorems above. (⇐) given a sequence in a bounded
+    [K], Bolzano–Weierstrass gives a convergent subsequence, and closedness
+    places its limit in [K]. *)
+
+
+Theorem Sequential_Heine_Borel (K : ℝ → Prop) :
+    (sequentially_compact(K)) ⇔ (K is _closed_ ∧ K is _bounded_).
+Proof.
+ We show both directions. 
+ ++ We need to show that (sequentially_compact(K)) → (K is _closed_ ∧ K is _bounded_).
+  Assume that (sequentially_compact(K)) as (HK). 
+   
+  By (Sequentially_compact_implies_closed K HK) it holds that
+    (K is _closed_) as (Hclosed). 
+  By (Sequentially_compact_implies_bounded K HK) it holds that
+    (K is _bounded_) as (Hbounded). 
+  We conclude that (K is _closed_ ∧ K is _bounded_).
+
+
+
+
+ ++ We need to show that  
+  (K is _closed_ ∧ K is _bounded_) → (sequentially_compact(K)). 
+  Assume that (K is _closed_ ∧ K is _bounded_) as (Hclosed_bounded).
+
+  By (Hclosed_bounded) it holds that (K is _closed_) as (Hclosed). 
+  By (Hclosed_bounded) it holds that (K is _bounded_) as (Hbounded). 
+  We need to show that (sequentially_compact(K)). 
+  We need to show that
+    ∀ a : ℕ → ℝ, (∀ n : ℕ, a n ∈ K) →
+      ∃ phi : ℕ → ℕ, ∃ x : ℝ,
+        (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K x ∧
+        (fun k => a (phi k)) ⟶ x.
+  Take a : ℕ → ℝ.
+  Assume that (∀ n : ℕ, a n ∈ K) as (ainK). 
+  By (Hbounded) it holds that (∃ m : ℝ,  
+   (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M))) as (Hbounded'). 
+  Obtain m according to (Hbounded'). 
+  It holds that (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)) as (Hbounded'').
+  Obtain M according to (Hbounded''). 
+  We claim that (has_ub a) as (Hseq_upbounded). 
+  {
+    We need to show that has_ub a. 
+    We need to show that (bound (EUn a)). 
+    We need to show that (∃ M0 : ℝ, ∀ x : ℝ, EUn a x → x ≤ M0).
+    Choose M0 := M . 
+    Take x : ℝ.
+    Assume that (EUn a x) as (x_in_EUn).
+    By (x_in_EUn) it holds that (∃ n : ℕ, x = a n) as (x_in_seq). 
+    Obtain n according to (x_in_seq).
+    It holds that (x = a n) as (x_eq).
+    By (Hbounded'') and ainK it holds that
+      (∀ n : ℕ, & m ≤ a n ≤  M) as (Hseq_bounded).  
+    Use n := n in (Hseq_bounded).
+    It holds that (& m ≤ a n ≤  M) as (Hseq_bounded_n). 
+    By (Hseq_bounded_n) it holds that (a n ≤ M) as (Hseq_bounded_n'). 
+    By (x_eq) it holds that (x ≤ M) as (Hseq_bounded_n''). 
+    We conclude that x ≤ M.
+  }
+  We claim that (has_lb a) as (Hseq_lowbounded). 
+  {
+    We need to show that has_lb a. 
+    We need to show that (bound (EUn (opp_seq a))). 
+    We need to show that (∃ M0 : ℝ, ∀ x : ℝ, EUn (opp_seq a) x → x ≤ M0).
+    Choose M0 := - m . 
+    Take x : ℝ.
+    Assume that (EUn (opp_seq a) x) as (x_in_EUn).
+    By (x_in_EUn) it holds that (∃ n : ℕ, x = - a n) as (x_in_seq). 
+    Obtain n according to (x_in_seq).
+    It holds that (x = - a n) as (x_eq).
+    By (Hbounded'') and ainK it holds that
+      (∀ n : ℕ, & m ≤ a n ≤  M) as (Hseq_bounded).  
+    Use n := n in (Hseq_bounded).
+    It holds that (& m ≤ a n ≤  M) as (Hseq_bounded_n). 
+    By (Hseq_bounded_n) it holds that ( m ≤ a n) as (Hseq_bounded_n'). 
+    By (x_eq) it holds that (- a n ≤ - m) as (Hseq_bounded_n''). 
+    By (Hseq_bounded_n'') it holds that (x ≤ - m) as (Hseq_bounded_n''').
+    We conclude that x ≤ - m.
+  }
+  By (bolzano_weierstrass a Hseq_upbounded Hseq_lowbounded) it holds that
+  (∃ phi : ℕ → ℕ, ∃ x : ℝ,
+    is_index_seq phi ∧ (fun k => a (phi k)) ⟶ x)
+  as (Hsubseq). 
+  Obtain phi according to (Hsubseq). 
+  It holds that (∃ x : ℝ, is_index_seq phi ∧  
+   (fun k => a (phi k)) ⟶ x) as (Hsubseq'). 
+  Obtain x according to (Hsubseq').
+  It holds that (is_index_seq phi) as (Hphi).
+  It holds that ((fun k => a (phi k)) ⟶ x) as (subseq_converges_to_x). 
+  By (closed_iff_contains_limit_points K) and (Hclosed) it holds that
+    (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x) as (K_limitpoint). 
+  Use x0 := x in (K_limitpoint).
+  It holds that
+   (∀ ε > 0, ∃ y ∈ K, 0 < |y - x| < ε) ⇨ K(x) as (K_limitpoint').
+  We claim that (K x) as (x_in_K).
+  {
+    We need to show that K x.
+    By classic it holds that
+   (∃ n : ℕ, a n = x) ∨ ¬(∃ n : ℕ, a n = x)
+    as (Hhit_or_not).
+   Either (∃ n : ℕ, a n = x) or (¬(∃ n : ℕ, a n = x)).
+  - Case (∃ n : ℕ, a n = x).
+    Obtain n according to (H).
+    It holds that (a n = x) as (Hn_eq_x).
+    By (ainK) it holds that (a n ∈ K) as (ainK_n). 
+    By (Hn_eq_x) and (ainK_n) it holds that (x ∈ K).
+    We conclude that K x.
+
+
+
+  - Case (¬(∃ n : ℕ, a n = x)).
+    We need to show that K x.
+    By (H) it holds that ( ∀ n : ℕ, a n ≠ x) as (Hnot_hit).
+    By (K_limitpoint') it suffices to show that
+      (∀ ε > 0, ∃ y ∈ K, 0 < |y - x| < ε).
+    Take ε > 0.
+    We need to show that ∃ y ∈ K, 0 < |y - x| < ε.
+    By (subseq_converges_to_x) it holds that
+    (∀ ε0 > 0, ∃ N1 ∈ ℕ,
+    ∀ n : ℕ, (n ≥ N1)%nat → |a (phi n) - x| < ε0)
+      as (Hconverges).
+    Use ε0 := ε in (Hconverges). {Indeed, ε > 0. }
+    It holds that ( ∃ N1 ∈ ℕ,
+    ∀ n : ℕ, (n ≥ N1)%nat → |a (phi n) - x| < ε) as (Hconverges'). 
+    Obtain N1 according to (Hconverges').
+    It holds that (∀ n : ℕ, (n ≥ N1)%nat → |a (phi n) - x| < ε)
+      as (Htail).
+    Use n := N1 in (Htail).
+    It holds that (N1 ≥ N1)%nat ⇨ |a(phi(N1)) - x| < ε.
+    It holds that (|a (phi N1) - x| < ε) as (Hconverges_). 
+    By ainK it holds that (a(phi(N1)) ∈ K) as (ainK_phi_N1). 
+    Use n := phi(N1) in (Hnot_hit).
+    It holds that (a(phi(N1)) ≠ x) as (Hnot_hit_phi_N1).  
+    Choose y := a(phi(N1)). {Indeed, a(phi(N1)) ∈ K. } 
+    We need to show that 0 < |a(phi(N1)) - x| < ε. 
+    By (Hnot_hit_phi_N1) it holds that (|a(phi(N1)) - x| > 0) 
+      as (Hnot_zero). 
+    By (Hnot_zero) and (Hconverges_) it holds that
+      (0 < |a(phi(N1)) - x| < ε). 
+    We conclude that 0 < |a(phi(N1)) - x| < ε.
+
+  } 
+  Choose phi0 := phi. 
+  Choose x0 := x.
+  We need to show that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ K x0 ∧
+    (fun k => a (phi0 k)) ⟶ x0.
+  It holds that (is_index_seq phi) as (Hphi0). 
+  By (Hphi0) it holds that (∀ n : ℕ, (phi n < phi (S n))%nat)  
+   as (Hphi0'). 
+  By (Hphi0') and (x_in_K) it holds that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ K x0 as (Hphi0_x0). 
+  By (Hphi0_x0) and (subseq_converges_to_x) it holds that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ K x0 ∧
+    (fun k => a (phi0 k)) ⟶ x0.
+  We conclude that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ K x0 ∧
+    (fun k => a (phi0 k)) ⟶ x0.
 
 Qed.
 (** Every compact set is closed.
