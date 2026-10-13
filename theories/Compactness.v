@@ -9,6 +9,7 @@ From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
 
+
 From Waterproof Require Export Notations.Common.
 From Waterproof Require Export Notations.Reals.
 From Waterproof Require Export Notations.Sets.
@@ -488,6 +489,158 @@ Proof.
     (fun k => a (phi0 k)) ⟶ x0.
 
 Qed.
+
+
+(** *Heine–Borel (open-cover form)*: a set [K ⊆ ℝ] is sequentially compact iff
+    every open cover of [K] has a finite subcover.
+
+    Proof idea: (⇐) if [K] were not sequentially compact, a sequence with no
+    convergent-in-[K] subsequence yields an open cover with no finite subcover.
+    (⇒) sequential compactness gives [K] closed and bounded; a Lebesgue-number
+    argument extracts a finite subcover from any open cover. *) 
+
+
+Definition every_open_cover_has_finite_subcover (K : ℝ → Prop) : Prop :=
+  forall (I : Type) (U : I → (ℝ → Prop)),
+    open_cover U K → has_finite_subcover U K.
+
+Definition centered_intervals (n : ℕ) : ℝ → Prop :=
+  fun x => & -1 * (INR n +1) < x < INR n + 1.
+
+(** The following is lemma to show that the maximum of a finite list is
+  actually attained. Coq only has upper bound lemmas for this statement.*)
+
+
+Lemma finite_subcover_implies_bounded (K : ℝ → Prop) :
+    every_open_cover_has_finite_subcover K →
+    K is _bounded_.
+Proof.
+  Assume that every_open_cover_has_finite_subcover K as (Hfinite_subcover). 
+  By (Hfinite_subcover) it holds that 
+    forall (I : Type) (U : I → (ℝ → Prop)),
+    open_cover U K → has_finite_subcover U K as (Kfinite_subcover). 
+    Use I := ℕ in (Kfinite_subcover). 
+    It holds that (∀ U : ℕ → (ℝ → Prop), 
+     open_cover U K → has_finite_subcover U K) as (Kfinite_subcover'). 
+    Use U := (fun n => centered_intervals n) in (Kfinite_subcover'). 
+    It holds that (open_cover (fun n => centered_intervals n) K →  
+     has_finite_subcover (fun n => centered_intervals n) K) 
+     as (Ufinite_subcover). 
+
+
+    We claim that (open_cover (fun n => centered_intervals n) K) as (Ucover). 
+    { We need to show that open_cover (fun n => centered_intervals n) K. 
+      We need to show that
+       (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
+       (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x)  .
+       We claim that (∀ i : ℕ, (centered_intervals i) is _open_) as (Hopen). 
+       { We need to show that
+         ∀ i : ℕ, (centered_intervals i) is _open_.
+         Take i : ℕ.  
+         By pos_INR it holds that 0 ≤ INR i as (Hi).
+         It holds that 0 < INR i + 1 as (Hradius).
+         It holds that (-1 * (INR i + 1) < INR i + 1) as (H1).
+         By (open_interval_is_open ( -1 * (INR i + 1)) (INR i + 1)(H1) ) it holds that
+           (centered_intervals i is _open_). 
+         We conclude that centered_intervals i is _open_.
+       } 
+       We claim that (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) 
+         as (Hcover). 
+       { We need to show that
+         ∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x.
+         Take x : ℝ. 
+         Assume that K x as (x_in_K).  
+
+         By (the Archimedean property) it holds that
+           (∃ n ∈ ℕ,  n > |x|) as (Harch). 
+         Obtain n according to (Harch). 
+         It holds that (n +1 > |x|) as (Harch_n). 
+         It holds that (& -1 * (INR n + 1) < x < INR n + 1)  
+          as (Harch'). 
+         Choose i := n. 
+         We need to show that centered_intervals i x. 
+         By (Harch') it holds that centered_intervals n x. 
+         We conclude that centered_intervals i x.
+       }
+      By (Hcover) and (Hopen) it holds that
+        (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
+        (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) as (Ucover'). 
+      We conclude that 
+       (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
+        (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
+    }
+By (Ucover) and (Ufinite_subcover) it holds that
+  (has_finite_subcover (fun n => centered_intervals n) K) as (Hfinite). 
+By (Hfinite) it holds that
+  (∃ I0 : list ℕ, ∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
+  as (Hfinite').
+Obtain I0 according to (Hfinite').
+It holds that (∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
+  as (Hfinite_cover). 
+We claim that ( ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M))) as (Hbounded). 
+{ We need to show that
+  ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)).
+  Choose m := -1 * (INR (fold_right max 0%nat I0) + 1). 
+  Choose M := INR (fold_right max 0%nat I0) + 1. 
+  We need to show that
+    ∀ x : ℝ, K x → (& m ≤ x ≤ M).
+  Take x : ℝ.  
+  
+  We claim that (forall i0 : ℕ, In i0 I0 →  
+   INR(fold_right max 0%nat I0) ≥ INR i0) as (Hmax). 
+  { We need to show that
+   forall i0 : ℕ, In i0 I0 → INR(fold_right max 0%nat I0) ≥ INR i0.
+    Take i0 : ℕ. 
+    Assume that In i0 I0 as (i0_in_I0).
+    We need to show that INR(fold_right max 0%nat I0) ≥ INR i0. 
+    
+    By (fold_right_max_geq I0 0%nat i0) it holds that
+      (fold_right max 0%nat I0 ≥ i0)%nat as (Hmax'). 
+    By (Hmax') it holds that (INR(fold_right max 0%nat I0) ≥ INR i0) as (Hmax''). 
+    We conclude that INR(fold_right max 0%nat I0) ≥ INR i0.
+
+  }
+  Assume that K x as (x_in_K). 
+  By (Hfinite_cover) it holds that
+    (∃ i : ℕ, In i I0 ∧ centered_intervals i x) as (Hcover_x). 
+  Obtain i according to (Hcover_x).
+  It holds that (In i I0 ∧ centered_intervals i x) as (Hcover_x'). 
+  By (Hcover_x') it holds that centered_intervals i x as (x_in_interval).
+   unfold centered_intervals in x_in_interval.
+    (* Waterproof had issues unfolding the definition of centered_intervals**)
+  By (x_in_interval) it holds that
+    (& -1 * (INR i + 1) < x < INR i + 1) as (x_bounds). 
+
+   It holds that
+    (i ≤ fold_right max 0%nat I0)%nat as (i_le_max).  
+    By (i_le_max)  it holds that 
+    (-1 * (INR (fold_right max 0%nat I0) + 1) <= -1 * (INR i + 1)) 
+     as (lower_bound). 
+    By (i_le_max) it holds that (INR i + 1 <= INR (fold_right max 0%nat I0) + 1) 
+     as (upper_bound). 
+  By (lower_bound) and (x_bounds) it holds that
+    ( -1 * (INR(fold_right max 0%nat I0) + 1) < x) as (x_lower_bound). 
+    By (upper_bound) and (x_bounds) it holds that
+    (x < INR(fold_right max 0%nat I0) + 1) as (x_upper_bound). 
+  
+  By (x_upper_bound) and (x_lower_bound) it holds that
+    (& -1 * (INR(fold_right max 0%nat I0) + 1) < x < INR(fold_right max 0%nat I0) + 1)
+    as (x_bounds'). 
+  By (x_bounds') we conclude that (& m ≤ x ≤ M).
+
+}
+By (Hbounded) it holds that (K is _bounded_). 
+We conclude that K is bounded.
+Qed.
+
+
+
+Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
+    sequentially_compact K ⇔
+    (forall (I : Type) (U : I → (ℝ → Prop)),
+        open_cover U K → has_finite_subcover U K).
+Proof.
+  Admitted.
 (** Every compact set is closed.
 
     Proof idea: if [x] is a limit point of [K], take a sequence in [K] converging
@@ -548,20 +701,7 @@ Proof.
 
 
 
-(** *Heine–Borel (open-cover form)*: a set [K ⊆ ℝ] is sequentially compact iff
-    every open cover of [K] has a finite subcover.
 
-    Proof idea: (⇐) if [K] were not sequentially compact, a sequence with no
-    convergent-in-[K] subsequence yields an open cover with no finite subcover.
-    (⇒) sequential compactness gives [K] closed and bounded; a Lebesgue-number
-    argument extracts a finite subcover from any open cover. *)
-
-Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
-    sequentially_compact K ⇔
-    (forall (I : Type) (U : I → (ℝ → Prop)),
-        open_cover U K → has_finite_subcover U K).
-Proof.
-  Admitted.
 
 (** ** Nested compact sets *)
 

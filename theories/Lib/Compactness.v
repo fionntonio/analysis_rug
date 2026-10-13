@@ -7,6 +7,7 @@ From Stdlib Require Import Classical_Pred_Type.
 From Stdlib Require Import Lra.
 
 From Stdlib Require Import Reals.Reals.
+From Stdlib Require Import Lists.List.
 
 From Waterproof Require Import Tactics.
 From Waterproof Require Import Automation.
@@ -77,6 +78,20 @@ Definition is_compact (A : subset ℝ) : Prop := compact A.
 
 Notation "A 'is' '_compact_'" := (is_compact A) (at level 69).
 Notation "A 'is' 'compact'" := (is_compact A) (at level 69, only parsing).
+
+
+
+Lemma fold_right_max_geq (l : list ℕ) (d x : ℕ) :
+    In x l → (x ≤ fold_right Nat.max d l)%nat.
+Proof.
+  induction l as [| a l IH]; simpl.
+  - intros [].                      (* In x [] is False *)
+  - intros [-> | Hin].
+    + apply Nat.le_max_l.           (* x <= max x (fold_right ...) *)
+    + etransitivity.
+      * apply IH, Hin.              (* x <= fold_right Nat.max d l *)
+      * apply Nat.le_max_r.         (* ... <= max a (fold_right ...) *)
+Qed.
 
 (** [a, b] is compact. *)
 Lemma closed_interval_is_compact (a b : ℝ) :
