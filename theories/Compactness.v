@@ -52,6 +52,8 @@ Definition has_finite_subcover {I : Type} (U : I → (ℝ → Prop)) (K : ℝ �
     : Prop :=
     ∃ l : list I, ∀ x : ℝ, K x → ∃ i : I, In i l ∧ U i x. 
 
+
+
 (** ** Closed intervals are compact *)
 
 (** Every closed bounded interval is compact (Heine-Borel, one direction).
@@ -491,6 +493,7 @@ Proof.
 Qed.
 
 
+
 (** *Heine–Borel (open-cover form)*: a set [K ⊆ ℝ] is sequentially compact iff
     every open cover of [K] has a finite subcover.
 
@@ -507,8 +510,12 @@ Definition every_open_cover_has_finite_subcover (K : ℝ → Prop) : Prop :=
 Definition centered_intervals (n : ℕ) : ℝ → Prop :=
   fun x => & -1 * (INR n +1) < x < INR n + 1.
 
-(** The following is lemma to show that the maximum of a finite list is
-  actually attained. Coq only has upper bound lemmas for this statement.*)
+
+
+
+(** Proof idea: Construct an open cover using open sets (-n,n) 
+    then derive a finite subcover and use the maximum index of this
+    to find a bound on K.*)
 
 
 Lemma finite_subcover_implies_bounded (K : ℝ → Prop) :
@@ -540,7 +547,8 @@ Proof.
          By pos_INR it holds that 0 ≤ INR i as (Hi).
          It holds that 0 < INR i + 1 as (Hradius).
          It holds that (-1 * (INR i + 1) < INR i + 1) as (H1).
-         By (open_interval_is_open ( -1 * (INR i + 1)) (INR i + 1)(H1) ) it holds that
+         By (open_interval_is_open ( -1 * (INR i + 1)) (INR i + 1)(H1) ) 
+           it holds that
            (centered_intervals i is _open_). 
          We conclude that centered_intervals i is _open_.
        } 
@@ -629,10 +637,253 @@ We claim that ( ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M
   By (x_bounds') we conclude that (& m ≤ x ≤ M).
 
 }
-By (Hbounded) it holds that (K is _bounded_). 
-We conclude that K is bounded.
+ 
+By (Hbounded) we conclude that K is bounded.
 Qed.
 
+(** The following definitions are necessary for converting a subset K into
+     an index over which we can create an open cover. This makes the entire 
+     syntax of the proof increadibly convoluted and hard to follow and we must 
+     repeatedly pass  x ∈ K as both an element of an index and a real number 
+      in K. *)
+
+
+Definition K_index (K : ℝ → Prop) : Type :=
+  @sig ℝ (fun y : ℝ => K y). 
+
+
+
+Definition K_point (K : ℝ → Prop) (i : K_index K) : ℝ :=
+  @proj1_sig ℝ (fun y : ℝ => K y) i.
+
+Definition half_ball (a y : ℝ) : ℝ → Prop :=
+  fun z => y -( Rabs (y - a) / 2) < z < y + (Rabs (y - a) / 2). 
+
+
+Definition K_to_half_ball (K : ℝ → Prop) (a : ℝ)
+    : K_index K → ℝ → Prop :=
+  fun i => half_ball a (K_point K i). 
+
+Definition make_K_index (K : ℝ → Prop) (y : ℝ) (Hy : K y) : K_index K :=
+  @exist ℝ (fun z : ℝ => K z) y Hy. 
+
+
+(** Proof Strategy: Follows the exact same lines as Theorem 3.3.8 in Abbot. 
+   Assume K not closed, meaning it has a limit point x not in K. Define an open cover
+   relative to x and derive a contradiction from the properties of said cover.   *)
+
+Lemma finite_subcover_implies_closed (K : ℝ → Prop) :
+    every_open_cover_has_finite_subcover K →
+    K is _closed_.
+Proof.
+We argue by contradiction.
+Assume that
+  ¬ (every_open_cover_has_finite_subcover K ⇨ 
+   K is closed) as (Kcon).  
+  By (Kcon) it holds that
+    every_open_cover_has_finite_subcover K ∧  
+     ¬(K is closed) as (Hfinite_notclosed). 
+  By (Hfinite_notclosed) it holds that every_open_cover_has_finite_subcover K
+    as (Kfinite). 
+  By (Hfinite_notclosed) it holds that ¬(K is closed) as (Knot_closed). 
+  We claim that
+    ¬((∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x)) as (Knot_closed'). 
+    { We need to show that
+      ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x). 
+      By (closed_iff_contains_limit_points K) it holds that
+        (K is closed ⇔ ∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x)
+        as (Kclosed_iff). 
+      By (Kclosed_iff) and (Knot_closed) it holds that
+          ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x)
+          as (Knot_closed'). 
+      We conclude that ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x).
+    }
+  By (Knot_closed') it holds that (∃ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε)   
+   ∧ ¬(K x)) as (Klim). 
+  Obtain x according to (Klim). 
+  It holds that ((∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε)   
+   ∧ ¬(K x)) as (xlimK). 
+ By (xlimK) it holds that ((∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε)) as (xball).  
+ By (xlimK) it holds that (¬(K x)) as (Knotx).
+ By (Kfinite) it holds that ( forall (I : Type) (U : I → (ℝ → Prop)),
+    open_cover U K → has_finite_subcover U K) as (finite_subK). 
+  Use I := K_index(K) in (finite_subK).  
+  It holds that
+  (∀ U : K_index K → (ℝ → Prop),
+    open_cover U K → has_finite_subcover U K) as (Icover). 
+
+  (** I have to convert K into a type and then each element of 
+    the type K into a real number again using proj1_sig*) 
+  Use U := (K_to_half_ball K x)  
+   in (Icover).  
+  It holds that
+  (open_cover (K_to_half_ball K x) K →
+   has_finite_subcover (K_to_half_ball K x) K)
+  as (Uhasfinite). 
+  We claim that (∀ i : K_index(K), K_point K i ≠ x  ) as (xnotK).
+   {Take i : K_index(K). 
+    We argue by contradiction. 
+    Assume that (¬ (K_point K i ≠ x )). 
+    It holds that (K_point K i = x) as (equalx). 
+    We claim that (K (K_point K i)) as (IinK). 
+    {unfold K_point.
+     exact (@proj2_sig ℝ (fun y : ℝ => K y) i).
+    }
+    By (equalx) and (IinK) it holds that (K(x)) as (Kinx) .
+    Contradiction. 
+  }
+
+  We claim that open_cover (K_to_half_ball K x) K as (Uopencover).
+ 
+     { We need to show that open_cover (K_to_half_ball K x) K. 
+     unfold open_cover. 
+     We claim that (∀ i, K_to_half_ball(K, x, i) is _open_) as (openU). 
+     { We need to show that ∀ i : K_index K, (K_to_half_ball K x i) is _open_. 
+     Take i : K_index(K).
+     Use i := i in (xnotK).
+     It holds that K_point K i ≠ x as (xnotI). 
+     By (neq_implies_abs_pos(K_point K i)(x) (xnotI)) it holds that 
+      (0 < | x - K_point K i |) as (diffpos). 
+     By (diffpos) it holds that 
+      (Rabs(x - K_point K i) > 0) as (diffpos2).
+     By (diffpos2) it holds that ((K_point K i - Rabs (K_point K i - x) / 2) 
+     < (K_point K i + Rabs (K_point K i - x) / 2)) as 
+     (Hab).
+     By (open_interval_is_open (K_point K i - Rabs (K_point K i - x) / 2)  
+      (K_point K i + Rabs (K_point K i - x) / 2) (Hab)) it holds that
+      (K_to_half_ball(K, x, i) is open). 
+      We conclude that (K_to_half_ball(K, x, i) is open).
+     }
+
+    We claim that (∀ x0, K(x0) ⇨ ∃ i, K_to_half_ball(K, x, i, x0)) as (U_iscover).
+    {Take x0 : ℝ. 
+     Assume that K x0 as (xincluded). 
+     Choose i := make_K_index K x0 xincluded. 
+     We claim that (K_point K (make_K_index K x0 xincluded) = x0) as (xisx).
+     {unfold K_point, make_K_index. 
+     reflexivity.
+     }
+     We need to show that (x0 ∈ half_ball x (K_point K i)). 
+     We need to show that (x0 ∈ half_ball x (x0)).  
+     It holds that x0 ≠ x as (x0notx).
+     By (x0notx) it holds that (& x0 -( Rabs (x0 - x) / 2) < x0 <  
+      x0 + (Rabs (x0 - x) / 2)) as (x0ball). 
+    We conclude that (x0 ∈ half_ball x (x0)).
+    }
+    We conclude that ((∀ i, K_to_half_ball(K, x, i) is _open_)
+     ∧ (∀ x0, K(x0) ⇨ ∃ i, 
+      K_to_half_ball(K, x, i, x0))).
+     }
+
+By (Uhasfinite) and (Uopencover) it holds that 
+ (has_finite_subcover (K_to_half_ball K x) K) as (Ufinitecover). 
+ By (Ufinitecover) it holds that (∃ l : list (K_index(K)),  
+  ∀ y : ℝ, K y → ∃ i : K_index(K), 
+   In i l ∧ (K_to_half_ball K x i) y)
+   as (finite_cover).  
+  Obtain l according to (finite_cover).
+  It holds that (∀ y : ℝ, K y → ∃ i : K_index(K), 
+   In i l ∧ (K_to_half_ball K x i) y) as (lcover). 
+  We claim that (l ≠ nil) as (lnonempty). 
+  {By (xball) it holds that
+    (∃ y ∈ K, 0 < Rabs (y - x) < 1) as (yexists).
+  Obtain y according to (yexists).
+  It holds that y ∈ K as (yinK).
+
+  By (lcover) and (yinK) it holds that
+    (∃ i : K_index K,
+      In i l ∧ (K_to_half_ball K x i) y) as (iinlist).
+  Obtain i according to (iinlist).
+  It holds that In i l as (iinl).
+
+  Assume that l = nil as (Hnil). 
+
+  By (Hnil) it holds that In i nil as (inil).
+  Contradiction.
+
+  }
+  We claim that ( ∃ i : K_index K,
+    In i l ∧ ∀ j : K_index K, In j l →
+    Rabs (K_point K i - x) ≤ Rabs (K_point K j - x))  
+    as (minrad). 
+
+   {By (list_has_min (K_index K) (fun i => Rabs (K_point K i - x)) l) 
+     we conclude that (∃ i : K_index K,
+    In i l ∧ ∀ j : K_index K, In j l →
+    Rabs (K_point K i - x) ≤ Rabs (K_point K j - x)).
+
+   }
+ Obtain i according to (minrad).
+ It holds that ( In i l ∧ ∀ j : K_index K, In j l →
+    Rabs (K_point K i - x) ≤ Rabs (K_point K j - x)) as (Imin). 
+
+ Use ε := ( Rabs (K_point K i - x)) / 4 in (xball). 
+   {We need to verify that Rabs (K_point K i - x) / 4 > 0.  
+    It holds that K_point K i ≠ x as (inotx). 
+    By (neq_implies_abs_pos(K_point K i)(x) (inotx)) it holds that 
+      (0 < | x - K_point K i |) as (diffpos). 
+     By (diffpos) it holds that 
+      (Rabs(x - K_point K i) > 0) as (diffpos2).  
+      We conclude that Rabs (K_point K i - x) / 4 > 0. } 
+  It holds that ∃ y ∈ K,
+    0 < |y - x| < |K_point(K, i) - x| / 4 as (ytight).
+  Obtain y according to (ytight).
+  We claim that (¬(K y)) as (ContY).
+  {It holds that (& 0 < |y - x| < |K_point(K, i) - x| / 4) as (ybound).
+    We argue by contradiction.
+    Assume that ¬ (¬ K y) as (Hny).
+    By NNPP it holds that K y as (Hy).
+    By (lcover) and Hy it holds that
+      (∃ j : K_index K,
+        In j l ∧ (K_to_half_ball K x j) y) as (covered_y).
+    Obtain j according to (covered_y).
+    It holds that In j l as (Hjl).
+    It holds that (K_to_half_ball K x j) y as (Hyj).
+
+    By (Imin) it holds that
+      (∀ j : K_index K, In j l →
+        Rabs (K_point K i - x) ≤ Rabs (K_point K j - x)) as (Hmin).
+    By (Hmin) and Hjl it holds that
+      (Rabs (K_point K i - x) ≤ Rabs (K_point K j - x)) as (Hijd).
+    It holds that
+      (K_point K j - Rabs (K_point K j - x) / 2 < y <
+       K_point K j + Rabs (K_point K j - x) / 2) as (Hyinterval).
+    It holds that
+      (- (Rabs (K_point K j - x) / 2) ≤ K_point K j - y ∧
+       K_point K j - y ≤ Rabs (K_point K j - x) / 2) as (Hcenterbounds).
+    By Rabs_le it holds that
+      (Rabs (K_point K j - y) ≤ Rabs (K_point K j - x) / 2) as (Hyjdist).
+    It holds that
+      (0 < Rabs (K_point K j - x)) as (Hjpos).
+    It holds that
+      (0 < Rabs (K_point K i - x)) as (Hipos).
+    It holds that
+      (Rabs (y - x) < Rabs (K_point K i - x) / 4) as (Hytight).
+    It holds that
+      (Rabs (y - x) < Rabs (K_point K j - x) / 4) as (Hytightj).
+    By Rabs_triang it holds that
+      (Rabs ((K_point K j - y) + (y - x)) ≤
+       Rabs (K_point K j - y) + Rabs (y - x)) as (Htriangle).
+    It holds that
+      ((K_point K j - y) + (y - x) = K_point K j - x) as (Hsum).
+    It holds that
+      (Rabs (K_point K j - x) ≤
+       Rabs (K_point K j - y) + Rabs (y - x)) as (Htriangle').
+    It holds that
+      (Rabs (K_point K j - x) ≤
+       Rabs (K_point K j - x) / 2 +
+       Rabs (K_point K j - x) / 4) as (Hbound).
+    By (Hjpos) it holds that
+      (Rabs (K_point K j - x) / 2 +
+       Rabs (K_point K j - x) / 4 <
+       Rabs (K_point K j - x)) as (Hstrict).
+    By (Hbound) and Hstrict we conclude that False.
+  
+
+   } 
+   Contradiction.
+
+Qed.
 
 
 Theorem compact_iff_finite_subcover (K : ℝ → Prop) :

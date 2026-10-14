@@ -79,7 +79,8 @@ Definition is_compact (A : subset ℝ) : Prop := compact A.
 Notation "A 'is' '_compact_'" := (is_compact A) (at level 69).
 Notation "A 'is' 'compact'" := (is_compact A) (at level 69, only parsing).
 
-
+(** The following is lemma to show that the maximum of a finite list is
+  actually attained. Coq only has upper bound lemmas for this statement.*)
 
 Lemma fold_right_max_geq (l : list ℕ) (d x : ℕ) :
     In x l → (x ≤ fold_right Nat.max d l)%nat.
@@ -91,6 +92,45 @@ Proof.
     + etransitivity.
       * apply IH, Hin.              (* x <= fold_right Nat.max d l *)
       * apply Nat.le_max_r.         (* ... <= max a (fold_right ...) *)
+Qed.
+
+
+
+Lemma list_has_min (A : Type) (f : A -> R) (xs : list A) :
+  xs <> nil ->
+  exists a, In a xs /\ forall b, In b xs -> f a <= f b.
+Proof.
+  induction xs as [| x tail IH]; simpl.
+  - exact (fun H => False_rect _ (H eq_refl)).
+  - destruct tail as [| y ys].
+    + exists x. split.
+      * simpl. left. reflexivity.
+      * intros b Hb.
+        simpl in Hb.
+        destruct Hb as [Hb | Hfalse].
+        -- subst b. apply Rle_refl.
+        -- Contradiction.
+    + destruct (IH ltac:(discriminate)) as [m [Hm Hmin]].
+      (* Use Ltac1 to split the real-order sumbool. *)
+      ltac1:(destruct (Rle_dec (f x) (f m)) as [Hxm | Hxm]).
+      * exists x. split.
+        -- simpl. left. reflexivity.
+        -- intros b Hb.
+           simpl in Hb.
+           destruct Hb as [Hb | Hb].
+           ++ subst b. apply Rle_refl.
+           ++ eapply Rle_trans.
+              ** exact Hxm.
+              ** apply Hmin. exact Hb.
+      * ltac1:(assert (Hmx : f m <= f x) by
+          (apply Rlt_le; apply Rnot_le_lt; exact Hxm)).
+        exists m. split.
+        -- simpl. right. exact Hm.
+        -- intros b Hb.
+           simpl in Hb.
+           destruct Hb as [Hb | Hb].
+           ++ subst b. exact Hmx.
+           ++ apply Hmin. exact Hb.
 Qed.
 
 (** [a, b] is compact. *)
