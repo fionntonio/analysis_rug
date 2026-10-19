@@ -885,6 +885,225 @@ By (Uhasfinite) and (Uopencover) it holds that
 
 Qed.
 
+Definition shifted_seq (a : ℕ → ℝ) (n : ℕ) : ℕ → ℝ :=
+  fun k => a ((n + k)%nat). 
+
+
+
+Definition shifted_n (a : ℕ → ℕ) (n : ℕ) : ℕ → ℕ := 
+fun k => (n + a(k))%nat.
+
+(**Proof strategy: The same as followed in the lecture. 
+   Create a sequence picking an element in each of the sets. 
+   By compactness of the largest set it must have a limit point 
+   and then use the nested nature of the sets to show that the limit 
+   must be in all of the sets.*)
+
+
+Theorem nested_compact_intersection_nonempty
+    (K : ℕ → (ℝ → Prop))
+    (HK_nonempty : ∀ n : ℕ, ∃ x : ℝ, K n x)
+    (HK_compact  : ∀ n : ℕ, sequentially_compact (K n))
+    (HK_nested   : ∀ n ∈ ℕ, ∀ m ∈ ℕ, (m ≤ n)%nat → ∀ x ∈ ℝ, K n x → K m x) :
+    ∃ x : ℝ, ∀ n : ℕ, K n x.
+Proof.
+By (countable_choice(K)(HK_nonempty)) it holds that
+ (∃ f : ℕ → ℝ, ∀ n : ℕ, K n (f n)) as (Nested_seq). 
+ Obtain f0 according to (Nested_seq). 
+ By (HK_compact) it holds that (sequentially_compact(K 0%nat))
+ as (K0_compact).  
+ We claim that (∀ n : ℕ, K 0%nat (f0 n)) as (f_inK0). 
+ {Take n : ℕ. 
+ Use n0 := n in (_H). 
+ It holds that (K(n, f0(n))) as (fn_inK). 
+ It holds that (0 <= n)%nat as (nsmall). 
+ Use n := n in (HK_nested). { Indeed, n ∈ ℕ. }
+ It holds that (∀ m ∈ ℕ, (m ≤ n)%nat → ∀ x ∈ ℝ,  
+   K n x → K m x) as (Nest). 
+ Use m := 0%nat in (Nest) . 
+   { Indeed, 0%nat ∈ ℕ. } 
+  It holds that ((0 ≤ n)%nat → ∀ x ∈ ℝ,  
+   K n x → K 0%nat x) as (mbig). 
+   By (mbig) and (nsmall) it holds that (∀ x ∈ ℝ,  
+   K n x → K 0%nat x) as (Nested). 
+   Use x := f0(n) in (Nested). 
+    { Indeed, f0(n) ∈ ℝ. } 
+  It holds that K(n, f0(n)) ⇨ K(0%nat, f0(n)). 
+  We conclude that (K(0%nat, f0(n))).
+
+ }
+ By (K0_compact(f0)(f_inK0)) it holds that (∃ phi : ℕ → ℕ, ∃ x : ℝ,
+        (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K 0%nat (x) ∧
+        (fun k => f0 (phi k)) ⟶ x) as (Subcon). 
+ Obtain phi according to (Subcon). 
+ Obtain x according to (_H0). 
+ We claim that (∀ n : ℕ, K n (x)) as (x_nested). 
+ {
+ It holds that (∀ k : ℕ, (phi k < phi (S k))%nat) as (Hphi_strict).
+ We claim that (is_index_seq phi) as (Hphi).
+ {
+   We need to show that ∀ k ∈ ℕ, (phi k < phi (S k))%nat.
+   Take k ∈ ℕ.
+   Use k := k in (Hphi_strict).
+   It holds that (phi k < phi (S k))%nat.
+   We conclude that (phi k < phi (S k))%nat.
+ }
+ Take n : ℕ.
+ By index_seq_grows_0 it holds that (phi n ≥ n)%nat.
+ It holds that (n ≤ phi n)%nat. 
+ Use n0 := phi n in (_H). 
+ It holds that K(phi(n), f0(phi(n))). 
+ Use n := phi n in (HK_compact). 
+ It holds that sequentially_compact(K(phi(n))). 
+We claim that
+  (∀ k : ℕ, K (phi n) ((shifted_seq (fun j : ℕ => f0 (phi j)) n) k))
+  as (tail_nest).
+  { Take k : ℕ. 
+  Use n0 := phi((n + k)%nat) in (_H). 
+  It holds that K(phi((n + k)%nat),  
+  f0(phi((n + k)%nat))) as (shift_in). 
+  Use n0 := phi((n + k)%nat) in (HK_nested). 
+    { Indeed, phi((n + k)%nat) ∈ ℕ. } 
+  It holds that ∀ m ∈ ℕ, (m ≤ phi(n + k))%nat
+      ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0) 
+       ⇨ K(m, x0) as (phi_nest). 
+  Use m := phi(n) in (phi_nest).  
+     { Indeed, phi(n) ∈ ℕ. }
+  It holds that (phi(n) ≤ phi(n + k))%nat
+      ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0)  
+       ⇨ K(phi(n), x0) as (phiseq). 
+ Since (is_index_seq phi) it holds that
+  (∀ j ∈ ℕ, (phi j < phi (S j))%nat) as (Hphi_strict1).
+
+We claim that (∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat) as (Hphi_mono).
+{
+  We use induction on k0.
+  + We first show the base case (phi(n) ≤ phi(n + 0))%nat.
+   It holds that (n + 0)%nat = n.
+   It holds that (phi n = phi(n + 0))%nat.
+    By (_H6) we conclude that (phi n ≤ phi (n + 0))%nat.
+
+  + We now show the induction step.
+   Take k0 : ℕ.
+    Assume that (phi n ≤ phi (n + k0))%nat as (IH).
+    Use j := (n + k0)%nat in (Hphi_strict).
+  
+    It holds that (phi (n + k0) < phi (S (n + k0)))%nat.
+    It holds that
+      (& phi n ≤ phi (n + k0) < phi (S (n + k0)))%nat. 
+      It holds that (phi n <= phi (S (n + k0)))%nat.
+    It holds that (S (n + k0) = (n + S k0))%nat. 
+    It holds that (S k0 = k0 + 1)%nat.
+    We conclude that (phi n ≤ phi (n + (k0 + 1)))%nat.
+} 
+ Use k0 := k in (Hphi_mono). 
+ It holds that (phi(n) ≤ phi(n + k))%nat. 
+ It holds that (∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0)  
+       ⇨ K(phi(n), x0)) as (LastNest). 
+ Use x0 := f0(phi((n + k)%nat)) in (LastNest).
+   { Indeed, f0(phi((n + k)%nat)) ∈ ℝ. } 
+ It holds that K(phi((n + k)%nat), f0(phi((n + k)%nat)))
+    ⇨ K(phi(n), f0(phi((n + k)%nat))) as (fandphi).
+ By (fandphi) and (shift_in) it holds that 
+   (K(phi(n), f0(phi((n + k)%nat)))) as (shifted_in).
+ By (shifted_in) we conclude that (K (phi n) 
+ ((shifted_seq (fun j : ℕ => f0 (phi j)) n) k)).
+  }
+ Use n := phi(n) in (HK_compact).
+ It holds that sequentially_compact(K(phi(n))) as (SeqK).
+By SeqK it holds that
+  (∀ a : ℕ → ℝ,
+    (∀ k : ℕ, a k ∈ K (phi n)) →
+    ∃ psi : ℕ → ℕ, ∃ y : ℝ,
+      (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
+      K (phi n) y ∧  (fun k => a (psi k)) ⟶ y)
+  as (SeqK_forall).
+  Use a := (shifted_seq (fun j : ℕ => f0 (phi j)) n)
+  in (SeqK_forall). 
+  It holds that ((∀ k : ℕ, (shifted_seq (fun j : ℕ => f0 (phi j)) n) k ∈ K 
+    (phi n)) →
+    ∃ psi : ℕ → ℕ, ∃ y : ℝ,
+      (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
+      K (phi n) y ∧  (fun k => (shifted_seq  
+       (fun j : ℕ => f0 (phi j)) n) (psi k)) ⟶ y) as (long).
+  By (long(tail_nest)) it holds that ( ∃ psi : ℕ → ℕ, ∃ y : ℝ,
+      (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
+      K (phi n) y ∧  (fun k => (shifted_seq  
+       (fun j : ℕ => f0 (phi j)) n) (psi k)) ⟶ y) as (new_sub).  
+  Obtain psi according to (new_sub). 
+  Obtain y according to (_H6). 
+  It holds that
+  (∀ k : ℕ, (psi k < psi (S k))%nat)
+  as (psi_strict).
+  We claim that (is_index_seq (shifted_n psi n)) as (another_sub).
+{
+  We need to show that
+    ∀ k ∈ ℕ,
+      (shifted_n psi n k < shifted_n psi n (S k))%nat.
+  Take k ∈ ℕ.
+  Use k := k in (psi_strict).
+  It holds that (psi k < psi (S k))%nat.
+  It holds that
+    ((n + psi k)%nat < (n + psi (S k))%nat).
+  We conclude that
+    (shifted_n psi n k < shifted_n psi n (S k))%nat.
+}
+We claim that
+  (∀ k : ℕ,
+    (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)
+    = f0 (phi (shifted_n psi n k)))
+  as (same_sub). 
+{
+  Take k : ℕ.
+  It holds that
+    (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)
+    = f0 (phi ((n + psi k)%nat)).
+  It holds that (shifted_n psi n k = (n + psi k)%nat).
+  We conclude that
+    (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)
+    = f0 (phi (shifted_n psi n k)).
+}
+
+  We claim that (y = x) as (equality). 
+  {
+  By (subseq_converges
+    (fun j : ℕ => f0 (phi j))
+    (shifted_n psi n) x _H1 another_sub) it holds that
+    ((fun k : ℕ => f0 (phi (shifted_n psi n k))) ⟶ x)
+    as (subseq_to_x).
+  It holds that
+    ((fun k : ℕ =>
+      (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)) ⟶ y)
+    as (subseq_to_y).
+  By (limit_unique
+    (fun k : ℕ =>
+      (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k))
+    y x subseq_to_y subseq_to_x) it holds that (y = x). 
+  We conclude that (y = x).
+} 
+It holds that (K(phi(n), x)) as (Halfway_there).
+Use n := phi(n) in (HK_nested). 
+{ Indeed, phi(n) ∈ ℕ. } 
+It holds that ∀ m ∈ ℕ,
+  (m ≤ phi(n))%nat ⇨ ∀ x0 ∈ ℝ, K(phi(n), x0) ⇨ K(m, x0) as (last_time).
+Use m := n in (last_time).
+   { Indeed, n ∈ ℕ. }
+It holds that (n ≤ phi(n))%nat ⇨ ∀ x0 ∈ ℝ, 
+ K(phi(n), x0) ⇨ K(n, x0). 
+ It holds that (∀ x0 ∈ ℝ, 
+ K(phi(n), x0) ⇨ K(n, x0)) as (one_more). 
+ Use x0 := x in (one_more). 
+   { Indeed, x ∈ ℝ. } 
+  It holds that K(phi(n), x) ⇨ K(n, x).
+  We conclude that K(n, x).
+ 
+ }
+ Choose x0 := x.
+ By (x_nested) we conclude that 
+   (∀ n, K(n, x0)).
+  
+Qed.
+
 
 Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
     sequentially_compact K ⇔
@@ -962,11 +1181,3 @@ Proof.
     [xₙ ∈ Kₙ], compactness of [K₀] gives a subsequence converging to some [x];
     since each [Kₙ] is closed and eventually contains the tail of the
     subsequence, [x ∈ Kₙ] for every [n]. *)
-Theorem nested_compact_intersection_nonempty
-    (K : ℕ → (ℝ → Prop))
-    (HK_nonempty : ∀ n : ℕ, ∃ x : ℝ, K n x)
-    (HK_compact  : ∀ n : ℕ, (K n) is _compact_)
-    (HK_nested   : ∀ n ∈ ℕ, ∀ m ∈ ℕ, (n ≤ m)%nat → ∀ x ∈ ℝ, K m x → K n x) :
-    ∃ x : ℝ, ∀ n : ℕ, K n x.
-Proof.
-  Admitted.
