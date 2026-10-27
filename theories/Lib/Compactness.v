@@ -95,6 +95,8 @@ Proof.
 Qed.
 
 
+(** This Lemma allows us to state that for a finite list, any function on said list 
+    will attain it's minimum*)
 
 Lemma list_has_min (A : Type) (f : A -> R) (xs : list A) :
   xs <> nil ->
@@ -132,6 +134,9 @@ Proof.
            ++ subst b. exact Hmx.
            ++ apply Hmin. exact Hb.
 Qed.
+
+
+
 
 (** [a, b] is compact. *)
 Lemma closed_interval_is_compact (a b : ℝ) :

@@ -514,7 +514,7 @@ Definition centered_intervals (n : ℕ) : ℝ → Prop :=
 
 
 
-(** Proof idea: Construct an open cover using open sets (-n,n) 
+(** Proof Strategy: Construct an open cover using open sets (-n,n) 
     then derive a finite subcover and use the maximum index of this
     to find a bound on K.*)
 
@@ -523,123 +523,135 @@ Lemma finite_subcover_implies_bounded (K : ℝ → Prop) :
     every_open_cover_has_finite_subcover K →
     K is _bounded_.
 Proof.
-  Assume that every_open_cover_has_finite_subcover K as (Hfinite_subcover). 
-  By (Hfinite_subcover) it holds that 
+  Assume that every_open_cover_has_finite_subcover K as (Hfinite_subcover).
+  By (Hfinite_subcover) it holds that
     forall (I : Type) (U : I → (ℝ → Prop)),
-    open_cover U K → has_finite_subcover U K as (Kfinite_subcover). 
-    Use I := ℕ in (Kfinite_subcover). 
-    It holds that (∀ U : ℕ → (ℝ → Prop), 
-     open_cover U K → has_finite_subcover U K) as (Kfinite_subcover'). 
-    Use U := (fun n => centered_intervals n) in (Kfinite_subcover'). 
-    It holds that (open_cover (fun n => centered_intervals n) K →  
-     has_finite_subcover (fun n => centered_intervals n) K) 
-     as (Ufinite_subcover). 
-
-
-    We claim that (open_cover (fun n => centered_intervals n) K) as (Ucover). 
-    { We need to show that open_cover (fun n => centered_intervals n) K. 
-      We need to show that
-       (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
-       (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x)  .
-       We claim that (∀ i : ℕ, (centered_intervals i) is _open_) as (Hopen). 
-       { We need to show that
-         ∀ i : ℕ, (centered_intervals i) is _open_.
-         Take i : ℕ.  
-         By pos_INR it holds that 0 ≤ INR i as (Hi).
-         It holds that 0 < INR i + 1 as (Hradius).
-         It holds that (-1 * (INR i + 1) < INR i + 1) as (H1).
-         By (open_interval_is_open ( -1 * (INR i + 1)) (INR i + 1)(H1) ) 
-           it holds that
-           (centered_intervals i is _open_). 
-         We conclude that centered_intervals i is _open_.
-       } 
-       We claim that (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) 
-         as (Hcover). 
-       { We need to show that
-         ∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x.
-         Take x : ℝ. 
-         Assume that K x as (x_in_K).  
-
-         By (the Archimedean property) it holds that
-           (∃ n ∈ ℕ,  n > |x|) as (Harch). 
-         Obtain n according to (Harch). 
-         It holds that (n +1 > |x|) as (Harch_n). 
-         It holds that (& -1 * (INR n + 1) < x < INR n + 1)  
-          as (Harch'). 
-         Choose i := n. 
-         We need to show that centered_intervals i x. 
-         By (Harch') it holds that centered_intervals n x. 
-         We conclude that centered_intervals i x.
-       }
-      By (Hcover) and (Hopen) it holds that
-        (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
-        (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) as (Ucover'). 
-      We conclude that 
-       (∀ i : ℕ, (centered_intervals i) is _open_) ∧  
-        (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
-    }
-By (Ucover) and (Ufinite_subcover) it holds that
-  (has_finite_subcover (fun n => centered_intervals n) K) as (Hfinite). 
-By (Hfinite) it holds that
-  (∃ I0 : list ℕ, ∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
-  as (Hfinite').
-Obtain I0 according to (Hfinite').
-It holds that (∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
-  as (Hfinite_cover). 
-We claim that ( ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M))) as (Hbounded). 
-{ We need to show that
-  ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)).
-  Choose m := -1 * (INR (fold_right max 0%nat I0) + 1). 
-  Choose M := INR (fold_right max 0%nat I0) + 1. 
-  We need to show that
-    ∀ x : ℝ, K x → (& m ≤ x ≤ M).
-  Take x : ℝ.  
-  
-  We claim that (forall i0 : ℕ, In i0 I0 →  
-   INR(fold_right max 0%nat I0) ≥ INR i0) as (Hmax). 
-  { We need to show that
-   forall i0 : ℕ, In i0 I0 → INR(fold_right max 0%nat I0) ≥ INR i0.
-    Take i0 : ℕ. 
-    Assume that In i0 I0 as (i0_in_I0).
-    We need to show that INR(fold_right max 0%nat I0) ≥ INR i0. 
-    
-    By (fold_right_max_geq I0 0%nat i0) it holds that
-      (fold_right max 0%nat I0 ≥ i0)%nat as (Hmax'). 
-    By (Hmax') it holds that (INR(fold_right max 0%nat I0) ≥ INR i0) as (Hmax''). 
-    We conclude that INR(fold_right max 0%nat I0) ≥ INR i0.
-
-  }
-  Assume that K x as (x_in_K). 
-  By (Hfinite_cover) it holds that
-    (∃ i : ℕ, In i I0 ∧ centered_intervals i x) as (Hcover_x). 
-  Obtain i according to (Hcover_x).
-  It holds that (In i I0 ∧ centered_intervals i x) as (Hcover_x'). 
-  By (Hcover_x') it holds that centered_intervals i x as (x_in_interval).
-   unfold centered_intervals in x_in_interval.
-    (* Waterproof had issues unfolding the definition of centered_intervals**)
-  By (x_in_interval) it holds that
-    (& -1 * (INR i + 1) < x < INR i + 1) as (x_bounds). 
-
-   It holds that
-    (i ≤ fold_right max 0%nat I0)%nat as (i_le_max).  
-    By (i_le_max)  it holds that 
-    (-1 * (INR (fold_right max 0%nat I0) + 1) <= -1 * (INR i + 1)) 
-     as (lower_bound). 
-    By (i_le_max) it holds that (INR i + 1 <= INR (fold_right max 0%nat I0) + 1) 
-     as (upper_bound). 
-  By (lower_bound) and (x_bounds) it holds that
-    ( -1 * (INR(fold_right max 0%nat I0) + 1) < x) as (x_lower_bound). 
-    By (upper_bound) and (x_bounds) it holds that
-    (x < INR(fold_right max 0%nat I0) + 1) as (x_upper_bound). 
-  
-  By (x_upper_bound) and (x_lower_bound) it holds that
-    (& -1 * (INR(fold_right max 0%nat I0) + 1) < x < INR(fold_right max 0%nat I0) + 1)
-    as (x_bounds'). 
-  By (x_bounds') we conclude that (& m ≤ x ≤ M).
-
-}
+      open_cover U K → has_finite_subcover U K as (Kfinite_subcover).
+  Use I := ℕ in (Kfinite_subcover).
+  It holds that (∀ U : ℕ → (ℝ → Prop),
+    open_cover U K → has_finite_subcover U K) as (Kfinite_subcover').
+  Use U := (fun n => centered_intervals n) in (Kfinite_subcover').
+  It holds that (open_cover (fun n => centered_intervals n) K →
+    has_finite_subcover (fun n => centered_intervals n) K)
+    as (Ufinite_subcover).
  
-By (Hbounded) we conclude that K is bounded.
+  (* ---------- the centered intervals form an open cover of K ---------- *)
+  We claim that (open_cover (fun n => centered_intervals n) K) as (Ucover).
+  {
+    We need to show that open_cover (fun n => centered_intervals n) K.
+    We need to show that
+      (∀ i : ℕ, (centered_intervals i) is _open_) ∧
+      (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
+ 
+    We claim that (∀ i : ℕ, (centered_intervals i) is _open_) as (Hopen).
+    {
+      We need to show that
+        ∀ i : ℕ, (centered_intervals i) is _open_.
+      Take i : ℕ.
+      By pos_INR it holds that 0 ≤ INR i as (Hi).
+      It holds that 0 < INR i + 1 as (Hradius).
+      It holds that (-1 * (INR i + 1) < INR i + 1) as (H1).
+      By (open_interval_is_open (-1 * (INR i + 1)) (INR i + 1) (H1))
+        it holds that (centered_intervals i is _open_).
+      We conclude that centered_intervals i is _open_.
+    }
+ 
+    We claim that (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x)
+      as (Hcover).
+    {
+      We need to show that
+        ∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x.
+      Take x : ℝ.
+      Assume that K x as (x_in_K).
+      By (the Archimedean property) it holds that
+        (∃ n ∈ ℕ, n > |x|) as (Harch).
+      Obtain n according to (Harch).
+      It holds that (n + 1 > |x|) as (Harch_n).
+      It holds that (& -1 * (INR n + 1) < x < INR n + 1)
+        as (Harch').
+      Choose i := n.
+      We need to show that centered_intervals i x.
+      By (Harch') it holds that centered_intervals n x.
+      We conclude that centered_intervals i x.
+    }
+ 
+    By (Hcover) and (Hopen) it holds that
+      (∀ i : ℕ, (centered_intervals i) is _open_) ∧
+      (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) as (Ucover').
+    We conclude that
+      (∀ i : ℕ, (centered_intervals i) is _open_) ∧
+      (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
+  }
+ 
+  (* ---------- extract the finite subcover ---------- *)
+  By (Ucover) and (Ufinite_subcover) it holds that
+    (has_finite_subcover (fun n => centered_intervals n) K) as (Hfinite).
+  By (Hfinite) it holds that
+    (∃ I0 : list ℕ, ∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
+    as (Hfinite').
+  Obtain I0 according to (Hfinite').
+  It holds that (∀ x : ℝ, K x → ∃ i : ℕ, In i I0 ∧ centered_intervals i x)
+    as (Hfinite_cover).
+ 
+  (* ---------- K is bounded ---------- *)
+  We claim that (∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)))
+    as (Hbounded).
+  {
+    We need to show that
+      ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)).
+    Choose m := -1 * (INR (fold_right max 0%nat I0) + 1).
+    Choose M := INR (fold_right max 0%nat I0) + 1.
+    We need to show that
+      ∀ x : ℝ, K x → (& m ≤ x ≤ M).
+    Take x : ℝ.
+ 
+    We claim that (forall i0 : ℕ, In i0 I0 →
+      INR (fold_right max 0%nat I0) ≥ INR i0) as (Hmax).
+    {
+      We need to show that
+        forall i0 : ℕ, In i0 I0 → INR (fold_right max 0%nat I0) ≥ INR i0.
+      Take i0 : ℕ.
+      Assume that In i0 I0 as (i0_in_I0).
+      We need to show that INR (fold_right max 0%nat I0) ≥ INR i0.
+      By (fold_right_max_geq I0 0%nat i0) it holds that
+        (fold_right max 0%nat I0 ≥ i0)%nat as (Hmax').
+      By (Hmax') it holds that
+        (INR (fold_right max 0%nat I0) ≥ INR i0) as (Hmax'').
+      We conclude that INR (fold_right max 0%nat I0) ≥ INR i0.
+    }
+ 
+    Assume that K x as (x_in_K).
+    By (Hfinite_cover) it holds that
+      (∃ i : ℕ, In i I0 ∧ centered_intervals i x) as (Hcover_x).
+    Obtain i according to (Hcover_x).
+    It holds that (In i I0 ∧ centered_intervals i x) as (Hcover_x').
+    By (Hcover_x') it holds that centered_intervals i x as (x_in_interval).
+    unfold centered_intervals in x_in_interval.
+    (* Waterproof had issues unfolding the definition of centered_intervals**)
+    By (x_in_interval) it holds that
+      (& -1 * (INR i + 1) < x < INR i + 1) as (x_bounds).
+ 
+    It holds that
+      (i ≤ fold_right max 0%nat I0)%nat as (i_le_max).
+    By (i_le_max) it holds that
+      (-1 * (INR (fold_right max 0%nat I0) + 1) <= -1 * (INR i + 1))
+      as (lower_bound).
+    By (i_le_max) it holds that
+      (INR i + 1 <= INR (fold_right max 0%nat I0) + 1)
+      as (upper_bound).
+    By (lower_bound) and (x_bounds) it holds that
+      (-1 * (INR (fold_right max 0%nat I0) + 1) < x) as (x_lower_bound).
+    By (upper_bound) and (x_bounds) it holds that
+      (x < INR (fold_right max 0%nat I0) + 1) as (x_upper_bound).
+ 
+    By (x_upper_bound) and (x_lower_bound) it holds that
+      (& -1 * (INR (fold_right max 0%nat I0) + 1) < x
+         < INR (fold_right max 0%nat I0) + 1)
+      as (x_bounds').
+    By (x_bounds') we conclude that (& m ≤ x ≤ M).
+  }
+ 
+  By (Hbounded) we conclude that K is bounded.
 Qed.
 
 (** The following definitions are necessary for converting a subset K into
@@ -671,7 +683,8 @@ Definition make_K_index (K : ℝ → Prop) (y : ℝ) (Hy : K y) : K_index K :=
 
 (** Proof Strategy: Follows the exact same lines as Theorem 3.3.8 in Abbot. 
    Assume K not closed, meaning it has a limit point x not in K. Define an open cover
-   relative to x and derive a contradiction from the properties of said cover.   *)
+   based on relative distance to x and derive a contradiction from the properties of  
+   said cover.   *)
 
 Lemma finite_subcover_implies_closed (K : ℝ → Prop) :
     every_open_cover_has_finite_subcover K →
@@ -760,10 +773,17 @@ Assume that
     {Take x0 : ℝ. 
      Assume that K x0 as (xincluded). 
      Choose i := make_K_index K x0 xincluded. 
+
+     (** Here we use a little bit of rocq to get waterproof to recognise that
+          our different representations of elements of K are the same object*)
+
+        
      We claim that (K_point K (make_K_index K x0 xincluded) = x0) as (xisx).
      {unfold K_point, make_K_index. 
      reflexivity.
      }
+
+
      We need to show that (x0 ∈ half_ball x (K_point K i)). 
      We need to show that (x0 ∈ half_ball x (x0)).  
      It holds that x0 ≠ x as (x0notx).
@@ -784,13 +804,14 @@ By (Uhasfinite) and (Uopencover) it holds that
    as (finite_cover).  
   Obtain l according to (finite_cover).
   It holds that (∀ y : ℝ, K y → ∃ i : K_index(K), 
-   In i l ∧ (K_to_half_ball K x i) y) as (lcover). 
+   In i l ∧ (K_to_half_ball K x i) y) as (lcover).
+
+
   We claim that (l ≠ nil) as (lnonempty). 
   {By (xball) it holds that
     (∃ y ∈ K, 0 < Rabs (y - x) < 1) as (yexists).
   Obtain y according to (yexists).
   It holds that y ∈ K as (yinK).
-
   By (lcover) and (yinK) it holds that
     (∃ i : K_index K,
       In i l ∧ (K_to_half_ball K x i) y) as (iinlist).
@@ -825,10 +846,13 @@ By (Uhasfinite) and (Uopencover) it holds that
       (0 < | x - K_point K i |) as (diffpos). 
      By (diffpos) it holds that 
       (Rabs(x - K_point K i) > 0) as (diffpos2).  
-      We conclude that Rabs (K_point K i - x) / 4 > 0. } 
+     We conclude that Rabs (K_point K i - x) / 4 > 0. } 
   It holds that ∃ y ∈ K,
     0 < |y - x| < |K_point(K, i) - x| / 4 as (ytight).
   Obtain y according to (ytight).
+
+
+
   We claim that (¬(K y)) as (ContY).
   {It holds that (& 0 < |y - x| < |K_point(K, i) - x| / 4) as (ybound).
     We argue by contradiction.
@@ -894,12 +918,17 @@ Definition shifted_seq (a : ℕ → ℝ) (n : ℕ) : ℕ → ℝ :=
 Definition shifted_n (a : ℕ → ℕ) (n : ℕ) : ℕ → ℕ := 
 fun k => (n + a(k))%nat.
 
-(**Proof strategy: The same as followed in the lecture. 
-   Create a sequence picking an element in each of the sets. 
-   By compactness of the largest set it must have a limit point 
-   and then use the nested nature of the sets to show that the limit 
-   must be in all of the sets.*)
 
+
+
+(** ** Nested compact sets *)
+
+(** A decreasing sequence of nonempty compact sets has nonempty intersection.
+
+    Proof idea: a generalization of the nested interval property. Picking a point
+    [xₙ ∈ Kₙ], compactness of [K₀] gives a subsequence converging to some [x];
+    since each [Kₙ] is closed and eventually contains the tail of the
+    subsequence, [x ∈ Kₙ] for every [n]. *)
 
 Theorem nested_compact_intersection_nonempty
     (K : ℕ → (ℝ → Prop))
@@ -956,27 +985,29 @@ By (countable_choice(K)(HK_nonempty)) it holds that
  It holds that K(phi(n), f0(phi(n))). 
  Use n := phi n in (HK_compact). 
  It holds that sequentially_compact(K(phi(n))). 
-We claim that
-  (∀ k : ℕ, K (phi n) ((shifted_seq (fun j : ℕ => f0 (phi j)) n) k))
-  as (tail_nest).
-  { Take k : ℕ. 
-  Use n0 := phi((n + k)%nat) in (_H). 
-  It holds that K(phi((n + k)%nat),  
-  f0(phi((n + k)%nat))) as (shift_in). 
-  Use n0 := phi((n + k)%nat) in (HK_nested). 
+
+ We claim that (∀ k : ℕ, K (phi n) 
+   ((shifted_seq (fun j : ℕ => f0 (phi j)) n) k)) 
+    as (tail_nest).
+
+{     Take k : ℕ. 
+   Use n0 := phi((n + k)%nat) in (_H). 
+   It holds that K(phi((n + k)%nat),  
+   f0(phi((n + k)%nat))) as (shift_in). 
+   Use n0 := phi((n + k)%nat) in (HK_nested). 
     { Indeed, phi((n + k)%nat) ∈ ℕ. } 
-  It holds that ∀ m ∈ ℕ, (m ≤ phi(n + k))%nat
+   It holds that ∀ m ∈ ℕ, (m ≤ phi(n + k))%nat
       ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0) 
        ⇨ K(m, x0) as (phi_nest). 
-  Use m := phi(n) in (phi_nest).  
+   Use m := phi(n) in (phi_nest).  
      { Indeed, phi(n) ∈ ℕ. }
-  It holds that (phi(n) ≤ phi(n + k))%nat
+   It holds that (phi(n) ≤ phi(n + k))%nat
       ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0)  
        ⇨ K(phi(n), x0) as (phiseq). 
- Since (is_index_seq phi) it holds that
+   Since (is_index_seq phi) it holds that
   (∀ j ∈ ℕ, (phi j < phi (S j))%nat) as (Hphi_strict1).
 
-We claim that (∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat) as (Hphi_mono).
+ We claim that (∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat) as (Hphi_mono).
 {
   We use induction on k0.
   + We first show the base case (phi(n) ≤ phi(n + 0))%nat.
@@ -996,7 +1027,8 @@ We claim that (∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat) as (Hphi_mono).
     It holds that (S (n + k0) = (n + S k0))%nat. 
     It holds that (S k0 = k0 + 1)%nat.
     We conclude that (phi n ≤ phi (n + (k0 + 1)))%nat.
-} 
+ } 
+
  Use k0 := k in (Hphi_mono). 
  It holds that (phi(n) ≤ phi(n + k))%nat. 
  It holds that (∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0)  
@@ -1010,14 +1042,15 @@ We claim that (∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat) as (Hphi_mono).
  By (shifted_in) we conclude that (K (phi n) 
  ((shifted_seq (fun j : ℕ => f0 (phi j)) n) k)).
   }
+
  Use n := phi(n) in (HK_compact).
  It holds that sequentially_compact(K(phi(n))) as (SeqK).
 By SeqK it holds that
   (∀ a : ℕ → ℝ,
-    (∀ k : ℕ, a k ∈ K (phi n)) →
+   (∀ k : ℕ, a k ∈ K (phi n)) →
     ∃ psi : ℕ → ℕ, ∃ y : ℝ,
-      (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
-      K (phi n) y ∧  (fun k => a (psi k)) ⟶ y)
+    (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
+    K (phi n) y ∧  (fun k => a (psi k)) ⟶ y)
   as (SeqK_forall).
   Use a := (shifted_seq (fun j : ℕ => f0 (phi j)) n)
   in (SeqK_forall). 
@@ -1082,6 +1115,7 @@ We claim that
     y x subseq_to_y subseq_to_x) it holds that (y = x). 
   We conclude that (y = x).
 } 
+
 It holds that (K(phi(n), x)) as (Halfway_there).
 Use n := phi(n) in (HK_nested). 
 { Indeed, phi(n) ∈ ℕ. } 
@@ -1159,12 +1193,12 @@ Proof.
   Obtain g according to (bad_seq). 
 
   We claim that (∀ n, (∀ i : Index, ∃ y : ℝ,
-      y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_uncover).
+    y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_uncover).
       {Take n : ℕ. 
        Use n0 := n in (_H4). 
        It holds that (K (g n) ∧ (∀ i : Index, ∃ y : ℝ,
          y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (y_bad). 
-      By (y_bad) we conclude that (∀ i : Index, ∃ y : ℝ,
+       By (y_bad) we conclude that (∀ i : Index, ∃ y : ℝ,
          y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y).
       } 
 
@@ -1387,11 +1421,4 @@ Proof.
 
 
 
-(** ** Nested compact sets *)
 
-(** A decreasing sequence of nonempty compact sets has nonempty intersection.
-
-    Proof idea: a generalization of the nested interval property. Picking a point
-    [xₙ ∈ Kₙ], compactness of [K₀] gives a subsequence converging to some [x];
-    since each [Kₙ] is closed and eventually contains the tail of the
-    subsequence, [x ∈ Kₙ] for every [n]. *)
