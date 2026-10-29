@@ -9,6 +9,7 @@ From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
 From Stdlib Require Import Arith.PeanoNat.
+From Stdlib Require Import setoid_ring.Ring.
 
 
 From Waterproof Require Export Notations.Common.
@@ -515,8 +516,8 @@ Definition centered_intervals (n : ℕ) : ℝ → Prop :=
 
 
 (** Proof Strategy: Construct an open cover using open sets (-n,n) 
-    then derive a finite subcover and use the maximum index of this
-    to find a bound on K.*)
+    then obtain a finite subcover and use the maximum index of this
+    to find a bound on [K].*)
 
 
 Lemma finite_subcover_implies_bounded (K : ℝ → Prop) :
@@ -682,7 +683,7 @@ Definition make_K_index (K : ℝ → Prop) (y : ℝ) (Hy : K y) : K_index K :=
 
 
 (** Proof Strategy: Follows the exact same lines as Theorem 3.3.8 in Abbot. 
-   Assume K not closed, meaning it has a limit point x not in K. Define an open cover
+   Assume [K] not closed, meaning it has a limit point x not in [K]. Define an open cover
    based on relative distance to x and derive a contradiction from the properties of  
    said cover.   *)
 
@@ -919,6 +920,498 @@ Definition shifted_n (a : ℕ → ℕ) (n : ℕ) : ℕ → ℕ :=
 fun k => (n + a(k))%nat.
 
 
+(** Lemma: Lebesgue Number 
+
+ Lebesgue number: If K is sequentially compact and {U_i} 
+ is an open cover of K, then there is δ > 0 such that every x ∈ K  
+ has (x − δ, x + δ) ⊆ U_i for some i.
+
+   Proof idea: Argue by contradiction. Then use the sequence of δ_n := 1/n 
+   There must be an x_n such that its B(δ_n, x) is not contained in any U_i 
+   use the sequential compactness of [K] to conclude that a subsequence must 
+   converge in [K] to x (and be an element of some open set of the cover) and show  
+   that there some centered delta balls must be completely contained within an 
+   epsilon ball of x aand therefore contained in some U_j, contradicting our 
+   assumption.
+
+*)
+
+
+
+Lemma Lebesgue_number (K : ℝ → Prop) (Index : Type)
+    (U : Index → (ℝ → Prop)) :
+  sequentially_compact K →
+  open_cover U K →
+  ∃ δ > 0, ∀ x : ℝ, K x →
+    ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y.
+Proof. 
+ Assume that sequentially_compact(K) as (K_comp). 
+ Assume that open_cover U K as (Ucover). 
+ We argue by contradiction.
+ Assume that ¬ ( ∃ δ > 0, ∀ x : ℝ, K x →
+    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y).
+ It holds that (∀ δ > 0, ¬( ∀ x : ℝ, K x →
+    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)).
+ It holds that ( ∀ δ > 0, ∃ x : ℝ, ¬(K x →
+    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)). 
+ It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
+   ¬(∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)). 
+ It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
+   (∀ i, ∃ y : ℝ, ¬ (y ∈ open_ball x δ → U i y))). 
+ It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
+   (∀ i, ∃ y : ℝ, (y ∈ open_ball x δ) ∧ ¬(U i y))) as (contra). 
+
+
+ We claim that (∀ n : ℕ,  ∃ x : ℝ, K x ∧ (∀ i : Index, ∃ y : ℝ,( 
+   y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y)))) as (n_seq). 
+   { Take n : ℕ. 
+     Use δ := /(n + 1) in (contra). 
+     { Indeed, / (n + 1) > 0. } 
+     It holds that ∃ x, K(x) ∧ (∀ i, ∃ y, 
+       y ∈ B(x, / (n + 1)) ∧ ¬ U(i, y)) as (n_uncover). 
+     Obtain x according to (n_uncover). 
+     Choose x0 := x. 
+     It holds that K x as(x_inK). 
+     It holds that (∀ i : Index, ∃ y : ℝ,( 
+       y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y))) as (x_uncover). 
+     By (x_inK) and (x_uncover) we conclude that (K x ∧ (∀ i : Index, ∃ y : ℝ,( 
+       y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y)))).
+   }
+ By (countable_choice
+  (fun n x =>
+    K x ∧
+    (∀ i : Index, ∃ y : ℝ, y ∈ open_ball x (/(n + 1)) 
+     ∧ ¬ U i y)) n_seq)
+
+   it holds that
+     (∃ g : ℕ → ℝ, ∀ n : ℕ, K (g n) ∧
+     (∀ i : Index, ∃ y : ℝ,
+      y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y))
+  as (bad_seq). 
+  Obtain g according to (bad_seq). 
+
+  We claim that (∀ n, (∀ i : Index, ∃ y : ℝ,
+    y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_uncover).
+      {Take n : ℕ. 
+       Use n0 := n in (_H4). 
+       It holds that (K (g n) ∧ (∀ i : Index, ∃ y : ℝ,
+         y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (y_bad). 
+       By (y_bad) we conclude that (∀ i : Index, ∃ y : ℝ,
+         y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y).
+      } 
+
+  We claim that ( ∀ n, K(g(n))) as (g_inK). 
+  { Take n : ℕ. 
+   Use n0 := n in (_H4). 
+   It holds that (K (g n) ∧
+     (∀ i : Index, ∃ y : ℝ,
+      y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_good). 
+   By (n_good) we conclude that (K(g(n))).
+
+  }
+  By K_comp it holds that
+  (∀ a : ℕ → ℝ,
+    (∀ n : ℕ, a n ∈ K) →
+    ∃ phi : ℕ → ℕ, ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
+      K x ∧ (fun k => a (phi k)) ⟶ x)
+  as (K_comp_explicit).
+
+ Use a := g in (K_comp_explicit). 
+ It holds that ((∀ n : ℕ, g n ∈ K) →
+    ∃ phi : ℕ → ℕ, ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
+      K x ∧ (fun k => g (phi k)) ⟶ x) as (ghas_sub). 
+ By (ghas_sub(g_inK)) it holds that (∃ phi : ℕ → ℕ, ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
+      K x ∧ (fun k => g (phi k)) ⟶ x) as (g_sub). 
+  Obtain phi according to (g_sub).
+  Obtain x according to (_H5). 
+  By (Ucover) it holds that ((∀ i : Index, (U i) is _open_) ∧ 
+  (∀ x : ℝ, K x → ∃ i : Index, U i x)) as (K_covered).
+  By (K_covered) it holds that 
+   (∀ x : ℝ, K x → ∃ i : Index, U i x) as (Ucovering).
+  Use x0 := x in (Ucovering). 
+  It holds that K x → ∃ i : Index, U i x as (x_iscovered). 
+  By (x_iscovered(_H8)) it holds that (∃ i : Index, U i x) as (xcover).
+  Obtain j according to (xcover).
+  It holds that ((fun k => g (phi k)) ⟶ x) as (g_lim).
+   By g_lim it holds that
+     (∀ ε > 0, ∃ N ∈ ℕ, ∀ k ≥ N, |g (phi k) - x| < ε)
+     as (g_lim_eps).
+  By (K_covered) it holds that (∀ i :Index, U i is open) as (U_open).
+  Use i := j in (U_open). 
+  It holds that (U j is open) as (j_open). 
+  By (j_open) it holds that (∀ a ∈ U j, is_interior_point(a) (U(j)))
+    as (a_interior). 
+  Use a := x in (a_interior). 
+   { Indeed, x ∈ U(j). }
+  It holds that x is an _interior point_ of U(j) as (x_interior).
+  By (x_interior) it holds that (∃ r > 0, ∀ y ∈ (open_ball x r), y ∈ U j) 
+    as (x_ball). 
+  Obtain r according to (x_ball). 
+  It holds that (r > 0) as (rpos).
+  It holds that ((∀ n : ℕ, (phi n < phi (S n))%nat) ∧
+    K x ∧ (fun k => g (phi k)) ⟶ x) as (phi_x).
+  Because (phi_x) both ((∀ n : ℕ, (phi n < phi (S n))%nat)) as (phi_inc)
+    and (K x ∧ (fun k => g (phi k)) ⟶ x) as (phi_rest).
+ 
+  (* the ball statement from x_ball, restated so we can name it *)
+  It holds that (∀ y ∈ (open_ball x r), y ∈ U j) as (r_ball).
+ 
+  (* --- 1. phi is strictly increasing, hence k ≤ phi k ------------- *)
+  We claim that (∀ k : ℕ, (k ≤ phi k)%nat) as (phi_ge).
+  { We use induction on k.
+    + We first show the base case ((0 ≤ phi 0)%nat).
+      We conclude that ((0 ≤ phi 0)%nat).
+    + We now show the induction step.
+      Take k : ℕ.
+      Assume that ((k ≤ phi k)%nat) as (IH).
+      Use n := k in (phi_inc).
+      It holds that ((phi k < phi (S k))%nat) as (step).
+      By (step) it holds that (k < phi(S k))%nat as (step2). 
+      It holds that (k + 1 <= phi(S k))%nat as (step3). 
+      It holds that (S k = k + 1)%nat.
+      By (step3) we conclude that (( k+ 1 ≤ phi ( k + 1))%nat).
+  }
+ 
+  (* --- 2. a threshold M for the radii 1/(n+1) -------------------- *)
+  It holds that (r / 2 > 0) as (rhalf_pos).
+  By (archimedean_2 (r / 2) rhalf_pos) it holds that
+    (∃ M : ℕ, 1 / (M + 1) < r / 2) as (arch_half).
+  Obtain M according to (arch_half).
+  It holds that (/ (M + 1) < r / 2) as (arch_inv).
+ 
+  (* --- 3. a threshold N1 for the convergence, with epsilon = r/2 -- *)
+  Use ε := (r / 2) in (g_lim_eps).
+    { Indeed, r / 2 > 0. }
+  It holds that (∃ N1 ∈ ℕ, ∀ k ≥ N1, |g (phi k) - x| < r / 2) as (half_tail).
+  Obtain N1 according to (half_tail).
+  It holds that (∀ k : ℕ, (k ≥ N1)%nat → |g (phi k) - x| < r / 2) as (Htail).
+ 
+  (* --- 4. one index k that is past BOTH thresholds ---------------- *)
+  We claim that (∃ k : ℕ, (k ≥ N1)%nat ∧ (k ≥ M)%nat) as (big_k).
+  { Choose k0 := (N1 + M)%nat.
+    We show both statements.
+    + We need to show that ((N1 + M ≥ N1)%nat).
+      We conclude that ((N1 + M ≥ N1)%nat).
+    + We need to show that ((N1 + M ≥ M)%nat).
+      We conclude that ((N1 + M ≥ M)%nat).
+  }
+  Obtain k according to (big_k).
+  It holds that ((k ≥ N1)%nat ∧ (k ≥ M)%nat) as (k_bounds).
+  Because (k_bounds) both ((k ≥ N1)%nat) as (k_N1)
+    and ((k ≥ M)%nat) as (k_M).
+ 
+  (* --- 5. the subsequence term is within r/2 of x ----------------- *)
+  By (Htail k k_N1) it holds that (|g (phi k) - x| < r / 2) as (close).
+ 
+  (* --- 6. the bad ball at index phi k has radius < r/2 ------------ *)
+  By (phi_ge k) it holds that ((k ≤ phi k)%nat) as (k_phi).
+  By (Nat.le_trans M k (phi k) k_M k_phi) it holds that
+  (M ≤ phi k)%nat as (M_phi).
+  By (le_INR M (phi k) M_phi) it holds that (INR M ≤ INR (phi k)) as (INR_le).
+  By (pos_INR M) it holds that (0 ≤ INR M) as (INR_pos).
+  It holds that (0 < INR M + 1) as (M_pos).
+  It holds that (INR M + 1 ≤ INR (phi k) + 1) as (INR_le1).
+  By (Rinv_le_contravar (INR M + 1) (INR (phi k) + 1) M_pos INR_le1)
+    it holds that (/ (INR (phi k) + 1) ≤ / (INR M + 1)) as (inv_le).
+  It holds that (/ (phi k + 1) < r / 2) as (rad_small).
+ 
+  (* --- 7. the bad ball sits inside B(x, r) ------------------------ *)
+  We claim that (∀ y : ℝ, y ∈ open_ball (g (phi k)) (/ (phi k + 1)) →
+    y ∈ open_ball x r) as (ball_sub).
+  { Take y : ℝ.
+    Assume that (y ∈ open_ball (g (phi k)) (/ (phi k + 1))) as (y_in).
+    By (y_in) it holds that (|y - g (phi k)| < / (phi k + 1)) as (y_abs).
+    By (Rabs_triang (y - g (phi k)) (g (phi k) - x)) it holds that
+      (|(y - g (phi k)) + (g (phi k) - x)|
+         ≤ |y - g (phi k)| + |g (phi k) - x|) as (tri).
+    It holds that ((y - g (phi k)) + (g (phi k) - x) = y - x) as (alg).
+    rewrite alg in tri.
+    It holds that (|y - x| < r) as (y_r).
+    We conclude that (y ∈ open_ball x r).
+  }
+ 
+  (* --- 8. the contradiction --------------------------------------- *)
+  By (n_uncover (phi k)) it holds that (∀ i : Index, ∃ y : ℝ,
+    y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U i y) as (bad_at).
+  By (bad_at j) it holds that (∃ y : ℝ,
+    y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U j y) as (y_bad).
+  Obtain y according to (y_bad).
+  It holds that (y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U j y)
+    as (y_props).
+  Because (y_props) both (y ∈ open_ball (g (phi k)) (/ (phi k + 1))) as (y_in_bad)
+    and (¬ U j y) as (y_notU).
+  By (ball_sub y y_in_bad) it holds that (y ∈ open_ball x r) as (y_in_r).
+  By (r_ball y y_in_r) it holds that (U j y) as (y_inU).
+  Contradiction.
+Qed.
+
+
+Lemma finite_cover_up_to (Index : Type) (U : Index → (ℝ → Prop)) (K : ℝ → Prop)
+    (a δ : ℝ) :
+  δ > 0 →
+  (∀ x : ℝ, K x → a ≤ x) →
+  (∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) →
+  ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < a + INR n0 * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x.
+Proof.
+  Assume that δ > 0 as (δpos).
+  Assume that (∀ x : ℝ, K x → a ≤ x) as (Hlow).
+  Assume that (∀ x : ℝ, K x → ∃ i : Index,
+    ∀ y : ℝ, y ∈ open_ball x δ → U i y) as (Hleb).
+  We use induction on n0.
+ 
+  (* ---------- base case: nothing lies below a ---------- *)
+  + We first show the base case
+      (∃ l : list Index, ∀ x : ℝ, K x → x < a + INR 0 * (δ / 2) →
+        ∃ i : Index, In i l ∧ U i x).
+    Choose l0 := (@nil Index).
+    We need to show that
+      (∀ x : ℝ, K x → x < a + INR 0 * (δ / 2) →
+        ∃ i : Index, In i (@nil Index) ∧ U i x).
+    Take x : ℝ.
+    Assume that (K x) as (xK).
+    Assume that (x < a + INR 0 * (δ / 2)) as (xlt).
+    By (Hlow x xK) it holds that (a ≤ x) as (ax).
+    We claim that (INR 0 = 0) as (INR0).
+    { reflexivity. }
+    rewrite INR0 in xlt.
+    exfalso.
+    Contradiction.
+ 
+  (* ---------- induction step ---------- *)
+  + We now show the induction step.
+    Take n0 : ℕ.
+    Assume that (∃ l : list Index, ∀ x : ℝ, K x → x < a + INR n0 * (δ / 2) →
+      ∃ i : Index, In i l ∧ U i x) as (IH).
+    Obtain l according to (IH).
+    It holds that (∀ x : ℝ, K x → x < a + INR n0 * (δ / 2) →
+      ∃ i : Index, In i l ∧ U i x) as (IHl).
+    By (S_INR n0) it holds that (INR (S n0) = INR n0 + 1) as (HS).
+    We claim that (a + INR (S n0) * (δ / 2) = a + INR n0 * (δ / 2) + δ / 2)
+      as (Hexp).
+    { 
+      rewrite S_INR. 
+      We conclude that (a + (n0 + 1) * (δ / 2) =
+       a + n0 * (δ / 2) + δ / 2).
+       }
+ 
+    (* is the new piece K ∩ [a+n0*h, a+n0*h+h) empty or not? *)
+    destruct (classic (∃ x0 : ℝ, K x0 ∧
+      (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2)))
+      as [Hex | Hnex].
+ 
+    (* --- new piece nonempty: add one index i0 to the list --- *)
+    - Obtain x0 according to (Hex).
+      It holds that (K x0 ∧
+        (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2))
+        as (Hx0).
+      Because (Hx0) both (K x0) as (x0K)
+        and (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2)
+        as (x0piece).
+      By (Hleb x0 x0K) it holds that
+        (∃ i : Index, ∀ y : ℝ, y ∈ open_ball x0 δ → U i y) as (Hi0).
+      Obtain i0 according to (Hi0).
+      It holds that (∀ y : ℝ, y ∈ open_ball x0 δ → U i0 y) as (Hi0ball).
+      Choose l0 := (i0 :: l).
+      
+      Take x : ℝ.
+      Assume that (K x) as (xK).
+      Assume that (x < a + INR (n0 + 1)%nat * (δ / 2)) as (xlt).
+      Either x < a + INR n0 * (δ / 2) or x ≥ a + INR n0 * (δ / 2).
+ 
+      + Case (x < a + INR n0 * (δ / 2)).
+        By (IHl x xK) it holds that
+          (x < a + INR n0 * (δ / 2) → ∃ i : Index, In i l ∧ U i x) as (IHx).
+        By (IHx) it holds that (∃ i : Index, In i l ∧ U i x) as (Hold).
+        Obtain i according to (Hold).
+        It holds that (In i l ∧ U i x) as (Hi).
+        Because (Hi) both (In i l) as (iinl) and (U i x) as (Uix).
+        Choose i1 := i.
+        We need to show that (In i (i0 :: l) ∧ U i x).
+        We show both statements.
+        * We need to show that (In i (i0 :: l)).
+          simpl. right. exact iinl.
+        * We need to show that (U i x).
+          We conclude that (U i x).
+ 
+      + Case (x ≥ a + INR n0 * (δ / 2)).
+        (* x and x0 both lie in the new piece, so |x - x0| < h < δ *)
+        Because (x0piece) both
+        (a + INR n0 * (δ / 2) ≤ x0) as (x0lower) and
+        (x0 < a + INR n0 * (δ / 2) + δ / 2) as (x0upper).
+      (**the next line was really slow to verify so rocq was used to
+          quicken the pace*)
+       rewrite Nat.add_1_r in xlt.
+       rewrite Hexp in xlt.
+       We claim that
+        (x < a + INR n0 * (δ / 2) + δ / 2) as (xupper).
+       { exact xlt. }
+        We claim that (x - x0 < δ) as (H1).
+        { By (δpos) it holds that ( δ / 2 < δ) as (halfδ).
+         By (x0upper) and (xupper) it holds that (x - x0 < δ / 2) 
+          as (Half1).
+          By (Half1) and (halfδ) we conclude that (x - x0 < δ). }
+        We claim that (-δ < x - x0) as (H2).
+        { We conclude that (-δ < x - x0). }
+        By (Rabs_def1 (x - x0) δ H1 H2) it holds that (|x - x0| < δ) as (xabs).
+        We claim that (x ∈ open_ball x0 δ) as (xball).
+        { We conclude that (x ∈ open_ball x0 δ). }
+        By (Hi0ball x xball) it holds that (U i0 x) as (Ui0x).
+        Choose i1 := i0.
+        We need to show that (In i0 (i0 :: l) ∧ U i0 x).
+        We show both statements.
+        * We need to show that (In i0 (i0 :: l)).
+          simpl. left. reflexivity.
+        * We need to show that (U i0 x).
+          We conclude that (U i0 x).
+ 
+    (* --- new piece empty: keep the old list --- *)
+    - Choose l0 := l.
+      We need to show that
+        (∀ x : ℝ, K x → x < a + INR (n0 + 1)%nat * (δ / 2) →
+          ∃ i : Index, In i l ∧ U i x).
+      Take x : ℝ.
+      Assume that (K x) as (xK).
+      Assume that (x < a + INR (n0 + 1)%nat * (δ / 2)) as (xlt).
+      Either x < a + INR n0 * (δ / 2) or x ≥ a + INR n0 * (δ / 2).
+ 
+      + Case (x < a + INR n0 * (δ / 2)).
+        By (IHl x xK) it holds that
+          (x < a + INR n0 * (δ / 2) → ∃ i : Index, In i l ∧ U i x) as (IHx).
+        By (IHx) we conclude that (∃ i : Index, In i l ∧ U i x).
+ 
+      + Case (x ≥ a + INR n0 * (δ / 2)).
+        (* x would be a point of the empty piece: contradiction *)
+        rewrite Nat.add_1_r in xlt.
+        rewrite Hexp in xlt.
+        We claim that
+          (x < a + INR n0 * (δ / 2) + δ / 2) as (xupper).
+        { exact xlt. }
+        It holds that (∃ x0 : ℝ, K x0 ∧
+          (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2))
+          as (Hbad).
+        exfalso.
+        Contradiction.
+Qed.
+
+
+(** ** Heine-Borel (Open Cover) theorem *)
+
+(** Heine–Borel theorem: a subset of ℝ is sequentially compact iff every open cover
+  has a finite subcover.
+
+    Proof idea: (⇒) Use the lebesgue number lemma to construct half open intervals I_j that cover 
+    the entire bounded region [K] lies within by Heine Borel. Any non-empty I_j ⋂ [K] will be contained within some U_i by the 
+    property of the chosen δ. As there are finitely many I_j this means that we can choose 
+    finitely many U_i to cover [K]. (⇐) Use the previous finite_cover lemmas and Heine Borel 
+    to conclude that [K] must be sequentially compact *)
+
+Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
+    sequentially_compact K ⇔
+    (forall (Index : Type) (U : Index → (ℝ → Prop)),
+        open_cover U K → has_finite_subcover U K).
+Proof.
+(** Had to use rocq syntax here as waterproof simply could not identify the
+  goals properly.*)
+split.
+- intros Hseq Index U Hcover.
+  (* prove has_finite_subcover U K *) 
+  By (Lebesgue_number(K)(Index)(U)) it holds that 
+  ( sequentially_compact K →
+  open_cover U K →
+  ∃ δ > 0, ∀ x : ℝ, K x →
+    ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) as (LebesgueK). 
+  By (LebesgueK(Hseq)(Hcover)) it holds that ( ∃ δ > 0, ∀ x : ℝ, K x →
+    ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) as (DeltaU). 
+  Obtain δ according to (DeltaU). 
+  By (Sequentially_compact_implies_bounded(K)(Hseq)) it holds that (K is _bounded_) 
+   as (K_bound) . 
+  By (K_bound) it holds that (∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M))) 
+   as (exactbound). 
+  Obtain m according to (exactbound). 
+  By (_H1) it holds that (∃ M : ℝ, ∀ x : ℝ, K(x) ⇨ (& m ≤ x ≤ M))  
+  as (Upperbound).  
+  Obtain M according to (Upperbound).
+  It holds that (∀ x : ℝ, K(x) ⇨ (& m ≤ x ≤ M)) as (bounds).
+  We claim that (∀ x : ℝ, K(x) ⇨ ( m ≤ x)) as (lowerbound). 
+  {Take x : ℝ. 
+   Use x0 := x in (bounds).  
+   It holds that K(x) ⇨ & m ≤ x ≤ M. 
+   Assume that K(x). 
+   It holds that (& m ≤ x ≤ M). 
+   We conclude that (m ≤ x).
+  } 
+  By (finite_cover_up_to(Index)(U)(K)(m) (δ)) it holds that
+   (δ > 0 →
+  (∀ x : ℝ, K x → m ≤ x) →
+  (∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) →
+  ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x) as (implication). 
+  By (implication(_H0)(lowerbound)) it holds that 
+   ((∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) →
+  ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x) as (smallimp). 
+  By (smallimp(_H)) it holds that (∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x) as (nlist).  
+  By archimedean_1 it holds that  ∃ n : ℕ, INR n > ((2 / δ) * (M - m)) as (Hn). 
+  Obtain n according to (Hn). 
+  Use n0 := n in (nlist). 
+  It holds that (∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x) as (newlist). 
+  We claim that (∀ x : ℝ, K x → x < m + INR n * (δ / 2)) as (naturalbound).
+  { Take x : ℝ. 
+    Assume that K(x) as (xinK). 
+    Use x0 := x in (bounds). 
+    It holds that K(x) ⇨ (& m ≤ x ≤ M) as (xbounds). 
+    By (xinK) and (xbounds) it holds that (& m ≤ x ≤ M) as (xbounded).
+    By (xbounded) it holds that (x <= M) as (xupper). 
+    By (xupper) it holds that (x <= m + (M - m)) as (redundbound).  
+    It holds that ((δ / 2) * (2 / δ) = 1) as (recip).
+    By (redundbound) and (recip) it holds that  
+     (x <= m + (δ / 2) * (2 / δ)* (M - m)) as (last_bound). 
+    By (last_bound) and (_H3) it holds that (x < m + n * (δ / 2)). 
+    We conclude that x < m + n * (δ / 2).
+  }
+ Obtain l according to (newlist). 
+ It holds that (∀ x : ℝ, K x → x < m + INR n * (δ / 2) →
+    ∃ i : Index, In i l ∧ U i x) as (listimp). 
+  We claim that (∀ x : ℝ, K x →
+    ∃ i : Index, In i l ∧ U i x) as (finitecover). 
+    { Take x : ℝ. 
+    Assume that K x as (xink). 
+    Use x0 := x in (listimp). 
+    It holds that (K x → x < m + INR n * (δ / 2) →
+     ∃ i : Index, In i l ∧ U i x) as (xfincover). 
+    By (xfincover) and (xink) it holds that (x < m + INR n * (δ / 2) →
+     ∃ i : Index, In i l ∧ U i x) as (Bound_cov).  
+    Use x0 := x in (naturalbound).
+    It holds that K(x) ⇨ x < m + n * (δ / 2). 
+    It holds that x < m + n * (δ / 2). 
+    By (Bound_cov) we conclude that (∃ i, In(Index, i, l) ∧ U(i, x)).
+
+    } 
+  We need to show that (∃ l : list Index, ∀ x : ℝ, K x → ∃ i : Index, In i l ∧ U i x). 
+  Choose l0 := l. 
+  By (finitecover) we conclude that (∀ x, K(x) ⇨ ∃ i, In(Index, i, l0) ∧ U(i, x)).
+  
+
+- intros Hfinite.
+  (* prove sequentially_compact K *) 
+  By (finite_subcover_implies_bounded(K)) it holds that 
+  (every_open_cover_has_finite_subcover K →
+    K is _bounded_) as (Kbounds). 
+  By (Hfinite) it holds that (every_open_cover_has_finite_subcover K) as (compK). 
+  By (Kbounds) it holds that (K is _bounded_) as (Kbounded).
+  By (finite_subcover_implies_closed(K)(compK)) it holds that (K is _closed_). 
+  By (Sequential_Heine_Borel(K)) it holds that ((sequentially_compact(K)) ⇔ (K is _closed_ ∧ K is _bounded_)). 
+  It holds that (K is _closed_ ∧ K is _bounded_). 
+  We conclude that sequentially_compact(K).
+
+Qed.
+
 
 
 (** ** Nested compact sets *)
@@ -1140,225 +1633,9 @@ It holds that (n ≤ phi(n))%nat ⇨ ∀ x0 ∈ ℝ,
 Qed.
 
 
-Lemma Lebesgue_number (K : ℝ → Prop) (Index : Type)
-    (U : Index → (ℝ → Prop)) :
-  sequentially_compact K →
-  open_cover U K →
-  ∃ δ > 0, ∀ x : ℝ, K x →
-    ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y.
-Proof. 
- Assume that sequentially_compact(K) as (K_comp). 
- Assume that open_cover U K as (Ucover). 
- We argue by contradiction.
- Assume that ¬ ( ∃ δ > 0, ∀ x : ℝ, K x →
-    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y).
- It holds that (∀ δ > 0, ¬( ∀ x : ℝ, K x →
-    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)).
- It holds that ( ∀ δ > 0, ∃ x : ℝ, ¬(K x →
-    ∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)). 
- It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
-   ¬(∃ i , ∀ y : ℝ, y ∈ open_ball x δ → U i y)). 
- It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
-   (∀ i, ∃ y : ℝ, ¬ (y ∈ open_ball x δ → U i y))). 
- It holds that (∀ δ > 0, ∃ x : ℝ, K x ∧ 
-   (∀ i, ∃ y : ℝ, (y ∈ open_ball x δ) ∧ ¬(U i y))) as (contra). 
-
-
- We claim that (∀ n : ℕ,  ∃ x : ℝ, K x ∧ (∀ i : Index, ∃ y : ℝ,( 
-   y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y)))) as (n_seq). 
-   { Take n : ℕ. 
-     Use δ := /(n + 1) in (contra). 
-     { Indeed, / (n + 1) > 0. } 
-     It holds that ∃ x, K(x) ∧ (∀ i, ∃ y, 
-       y ∈ B(x, / (n + 1)) ∧ ¬ U(i, y)) as (n_uncover). 
-     Obtain x according to (n_uncover). 
-     Choose x0 := x. 
-     It holds that K x as(x_inK). 
-     It holds that (∀ i : Index, ∃ y : ℝ,( 
-       y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y))) as (x_uncover). 
-     By (x_inK) and (x_uncover) we conclude that (K x ∧ (∀ i : Index, ∃ y : ℝ,( 
-       y ∈ open_ball x (/(n + 1)) ∧ ¬(U i y)))).
-   }
- By (countable_choice
-  (fun n x =>
-    K x ∧
-    (∀ i : Index, ∃ y : ℝ, y ∈ open_ball x (/(n + 1)) 
-     ∧ ¬ U i y)) n_seq)
-
-   it holds that
-     (∃ g : ℕ → ℝ, ∀ n : ℕ, K (g n) ∧
-     (∀ i : Index, ∃ y : ℝ,
-      y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y))
-  as (bad_seq). 
-  Obtain g according to (bad_seq). 
-
-  We claim that (∀ n, (∀ i : Index, ∃ y : ℝ,
-    y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_uncover).
-      {Take n : ℕ. 
-       Use n0 := n in (_H4). 
-       It holds that (K (g n) ∧ (∀ i : Index, ∃ y : ℝ,
-         y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (y_bad). 
-       By (y_bad) we conclude that (∀ i : Index, ∃ y : ℝ,
-         y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y).
-      } 
-
-  We claim that ( ∀ n, K(g(n))) as (g_inK). 
-  { Take n : ℕ. 
-   Use n0 := n in (_H4). 
-   It holds that (K (g n) ∧
-     (∀ i : Index, ∃ y : ℝ,
-      y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)) as (n_good). 
-   By (n_good) we conclude that (K(g(n))).
-
-  }
-  By K_comp it holds that
-  (∀ a : ℕ → ℝ,
-    (∀ n : ℕ, a n ∈ K) →
-    ∃ phi : ℕ → ℕ, ∃ x : ℝ,
-      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
-      K x ∧ (fun k => a (phi k)) ⟶ x)
-  as (K_comp_explicit).
-
- Use a := g in (K_comp_explicit). 
- It holds that ((∀ n : ℕ, g n ∈ K) →
-    ∃ phi : ℕ → ℕ, ∃ x : ℝ,
-      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
-      K x ∧ (fun k => g (phi k)) ⟶ x) as (ghas_sub). 
- By (ghas_sub(g_inK)) it holds that (∃ phi : ℕ → ℕ, ∃ x : ℝ,
-      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
-      K x ∧ (fun k => g (phi k)) ⟶ x) as (g_sub). 
-  Obtain phi according to (g_sub).
-  Obtain x according to (_H5). 
-  By (Ucover) it holds that ((∀ i : Index, (U i) is _open_) ∧ 
-  (∀ x : ℝ, K x → ∃ i : Index, U i x)) as (K_covered).
-  By (K_covered) it holds that 
-   (∀ x : ℝ, K x → ∃ i : Index, U i x) as (Ucovering).
-  Use x0 := x in (Ucovering). 
-  It holds that K x → ∃ i : Index, U i x as (x_iscovered). 
-  By (x_iscovered(_H8)) it holds that (∃ i : Index, U i x) as (xcover).
-  Obtain j according to (xcover).
-  It holds that ((fun k => g (phi k)) ⟶ x) as (g_lim).
-   By g_lim it holds that
-     (∀ ε > 0, ∃ N ∈ ℕ, ∀ k ≥ N, |g (phi k) - x| < ε)
-     as (g_lim_eps).
-  By (K_covered) it holds that (∀ i :Index, U i is open) as (U_open).
-  Use i := j in (U_open). 
-  It holds that (U j is open) as (j_open). 
-  By (j_open) it holds that (∀ a ∈ U j, is_interior_point(a) (U(j)))
-    as (a_interior). 
-  Use a := x in (a_interior). 
-   { Indeed, x ∈ U(j). }
-  It holds that x is an _interior point_ of U(j) as (x_interior).
-  By (x_interior) it holds that (∃ r > 0, ∀ y ∈ (open_ball x r), y ∈ U j) 
-    as (x_ball). 
-  Obtain r according to (x_ball). 
-  It holds that (r > 0) as (rpos).
-  It holds that ((∀ n : ℕ, (phi n < phi (S n))%nat) ∧
-    K x ∧ (fun k => g (phi k)) ⟶ x) as (phi_x).
-  Because (phi_x) both ((∀ n : ℕ, (phi n < phi (S n))%nat)) as (phi_inc)
-    and (K x ∧ (fun k => g (phi k)) ⟶ x) as (phi_rest).
- 
-  (* the ball statement from x_ball, restated so we can name it *)
-  It holds that (∀ y ∈ (open_ball x r), y ∈ U j) as (r_ball).
- 
-  (* --- 1. phi is strictly increasing, hence k ≤ phi k ------------- *)
-  We claim that (∀ k : ℕ, (k ≤ phi k)%nat) as (phi_ge).
-  { We use induction on k.
-    + We first show the base case ((0 ≤ phi 0)%nat).
-      We conclude that ((0 ≤ phi 0)%nat).
-    + We now show the induction step.
-      Take k : ℕ.
-      Assume that ((k ≤ phi k)%nat) as (IH).
-      Use n := k in (phi_inc).
-      It holds that ((phi k < phi (S k))%nat) as (step).
-      By (step) it holds that (k < phi(S k))%nat as (step2). 
-      It holds that (k + 1 <= phi(S k))%nat as (step3). 
-      It holds that (S k = k + 1)%nat.
-      By (step3) we conclude that (( k+ 1 ≤ phi ( k + 1))%nat).
-  }
- 
-  (* --- 2. a threshold M for the radii 1/(n+1) -------------------- *)
-  It holds that (r / 2 > 0) as (rhalf_pos).
-  By (archimedean_2 (r / 2) rhalf_pos) it holds that
-    (∃ M : ℕ, 1 / (M + 1) < r / 2) as (arch_half).
-  Obtain M according to (arch_half).
-  It holds that (/ (M + 1) < r / 2) as (arch_inv).
- 
-  (* --- 3. a threshold N1 for the convergence, with epsilon = r/2 -- *)
-  Use ε := (r / 2) in (g_lim_eps).
-    { Indeed, r / 2 > 0. }
-  It holds that (∃ N1 ∈ ℕ, ∀ k ≥ N1, |g (phi k) - x| < r / 2) as (half_tail).
-  Obtain N1 according to (half_tail).
-  It holds that (∀ k : ℕ, (k ≥ N1)%nat → |g (phi k) - x| < r / 2) as (Htail).
- 
-  (* --- 4. one index k that is past BOTH thresholds ---------------- *)
-  We claim that (∃ k : ℕ, (k ≥ N1)%nat ∧ (k ≥ M)%nat) as (big_k).
-  { Choose k0 := (N1 + M)%nat.
-    We show both statements.
-    + We need to show that ((N1 + M ≥ N1)%nat).
-      We conclude that ((N1 + M ≥ N1)%nat).
-    + We need to show that ((N1 + M ≥ M)%nat).
-      We conclude that ((N1 + M ≥ M)%nat).
-  }
-  Obtain k according to (big_k).
-  It holds that ((k ≥ N1)%nat ∧ (k ≥ M)%nat) as (k_bounds).
-  Because (k_bounds) both ((k ≥ N1)%nat) as (k_N1)
-    and ((k ≥ M)%nat) as (k_M).
- 
-  (* --- 5. the subsequence term is within r/2 of x ----------------- *)
-  By (Htail k k_N1) it holds that (|g (phi k) - x| < r / 2) as (close).
- 
-  (* --- 6. the bad ball at index phi k has radius < r/2 ------------ *)
-  By (phi_ge k) it holds that ((k ≤ phi k)%nat) as (k_phi).
-  By (Nat.le_trans M k (phi k) k_M k_phi) it holds that
-  (M ≤ phi k)%nat as (M_phi).
-  By (le_INR M (phi k) M_phi) it holds that (INR M ≤ INR (phi k)) as (INR_le).
-  By (pos_INR M) it holds that (0 ≤ INR M) as (INR_pos).
-  It holds that (0 < INR M + 1) as (M_pos).
-  It holds that (INR M + 1 ≤ INR (phi k) + 1) as (INR_le1).
-  By (Rinv_le_contravar (INR M + 1) (INR (phi k) + 1) M_pos INR_le1)
-    it holds that (/ (INR (phi k) + 1) ≤ / (INR M + 1)) as (inv_le).
-  It holds that (/ (phi k + 1) < r / 2) as (rad_small).
- 
-  (* --- 7. the bad ball sits inside B(x, r) ------------------------ *)
-  We claim that (∀ y : ℝ, y ∈ open_ball (g (phi k)) (/ (phi k + 1)) →
-    y ∈ open_ball x r) as (ball_sub).
-  { Take y : ℝ.
-    Assume that (y ∈ open_ball (g (phi k)) (/ (phi k + 1))) as (y_in).
-    By (y_in) it holds that (|y - g (phi k)| < / (phi k + 1)) as (y_abs).
-    By (Rabs_triang (y - g (phi k)) (g (phi k) - x)) it holds that
-      (|(y - g (phi k)) + (g (phi k) - x)|
-         ≤ |y - g (phi k)| + |g (phi k) - x|) as (tri).
-    It holds that ((y - g (phi k)) + (g (phi k) - x) = y - x) as (alg).
-    rewrite alg in tri.
-    It holds that (|y - x| < r) as (y_r).
-    We conclude that (y ∈ open_ball x r).
-  }
- 
-  (* --- 8. the contradiction --------------------------------------- *)
-  By (n_uncover (phi k)) it holds that (∀ i : Index, ∃ y : ℝ,
-    y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U i y) as (bad_at).
-  By (bad_at j) it holds that (∃ y : ℝ,
-    y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U j y) as (y_bad).
-  Obtain y according to (y_bad).
-  It holds that (y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U j y)
-    as (y_props).
-  Because (y_props) both (y ∈ open_ball (g (phi k)) (/ (phi k + 1))) as (y_in_bad)
-    and (¬ U j y) as (y_notU).
-  By (ball_sub y y_in_bad) it holds that (y ∈ open_ball x r) as (y_in_r).
-  By (r_ball y y_in_r) it holds that (U j y) as (y_inU).
-  Contradiction.
-Qed.
 
 
 
-
-Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
-    sequentially_compact K ⇔
-    (forall (I : Type) (U : I → (ℝ → Prop)),
-        open_cover U K → has_finite_subcover U K).
-Proof.
-  Admitted.
 (** Every compact set is closed.
 
     Proof idea: if [x] is a limit point of [K], take a sequence in [K] converging
@@ -1412,7 +1689,6 @@ Proof.
   Admitted.
 
 (** ** Open covers and the finite subcover property *)
-
 
 
 
