@@ -364,15 +364,14 @@ Proof.
      It holds that ( ∃ y ∈ A, 0 < |y - x| < 1 / ( INR n + 1) ) . 
      It holds that (∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) .
 
-     Indeed, ( ∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)). }
-
-  
-   (* Define the relation locally here *)
-     By (countable_choice (fun n y => y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) (Hsteps)) 
+     Indeed, ( ∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)). 
+     }
+     
+    By (countable_choice (fun n y => y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1)) (Hsteps)) 
      it holds that (∃ a : ℕ → ℝ, ∀ n : ℕ, a n ∈ A ∧ 0 < | a n - x | < 1 / (INR n + 1)) as (H_seq).
    Obtain a according to (H_seq)  .
 
-   (* Now we must confirm the properties of a by unwrapping the for all statement *)
+   
    We claim that (∀ n ∈ ℕ, a n ∈ A) as (H_A).  
    {Take n ∈ ℕ . 
     Use n0 := n in (_H). 
