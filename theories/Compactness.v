@@ -1148,8 +1148,19 @@ Proof.
   Contradiction.
 Qed.
 
+(** A lemma that shows that for a bounded set [K] for which a Lebesgue number type 
+ property holds for a given Open Cover, then a finite a finite subcover exists for 
+  said cover. 
+  
+  
+   Proof Idea: Induct on the upper bound of [K] based on δ and lower bound a. 
+    [Base Case]: Strict upper bound is lower bound and therefore [K] = ∅ 
+     [Induction step]: Any element is either bounded by the previous upper bound and 
+     therefore inside the finite subcover recovered from the Induction Hypothesis 
+     or it is in the new increment which is entirely covered  by some open 
+     set U_j by the Lebesgue number type assumption.  *)
 
-Lemma finite_cover_up_to (Index : Type) (U : Index → (ℝ → Prop)) (K : ℝ → Prop)
+Lemma finite_cover_on_delta (Index : Type) (U : Index → (ℝ → Prop)) (K : ℝ → Prop)
     (a δ : ℝ) :
   δ > 0 →
   (∀ x : ℝ, K x → a ≤ x) →
@@ -1304,10 +1315,10 @@ Qed.
   has a finite subcover.
 
     Proof idea: (⇒) Use the lebesgue number lemma to construct half open intervals I_j that cover 
-    the entire bounded region [K] lies within by Heine Borel. Any non-empty I_j ⋂ [K] will be contained within some U_i by the 
-    property of the chosen δ. As there are finitely many I_j this means that we can choose 
-    finitely many U_i to cover [K]. (⇐) Use the previous finite_cover lemmas and Heine Borel 
-    to conclude that [K] must be sequentially compact *)
+    the entire bounded region [K] lies within by Heine Borel. Any non-empty I_j ⋂ [K] will be contained
+    within some U_i by the property of the chosen δ. As there are finitely many I_j this means that we 
+    can choose finitely many U_i to cover [K] (proven in the previous Lemma). (⇐) Use the previous 
+    finite_cover lemmas and Heine Borel to conclude that [K] must be sequentially compact *)
 
 Theorem compact_iff_finite_subcover (K : ℝ → Prop) :
     sequentially_compact K ⇔
@@ -1344,7 +1355,7 @@ split.
    It holds that (& m ≤ x ≤ M). 
    We conclude that (m ≤ x).
   } 
-  By (finite_cover_up_to(Index)(U)(K)(m) (δ)) it holds that
+  By (finite_cover_on_delta(Index)(U)(K)(m) (δ)) it holds that
    (δ > 0 →
   (∀ x : ℝ, K x → m ≤ x) →
   (∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) →
