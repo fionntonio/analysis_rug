@@ -1644,34 +1644,6 @@ It holds that (n ≤ phi(n))%nat ⇨ ∀ x0 ∈ ℝ,
 Qed.
 
 
-
-
-
-(** Every compact set is closed.
-
-    Proof idea: if [x] is a limit point of [K], take a sequence in [K] converging
-    to [x]. By compactness it has a subsequence converging to some [y ∈ K]; but
-    subsequences of a convergent sequence share its limit, so [x = y ∈ K]. *)
-Theorem compact_sets_is_closed (K : ℝ → Prop) (HK : K is _compact_) :
-    K is closed.
-Proof.
- We need to show that K is closed.
- By (compact_is_closed) and HK 
-  it holds that (K is compact -> K is closed). 
- We conclude that K is closed.
-Qed.
-(** Every compact set is bounded.
-
-    Proof idea: if [K] were unbounded, pick [xₙ ∈ K] with [|xₙ| > n]; this
-    sequence has no convergent subsequence (convergent sequences are bounded),
-    contradicting compactness. *)
-Theorem compact_is_bounded (K : ℝ → Prop) (HK : K is _compact_) :
-    K is _bounded_.
-Proof.
- By (compact_is_bounded) and HK 
-  we conclude that K is bounded.
-  Qed.
-
 (** ** Closed subsets of compact sets are compact *)
 
 (** A closed subset of a compact set is compact.
@@ -1681,25 +1653,13 @@ Proof.
     [F], the limit [y ∈ F]. *)
 Theorem closed_subset_of_compact_is_compact
     (K F : ℝ → Prop)
-    (HK : K is _compact_) (HF : F is _closed_)
+    (HK : sequentially_compact(K)) (HF : F is _closed_)
     (Hinc : ∀ x : ℝ, F x → K x) :
-    F is _compact_.
+    sequentially_compact(F).
 Proof.
   Admitted.
 
-(** ** Heine-Borel theorem *)
 
-(** Heine–Borel theorem: a subset of ℝ is compact iff it is closed and bounded.
-
-    Proof idea: (⇒) is the two theorems above. (⇐) given a sequence in a bounded
-    [K], Bolzano–Weierstrass gives a convergent subsequence, and closedness
-    places its limit in [K]. *)
-Theorem heine_borel (K : ℝ → Prop) :
-    (K is _compact_) ⇔ (K is _closed_ ∧ K is _bounded_).
-Proof.
-  Admitted.
-
-(** ** Open covers and the finite subcover property *)
 
 
 
