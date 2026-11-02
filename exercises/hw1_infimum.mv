@@ -23,6 +23,7 @@ Require Import Waterproof.Notations.Sets.
 Require Import Waterproof.Chains.
 Require Import Waterproof.Automation.
 Require Import Waterproof.Libs.Analysis.SupAndInf.
+Require Import Waterproof.Libs.Reals.ArchimedN.
 
 Waterproof Enable Automation RealsAndIntegers.
 Waterproof Enable Automation Intuition.
@@ -51,13 +52,28 @@ Waterproof Register Expand "A";
 ```coq
 Lemma A_lower_bound : 0 is a _lower bound_ for A.
 Proof.
-```
-<input-area>
-```coq
+We need to show that ∀ a ∈ A, 0 ≤ a. 
+Take a ∈ A. 
+It holds that (∃ x : ℝ, ∃ y : ℝ,
+    1 ≤ 2*x ∧ 2*x < y ∧ a = (2*x + 1) / (3*y - x)) as (defa). 
+Obtain x according to (defa). 
+Obtain y according to (_H0). 
+It holds that x >= 1/2. 
+It holds that 2*x +1 >= 0 as (numpos). 
+It holds that (& 1 <= 2*x < y). 
+It holds that (y >1). 
+It holds that (0 < / (3*y - x)) as (invdenpos).
+By (Rmult_ge_compat_r (/ (3*y - x))) and (invdenpos)
+  it holds that
+    ((2*x + 1) * / (3*y - x) ≥ 0 * / (3*y - x)) as (Hmult).
+It holds that
+  ((2*x + 1) / (3*y - x) =
+   (2*x + 1) * / (3*y - x)) as (Hdiv1).
+It holds that
+  (0 / (3*y - x) = 0 * / (3*y - x)) as (Hdiv2).
+By (Hmult) and (Hdiv1) it holds that ((2*x + 1) / (3*y - x) >= 0).
+We conclude that (0 <= a).
 
-```
-</input-area>
-```coq
 Qed.
 ```
 
@@ -68,13 +84,32 @@ It is useful to prove this lemma separately.
 ```coq
 Lemma A_near_zero : ∀ ε > 0, ∃ a ∈ A, a < 0 + ε.
 Proof.
-```
-<input-area>
-```coq
+Take ε > 0. 
+By archimedN_exists it holds that
+  (∃ n ∈ ℕ, INR n >  (/3)*(2/ε + 1/2) - 2) as (nbound). 
+Obtain n according to (nbound). 
+It holds that (3*(n + 2) - 1/2 > 2/ε). 
+It holds that ((3*(n + 2) - 1/2) / 2 > /ε).
+It holds that (n >= 0).
+By (Rinv_lt_contravar) it holds that (/( (3*(n + 2) - 1/2) / 2)  < / (/ ε)). 
+It holds that (//ε = ε). 
+By Rinv_div it holds that
+  (/ ((3*(n + 2) - 1/2) / 2) = 2 / (3*(n + 2) - 1/2)) as (Hrecip).
+It holds that (2 / (3*(n + 2) - 1/2) < ε) as (epsbound). 
+Choose a := 2 / (3*(n + 2) - 1/2).
+{ We need to verify that a ∈ A. 
+ It suffices to show that (∃ x : ℝ, ∃ y : ℝ,
+    1 ≤ 2*x ∧ 2*x < y ∧ a = (2*x + 1) / (3*y - x)). 
+ Choose x := 1/2. 
+ Choose y := INR n + 2. 
+ It holds that (1 <= 2*x).  
+ It holds that 1 < y. 
+ It holds that 2*x < y. 
+ We conclude that (1 ≤ 2 * x
+∧ 2 * x < y ∧ a = (2 * x + 1) / (3 * y - x)).
 
-```
-</input-area>
-```coq
+}
+We conclude that a < 0 + ε.
 Qed.
 ```
 
@@ -86,13 +121,10 @@ can be of great help.
 ```coq
 Lemma inf_A : 0 is the _infimum_ of A.
 Proof.
-```
-<input-area>
-```coq
+By (A_lower_bound) and (A_near_zero) it holds that (0 is a _lower bound_ for A ∧ (∀ ε > 0, ∃ a ∈ A, a < 0 + ε)) as (infchar). 
+By (alt_char_inf_mpr) and (infchar) it holds that 0 is the _infimum_ of A. 
+We conclude that 0 is the _infimum_ of A.
 
-```
-</input-area>
-```coq
 Qed.
 ```
 
@@ -105,12 +137,6 @@ explain them when asked.
 Inductive answer : Type := Yes : answer.
 
 Definition own_work : answer. exact
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+Yes.
 Qed.
 ```
