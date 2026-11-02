@@ -8,7 +8,7 @@
   Note: The rational-limit example and the standard limits 1/n, 1/n^2 and c^n
   are fully proved. The nth-root limits and n!/n^n are still admitted: they
   require logarithm/l'Hôpital-style machinery not yet developed here.
-  Note: In Rocq/Coq, natural numbers start from 0, but our sequences correspond
+  Note: In Rocq, natural numbers start from 0, but our sequences correspond
   to Abbott's sequences starting from n=1. We use (n+1) or (INR n + 1) consistently. *)
 
 From Stdlib Require Import Reals.Reals.

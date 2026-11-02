@@ -2,7 +2,7 @@
 ; We load its OCaml plugin explicitly to enable Waterproof vernacular commands.
 (rocq.theory
  (name RUG.Analysis)
- (package coq-analysis)
+ (package waterproof-analysis)
  (synopsis "Undergraduate real analysis formalized in Waterproof")
  (theories Stdlib Ltac2 Waterproof)
  (plugins coq-waterproof.plugin rocq-runtime.plugins.ltac rocq-runtime.plugins.ltac2)
