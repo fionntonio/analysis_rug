@@ -40,7 +40,31 @@ Definition zero_fn : ℝ → ℝ := fun _ => 0.
 Lemma x_over_n_pointwise :
     converges_pointwise (fun n x => x / INR n) (fun _ => 0) (fun _ => True).
 Proof.
-  Admitted.
+  We need to show that ∀ x ∈ (fun _ : ℝ => True), (fun n => x / INR n) ⟶ 0.
+  Take x ∈ (fun _ : ℝ => True).
+  We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | x / n - 0 | < ε.
+  Take ε > 0.
+  By the Archimedean property it holds that ∃ n1 ∈ ℕ, n1 > | x | / ε.
+  Obtain such an n1. Choose N1 := S n1. { Indeed, N1 ∈ ℕ. }
+  We need to show that ∀ n ≥ N1, | x / n - 0 | < ε.
+  Take n ≥ N1.
+  It holds that (n > n1)%nat.
+  It holds that INR n > INR n1.
+  It holds that INR n > 0.
+  (** First we turn the choice of [n1] into [|x| < n·ε]. *)
+  It holds that | x | / ε < n.
+  It holds that | x | = (| x | / ε) * ε.
+  By Rmult_lt_compat_r it holds that (| x | / ε) * ε < n * ε.
+  It holds that | x | < n * ε.
+  (** Then we divide by [n > 0]. *)
+  It holds that | n | = n.
+  By Rabs_mult it holds that | x * / n | = | x | * | / n |.
+  By Rabs_inv it holds that | / n | = / | n |.
+  It holds that | x / n | = | x | / n.
+  It holds that / n > 0.
+  By Rmult_lt_compat_r it holds that | x | * / n < (n * ε) * / n.
+  We conclude that (& | x / n - 0 | = | x | * / n < (n * ε) * / n = ε).
+Qed.
 
 (** Pointwise limit of continuous functions need not be continuous. *)
 (** (illustrated by fₙ(x) = xⁿ on [0,1]; limit is the step function) *)
@@ -55,7 +79,10 @@ Lemma uniform_implies_pointwise (fn : ℕ → ℝ → ℝ) (g : ℝ → ℝ) (A 
     (H : converges_uniformly fn g A) :
     converges_pointwise fn g A.
 Proof.
-  Admitted.
+  (** This is proved in [Analysis.Lib.UniformConvergence]. *)
+  By RUG.Analysis.Lib.UniformConvergence.uniform_implies_pointwise
+    we conclude that converges_pointwise fn g A.
+Qed.
 
 (** ** Cauchy criterion for uniform convergence *)
 
