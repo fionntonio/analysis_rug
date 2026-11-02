@@ -1,2 +1,4 @@
 ; Prevent dune from recursing into the vendor directory (it has its own dune-project).
-(dirs (:standard \ vendor))
+
+(dirs
+ (:standard \ vendor))

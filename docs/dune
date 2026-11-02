@@ -1,6 +1,8 @@
 (rule
  (alias doc)
- (targets (dir rocq))
+ (targets
+  (dir rocq))
  (mode promote)
  (deps %{project_root}/theories/RUG.Analysis.html)
- (action (run cp -r %{project_root}/theories/RUG.Analysis.html rocq)))
+ (action
+  (run cp -r %{project_root}/theories/RUG.Analysis.html rocq)))
