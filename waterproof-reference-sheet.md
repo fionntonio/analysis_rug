@@ -1,8 +1,8 @@
 # Waterproof Reference Sheet
 
-A practical guide to `coq-waterproof` (v3.x on Coq/Rocq ≥ 8.17), based on the source at [impermeable/coq-waterproof](https://github.com/impermeable/coq-waterproof) and its tutorial notebooks.
+A practical guide to `coq-waterproof` (v3.x on Rocq ≥ 8.17), based on the source at [impermeable/coq-waterproof](https://github.com/impermeable/coq-waterproof) and its tutorial notebooks.
 
-Waterproof is an Ltac2/OCaml plugin that makes Coq read like an analysis textbook. You get standard math notation (`ℝ`, `∈`, `∀`, inequality chains), mandatory goal signposts, and automation that swallows routine arithmetic. Underneath, it remains standard Coq. Raw tactics like `apply`, `destruct`, `symmetry`, and `rewrite` work whenever you want them.
+Waterproof is an Ltac2/OCaml plugin that makes Rocq read like an analysis textbook. You get standard math notation (`ℝ`, `∈`, `∀`, inequality chains), mandatory goal signposts, and automation that swallows routine arithmetic. Underneath, it remains standard Rocq. Raw tactics like `apply`, `destruct`, `symmetry`, and `rewrite` work whenever you want them.
 
 ---
 
@@ -66,7 +66,7 @@ The automation shield is active by default. It stops automation from silently in
 
 ### 2.1 Logic
 
-| Waterproof | Coq | Notes |
+| Waterproof | Rocq | Notes |
 |---|---|---|
 | `∀ x ..., P` / `for all x, P` | `forall` | |
 | `∃ x ..., P` / `there exists x, P` | `exists` | |
@@ -235,7 +235,7 @@ By f_increasing we conclude that & 2 < f(0) ≤ f(1).
 
 ## 6. Standard library interop
 
-Analysis proofs frequently lean on Coq's standard library. Put a temporary `Search "name".` in your file to locate lemmas. Reliable entry points: `continuity_ab_maj`/`_min` (EVT), `IVT_interv`, `Heine` + `compact_P3`, `continuity_seq`, `continuity_implies_RiemannInt`, `RiemannInt_P*`, `MVT`/`MVT_cor1`/`Rolle`, `derive_increasing_interv`, `compact_carac`.
+Analysis proofs frequently lean on Rocq's standard library. Put a temporary `Search "name".` in your file to locate lemmas. Reliable entry points: `continuity_ab_maj`/`_min` (EVT), `IVT_interv`, `Heine` + `compact_P3`, `continuity_seq`, `continuity_implies_RiemannInt`, `RiemannInt_P*`, `MVT`/`MVT_cor1`/`Rolle`, `derive_increasing_interv`, `compact_carac`.
 
 Common friction points:
 
@@ -309,7 +309,7 @@ To add a sentence: write the Ltac2 function, bind it with `Ltac2 Notation "My" "
 
 ## 8. Exercise notebooks (`.mv`)
 
-Waterproof notebooks are Markdown files with fenced Coq blocks and custom tags:
+Waterproof notebooks are Markdown files with fenced Rocq blocks and custom tags:
 
 - ` ```coq ... ``` ` — Checked, read-only code.
 - `<input-area> ```coq ... ``` </input-area>` — Editable student solution box.

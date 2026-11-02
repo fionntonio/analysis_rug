@@ -4,11 +4,10 @@
 
 (generate_opam_files true)
 
-(name coq-analysis)
+(name waterproof-analysis)
 
 (package
- (name coq-analysis)
+ (name waterproof-analysis)
  (synopsis "Formalized real analysis with Waterproof")
  (authors "Fionn Donoghue" "Marcello Seri")
  (depends rocq-core rocq-stdlib (coq-waterproof (>= 3.1.0+9.1))))
-
