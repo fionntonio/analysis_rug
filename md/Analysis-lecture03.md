@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Sequences.v`](docs/rocq/RUG.Analysis.Sequences.html), [`Subsequences.v`](docs/rocq/RUG.Analysis.Subsequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
 
+Tutorial: [Tutorial 3](#tutorials/tutorial-3)
+
 ---
 
 # Monotone sequences

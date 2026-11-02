@@ -1,0 +1,249 @@
+# Data for the Tutorials page (index.html#tutorials).
+#
+# One entry per lecture: tutorial N belongs to lecture N.
+#   reading:   Abbott sections covered by the lecture
+#   content:   Markdown summary of the lecture
+#   questions: Markdown list of questions to start the tutorial
+#   exercises: exercises for this tutorial, one item per Abbott section
+#              (dates are in the schedule in md/Analysis-course-info.md)
+#
+# Markdown fields use block scalars (|) so that LaTeX ($...$, $$...$$) and
+# leading `*` need no escaping.
+
+title: Tutorials
+intro: |
+  For each lecture you find a summary of its content, some questions to start
+  the discussion in the tutorial, and the exercises for the tutorial.
+  The exercises are from **Abbott, 2nd edition**. See the
+  [course schedule](#course-info/tutorial-schedule) for the dates.
+
+  There are more exercises than you can do during the tutorials: the
+  remaining ones are meant for self-practice. If you have any questions while
+  trying to solve them, contact me or the TAs, or ask on the discussion forum
+  on Brightspace.
+
+tutorials:
+  - number: 1
+    reading: Abbott §1.2, §1.3, §1.4
+    content: |
+      - **Preliminaries** on real numbers
+      - **The Axiom of Completeness** and its consequences, e.g. Archimedean Property, Nested Interval Property
+      - **Upper and lower bounds**, supremum (sup), infimum (inf) and their properties
+      - **The absolute value** and its properties, including triangle and reverse triangle inequalities
+    questions: |
+      - Explain in your own words what is an axiom. How does it differ from a theorem? What axioms have you used in previous courses (perhaps without realizing it)?
+      - Why do we need to introduce the Axiom Of Completeness? Come up with some examples of sets of rational numbers for which this axiom does not hold, can you show that it does not hold?
+      - Let $A \subseteq \mathbb{R}$ bounded and let $s$ be an upper bound of $A$. In class we proved $s = \sup A$ if and only if $\forall \epsilon >0,\; \exists a \in A$ such that $s-\epsilon < a$. Show that this is also equivalent to $\forall \epsilon >0,\; \exists a \in A$ such that $s-\epsilon \leq a$ (with 'less or equal').
+    exercises:
+      - §1.2 ex. 2, 5, 7, 9
+      - §1.3 ex. 1, 6, 8
+      - §1.4 ex. 1, 3, 4
+
+  - number: 2
+    reading: Abbott §2.2, §2.3
+    content: |
+      - **Motivation of limits through Newton's method:** introducing the concept of limits using the iterative process of Newton's root-finding method.
+      - **Sequences** defined as functions with domain $\mathbb{N}$, and examples.
+      - **Limits of sequences** using $\epsilon$-neighborhoods. Examples of limit calculations.
+      - **Standard limits** used frequently in analysis.
+      - **Divergent sequences:** definition of a divergent sequence and how to prove divergence.
+      - **Bounded sequences:** definition of a bounded sequence, and the theorem that a convergent sequence is bounded (but not vice versa). Examples.
+      - **Algebraic properties of limits.**
+      - **Order properties of limits.**
+    questions: |
+      - Explain in your own words (and without looking at them) the two definitions of limit of a sequence that we gave in class. Use these explanations to reconstruct (without looking at them) the two definitions in formal mathematical language. Did you get the same statement? If not, is it equivalent to one of those statements? (try to prove it or to find a counterexample)
+      - Work together to show, using the definition, that given $a,b,c,d$ natural numbers, the sequence with elements $(a n +b)/(c n + d)$ converges to $a/c$.
+      - How can you modify the proof to show the convergence of $(6x + 5)/(3x - 1)$?
+      - What are some common patterns or behaviors that indicate a sequence is divergent?
+    exercises:
+      - §2.2 ex. 2, 3, 4
+      - §2.3 ex. 3, 4, 7, 10
+
+  - number: 3
+    reading: Abbott §2.4, §2.5
+    content: |
+      - **Monotone sequences:** definition of increasing and decreasing sequences, and examples.
+      - **Monotone Convergence Theorem:** any bounded monotone sequence converges.
+      - **Subsequences:** definition of a subsequence, properties and examples.
+      - **Bolzano–Weierstrass Theorem:** every bounded sequence has a convergent subsequence; with proof using a halving process and the nested interval property.
+      - **Introduction to infinite series:** definition of infinite series, partial sums, and convergence of a series based on the limit of the partial sums.
+      - **Euler's example:** illustration of the convergence of $\sum 1/k^2$.
+      - **The harmonic series:** proof of the divergence of the harmonic series $\sum 1/k$.
+      - **The integral test for convergence** and examples illustrating its application.
+    questions: |
+      - What is the Bolzano–Weierstrass Theorem, and why is it significant in the study of sequences?
+      - Can you walk through the proof of the theorem using the halving process and the nested interval property?
+      - How does a sequence differ from a series?
+      - How can we study divergence or convergence of an infinite series only knowing theorems about sequences?
+    exercises:
+      - §2.4 ex. 1, 5, 7
+      - §2.5 ex. 1, 2
+
+  - number: 4
+    reading: Abbott §2.6, §2.7
+    content: |
+      - **Cauchy criterion:** definition and properties of Cauchy sequences
+      - **Properties of infinite series:** convergence criteria, geometric series, telescoping series, and some of their applications
+    questions: |
+      - What is the relationship between the Cauchy criterion and the definition of convergence of a sequence? Can you prove that they are equivalent?
+      - How does the convergence of a series relate to the convergence of its sequence of partial sums? Can you provide a proof?
+    exercises:
+      - §2.6 ex. 2, 4
+      - §2.7 ex. 2, 4, 8, 9
+
+  - number: 5
+    reading: Abbott §3.2
+    content: |
+      - **Open sets and their properties:** definition of open sets, examples of open and non-open sets, unions and intersections of open sets
+      - **Closed sets and their properties:** relationship between open and closed sets, and limits of sequences, complements of open and closed sets
+      - **Unions and intersections:** properties of unions and intersections of open/closed sets
+    questions: |
+      - What is the relationship between the closure of a set and its complement? Can you describe the closure of an open set and a closed set?
+      - Can you think of a situation where the intersection of infinitely many open sets is not open?
+      - Can you provide an example of a set that is neither open nor closed? What are its properties?
+    exercises:
+      - §3.2 ex. 1, 2, 4, 6, 8
+
+  - number: 6
+    reading: Abbott §3.3
+    content: |
+      - **Compact sets:** sequential definition, characterization as closed and bounded, examples, and counterexamples
+      - Nested Interval Property (NIP) and its generalization to compact sets
+      - **Open covers:** definition, examples, and the characterization of compact sets using open covers
+      - **Heine–Borel Theorem:** equivalence of compactness, closed and bounded sets, and sets with finite subcovers for any open cover
+    questions: |
+      - What alternative characterizations of compact sets can you remember? Make bounded and unbounded examples of non-compact sets, and check how the characterizations fail.
+      - What is an open cover? What is the relation between an open cover and a compact set?
+      - At some point, to discuss what happens as we cover $[0,1]$ and explain the last proof, I (Marcello) wrote on the board the family of open sets $O_n = (-1, \frac{n}{n+1})$. However at some point I started using it (incorrectly!) as a cover for the set. Let's use this question to fix the mishap: show that the family of $O_n$ is an open cover for $(0,1)$ and for $[0, 1)$ but it can **not** be an open cover for $[0,1]$. How can you make it an open cover for $[0,1]$? *This is the whole point of the theorem we were trying to prove: any cover of a compact set must have a finite subcover :)*
+    exercises:
+      - §3.3 ex. 2(a,b), 4, 5, 11(a,b)
+
+  - number: 7
+    reading: Abbott §4.2, §4.3
+    content: |
+      - **Limits of functions:** $\epsilon$–$\delta$ definition, examples, and sequential characterization
+      - **Continuity:** $\epsilon$–$\delta$ definition, examples, and sequential characterization
+      - Algebraic properties of limits
+      - **Special functions:** Dirichlet's function, modified Dirichlet's function, and Thomae's function, and their properties
+    questions: |
+      - How do we define the limit of a function using sequences?
+      - Can you reconstruct the epsilon-delta definition by reasoning from the above definition?
+      - Use this to recover the epsilon-delta definition of continuity.
+      - Can you give an example of a function discontinuous at all points? What is Thomae's function and what about it is peculiar?
+    exercises:
+      - §4.2 ex. 2, 5(c,d), 8(a,b)
+      - §4.3 ex. 1, 6, 8, 9, 10
+
+  - number: 8
+    reading: Abbott §4.4, §4.5
+    content: |
+      - **Continuity and compactness:** compact sets and continuous functions, maxima and minima
+      - **Uniform continuity**
+      - **Intermediate Value Theorem:** statement, proof, and examples of its application
+    questions: |
+      - What is the difference between a continuous function and a uniformly continuous one? Can you provide an example and an example of continuous but non uniformly continuous function?
+      - What is the intermediate value theorem about? Can you find a function and an interval where the Intermediate Value Theorem does not hold? Explain why.
+    exercises:
+      - §4.4 ex. 1, 2(b,c), 4, 9
+      - §4.5 ex. 2, 7
+
+  - number: 9
+    reading: Abbott §5.2, §5.3, §5.4
+    content: |
+      - **Derivatives:** definition, differentiability vs continuity, Interior Extremum Theorem and Darboux's Theorem
+      - **Mean Value Theorem:** Rolle's theorem, Mean Value Theorem, and applications
+      - **Pathological example:** a continuous, nowhere differentiable function
+    questions: |
+      - What is differentiability? Why is it a stronger condition than continuity?
+      - Can you recover the statements of the various intermediate value theorems that we saw in the lectures by describing their meanings? Try it in group.
+    exercises:
+      - §5.2 ex. 2, 4, 5
+      - §5.3 ex. 2, 3, 7
+
+  - number: 10
+    reading: Abbott §6.2
+    content: |
+      - **Pointwise convergence**
+      - **Uniform convergence**
+      - **Convergence types:** characterizations and examples
+      - **Cauchy criterion** for uniform convergence
+      - **Preservation of continuity** under uniform convergence
+    questions: |
+      - Explain in your own words the meaning of pointwise and uniform convergence and how they differ.
+      - Does uniform convergence imply pointwise convergence? Does pointwise convergence imply uniform convergence? Justify the statement with a proof or a counterexample.
+      - How does continuity behave in the limit? Provide an example of a sequence of continuous functions that converges pointwise to a discontinuous function. Can you find a different example than the one in the lecture?
+    exercises:
+      - §6.2 ex. 1, 2, 3. Revisit the uniform Cauchy criterion after self-study of Abbott §6.2
+
+  - number: 11
+    reading: Abbott §6.3, §6.4, §6.5
+    content: |
+      - **Uniform convergence and differentiability:** counterexample and preservation of differentiability under uniform convergence of the derivatives
+      - **Series of functions:** Cauchy criterion, Weierstrass test, and **preservation of continuity and differentiability**
+      - **Power series:** general form, pointwise convergence, and comparison arguments
+      - **Radius of convergence:** definition, root and ratio tests, examples, and behavior at the endpoints
+    questions: |
+      - Under what conditions does the uniform convergence of a sequence of differentiable functions imply that the limit function is differentiable?
+      - Provide an example of a sequence of differentiable functions that converges uniformly to a function that is not differentiable.
+      - How do all these concepts extend to series? Provide an example of a series of continuous functions that converges uniformly to a continuous function.
+    exercises:
+      - §6.3 ex. 1, 3, 5(a,b)
+      - §6.4 ex. 3, 5, 7, 10. **Self-study:** read Abbott §§6.3–6.4 for proofs and additional counterexamples before attempting ex. 3, 5
+      - §6.5 ex. 1, 2, 4, 6. **Self-study:** read the detailed root-test/radius proof in Abbott §6.5 before attempting these exercises
+
+  - number: 12
+    reading: Abbott §6.5, §6.6
+    content: |
+      - **Uniform convergence of power series** on compact intervals inside the radius of convergence, and continuity of the sum
+      - **Term-by-term differentiation** of power series and invariance of the radius of convergence
+      - **Taylor series:** coefficients, expansions about different centers, and convergence to the original function
+      - **Lagrange remainder:** statement, proof using Rolle's theorem, and error estimates
+      - **Examples and a counterexample**
+    questions: |
+      - Explain in your own words the difference between pointwise and uniform convergence. How are they related? Justify your answers with examples and counterexamples.
+      - Under what conditions can we differentiate a power series term-by-term? Can you provide an example to illustrate this?
+      - Show that $nc^n$ with $|c| < 1$ is bounded.
+      - For functions sufficiently differentiable near the point in question, use Taylor expansions to derive the $0/0$ case of L'Hôpital's rule when the denominator has a nonzero first derivative. How can higher-order expansions handle the case where both first derivatives vanish? What information about the error do the remainders give?
+      - Can you provide an example of a function whose Taylor series does not converge to the function itself? What are the implications of this?
+      - **Exercise: approximating an integral with Taylor series.** Let $f(x)=(e^x-1)/x$ for $0<x\leq1$, and define $f(0)=1$. We want to approximate $I=\int_0^1 f(x)\,dx$. *Use the integration rules from Calculus 1.*
+        1. Show that this extension of $f$ is continuous at zero.
+        2. Use the Taylor polynomial of degree $n$ for $e^x$ and its Lagrange remainder to obtain a polynomial approximation to $f$. Show, for $0\leq x\leq1$, that the error is nonnegative and at most $3x^n/(n+1)!$. (Hint: $e^c<3$ for $0<c<1$.)
+        3. Integrate the polynomial and bound the error to prove
+           $$0\leq I-\sum_{k=1}^n\frac{1}{k!\,k}\leq\frac{3}{(n+1)!\,(n+1)}.$$
+           Justify this by bounding the remainder function, rather than treating the intermediate point $c$ as a constant independent of $x$.
+        4. Compute the approximation for $n=5$ and show that its error is less than $10^{-3}$. How large must $n$ be for this bound to guarantee an error less than $10^{-6}$?
+    exercises:
+      - §6.6 ex. 1, 2, 4, 7. **Self-study:** read the additional approximation applications in Abbott §6.6 and review the lecture's Lagrange remainder proof before attempting ex. 4, 7
+
+  - number: 13
+    reading: Abbott §7.2, §7.3
+    content: |
+      - **Partitions and refinements**
+      - **Riemann integral:** definition with lower and upper sums, criterion for integrability
+      - **Continuous functions:** proof of integrability
+      - **Integrals of discontinuous functions:** examples of integrable and non-integrable functions
+    questions: |
+      - How does refining a partition affect the lower and upper sums?
+      - How does the definition of Riemann integral done in class relate to the one you saw in Calculus 1?
+      - Can you provide examples of discontinuous functions that are integrable and others that are not? What characteristics make a discontinuous function non-integrable?
+    exercises:
+      - §7.2 ex. 2, 5
+      - §7.3 ex. 1, 3, 6
+
+  - number: 14
+    reading: Abbott §7.4, §7.5
+    content: |
+      - **Split, algebraic and order properties** of Riemann integrals
+      - **Fundamental Theorem of Calculus:**
+        - Part 1: proof and example
+        - Part 2: proof, uniform continuity, and differentiability at points of continuity
+    questions: |
+      - Name 3 takeaway messages of the analysis course and compare them with the ones from the other members of the group.
+      - Name at least a memorable thing from the course and compare it with the ones from the other members of the group.
+      - What did you find the hardest topic in the course was? Compare your answers in the group.
+      - What are the statements that appear in the Fundamental Theorem of Calculus?
+      - What happens if the function integrated is discontinuous?
+      - **Reading (Abbott §7.4):** read the proofs of the algebraic properties of the Riemann integral (linearity under addition and scalar multiplication), which the lecture leaves to the book. Explain how to use a common refinement to control the upper and lower sums.
+    exercises:
+      - §7.4 ex. 3, 6, 8
+      - §7.5 ex. 1, 2, 8

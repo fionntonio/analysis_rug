@@ -8,6 +8,9 @@ Topics:
 - Abbott §6.2: Pointwise and uniform convergence
 
 Formalization: [`FunctionSequences.v`](docs/rocq/RUG.Analysis.FunctionSequences.html)
+
+Tutorial: [Tutorial 10](#tutorials/tutorial-10)
+
 ---
 
 # Pointwise convergence

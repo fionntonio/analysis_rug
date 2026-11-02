@@ -386,6 +386,7 @@
     <div class="nav-section">Info</div>
     <button class="nav-item" data-file="md/Analysis-course-info.md" data-mode="doc">Course Information</button>
     <button class="nav-item" data-file="md/Analysis-final-exam-info.md" data-mode="slides">Information for the final exam</button>
+    <button class="nav-item" data-file="tutorials.yaml" data-mode="doc" data-slug="tutorials">Tutorials</button>
     <div class="nav-section">Lectures</div>
     <!-- populated by JS -->
   </div>
@@ -428,6 +429,7 @@
 <!-- ── Scripts ───────────────────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" crossorigin="anonymous"></script>
 <script>
 (function () {
   'use strict';
@@ -435,6 +437,17 @@
   // ── Config ────────────────────────────────────────────────────────
   const LECTURE_COUNT = 14;
   const COURSE_FILE   = 'md/Analysis-course-info.md';
+  const PAGES = {
+    'course-info': {
+      title: 'Course Information',
+      description: 'Analysis course information: syllabus, tutorials, and assignments.'
+    },
+    'final-exam-info': { title: 'Information for the Final Exam' },
+    'tutorials': {
+      title: 'Analysis - Tutorials',
+      description: 'Analysis tutorials: lecture content, questions to start the tutorial, and exercises.'
+    }
+  };
 
   // ── State ─────────────────────────────────────────────────────────
   let slides     = [];
@@ -579,6 +592,38 @@
     return template.innerHTML;
   }
 
+  // ── Tutorials page (tutorials.yaml -> Markdown) ─────────────────
+  function lectureSlug(n) { return 'lecture' + String(n).padStart(2, '0'); }
+
+  function tutorialsToMd(data) {
+    var tutorials = data.tutorials || [];
+    var out = ['# ' + (data.title || 'Tutorials'), ''];
+    if (data.intro) out.push(data.intro.trim(), '');
+
+    out.push('## Contents', '');
+    tutorials.forEach(function (t) {
+      out.push(t.number + '. [Tutorial ' + t.number + '](#tutorial-' + t.number + ')'
+        + (t.reading ? ' — ' + t.reading : ''));
+    });
+
+    tutorials.forEach(function (t) {
+      out.push('', '---', '', '# Tutorial ' + t.number, '');
+      out.push('## Content from the lecture', '');
+      out.push((t.reading ? '**' + t.reading + '** — ' : '')
+        + '[Lecture ' + t.number + ' slides](#' + lectureSlug(t.number) + ')', '');
+      if (t.content) out.push(t.content.trim(), '');
+
+      if (t.questions) out.push('## Questions to start the tutorial', '', t.questions.trim(), '');
+
+      if (t.exercises && t.exercises.length) {
+        out.push('## Tutorial exercises', '');
+        t.exercises.forEach(function (e) { out.push('- ' + String(e).trim()); });
+        out.push('');
+      }
+    });
+    return out.join('\n');
+  }
+
   // ── YAML frontmatter ──────────────────────────────────────────────
   function parseFrontmatter(text) {
     var m = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
@@ -707,8 +752,7 @@
   function updatePreview(description) {
     var slug = slugFor(activeItem);
     var lecture = slug.match(/^lecture(\d+)$/);
-    var title = lecture ? 'Analysis - Lecture ' + Number(lecture[1])
-      : slug === 'course-info' ? 'Course Information' : 'Information for the Final Exam';
+    var title = lecture ? 'Analysis - Lecture ' + Number(lecture[1]) : PAGES[slug].title;
     document.title = title;
     topbarTitle.textContent = title;
     document.querySelector('meta[name="description"]').content = description;
@@ -738,12 +782,17 @@
       var text = await res.text();
 
       if (fileMode === 'doc') {
-        updatePreview('Analysis course information: syllabus, tutorials, and assignments.');
+        var documentSlug = slugFor(activeItem);
+        updatePreview(PAGES[documentSlug].description);
+        if (/\.ya?ml$/.test(file)) text = tutorialsToMd(jsyaml.load(text));
         contentEl.innerHTML = '<div class="doc-wrap">' + renderMd(text) + '</div>';
-        // We use namespaces to make the anchors work
-        var documentSlug = file.match(/Analysis-([^/]+)\.md$/)[1];
+        // We use namespaces to make the in-document anchors work; links to
+        // other pages (e.g. #lecture01, #course-info/...) are left untouched.
         contentEl.querySelectorAll('a[href^="#"]').forEach(function (link) {
-          link.setAttribute('href', '#' + documentSlug + '/' + link.getAttribute('href').slice(1));
+          var id = link.getAttribute('href').slice(1);
+          if (id && document.getElementById(id) && contentEl.contains(document.getElementById(id))) {
+            link.setAttribute('href', '#' + documentSlug + '/' + id);
+          }
         });
       } else {
         var parsed   = parseFrontmatter(text);
@@ -777,8 +826,9 @@
     }
   }
 
-  // ── Item selection + hash routing (#lecture05, #course-info, #final-exam-info) ──
+  // ── Item selection + hash routing (#lecture05, #course-info, #tutorials/tutorial-5, …) ──
   function slugFor(item) {
+    if (item.dataset.slug) return item.dataset.slug;
     var m = item.dataset.file.match(/Analysis-(lecture\d+|course-info|final-exam-info)\.md$/);
     return m ? m[1] : null;
   }

@@ -11,6 +11,8 @@ Topics:
 
 Formalization: [`FunctionSequences.v`](docs/rocq/RUG.Analysis.FunctionSequences.html), [`PowerSeries.v`](docs/rocq/RUG.Analysis.PowerSeries.html)
 
+Tutorial: [Tutorial 11](#tutorials/tutorial-11)
+
 ---
 
 

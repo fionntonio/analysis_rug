@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`PowerSeries.v`](docs/rocq/RUG.Analysis.PowerSeries.html), [`Taylor.v`](docs/rocq/RUG.Analysis.Taylor.html)
 
+Tutorial: [Tutorial 12](#tutorials/tutorial-12)
+
 ---
 
 # Uniform convergence

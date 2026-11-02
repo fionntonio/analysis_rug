@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Limits.v`](docs/rocq/RUG.Analysis.Limits.html), [`Continuity.v`](docs/rocq/RUG.Analysis.Continuity.html)
 
+Tutorial: [Tutorial 7](#tutorials/tutorial-7)
+
 ---
 
 # Functional limits

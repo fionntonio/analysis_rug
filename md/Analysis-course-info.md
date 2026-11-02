@@ -187,28 +187,28 @@ Monday lectures run **09:00–11:00 in 5111.0080**; Wednesday lectures run **11:
 | Mon 18 January 2027 | — | Revision and problem solving | — |
 | Wed 20 January 2027 | — | Revision and exam preparation | — |
 
-## Revised tutorial sequence — with explicit self-study prerequisites
+## Tutorial schedule
 
-The exercises below are from **Abbott, 2nd edition**. Some self-study prerequisites are specified in the table: complete them before attempting the indicated exercises.
+Tutorial $N$ belongs to lecture $N$. The exercises (from **Abbott, 2nd edition**), any self-study prerequisites, a summary of the lecture content and some questions to start the tutorial are on the [Tutorials page](#tutorials): click a tutorial in the table to open it. The last two sessions are Q&A sessions with no assigned exercises.
 
-| Date | Tutorial | In-class focus | Abbott (2nd ed.) exercises and preparation |
-|---|---|---|---|
-| Tue 10 November 2026 | 1 | Preliminaries and completeness | §1.2 ex. 2, 5, 7, 9; §1.3 ex. 1, 6, 8 |
-| Thu 12 November 2026 | 2 | Consequences of completeness; cardinality | §1.4 ex. 1, 3, 4 |
-| Tue 17 November 2026 | 3 | Sequences and limits | §2.2 ex. 2, 3, 4; §2.3 ex. 3, 4, 7, 10 |
-| Thu 19 November 2026 | 4 | Subsequences and Bolzano–Weierstrass | §2.4 ex. 1, 5, 7; §2.5 ex. 1, 2 |
-| Tue 24 November 2026 | 5 | Cauchy sequences and series | §2.6 ex. 2, 4; §2.7 ex. 2, 4, 8, 9 |
-| Thu 26 November 2026 | 6 | Open and closed sets | §3.2 ex. 1, 2, 4, 6, 8 |
-| Tue 1 December 2026 | 7 | Compactness | §3.3 ex. 2(a,b), 4, 5, 11(a,b) |
-| Thu 3 December 2026 | 8 | Limits and continuity | §4.2 ex. 2, 5(c,d), 8(a,b); §4.3 ex. 1, 6, 8, 9, 10 |
-| Tue 8 December 2026 | 9 | Continuous functions on compact sets | §4.4 ex. 1, 2(b,c), 4, 9; §4.5 ex. 2, 7 |
-| Thu 10 December 2026 | 10 | Differentiation and mean value theorems | §5.2 ex. 2, 4, 5; §5.3 ex. 2, 3, 7 |
-| Tue 5 January 2027 | 11 | Pointwise and uniform convergence | §6.2 ex. 1, 2, 3. Revisit the uniform Cauchy criterion after self-study of Abbott §6.2 |
-| Thu 7 January 2027 | 12 | Uniform convergence of derivatives; series of functions | §6.3 ex. 1, 3, 5(a,b); §6.4 ex. 3, 5. **Self-study:** read Abbott §§6.3-6.4 for proofs and additional counterexamples  before attempting §6.4 ex. 3, 5 |
-| Tue 12 January 2027 | 13 | Radius of convergence and endpoint behavior | §6.4 ex. 7, 10; §6.5 ex. 1, 2, 4, 6. **Self-study:** read the detailed root-test/radius proof in Abbott §6.5 before attempting §6.5 ex. 1, 2, 4, 6 |
-| Thu 14 January 2027 | 14 | Taylor polynomials and remainder | §6.6 ex. 1, 2, 4, 7. **Self-study:** read the additional approximation applications in Abbott §6.6 and review the lecture's Lagrange remainder proof before attempting §6.6 ex. 4, 7 |
-| Tue 19 January 2027 | 15 | Riemann integration | §7.2 ex. 2, 5; §7.3 ex. 1, 3, 6 |
-| Thu 21 January 2027 | 16 | Properties of the integral and FTC | §7.4 ex. 3, 6, 8; §7.5 ex. 1, 2, 8 |
+| Date | Tutorial | In-class focus |
+|---|---|---|
+| Tue 10 November 2026 | [Tutorial 1](#tutorials/tutorial-1) | Preliminaries and completeness |
+| Thu 12 November 2026 | [Tutorial 2](#tutorials/tutorial-2) | Sequences and limits |
+| Tue 17 November 2026 | [Tutorial 3](#tutorials/tutorial-3) | Subsequences and Bolzano–Weierstrass |
+| Thu 19 November 2026 | [Tutorial 4](#tutorials/tutorial-4) | Cauchy sequences and series |
+| Tue 24 November 2026 | [Tutorial 5](#tutorials/tutorial-5) | Open and closed sets |
+| Thu 26 November 2026 | [Tutorial 6](#tutorials/tutorial-6) | Compactness |
+| Tue 1 December 2026 | [Tutorial 7](#tutorials/tutorial-7) | Limits and continuity |
+| Thu 3 December 2026 | [Tutorial 8](#tutorials/tutorial-8) | Continuous functions on compact sets |
+| Tue 8 December 2026 | [Tutorial 9](#tutorials/tutorial-9) | Differentiation and mean value theorems |
+| Thu 10 December 2026 | [Tutorial 10](#tutorials/tutorial-10) | Pointwise and uniform convergence |
+| Tue 5 January 2027 | [Tutorial 11](#tutorials/tutorial-11) | Uniform convergence of derivatives; series of functions |
+| Thu 7 January 2027 | [Tutorial 12](#tutorials/tutorial-12) | Taylor polynomials and remainder |
+| Tue 12 January 2027 | [Tutorial 13](#tutorials/tutorial-13) | Riemann integration |
+| Thu 14 January 2027 | [Tutorial 14](#tutorials/tutorial-14) | Properties of the integral and FTC |
+| Tue 19 January 2027 | Q&A | — |
+| Thu 21 January 2027 | Q&A | — |
 
 ---
 

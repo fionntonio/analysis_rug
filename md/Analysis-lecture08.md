@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Continuity.v`](docs/rocq/RUG.Analysis.Continuity.html), [`Compactness.v`](docs/rocq/RUG.Analysis.Compactness.html)
 
+Tutorial: [Tutorial 8](#tutorials/tutorial-8)
+
 ---
 
 # Continuity and compactness

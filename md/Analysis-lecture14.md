@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Integration.v`](docs/rocq/RUG.Analysis.Integration.html), [`FTC.v`](docs/rocq/RUG.Analysis.FTC.html)
 
+Tutorial: [Tutorial 14](#tutorials/tutorial-14)
+
 ---
 
 ## A useful lemma

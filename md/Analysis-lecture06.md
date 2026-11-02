@@ -9,6 +9,8 @@ Topics:
 
 Formalization: [`Topology.v`](docs/rocq/RUG.Analysis.Topology.html), [`Compactness.v`](docs/rocq/RUG.Analysis.Compactness.html)
 
+Tutorial: [Tutorial 6](#tutorials/tutorial-6)
+
 ---
 
 # Recap: open and closed sets

@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`CauchySequences.v`](docs/rocq/RUG.Analysis.CauchySequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
 
+Tutorial: [Tutorial 4](#tutorials/tutorial-4)
+
 ---
 
 # Cauchy sequences

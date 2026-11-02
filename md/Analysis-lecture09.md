@@ -11,6 +11,8 @@ Topics:
 
 Formalization: [`Derivatives.v`](docs/rocq/RUG.Analysis.Derivatives.html)
 
+Tutorial: [Tutorial 9](#tutorials/tutorial-9)
+
 ---
 
 # Derivatives

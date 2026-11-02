@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Sequences.v`](docs/rocq/RUG.Analysis.Sequences.html), [`SequenceExamples.v`](docs/rocq/RUG.Analysis.SequenceExamples.html)
 
+Tutorial: [Tutorial 2](#tutorials/tutorial-2)
+
 ---
 
 # Motivation

@@ -10,6 +10,8 @@ Topics:
 
 Formalization: [`Integration.v`](docs/rocq/RUG.Analysis.Integration.html)
 
+Tutorial: [Tutorial 13](#tutorials/tutorial-13)
+
 ---
 
 # Upper and lower sums
