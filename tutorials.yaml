@@ -173,7 +173,8 @@ tutorials:
       - Does uniform convergence imply pointwise convergence? Does pointwise convergence imply uniform convergence? Justify the statement with a proof or a counterexample.
       - How does continuity behave in the limit? Provide an example of a sequence of continuous functions that converges pointwise to a discontinuous function. Can you find a different example than the one in the lecture?
     exercises:
-      - §6.2 ex. 1, 2, 3. Revisit the uniform Cauchy criterion after self-study of Abbott §6.2
+      - §6.2 ex. 1, 2, 3
+      - "**Self-study:** read Abbott §6.2, then revisit the uniform Cauchy criterion"
 
   - number: 11
     reading: Abbott §6.3, §6.4, §6.5
@@ -188,8 +189,9 @@ tutorials:
       - How do all these concepts extend to series? Provide an example of a series of continuous functions that converges uniformly to a continuous function.
     exercises:
       - §6.3 ex. 1, 3, 5(a,b)
-      - §6.4 ex. 3, 5, 7, 10. **Self-study:** read Abbott §§6.3–6.4 for proofs and additional counterexamples before attempting ex. 3, 5
-      - §6.5 ex. 1, 2, 4, 6. **Self-study:** read the detailed root-test/radius proof in Abbott §6.5 before attempting these exercises
+      - §6.4 ex. 7, 10
+      - "**Self-study:** read Abbott §§6.3–6.4 for proofs and additional counterexamples, then attempt §6.4 ex. 3, 5"
+      - "**Self-study:** read the detailed root-test/radius proof in Abbott §6.5, then attempt §6.5 ex. 1, 2, 4, 6"
 
   - number: 12
     reading: Abbott §6.5, §6.6
@@ -205,15 +207,17 @@ tutorials:
       - Show that $nc^n$ with $|c| < 1$ is bounded.
       - For functions sufficiently differentiable near the point in question, use Taylor expansions to derive the $0/0$ case of L'Hôpital's rule when the denominator has a nonzero first derivative. How can higher-order expansions handle the case where both first derivatives vanish? What information about the error do the remainders give?
       - Can you provide an example of a function whose Taylor series does not converge to the function itself? What are the implications of this?
-      - **Exercise: approximating an integral with Taylor series.** Let $f(x)=(e^x-1)/x$ for $0<x\leq1$, and define $f(0)=1$. We want to approximate $I=\int_0^1 f(x)\,dx$. *Use the integration rules from Calculus 1.*
-        1. Show that this extension of $f$ is continuous at zero.
-        2. Use the Taylor polynomial of degree $n$ for $e^x$ and its Lagrange remainder to obtain a polynomial approximation to $f$. Show, for $0\leq x\leq1$, that the error is nonnegative and at most $3x^n/(n+1)!$. (Hint: $e^c<3$ for $0<c<1$.)
-        3. Integrate the polynomial and bound the error to prove
-           $$0\leq I-\sum_{k=1}^n\frac{1}{k!\,k}\leq\frac{3}{(n+1)!\,(n+1)}.$$
-           Justify this by bounding the remainder function, rather than treating the intermediate point $c$ as a constant independent of $x$.
-        4. Compute the approximation for $n=5$ and show that its error is less than $10^{-3}$. How large must $n$ be for this bound to guarantee an error less than $10^{-6}$?
     exercises:
-      - §6.6 ex. 1, 2, 4, 7. **Self-study:** read the additional approximation applications in Abbott §6.6 and review the lecture's Lagrange remainder proof before attempting ex. 4, 7
+      - §6.6 ex. 1, 2
+      - "**Self-study:** read the additional approximation applications in Abbott §6.6 and review the lecture's Lagrange remainder proof, then attempt §6.6 ex. 4, 7"
+      - |
+        **Approximating an integral with Taylor series.** Let $f(x)=(e^x-1)/x$ for $0<x\leq1$, and define $f(0)=1$. We want to approximate $I=\int_0^1 f(x)\,dx$. *Use the integration rules from Calculus 1.*
+          1. Show that this extension of $f$ is continuous at zero.
+          2. Use the Taylor polynomial of degree $n$ for $e^x$ and its Lagrange remainder to obtain a polynomial approximation to $f$. Show, for $0\leq x\leq1$, that the error is nonnegative and at most $3x^n/(n+1)!$. (Hint: $e^c<3$ for $0<c<1$.)
+          3. Integrate the polynomial and bound the error to prove
+             $$0\leq I-\sum_{k=1}^n\frac{1}{k!\,k}\leq\frac{3}{(n+1)!\,(n+1)}.$$
+             Justify this by bounding the remainder function, rather than treating the intermediate point $c$ as a constant independent of $x$.
+          4. Compute the approximation for $n=5$ and show that its error is less than $10^{-3}$. How large must $n$ be for this bound to guarantee an error less than $10^{-6}$?
 
   - number: 13
     reading: Abbott §7.2, §7.3
