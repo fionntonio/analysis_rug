@@ -7,6 +7,7 @@ From Stdlib Require Import Classical_Pred_Type.
 From Stdlib Require Import Lra.
 
 From Stdlib Require Import Reals.Reals.
+From Stdlib Require Import Lists.List.
 
 From Waterproof Require Import Tactics.
 From Waterproof Require Import Automation.
@@ -24,6 +25,17 @@ Waterproof Enable Automation Intuition.
 
 Open Scope R_scope.
 Open Scope subset_scope.
+
+(** Temporary Axiom of Countable choice*)
+
+(** States that For any relation or proposition P, if it holds that 
+    [∀ n : ℕ, ∃ y : ℝ, P n y] then there is a sequence which enumerates
+    a specific choice of y; ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n)  *)
+
+
+Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
+  (∀ n : ℕ, ∃ y : ℝ, P n y) → ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n).
+
 
 (** * Limit points of sets
 
@@ -67,6 +79,65 @@ Definition is_compact (A : subset ℝ) : Prop := compact A.
 Notation "A 'is' '_compact_'" := (is_compact A) (at level 69).
 Notation "A 'is' 'compact'" := (is_compact A) (at level 69, only parsing).
 
+(** The following is lemma to show that the maximum of a finite list is
+  actually attained. Coq only has upper bound lemmas for this statement.*)
+
+Lemma fold_right_max_geq (l : list ℕ) (d x : ℕ) :
+    In x l → (x ≤ fold_right Nat.max d l)%nat.
+Proof.
+  induction l as [| a l IH]; simpl.
+  - intros [].                      (* In x [] is False *)
+  - intros [-> | Hin].
+    + apply Nat.le_max_l.           (* x <= max x (fold_right ...) *)
+    + etransitivity.
+      * apply IH, Hin.              (* x <= fold_right Nat.max d l *)
+      * apply Nat.le_max_r.         (* ... <= max a (fold_right ...) *)
+Qed.
+
+
+(** This Lemma allows us to state that for a finite list, any function on said list 
+    will attain it's minimum*)
+
+Lemma list_has_min (A : Type) (f : A -> R) (xs : list A) :
+  xs <> nil ->
+  exists a, In a xs /\ forall b, In b xs -> f a <= f b.
+Proof.
+  induction xs as [| x tail IH]; simpl.
+  - exact (fun H => False_rect _ (H eq_refl)).
+  - destruct tail as [| y ys].
+    + exists x. split.
+      * simpl. left. reflexivity.
+      * intros b Hb.
+        simpl in Hb.
+        destruct Hb as [Hb | Hfalse].
+        -- subst b. apply Rle_refl.
+        -- Contradiction.
+    + destruct (IH ltac:(discriminate)) as [m [Hm Hmin]].
+      (* Use Ltac1 to split the real-order sumbool. *)
+      ltac1:(destruct (Rle_dec (f x) (f m)) as [Hxm | Hxm]).
+      * exists x. split.
+        -- simpl. left. reflexivity.
+        -- intros b Hb.
+           simpl in Hb.
+           destruct Hb as [Hb | Hb].
+           ++ subst b. apply Rle_refl.
+           ++ eapply Rle_trans.
+              ** exact Hxm.
+              ** apply Hmin. exact Hb.
+      * ltac1:(assert (Hmx : f m <= f x) by
+          (apply Rlt_le; apply Rnot_le_lt; exact Hxm)).
+        exists m. split.
+        -- simpl. right. exact Hm.
+        -- intros b Hb.
+           simpl in Hb.
+           destruct Hb as [Hb | Hb].
+           ++ subst b. exact Hmx.
+           ++ apply Hmin. exact Hb.
+Qed.
+
+
+
+
 (** [a, b] is compact. *)
 Lemma closed_interval_is_compact (a b : ℝ) :
     [a, b] is compact.
@@ -78,20 +149,108 @@ Qed.
    next two lemmas, but it breaks in a weird way if I do. *)
 
 (** Closed and bounded subsets of [ℝ] are compact. *)
+
+Lemma open_iff_is_open (A : subset ℝ) :
+    open_set A <-> A is open.
+Proof.
+ We show both directions.
+  - We need to show that (open_set A) -> (A is open).
+    Assume that open_set A as (openA).
+    We need to show that A is open.
+    We need to show that 
+    ( ∀ a ∈ A, is_interior_point a A). 
+    We need to show that 
+    (∀ a ∈ A, ∃ r > 0, ∀ x ∈ (open_ball a r), x ∈ A).  
+    Take a ∈ A.
+    By (openA) it holds that (a ∈ A) -> (neighbourhood A a) as (aNeigh).
+    It holds that (neighbourhood A a) as (aNeigh').
+    By (aNeigh') it holds that (∃ r : posreal, included (disc a r) A) as (DiscA).
+    Obtain r according to (DiscA).
+    It holds that (included (disc a r) A) as (DiscA').
+    We need to show that ∃ r0 > 0, ∀ x ∈ (open_ball a r0), x ∈ A.
+    Choose r0 := pos r. { We need to verify that r0 > 0.  
+     By cond_pos it holds that 0 < pos r as (Hrpos). 
+     We conclude that r0 > 0. } 
+    We need to show that ∀ x ∈ (open_ball a r0), x ∈ A. 
+    Take x ∈ (open_ball a r0).
+    We need to show that x ∈ A.
+    By (DiscA') it holds that x ∈ A.
+    We conclude that x ∈ A.
+
+
+  - We need to show that (A is open) -> (open_set A).
+    Assume that A is open as (Aopen).
+    We need to show that open_set A.
+    We need to show that ∀ a ∈ A, neighbourhood A a.
+    Take a ∈ A.
+    By (Aopen) it holds that is_interior_point a A as (aInt).
+    It holds that ∃ r > 0, ∀ x ∈ (open_ball a r), x ∈ A as (aInt').
+    Obtain r according to (aInt').
+    It holds that r > 0 as (cond_posr).
+    It holds that ∀ x ∈ (open_ball a r), x ∈ A as (aInt'').
+    We need to show that neighbourhood A a.
+    We need to show that ∃ r0 : posreal, included (disc a r0) A.
+    Choose r0 := mkposreal r cond_posr.  
+    We need to show that included (disc a r0) A. 
+    We need to show that ∀ x ∈ (disc a r0), x ∈ A.
+    Take x ∈ disc a r0.
+    We need to show that x ∈ A.
+    By (aInt'') it holds that x ∈ A.
+    We conclude that x ∈ A.
+Qed.
+
+Lemma closed_iff_is_closed (A : subset ℝ) :
+    closed_set A <-> A is closed.
+Proof.
+  We show both directions.
+  - We need to show that (closed_set A) -> (A is closed).
+    Assume that closed_set A as (closedA).
+    We need to show that A is closed.
+    By (closedA) it holds that (open_set (complementary A)) as (openComplA).
+    We need to show that (complementary A) is open.
+    By (open_iff_is_open) it holds that 
+    (open_set (complementary A) <-> complementary A is open) as (openComplA_iff).
+    We conclude that (complementary A) is open.
+
+  - We need to show that (A is closed) -> (closed_set A).
+    Assume that A is closed as (Aopen).
+    We need to show that closed_set A.
+    By (Aopen) it holds that (complementary A) is open as (ComplAopen).
+    By (open_iff_is_open) it holds that
+    (open_set (complementary A) <-> complementary A is open) as (openComplA_iff).
+    We conclude that closed_set A.
+Qed.
+
 Lemma closed_and_bounded_is_compact (A : subset ℝ) :
-    closed_set A ->
+    A is closed ->
     A is bounded ->
     A is compact.
 Proof.
+We need to show that (A is closed) -> (A is bounded) -> (A is compact).
+  Assume that A is closed as (Aclosed).
+  Assume that A is bounded as (Abounded).
+  We need to show that A is compact.
+ By (closed_iff_is_closed) it holds that (closed_set A <-> A is closed) as (Aclosed_).
+ By (Aclosed_) it holds that closed_set A as (Aclosed').
   apply compact_P5.
+   - exact Aclosed'.
+   - exact Abounded.
+
 Qed.
 
 (** Compact subsets of [ℝ] are closed. *)
 Lemma compact_is_closed (A : subset ℝ) :
     A is compact ->
-    closed_set A.
+    A is closed.
 Proof.
-  apply compact_P2.
+ We need to show that (A is compact) -> (A is closed).
+  Assume that A is compact as (Acompact).
+  By (compact_P2) it holds that closed_set A as (Aclosed).
+  We need to show that A is closed.
+  By (closed_iff_is_closed) it holds that (closed_set A <-> A is closed) as (Aclosed_).
+  By (Aclosed_) it holds that A is closed. 
+  We conclude that A is closed.
+
 Qed.
 
 (** Compact subsets of [ℝ] are bounded. *)
