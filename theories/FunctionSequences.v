@@ -103,7 +103,7 @@ Proof.
   - We need to show that (∃ g : ℝ → ℝ, converges_uniformly fn g A) ⇨
       (∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, ∀ x ∈ A,
         | fn n x - fn m x | < ε).
-    Assume that ∃ g : ℝ → ℝ, converges_uniformly fn g A as (Hconv).
+    Assume that ∃ g : ℝ → ℝ, converges_uniformly fn g A.
     Obtain such a g.
     By unif_conv_is_cauchy it holds that
       ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n : ℕ, ∀ m : ℕ, (n ≥ N1)%nat → (m ≥ N1)%nat →
@@ -154,7 +154,7 @@ Proof.
         which need functions [ℝ → ℝ], unnecessarily harder to use. *)
     Define Rlim := fun (x : ℝ) (L : ℝ) =>
       (x ∈ A ∧ (fun n => fn n x) ⟶ L) ∨ (¬ x ∈ A ∧ L = 0).
-    We claim that ∀ x : ℝ, ∃ L : ℝ, Rlim x L ∧ ∀ L1 : ℝ, Rlim x L1 → L = L1 as (Hunique).
+    We claim that ∀ x : ℝ, ∃ L : ℝ, Rlim x L ∧ ∀ L1 : ℝ, Rlim x L1 → L = L1.
     {
       Take x : ℝ.
       Either x ∈ A or ¬ x ∈ A.
@@ -324,7 +324,7 @@ Proof.
       Take k : ℕ.
       Assume that
         | sum_f_R0 (fun j => fn j x) (m + k)%nat - sum_f_R0 (fun j => fn j x) m |
-          ≤ sum_f_R0 M (m + k)%nat - sum_f_R0 M m as (IH).
+          ≤ sum_f_R0 M (m + k)%nat - sum_f_R0 M m.
       It holds that (m + (k + 1))%nat = S (m + k)%nat.
       It holds that sum_f_R0 (fun j => fn j x) (S (m + k)%nat)
         = sum_f_R0 (fun j => fn j x) (m + k)%nat + fn (S (m + k)%nat) x.
@@ -348,7 +348,7 @@ Proof.
   By convergent_is_cauchy it holds that is_cauchy (fun n => sum_f_R0 M n) as (HMc).
   (** We verify the uniform Cauchy criterion for the partial sums. *)
   We claim that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, ∀ x ∈ A,
-    | sum_f_R0 (fun k => fn k x) n - sum_f_R0 (fun k => fn k x) m | < ε as (Hcauchy).
+    | sum_f_R0 (fun k => fn k x) n - sum_f_R0 (fun k => fn k x) m | < ε.
   {
     Take ε > 0.
     By HMc it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
@@ -472,10 +472,10 @@ Proof.
   (** The dominating series [∑ rⁿ] converges. *)
   It holds that | r | < 1.
   By geometric_series it holds that
-    ∃ L : ℝ, L = 1 / (1 - r) ∧ sum_f_R0 (fun n => r ^ n) ⟶ L as (Hgeo).
+    ∃ L : ℝ, L = 1 / (1 - r) ∧ sum_f_R0 (fun n => r ^ n) ⟶ L.
   Obtain such an L.
   It holds that sum_f_R0 (fun n => r ^ n) ⟶ L.
-  We claim that ∃ L0 ∈ ℝ, (fun n => sum_f_R0 (fun k => r ^ k) n) ⟶ L0 as (HM).
+  We claim that ∃ L0 ∈ ℝ, (fun n => sum_f_R0 (fun k => r ^ k) n) ⟶ L0.
   {
     Choose L0 := L.
     { Indeed, L0 ∈ ℝ. }
@@ -483,7 +483,7 @@ Proof.
   }
   (** On [[-r, r]] we have [|xⁿ| = |x|ⁿ ≤ rⁿ]. *)
   We claim that ∀ n ∈ ℕ, ∀ x ∈ (fun x => -r ≤ x ∧ x ≤ r),
-    | x ^ n | ≤ r ^ n as (Hbound).
+    | x ^ n | ≤ r ^ n.
   {
     Take n ∈ ℕ. Take x ∈ (fun x => -r ≤ x ∧ x ≤ r).
     It holds that -r ≤ x ∧ x ≤ r.
@@ -591,7 +591,7 @@ Proof.
           ∃ y : ℝ, A y ∧ | fn n x - g x | = Rmin (| fn n y - g y |) 1.
       }
       By (Hlub n) it holds that is_upper_bound (E n) (M n)
-        ∧ (∀ b : ℝ, is_upper_bound (E n) b → M n ≤ b) as (Hn).
+        ∧ (∀ b : ℝ, is_upper_bound (E n) b → M n ≤ b).
       It holds that is_upper_bound (E n) (M n) as (Hub).
       By Hub we conclude that | fn n x - g x | ≤ M0 n.
     + We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | M0 n - 0 | < ε.
@@ -604,9 +604,9 @@ Proof.
       We need to show that ∀ n ≥ N3, | M0 n - 0 | < ε.
       Take n ≥ N3.
       By (Hlub n) it holds that is_upper_bound (E n) (M n)
-        ∧ (∀ b : ℝ, is_upper_bound (E n) b → M n ≤ b) as (Hn).
+        ∧ (∀ b : ℝ, is_upper_bound (E n) b → M n ≤ b).
       (** [ε/2] is an upper bound of [Eₙ], so [Mₙ ≤ ε/2]. *)
-      We claim that is_upper_bound (E n) (ε / 2) as (Hub2).
+      We claim that is_upper_bound (E n) (ε / 2).
       {
         We need to show that ∀ y : ℝ, E n y → y ≤ ε / 2.
         Take y : ℝ.
@@ -646,11 +646,11 @@ Proof.
         ∧ M ⟶ 0) ⇨ converges_uniformly fn g A.
     Assume that ∃ M : ℕ → ℝ, ∃ N_0 ∈ ℕ,
       (∀ n : ℕ, (n ≥ N_0)%nat → ∀ x ∈ ℝ, A x → | fn n x - g x | ≤ M n)
-      ∧ M ⟶ 0 as (HM).
+      ∧ M ⟶ 0.
     Obtain such an M.
     It holds that ∃ N_0 ∈ ℕ,
       (∀ n : ℕ, (n ≥ N_0)%nat → ∀ x ∈ ℝ, A x → | fn n x - g x | ≤ M n)
-      ∧ M ⟶ 0 as (HM1).
+      ∧ M ⟶ 0.
     Obtain such an N_0.
     It holds that ∀ n : ℕ, (n ≥ N_0)%nat → ∀ x ∈ ℝ, A x → | fn n x - g x | ≤ M n
       as (Hbound).
@@ -708,7 +708,7 @@ Lemma x_pow_n_not_uniform :
         converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1)).
 Proof.
   Assume that ∃ g : ℝ → ℝ,
-    converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1) as (Hex).
+    converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1).
   Obtain such a g.
   It holds that
     converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1) as (Hunif).
@@ -741,7 +741,7 @@ Proof.
   By x_pow_n_pointwise it holds that
     ∀ y ∈ (fun x => 0 ≤ x ∧ x < 1), (fun n => y ^ n) ⟶ 0 as (Hpt0).
   By (uniform_implies_pointwise _ _ _ Hunif) it holds that
-    converges_pointwise (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1) as (Hptg0).
+    converges_pointwise (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1).
   It holds that
     ∀ y ∈ (fun x => 0 ≤ x ∧ x < 1), (fun n => y ^ n) ⟶ g y as (Hptg).
   It holds that x ∈ (fun x => 0 ≤ x ∧ x < 1).
@@ -782,7 +782,7 @@ Proof.
   {
     Take n : ℕ.
     Assume that (n > 0)%nat.
-    Assume that / INR n ≤ | x - / INR n | as (Hle).
+    Assume that / INR n ≤ | x - / INR n |.
     It holds that INR n > 0.
     It holds that INR n ≠ 0 as (Hn0).
     Define Hinv := Rinv_r (INR n) Hn0.
@@ -981,10 +981,10 @@ Proof.
     By (MVT_cor2 (fun t => fn n t - fn m t) (fun t => dfn n t - dfn m t) u v Huv Hdc)
       it holds that ∃ c : ℝ,
         (fn n v - fn m v) - (fn n u - fn m u) = (dfn n c - dfn m c) * (v - u)
-        ∧ u < c < v as (Hmvt).
+        ∧ u < c < v.
     Obtain such a c.
     It holds that (fn n v - fn m v) - (fn n u - fn m u)
-      = (dfn n c - dfn m c) * (v - u) as (Hc).
+      = (dfn n c - dfn m c) * (v - u).
     It holds that a ≤ c. It holds that c ≤ b.
     By HN it holds that | dfn n c - dfn m c | < ε.
     It holds that | v - u | = | u - v |.
@@ -1073,12 +1073,12 @@ Proof.
   (** Step 3: [(fₙ)] is uniformly Cauchy on [[a, b]]. *)
   It holds that ∃ x0 : ℝ, a ≤ x0 ∧ x0 ≤ b ∧ ∃ L : ℝ, (fun n => fn n x0) ⟶ L.
   Obtain such an x0.
-  It holds that a ≤ x0 ∧ x0 ≤ b ∧ ∃ L : ℝ, (fun n => fn n x0) ⟶ L as (Hx0).
-  It holds that ∃ L : ℝ, (fun n => fn n x0) ⟶ L as (HL).
+  It holds that a ≤ x0 ∧ x0 ≤ b ∧ ∃ L : ℝ, (fun n => fn n x0) ⟶ L.
+  It holds that ∃ L : ℝ, (fun n => fn n x0) ⟶ L.
   Obtain such an L.
   By convergent_is_cauchy it holds that is_cauchy (fun n => fn n x0) as (Hc0).
   We claim that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1,
-    ∀ x ∈ (fun x => a ≤ x ∧ x ≤ b), | fn n x - fn m x | < ε as (Hfc).
+    ∀ x ∈ (fun x => a ≤ x ∧ x ≤ b), | fn n x - fn m x | < ε.
   {
     Take ε > 0.
     It holds that ε / 2 > 0.
@@ -1119,7 +1119,7 @@ Proof.
     We conclude that | fn n x - fn m x | < ε.
   }
   By uniform_cauchy_criterion it holds that
-    ∃ g : ℝ → ℝ, converges_uniformly fn g (fun x => a ≤ x ∧ x ≤ b) as (Hg).
+    ∃ g : ℝ → ℝ, converges_uniformly fn g (fun x => a ≤ x ∧ x ≤ b).
   Obtain such a g.
   It holds that converges_uniformly fn g (fun x => a ≤ x ∧ x ≤ b) as (Hgu).
   Choose g0 := g.
@@ -1185,7 +1185,7 @@ Proof.
       Assume that Boule c r y.
       By Hball it holds that a ≤ y ∧ y ≤ b.
       By Hderiv it holds that
-        ∃ Hd : derivable_pt (fn n) y, derive_pt (fn n) y Hd = dfn n y as (Hn).
+        ∃ Hd : derivable_pt (fn n) y, derive_pt (fn n) y Hd = dfn n y.
       Obtain such a Hd.
       By derive_pt_eq_1 we conclude that derivable_pt_lim (fn n) y (dfn n y).
     }
@@ -1276,12 +1276,12 @@ Proof.
       Take ε > 0.
       It holds that ε / 2 > 0.
       By IH it holds that ∃ δ > 0, ∀ x ∈ A, | x - a | < δ →
-        | series_partial_sums fn n x - series_partial_sums fn n a | < ε / 2 as (H1).
+        | series_partial_sums fn n x - series_partial_sums fn n a | < ε / 2.
       Obtain such a δ1.
       It holds that ∀ x ∈ A, | x - a | < δ1 →
         | series_partial_sums fn n x - series_partial_sums fn n a | < ε / 2 as (Hδ1).
       By Hcont it holds that ∃ δ > 0, ∀ x ∈ A,
-        | x - a | < δ → | fn (S n) x - fn (S n) a | < ε / 2 as (H2).
+        | x - a | < δ → | fn (S n) x - fn (S n) a | < ε / 2.
       Obtain such a δ2.
       It holds that ∀ x ∈ A,
         | x - a | < δ2 → | fn (S n) x - fn (S n) a | < ε / 2 as (Hδ2).
@@ -1352,7 +1352,7 @@ Proof.
     Take n : ℕ. Take z : ℝ.
     Assume that a ≤ z and z ≤ b.
     By Hderiv it holds that
-      ∃ Hd : derivable_pt (fn n) z, derive_pt (fn n) z Hd = dfn n z as (Hn).
+      ∃ Hd : derivable_pt (fn n) z, derive_pt (fn n) z Hd = dfn n z.
     Obtain such a Hd.
     By derive_pt_eq_1 we conclude that derivable_pt_lim (fn n) z (dfn n z).
   }
@@ -1367,7 +1367,7 @@ Proof.
         derivable_pt_lim (series_partial_sums fn 0) z (series_partial_sums dfn 0 z).
       Take z : ℝ.
       Assume that a ≤ z and z ≤ b.
-      By Hlim it holds that derivable_pt_lim (fn 0%nat) z (dfn 0%nat z) as (H0).
+      By Hlim it holds that derivable_pt_lim (fn 0%nat) z (dfn 0%nat z).
       We conclude that
         derivable_pt_lim (series_partial_sums fn 0) z (series_partial_sums dfn 0 z).
     + We now show the induction step.

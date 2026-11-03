@@ -87,9 +87,15 @@ Proof.
     We conclude that |a n * x ^ n| ≤ sprod (fun n ↦ q ^ n) M n.
   }
   We claim that ∀ n ∈ ℕ, 0 ≤ |a n * x ^ n| as (Hpos).
-  { Take n ∈ ℕ. By (Rabs_pos (a n * x ^ n)) we conclude that 0 ≤ |a n * x ^ n|. }
+  {
+    Take n ∈ ℕ.
+    By (Rabs_pos (a n * x ^ n)) we conclude that 0 ≤ |a n * x ^ n|.
+  }
   We claim that ∃ l ∈ ℝ, partial_sums (sprod (fun n ↦ q ^ n) M) ⟶ l as (Hb).
-  { Choose l := M * G. { Indeed, l ∈ ℝ. } We conclude that partial_sums (sprod (fun n ↦ q ^ n) M) ⟶ l. }
+  {
+    Choose l := M * G. { Indeed, l ∈ ℝ. }
+    We conclude that partial_sums (sprod (fun n ↦ q ^ n) M) ⟶ l.
+  }
   By (series_comparison_test (fun n => |a n * x ^ n|) (sprod (fun n ↦ q ^ n) M) Hpos Hle Hb)
     it holds that ∃ l ∈ ℝ, partial_sums (fun n => |a n * x ^ n|) ⟶ l as (Hcmp).
   Obtain l according to (Hcmp).
@@ -176,8 +182,11 @@ Proof.
     ∃ L : ℝ, ∑ (fun n => |a n * r ^ n|) ⟶ L as (Habs).
   Obtain L according to (Habs).
   We claim that ∃ L0 ∈ ℝ, (fun n => sum_f_R0 (fun n => |a n * r ^ n|) n) ⟶ L0 as (HM).
-  { Choose L0 := L. { Indeed, L0 ∈ ℝ. }
-    We conclude that (fun n => sum_f_R0 (fun n => |a n * r ^ n|) n) ⟶ L0. }
+  {
+    Choose L0 := L. { Indeed, L0 ∈ ℝ. }
+    We conclude that
+      (fun n => sum_f_R0 (fun n => |a n * r ^ n|) n) ⟶ L0.
+  }
   We claim that ∀ n ∈ ℕ, ∀ x ∈ (fun x => |x| ≤ r),
       |(fun k x => a k * x ^ k) n x| ≤ (fun n => |a n * r ^ n|) n as (Hbound).
   {
@@ -231,10 +240,13 @@ Proof.
     | sum_f_R0 (fun n => a n * 0 ^ n) n - a 0%nat | < ε.
   Take ε > 0.
   Choose N1 := 0%nat. { Indeed, N1 ∈ ℕ. }
-  We need to show that ∀ n ≥ N1, | sum_f_R0 (fun n => a n * 0 ^ n) n - a 0%nat | < ε.
+  We need to show that ∀ n ≥ N1,
+    | sum_f_R0 (fun n => a n * 0 ^ n) n - a 0%nat | < ε.
   Take n ≥ N1.
-  By (Hall n) it holds that sum_f_R0 (fun n => a n * 0 ^ n) n = a 0%nat.
-  We conclude that | sum_f_R0 (fun n => a n * 0 ^ n) n - a 0%nat | < ε.
+  By (Hall n) it holds that
+    sum_f_R0 (fun n => a n * 0 ^ n) n = a 0%nat.
+  We conclude that
+    | sum_f_R0 (fun n => a n * 0 ^ n) n - a 0%nat | < ε.
 Qed.
 
 (** Convergence at [x₀] implies convergence at every [x] with [|x| < |x₀|]. *)
@@ -307,13 +319,15 @@ Proof.
     Choose M := |x0|. { Indeed, M ∈ ℝ. }
     We conclude that M is an _upper bound_ for Conv.
   }
-  By (R_complete Conv 0 H0S Hbdd) it holds that ∃ Rad ∈ ℝ, Rad is the _supremum_ of Conv as (Hsup).
+  By (R_complete Conv 0 H0S Hbdd) it holds that ∃ Rad ∈ ℝ,
+    Rad is the _supremum_ of Conv as (Hsup).
   Obtain Rad according to (Hsup).
   It holds that Rad is the _supremum_ of Conv.
   It holds that Rad is an _upper bound_ for Conv ∧
     (∀ L ∈ ℝ, L is an _upper bound_ for Conv ⇨ Rad ≤ L).
   It holds that Rad is an _upper bound_ for Conv.
-  It holds that ∀ L ∈ ℝ, L is an _upper bound_ for Conv ⇨ Rad ≤ L as (HRleast).
+  It holds that ∀ L ∈ ℝ,
+    L is an _upper bound_ for Conv ⇨ Rad ≤ L as (HRleast).
   It holds that ∀ r ∈ Conv, r ≤ Rad as (HRub').
   By (HRub' 0 H0S) it holds that 0 ≤ Rad.
   Choose Rad0 := Rad.
@@ -327,7 +341,8 @@ Proof.
       (∀ x : ℝ, |x| < Rad0 → ∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L) ∧
       (∀ x : ℝ, |x| > Rad0 → ¬ (∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L)).
     We show both statements.
-    + We need to show that ∀ x : ℝ, |x| < Rad0 → ∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L.
+    + We need to show that ∀ x : ℝ,
+        |x| < Rad0 → ∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L.
       Take x : ℝ. Assume that |x| < Rad0.
       We argue by contradiction.
       Assume that ¬ (∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L).
@@ -350,7 +365,8 @@ Proof.
       }
       By (HRleast (|x|)) it holds that Rad ≤ |x|.
       Contradiction.
-    + We need to show that ∀ x : ℝ, |x| > Rad0 → ¬ (∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L).
+    + We need to show that ∀ x : ℝ,
+        |x| > Rad0 → ¬ (∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L).
       Take x : ℝ. Assume that |x| > Rad0.
       Assume that ∃ L : ℝ, ∑ (fun n => a n * x ^ n) ⟶ L as (Hc).
       (** A point strictly between [Rad] and [|x|] would lie in [Conv]. *)
@@ -458,7 +474,8 @@ Proof.
   }
   It holds that |x - 0| < r.
   It holds that Boule 0 rp x as (Hxb).
-  By (CVU_continuity _ g 0 rp Hcvu Hcn x Hxb) we conclude that continuity_pt g x.
+  By (CVU_continuity _ g 0 rp Hcvu Hcn x Hxb)
+    we conclude that continuity_pt g x.
 Qed.
 
 
@@ -481,30 +498,41 @@ Proof.
     - We first show the base case
         (sum_f_R0 (fun k => a k * b k) 1 =
          a 1%nat * sum_f_R0 b 1 - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) 0).
-      It holds that sum_f_R0 (fun k => a k * b k) 1 = a 0%nat * b 0%nat + a 1%nat * b 1%nat.
+      It holds that
+        sum_f_R0 (fun k => a k * b k) 1
+        = a 0%nat * b 0%nat + a 1%nat * b 1%nat.
       It holds that sum_f_R0 b 1 = b 0%nat + b 1%nat.
-      It holds that sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) 0
+      It holds that
+        sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) 0
         = (a 1%nat - a 0%nat) * b 0%nat.
-      We conclude that sum_f_R0 (fun k => a k * b k) 1 =
-         a 1%nat * sum_f_R0 b 1 - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) 0.
+      We conclude that
+         sum_f_R0 (fun k => a k * b k) 1
+         = a 1%nat * sum_f_R0 b 1
+           - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) 0.
     - We now show the induction step.
       Take m : ℕ.
-      Assume that sum_f_R0 (fun k => a k * b k) (S m) =
-        a (S m) * sum_f_R0 b (S m)
-        - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m.
-      We claim that sum_f_R0 (fun k => a k * b k) (S (S m)) =
-        a (S (S m)) * sum_f_R0 b (S (S m))
-        - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m).
+      Assume that
+        sum_f_R0 (fun k => a k * b k) (S m)
+        = a (S m) * sum_f_R0 b (S m)
+          - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m.
+      We claim that
+        sum_f_R0 (fun k => a k * b k) (S (S m))
+        = a (S (S m)) * sum_f_R0 b (S (S m))
+          - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m).
       {
-      It holds that sum_f_R0 (fun k => a k * b k) (S (S m))
-        = sum_f_R0 (fun k => a k * b k) (S m) + a (S (S m)) * b (S (S m)).
-      It holds that sum_f_R0 b (S (S m)) = sum_f_R0 b (S m) + b (S (S m)).
-      It holds that sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m)
-        = sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m
-          + (a (S (S m)) - a (S m)) * sum_f_R0 b (S m).
-      We conclude that sum_f_R0 (fun k => a k * b k) (S (S m)) =
-        a (S (S m)) * sum_f_R0 b (S (S m))
-        - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m).
+        It holds that
+          sum_f_R0 (fun k => a k * b k) (S (S m))
+          = sum_f_R0 (fun k => a k * b k) (S m) + a (S (S m)) * b (S (S m)).
+        It holds that
+          sum_f_R0 b (S (S m)) = sum_f_R0 b (S m) + b (S (S m)).
+        It holds that
+          sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m)
+          = sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m
+            + (a (S (S m)) - a (S m)) * sum_f_R0 b (S m).
+        We conclude that
+          sum_f_R0 (fun k => a k * b k) (S (S m))
+          = a (S (S m)) * sum_f_R0 b (S (S m))
+            - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) (S m).
       }
       It holds that (S m + 1 = S (S m))%nat as (En2).
       By En2 we conclude that sum_f_R0 (fun k => a k * b k) (Nat.add (S m) 1) =

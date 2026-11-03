@@ -129,8 +129,7 @@ Proof.
   It holds that (fun k => a (phi k)) ⟶ x as (subseq_converges_to_x).
 
   By subseq_converges_to_x0 it holds that
-    is_index_seq phi → (fun k => a (phi k)) ⟶ x0
-    as (subseq_converges_to_x0').
+    is_index_seq phi → (fun k => a (phi k)) ⟶ x0.
   It holds that ∀ n : ℕ, (phi n < phi (S n))%nat as (Hphi_strict).
 
   We claim that is_index_seq phi as (Hphi).
@@ -149,7 +148,7 @@ Proof.
       subseq_converges_to_x) it holds that
     x0 = x as (x_eq).
 
-  By x_eq and x_in_K it holds that K x0 as (x0_in_K).
+  By x_eq and x_in_K it holds that K x0.
   We conclude that K x0.
 Qed.
 
@@ -187,7 +186,7 @@ Proof.
     It holds that ∀ M : ℝ, ∃ x : ℝ, K(x) ∧ ¬ (& -1* n ≤ x ≤ M) as (m1).
 
     Use M := (INR n) in (m1).
-    It holds that ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤ (INR n)) as (m2).
+    It holds that ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤ (INR n)).
     It holds that ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤ (INR n)).
     We conclude that
       ∃ x : ℝ, K x ∧ ¬(& -1*(INR n) ≤ x ≤ (INR n)).
@@ -200,8 +199,7 @@ Proof.
     as (Hseq).
   Obtain a according to (Hseq).
   It holds that
-    ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤ (INR n))
-    as (Hseq_prop).
+    ∀ n : ℕ, a n ∈ K ∧ ¬(& -1*(INR n) ≤ a n ≤ (INR n)).
 
   We claim that ∀ n : ℕ, a n ∈ K as (Hseq_in_K).
   {
@@ -232,7 +230,7 @@ Proof.
 
   Obtain x according to (phi_lim).
   It holds that ∀ n, (phi(n) < phi(S(n)))%nat as (Hphi_strict).
-  We claim that is_index_seq phi as (Hphi).
+  We claim that is_index_seq phi.
   {
     We need to show that ∀ k ∈ ℕ, (phi k < phi (S k))%nat.
     Take k ∈ ℕ.
@@ -240,15 +238,15 @@ Proof.
     It holds that (phi k < phi (S k))%nat.
     We conclude that (phi k < phi (S k))%nat.
   }
-  It holds that (fun k => a (phi k)) ⟶ x as (subseq_converges_to_x).
+  It holds that (fun k => a (phi k)) ⟶ x.
   By (convergent_sequence_is_bounded (fun k => a (phi k)) x) it holds that
     bounded_sequence (fun k => a (phi k)) as (subseq_is_bounded).
   By subseq_is_bounded it holds that
     ∃ M ∈ ℝ, M > 0 ∧ ∀ n ∈ ℕ, | a(phi(n)) | ≤ M as (Hbounded).
 
   Obtain M according to (Hbounded).
-  It holds that M > 0 as (Hbounded_M).
-  It holds that ∀ n ∈ ℕ, | a(phi(n)) | ≤ M as (Hbounded').
+  It holds that M > 0.
+  It holds that ∀ n ∈ ℕ, | a(phi(n)) | ≤ M.
 
   By the Archimedean property it holds that
     ∃ n0 ∈ ℕ, M < INR n0 as (Harch).
@@ -261,8 +259,7 @@ Proof.
   It holds that | a(phi(n0)) | ≤ M.
   Use n := (phi n0) in (Hseq_not_bounded).
   It holds that
-    ¬(& -1 * INR (phi n0) ≤ a (phi n0) ≤ INR (phi n0))
-    as (Hnot_bounded_phi_n0).
+    ¬(& -1 * INR (phi n0) ≤ a (phi n0) ≤ INR (phi n0)).
 
   By (abs_le_iff (a (phi n0)) M) it holds that
     | a(phi(n0)) | ≤ M ⇔ (- M ≤ a(phi n0) ∧ a(phi n0) ≤ M)
@@ -307,8 +304,7 @@ Proof.
   }
 
   By Hlower_phi_n0 and Hupper_phi_n0 it holds that
-    (& -1 * INR (phi n0) <= a(phi(n0)) <= INR (phi n0))
-    as (Hbounded_phi_n0').
+    (& -1 * INR (phi n0) <= a(phi(n0)) <= INR (phi n0)).
   Contradiction.
 Qed.
 
@@ -369,7 +365,7 @@ Proof.
         ∀ n : ℕ, (& m ≤ a n ≤ M) as (Hseq_bounded).
       Use n := n in (Hseq_bounded).
       It holds that (& m ≤ a n ≤ M) as (Hseq_bounded_n).
-      By Hseq_bounded_n it holds that a n ≤ M as (Hseq_bounded_n').
+      By Hseq_bounded_n it holds that a n ≤ M.
       By x_eq it holds that x ≤ M as (Hseq_bounded_n'').
       We conclude that x ≤ M.
     }
@@ -388,9 +384,9 @@ Proof.
         ∀ n : ℕ, (& m ≤ a n ≤ M) as (Hseq_bounded).
       Use n := n in (Hseq_bounded).
       It holds that (& m ≤ a n ≤ M) as (Hseq_bounded_n).
-      By Hseq_bounded_n it holds that m ≤ a n as (Hseq_bounded_n').
+      By Hseq_bounded_n it holds that m ≤ a n.
       By x_eq it holds that - a n ≤ - m as (Hseq_bounded_n'').
-      By Hseq_bounded_n'' it holds that x ≤ - m as (Hseq_bounded_n''').
+      By Hseq_bounded_n'' it holds that x ≤ - m.
       We conclude that x ≤ - m.
     }
     By (bolzano_weierstrass a Hseq_upbounded Hseq_lowbounded) it holds that
@@ -402,14 +398,13 @@ Proof.
       ∃ x : ℝ, is_index_seq phi ∧ (fun k => a (phi k)) ⟶ x
       as (Hsubseq').
     Obtain x according to (Hsubseq').
-    It holds that is_index_seq phi as (Hphi).
+    It holds that is_index_seq phi.
     It holds that (fun k => a (phi k)) ⟶ x as (subseq_converges_to_x).
     By (closed_iff_contains_limit_points K) it holds that
       (K is _closed_ ⇔ ∀ x : ℝ, (x is a _limit point_ of K) → K x) as (Hiff).
     Because (Hiff) both
       (K is _closed_ → ∀ x : ℝ, (x is a _limit point_ of K) → K x) as (Hto)
-      and ((∀ x : ℝ, (x is a _limit point_ of K) → K x) → K is _closed_)
-      as (Hfrom).
+      and ((∀ x : ℝ, (x is a _limit point_ of K) → K x) → K is _closed_).
     By (Hto Hclosed) it holds that
       ∀ x : ℝ, (x is a _limit point_ of K) → K x
       as (K_limitpoint).
@@ -420,8 +415,7 @@ Proof.
     {
       We need to show that K x.
       By classic it holds that
-        (∃ n : ℕ, a n = x) ∨ ¬(∃ n : ℕ, a n = x)
-        as (Hhit_or_not).
+        (∃ n : ℕ, a n = x) ∨ ¬(∃ n : ℕ, a n = x).
       Either (∃ n : ℕ, a n = x) or (¬(∃ n : ℕ, a n = x)).
       - Case (∃ n : ℕ, a n = x).
         Obtain n according to (H).
@@ -451,7 +445,7 @@ Proof.
         Use n := N1 in (Htail).
         It holds that (N1 ≥ N1)%nat ⇨ |a(phi(N1)) - x| < ε.
         It holds that |a (phi N1) - x| < ε as (Hconverges_).
-        By ainK it holds that a(phi(N1)) ∈ K as (ainK_phi_N1).
+        By ainK it holds that a(phi(N1)) ∈ K.
         Use n := phi(N1) in (Hnot_hit).
         It holds that a(phi(N1)) ≠ x as (Hnot_hit_phi_N1).
         Choose y := a(phi(N1)). { Indeed, a(phi(N1)) ∈ K. }
@@ -532,8 +526,8 @@ Proof.
     {
       We need to show that ∀ i : ℕ, (centered_intervals i) is _open_.
       Take i : ℕ.
-      By pos_INR it holds that 0 ≤ INR i as (Hi).
-      It holds that 0 < INR i + 1 as (Hradius).
+      By pos_INR it holds that 0 ≤ INR i.
+      It holds that 0 < INR i + 1.
       It holds that -1 * (INR i + 1) < INR i + 1 as (H1).
       By (open_interval_is_open (-1 * (INR i + 1)) (INR i + 1) H1)
         it holds that centered_intervals i is _open_.
@@ -545,11 +539,11 @@ Proof.
     {
       We need to show that ∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x.
       Take x : ℝ.
-      Assume that K x as (x_in_K).
+      Assume that K x.
       By the Archimedean property it holds that
         ∃ n ∈ ℕ, n > |x| as (Harch).
       Obtain n according to (Harch).
-      It holds that n + 1 > |x| as (Harch_n).
+      It holds that n + 1 > |x|.
       It holds that (& -1 * (INR n + 1) < x < INR n + 1) as (Harch').
       Choose i := n.
       We need to show that centered_intervals i x.
@@ -559,7 +553,7 @@ Proof.
 
     By Hcover and Hopen it holds that
       (∀ i : ℕ, (centered_intervals i) is _open_) ∧
-      (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x) as (Ucover').
+      (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
     We conclude that
       (∀ i : ℕ, (centered_intervals i) is _open_) ∧
       (∀ x : ℝ, K x → ∃ i : ℕ, centered_intervals i x).
@@ -588,22 +582,21 @@ Proof.
     Take x : ℝ.
 
     We claim that
-      forall i0 : ℕ, In i0 I0 → INR (fold_right max 0%nat I0) ≥ INR i0
-      as (Hmax).
+      forall i0 : ℕ, In i0 I0 → INR (fold_right max 0%nat I0) ≥ INR i0.
     {
       We need to show that
         forall i0 : ℕ, In i0 I0 → INR (fold_right max 0%nat I0) ≥ INR i0.
       Take i0 : ℕ.
-      Assume that In i0 I0 as (i0_in_I0).
+      Assume that In i0 I0.
       We need to show that INR (fold_right max 0%nat I0) ≥ INR i0.
       By (fold_right_max_geq I0 0%nat i0) it holds that
         (fold_right max 0%nat I0 ≥ i0)%nat as (Hmax').
       By Hmax' it holds that
-        INR (fold_right max 0%nat I0) ≥ INR i0 as (Hmax'').
+        INR (fold_right max 0%nat I0) ≥ INR i0.
       We conclude that INR (fold_right max 0%nat I0) ≥ INR i0.
     }
 
-    Assume that K x as (x_in_K).
+    Assume that K x.
     By Hfinite_cover it holds that
       ∃ i : ℕ, In i I0 ∧ centered_intervals i x as (Hcover_x).
     Obtain i according to (Hcover_x).
@@ -699,9 +692,9 @@ Proof.
   Obtain x according to (Klim).
   It holds that
     (x is a _limit point_ of K) ∧ ¬(K x) as (xlimK).
-  By xlimK it holds that x is a _limit point_ of K as (xlp).
+  By xlimK it holds that x is a _limit point_ of K.
   It holds that ∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε as (xball).
-  By xlimK it holds that ¬(K x) as (Knotx).
+  By xlimK it holds that ¬(K x).
   By Kfinite it holds that
     forall (I : Type) (U : I → (ℝ → Prop)),
       open_cover U K → has_finite_subcover U K
@@ -730,7 +723,7 @@ Proof.
       unfold K_point.
       exact (@proj2_sig ℝ (fun y : ℝ => K y) i).
     }
-    By equalx and IinK it holds that K(x) as (Kinx).
+    By equalx and IinK it holds that K(x).
     Contradiction.
   }
 
@@ -738,7 +731,7 @@ Proof.
   {
     We need to show that open_cover (K_to_half_ball K x) K.
     unfold open_cover.
-    We claim that ∀ i, K_to_half_ball(K, x, i) is _open_ as (openU).
+    We claim that ∀ i, K_to_half_ball(K, x, i) is _open_.
     {
       We need to show that
         ∀ i : K_index K, (K_to_half_ball K x i) is _open_.
@@ -759,8 +752,7 @@ Proof.
       We conclude that K_to_half_ball(K, x, i) is open.
     }
 
-    We claim that ∀ x0, K(x0) ⇨ ∃ i, K_to_half_ball(K, x, i, x0)
-      as (U_iscover).
+    We claim that ∀ x0, K(x0) ⇨ ∃ i, K_to_half_ball(K, x, i, x0).
     {
       Take x0 : ℝ.
       Assume that K x0 as (xincluded).
@@ -769,7 +761,7 @@ Proof.
       (** Here we use a little bit of Rocq to get Waterproof to recognise
           that our different representations of elements of [K] are the
           same object. *)
-      We claim that K_point K (make_K_index K x0 xincluded) = x0 as (xisx).
+      We claim that K_point K (make_K_index K x0 xincluded) = x0.
       {
         unfold K_point, make_K_index.
         reflexivity.
@@ -779,8 +771,7 @@ Proof.
       We need to show that x0 ∈ half_ball x (x0).
       It holds that x0 ≠ x as (x0notx).
       By x0notx it holds that
-        (& x0 - (Rabs (x0 - x) / 2) < x0 < x0 + (Rabs (x0 - x) / 2))
-        as (x0ball).
+        (& x0 - (Rabs (x0 - x) / 2) < x0 < x0 + (Rabs (x0 - x) / 2)).
       We conclude that x0 ∈ half_ball x (x0).
     }
     We conclude that
@@ -799,7 +790,7 @@ Proof.
     ∀ y : ℝ, K y → ∃ i : K_index(K), In i l ∧ (K_to_half_ball K x i) y
     as (lcover).
 
-  We claim that l ≠ nil as (lnonempty).
+  We claim that l ≠ nil.
   {
     By xball it holds that ∃ y ∈ K, 0 < Rabs (y - x) < 1 as (yexists).
     Obtain y according to (yexists).
@@ -807,11 +798,11 @@ Proof.
     By lcover and yinK it holds that
       ∃ i : K_index K, In i l ∧ (K_to_half_ball K x i) y as (iinlist).
     Obtain i according to (iinlist).
-    It holds that In i l as (iinl).
+    It holds that In i l.
 
     Assume that l = nil as (Hnil).
 
-    By Hnil it holds that In i nil as (inil).
+    By Hnil it holds that In i nil.
     Contradiction.
   }
   We claim that
@@ -836,52 +827,48 @@ Proof.
     It holds that K_point K i ≠ x as (inotx).
     By (neq_implies_abs_pos (K_point K i) x inotx) it holds that
       0 < | x - K_point K i | as (diffpos).
-    By diffpos it holds that Rabs (x - K_point K i) > 0 as (diffpos2).
+    By diffpos it holds that Rabs (x - K_point K i) > 0.
     We conclude that Rabs (K_point K i - x) / 4 > 0.
   }
   It holds that ∃ y ∈ K, 0 < |y - x| < |K_point(K, i) - x| / 4 as (ytight).
   Obtain y according to (ytight).
 
-  We claim that ¬(K y) as (ContY).
+  We claim that ¬(K y).
   {
-    It holds that (& 0 < |y - x| < |K_point(K, i) - x| / 4) as (ybound).
+    It holds that (& 0 < |y - x| < |K_point(K, i) - x| / 4).
     We argue by contradiction.
-    Assume that ¬ (¬ K y) as (Hny).
+    Assume that ¬ (¬ K y).
     By NNPP it holds that K y as (Hy).
     By lcover and Hy it holds that
       ∃ j : K_index K, In j l ∧ (K_to_half_ball K x j) y as (covered_y).
     Obtain j according to (covered_y).
     It holds that In j l as (Hjl).
-    It holds that (K_to_half_ball K x j) y as (Hyj).
+    It holds that (K_to_half_ball K x j) y.
 
     By Imin it holds that
       ∀ j : K_index K, In j l →
         Rabs (K_point K i - x) ≤ Rabs (K_point K j - x)
       as (Hmin).
     By Hmin and Hjl it holds that
-      Rabs (K_point K i - x) ≤ Rabs (K_point K j - x) as (Hijd).
+      Rabs (K_point K i - x) ≤ Rabs (K_point K j - x).
     It holds that
       K_point K j - Rabs (K_point K j - x) / 2 < y <
-        K_point K j + Rabs (K_point K j - x) / 2
-      as (Hyinterval).
+        K_point K j + Rabs (K_point K j - x) / 2.
     It holds that
       - (Rabs (K_point K j - x) / 2) ≤ K_point K j - y ∧
-        K_point K j - y ≤ Rabs (K_point K j - x) / 2
-      as (Hcenterbounds).
+        K_point K j - y ≤ Rabs (K_point K j - x) / 2.
     By Rabs_le it holds that
-      Rabs (K_point K j - y) ≤ Rabs (K_point K j - x) / 2 as (Hyjdist).
+      Rabs (K_point K j - y) ≤ Rabs (K_point K j - x) / 2.
     It holds that 0 < Rabs (K_point K j - x) as (Hjpos).
-    It holds that 0 < Rabs (K_point K i - x) as (Hipos).
-    It holds that Rabs (y - x) < Rabs (K_point K i - x) / 4 as (Hytight).
-    It holds that Rabs (y - x) < Rabs (K_point K j - x) / 4 as (Hytightj).
+    It holds that 0 < Rabs (K_point K i - x).
+    It holds that Rabs (y - x) < Rabs (K_point K i - x) / 4.
+    It holds that Rabs (y - x) < Rabs (K_point K j - x) / 4.
     By Rabs_triang it holds that
       Rabs ((K_point K j - y) + (y - x)) ≤
-        Rabs (K_point K j - y) + Rabs (y - x)
-      as (Htriangle).
-    It holds that (K_point K j - y) + (y - x) = K_point K j - x as (Hsum).
+        Rabs (K_point K j - y) + Rabs (y - x).
+    It holds that (K_point K j - y) + (y - x) = K_point K j - x.
     It holds that
-      Rabs (K_point K j - x) ≤ Rabs (K_point K j - y) + Rabs (y - x)
-      as (Htriangle').
+      Rabs (K_point K j - x) ≤ Rabs (K_point K j - y) + Rabs (y - x).
     It holds that
       Rabs (K_point K j - x) ≤
         Rabs (K_point K j - x) / 2 + Rabs (K_point K j - x) / 4
@@ -965,13 +952,17 @@ Proof.
       (∀ i : Index, ∃ y : ℝ, y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)
     as (bad_seq).
   Obtain g according to (bad_seq).
+  It holds that
+    ∀ n : ℕ, K (g n) ∧
+      (∀ i : Index, ∃ y : ℝ, y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)
+    as (g_bad).
 
   We claim that
     ∀ n, (∀ i : Index, ∃ y : ℝ, y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)
     as (n_uncover).
   {
     Take n : ℕ.
-    Use n0 := n in (_H4).
+    Use n0 := n in (g_bad).
     It holds that
       K (g n) ∧
       (∀ i : Index, ∃ y : ℝ, y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)
@@ -983,7 +974,7 @@ Proof.
   We claim that ∀ n, K(g(n)) as (g_inK).
   {
     Take n : ℕ.
-    Use n0 := n in (_H4).
+    Use n0 := n in (g_bad).
     It holds that
       K (g n) ∧
       (∀ i : Index, ∃ y : ℝ, y ∈ open_ball (g n) (/(n + 1)) ∧ ¬ U i y)
@@ -1011,7 +1002,13 @@ Proof.
       K x ∧ (fun k => g (phi k)) ⟶ x
     as (g_sub).
   Obtain phi according to (g_sub).
-  Obtain x according to (_H5).
+  It holds that
+    ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
+      K x ∧ (fun k => g (phi k)) ⟶ x
+    as (phi_sub).
+  Obtain x according to (phi_sub).
+  It holds that K x as (gx_inK).
   By Ucover it holds that
     (∀ i : Index, (U i) is _open_) ∧ (∀ x : ℝ, K x → ∃ i : Index, U i x)
     as (K_covered).
@@ -1019,7 +1016,7 @@ Proof.
     ∀ x : ℝ, K x → ∃ i : Index, U i x as (Ucovering).
   Use x0 := x in (Ucovering).
   It holds that K x → ∃ i : Index, U i x as (x_iscovered).
-  By (x_iscovered _H8) it holds that ∃ i : Index, U i x as (xcover).
+  By (x_iscovered gx_inK) it holds that ∃ i : Index, U i x as (xcover).
   Obtain j according to (xcover).
   It holds that (fun k => g (phi k)) ⟶ x as (g_lim).
   By g_lim it holds that
@@ -1034,13 +1031,13 @@ Proof.
   By x_interior it holds that
     ∃ r > 0, ∀ y ∈ (open_ball x r), y ∈ U j as (x_ball).
   Obtain r according to (x_ball).
-  It holds that r > 0 as (rpos).
+  It holds that r > 0.
   It holds that
     (∀ n : ℕ, (phi n < phi (S n))%nat) ∧
     K x ∧ (fun k => g (phi k)) ⟶ x
     as (phi_x).
   Because (phi_x) both ((∀ n : ℕ, (phi n < phi (S n))%nat)) as (phi_inc)
-    and (K x ∧ (fun k => g (phi k)) ⟶ x) as (phi_rest).
+    and (K x ∧ (fun k => g (phi k)) ⟶ x).
 
   (** We restate the ball statement from [x_ball] so that we can name it. *)
   It holds that ∀ y ∈ (open_ball x r), y ∈ U j as (r_ball).
@@ -1053,10 +1050,10 @@ Proof.
       We conclude that (0 ≤ phi 0)%nat.
     + We now show the induction step.
       Take k : ℕ.
-      Assume that (k ≤ phi k)%nat as (IH).
+      Assume that (k ≤ phi k)%nat.
       Use n := k in (phi_inc).
       It holds that (phi k < phi (S k))%nat as (step).
-      By step it holds that (k < phi(S k))%nat as (step2).
+      By step it holds that (k < phi(S k))%nat.
       It holds that (k + 1 <= phi(S k))%nat as (step3).
       It holds that (S k = k + 1)%nat.
       By step3 we conclude that (k + 1 ≤ phi (k + 1))%nat.
@@ -1067,7 +1064,7 @@ Proof.
   By (archimedean_2 (r / 2) rhalf_pos) it holds that
     ∃ M : ℕ, 1 / (M + 1) < r / 2 as (arch_half).
   Obtain M according to (arch_half).
-  It holds that / (M + 1) < r / 2 as (arch_inv).
+  It holds that / (M + 1) < r / 2.
 
   (** Step 3: a threshold [N1] for the convergence, with [ε = r/2]. *)
   Use ε := (r / 2) in (g_lim_eps). { Indeed, r / 2 > 0. }
@@ -1092,19 +1089,19 @@ Proof.
     and ((k ≥ M)%nat) as (k_M).
 
   (** Step 5: the subsequence term is within [r/2] of [x]. *)
-  By (Htail k k_N1) it holds that |g (phi k) - x| < r / 2 as (close).
+  By (Htail k k_N1) it holds that |g (phi k) - x| < r / 2.
 
   (** Step 6: the bad ball at index [phi k] has radius [< r/2]. *)
   By (phi_ge k) it holds that (k ≤ phi k)%nat as (k_phi).
   By (Nat.le_trans M k (phi k) k_M k_phi) it holds that
     (M ≤ phi k)%nat as (M_phi).
-  By (le_INR M (phi k) M_phi) it holds that INR M ≤ INR (phi k) as (INR_le).
-  By (pos_INR M) it holds that 0 ≤ INR M as (INR_pos).
+  By (le_INR M (phi k) M_phi) it holds that INR M ≤ INR (phi k).
+  By (pos_INR M) it holds that 0 ≤ INR M.
   It holds that 0 < INR M + 1 as (M_pos).
   It holds that INR M + 1 ≤ INR (phi k) + 1 as (INR_le1).
   By (Rinv_le_contravar (INR M + 1) (INR (phi k) + 1) M_pos INR_le1)
-    it holds that / (INR (phi k) + 1) ≤ / (INR M + 1) as (inv_le).
-  It holds that / (phi k + 1) < r / 2 as (rad_small).
+    it holds that / (INR (phi k) + 1) ≤ / (INR M + 1).
+  It holds that / (phi k + 1) < r / 2.
 
   (** Step 7: the bad ball sits inside [V_r(x)]. *)
   We claim that
@@ -1113,14 +1110,14 @@ Proof.
   {
     Take y : ℝ.
     Assume that y ∈ open_ball (g (phi k)) (/ (phi k + 1)) as (y_in).
-    By y_in it holds that |y - g (phi k)| < / (phi k + 1) as (y_abs).
+    By y_in it holds that |y - g (phi k)| < / (phi k + 1).
     By (Rabs_triang (y - g (phi k)) (g (phi k) - x)) it holds that
       |(y - g (phi k)) + (g (phi k) - x)|
         ≤ |y - g (phi k)| + |g (phi k) - x|
       as (tri).
     It holds that (y - g (phi k)) + (g (phi k) - x) = y - x as (alg).
     rewrite alg in tri.
-    It holds that |y - x| < r as (y_r).
+    It holds that |y - x| < r.
     We conclude that y ∈ open_ball x r.
   }
 
@@ -1136,9 +1133,9 @@ Proof.
   It holds that y ∈ open_ball (g (phi k)) (/ (phi k + 1)) ∧ ¬ U j y
     as (y_props).
   Because (y_props) both (y ∈ open_ball (g (phi k)) (/ (phi k + 1)))
-    as (y_in_bad) and (¬ U j y) as (y_notU).
+    as (y_in_bad) and (¬ U j y).
   By (ball_sub y y_in_bad) it holds that y ∈ open_ball x r as (y_in_r).
-  By (r_ball y y_in_r) it holds that U j y as (y_inU).
+  By (r_ball y y_in_r) it holds that U j y.
   Contradiction.
 Qed.
 
@@ -1179,7 +1176,7 @@ Proof.
     Take x : ℝ.
     Assume that K x as (xK).
     Assume that x < a + INR 0 * (δ / 2) as (xlt).
-    By (Hlow x xK) it holds that a ≤ x as (ax).
+    By (Hlow x xK) it holds that a ≤ x.
     We claim that INR 0 = 0 as (INR0).
     { reflexivity. }
     rewrite INR0 in xlt.
@@ -1198,7 +1195,7 @@ Proof.
       ∀ x : ℝ, K x → x < a + INR n0 * (δ / 2) →
         ∃ i : Index, In i l ∧ U i x
       as (IHl).
-    By (S_INR n0) it holds that INR (S n0) = INR n0 + 1 as (HS).
+    By (S_INR n0) it holds that INR (S n0) = INR n0 + 1.
     We claim that a + INR (S n0) * (δ / 2) = a + INR n0 * (δ / 2) + δ / 2
       as (Hexp).
     {
@@ -1237,7 +1234,7 @@ Proof.
         By IHx it holds that ∃ i : Index, In i l ∧ U i x as (Hold).
         Obtain i according to (Hold).
         It holds that In i l ∧ U i x as (Hi).
-        Because (Hi) both (In i l) as (iinl) and (U i x) as (Uix).
+        Because (Hi) both (In i l) as (iinl) and (U i x).
         Choose i1 := i.
         We need to show that In i (i0 :: l) ∧ U i x.
         We show both statements.
@@ -1249,7 +1246,7 @@ Proof.
       + Case (x ≥ a + INR n0 * (δ / 2)).
         (** [x] and [x0] both lie in the new piece, so [|x - x0| < δ/2 < δ]. *)
         Because (x0piece) both
-          (a + INR n0 * (δ / 2) ≤ x0) as (x0lower) and
+          (a + INR n0 * (δ / 2) ≤ x0) and
           (x0 < a + INR n0 * (δ / 2) + δ / 2) as (x0upper).
         (** The next step was really slow to verify, so we use Rocq
             rewriting to speed it up. *)
@@ -1265,10 +1262,10 @@ Proof.
         }
         We claim that -δ < x - x0 as (H2).
         { We conclude that -δ < x - x0. }
-        By (Rabs_def1 (x - x0) δ H1 H2) it holds that |x - x0| < δ as (xabs).
+        By (Rabs_def1 (x - x0) δ H1 H2) it holds that |x - x0| < δ.
         We claim that x ∈ open_ball x0 δ as (xball).
         { We conclude that x ∈ open_ball x0 δ. }
-        By (Hi0ball x xball) it holds that U i0 x as (Ui0x).
+        By (Hi0ball x xball) it holds that U i0 x.
         Choose i1 := i0.
         We need to show that In i0 (i0 :: l) ∧ U i0 x.
         We show both statements.
@@ -1296,12 +1293,11 @@ Proof.
         (** [x] would be a point of the empty piece: contradiction. *)
         rewrite Nat.add_1_r in xlt.
         rewrite Hexp in xlt.
-        We claim that x < a + INR n0 * (δ / 2) + δ / 2 as (xupper).
+        We claim that x < a + INR n0 * (δ / 2) + δ / 2.
         { exact xlt. }
         It holds that
           ∃ x0 : ℝ, K x0 ∧
-            (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2)
-          as (Hbad).
+            (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2).
         exfalso.
         Contradiction.
 Qed.
@@ -1340,12 +1336,18 @@ Proof.
         ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y
       as (DeltaU).
     Obtain δ according to (DeltaU).
+    It holds that δ > 0 as (delta_pos).
+    It holds that
+      ∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y
+      as (delta_Lebesgue).
     By (sequentially_compact_implies_bounded K Hseq) it holds that
       K is _bounded_ as (K_bound).
     By K_bound it holds that
       ∃ m : ℝ, (∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M)) as (exactbound).
     Obtain m according to (exactbound).
-    By _H1 it holds that
+    It holds that
+      ∃ M : ℝ, ∀ x : ℝ, K x → (& m ≤ x ≤ M) as (m_lower).
+    By m_lower it holds that
       ∃ M : ℝ, ∀ x : ℝ, K(x) ⇨ (& m ≤ x ≤ M) as (Upperbound).
     Obtain M according to (Upperbound).
     It holds that ∀ x : ℝ, K(x) ⇨ (& m ≤ x ≤ M) as (bounds).
@@ -1365,18 +1367,19 @@ Proof.
       ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
         ∃ i : Index, In i l ∧ U i x
       as (implication).
-    By (implication _H0 lowerbound) it holds that
+    By (implication delta_pos lowerbound) it holds that
       (∀ x : ℝ, K x → ∃ i : Index, ∀ y : ℝ, y ∈ open_ball x δ → U i y) →
       ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
         ∃ i : Index, In i l ∧ U i x
       as (smallimp).
-    By (smallimp _H) it holds that
+    By (smallimp delta_Lebesgue) it holds that
       ∀ n0 : ℕ, ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n0 * (δ / 2) →
         ∃ i : Index, In i l ∧ U i x
       as (nlist).
     By archimedean_1 it holds that
       ∃ n : ℕ, INR n > ((2 / δ) * (M - m)) as (Hn).
     Obtain n according to (Hn).
+    It holds that INR n > ((2 / δ) * (M - m)) as (n_large).
     Use n0 := n in (nlist).
     It holds that
       ∃ l : list Index, ∀ x : ℝ, K x → x < m + INR n * (δ / 2) →
@@ -1394,7 +1397,7 @@ Proof.
       It holds that (δ / 2) * (2 / δ) = 1 as (recip).
       By redundbound and recip it holds that
         x <= m + (δ / 2) * (2 / δ) * (M - m) as (last_bound).
-      By last_bound and _H3 it holds that x < m + n * (δ / 2).
+      By last_bound and n_large it holds that x < m + n * (δ / 2).
       We conclude that x < m + n * (δ / 2).
     }
     Obtain l according to (newlist).
@@ -1429,7 +1432,7 @@ Proof.
       every_open_cover_has_finite_subcover K → K is _bounded_ as (Kbounds).
     By Hfinite it holds that
       every_open_cover_has_finite_subcover K as (compK).
-    By Kbounds it holds that K is _bounded_ as (Kbounded).
+    By Kbounds it holds that K is _bounded_.
     By (finite_subcover_implies_closed K compK) it holds that K is _closed_.
     By (sequential_Heine_Borel K) it holds that
       sequentially_compact(K) ⇔ (K is _closed_ ∧ K is _bounded_).
@@ -1455,12 +1458,13 @@ Proof.
   By (countable_choice K HK_nonempty) it holds that
     ∃ f : ℕ → ℝ, ∀ n : ℕ, K n (f n) as (Nested_seq).
   Obtain f0 according to (Nested_seq).
+  It holds that ∀ n : ℕ, K n (f0 n) as (f0_inK).
   By HK_compact it holds that sequentially_compact(K 0%nat) as (K0_compact).
   We claim that ∀ n : ℕ, K 0%nat (f0 n) as (f_inK0).
   {
     Take n : ℕ.
-    Use n0 := n in (_H).
-    It holds that K(n, f0(n)) as (fn_inK).
+    Use n0 := n in (f0_inK).
+    It holds that K(n, f0(n)).
     It holds that (0 <= n)%nat as (nsmall).
     Use n := n in (HK_nested). { Indeed, n ∈ ℕ. }
     It holds that
@@ -1480,11 +1484,17 @@ Proof.
       (fun k => f0 (phi k)) ⟶ x
     as (Subcon).
   Obtain phi according to (Subcon).
-  Obtain x according to (_H0).
+  It holds that
+    ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K 0%nat (x) ∧
+      (fun k => f0 (phi k)) ⟶ x
+    as (phi_sub).
+  Obtain x according to (phi_sub).
+  It holds that (fun k => f0 (phi k)) ⟶ x as (f0phi_lim).
   We claim that ∀ n : ℕ, K n (x) as (x_nested).
   {
     It holds that ∀ k : ℕ, (phi k < phi (S k))%nat as (Hphi_strict).
-    We claim that is_index_seq phi as (Hphi).
+    We claim that is_index_seq phi.
     {
       We need to show that ∀ k ∈ ℕ, (phi k < phi (S k))%nat.
       Take k ∈ ℕ.
@@ -1495,7 +1505,7 @@ Proof.
     Take n : ℕ.
     By index_seq_grows_0 it holds that (phi n ≥ n)%nat.
     It holds that (n ≤ phi n)%nat.
-    Use n0 := phi n in (_H).
+    Use n0 := phi n in (f0_inK).
     It holds that K(phi(n), f0(phi(n))).
     Use n := phi n in (HK_compact).
     It holds that sequentially_compact(K(phi(n))).
@@ -1505,7 +1515,7 @@ Proof.
       as (tail_nest).
     {
       Take k : ℕ.
-      Use n0 := phi((n + k)%nat) in (_H).
+      Use n0 := phi((n + k)%nat) in (f0_inK).
       It holds that
         K(phi((n + k)%nat), f0(phi((n + k)%nat))) as (shift_in).
       Use n0 := phi((n + k)%nat) in (HK_nested).
@@ -1517,22 +1527,21 @@ Proof.
       Use m := phi(n) in (phi_nest). { Indeed, phi(n) ∈ ℕ. }
       It holds that
         (phi(n) ≤ phi(n + k))%nat
-          ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0) ⇨ K(phi(n), x0)
-        as (phiseq).
+          ⇨ ∀ x0 ∈ ℝ, K(phi((n + k)%nat), x0) ⇨ K(phi(n), x0).
       Since (is_index_seq phi) it holds that
-        ∀ j ∈ ℕ, (phi j < phi (S j))%nat as (Hphi_strict1).
+        ∀ j ∈ ℕ, (phi j < phi (S j))%nat.
 
       We claim that ∀ k0 : ℕ, (phi n ≤ phi (n + k0))%nat as (Hphi_mono).
       {
         We use induction on k0.
         + We first show the base case (phi(n) ≤ phi(n + 0))%nat.
           It holds that (n + 0)%nat = n.
-          It holds that (phi n = phi(n + 0))%nat.
-          By _H6 we conclude that (phi n ≤ phi (n + 0))%nat.
+          It holds that (phi n = phi(n + 0))%nat as (Hphi0).
+          By Hphi0 we conclude that (phi n ≤ phi (n + 0))%nat.
 
         + We now show the induction step.
           Take k0 : ℕ.
-          Assume that (phi n ≤ phi (n + k0))%nat as (IH).
+          Assume that (phi n ≤ phi (n + k0))%nat.
           Use j := (n + k0)%nat in (Hphi_strict).
           It holds that (phi (n + k0) < phi (S (n + k0)))%nat.
           It holds that (& phi n ≤ phi (n + k0) < phi (S (n + k0)))%nat.
@@ -1582,7 +1591,13 @@ Proof.
         (fun k => (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)) ⟶ y
       as (new_sub).
     Obtain psi according to (new_sub).
-    Obtain y according to (_H6).
+    It holds that
+      ∃ y : ℝ,
+        (∀ k : ℕ, (psi k < psi (S k))%nat) ∧
+        K (phi n) y ∧
+        (fun k => (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)) ⟶ y
+      as (psi_sub).
+    Obtain y according to (psi_sub).
     It holds that ∀ k : ℕ, (psi k < psi (S k))%nat as (psi_strict).
     We claim that is_index_seq (shifted_n psi n) as (another_sub).
     {
@@ -1597,8 +1612,7 @@ Proof.
     We claim that
       ∀ k : ℕ,
         (shifted_seq (fun j : ℕ => f0 (phi j)) n) (psi k)
-        = f0 (phi (shifted_n psi n k))
-      as (same_sub).
+        = f0 (phi (shifted_n psi n k)).
     {
       Take k : ℕ.
       It holds that
@@ -1610,11 +1624,11 @@ Proof.
         = f0 (phi (shifted_n psi n k)).
     }
 
-    We claim that y = x as (equality).
+    We claim that y = x.
     {
       By (subseq_converges
           (fun j : ℕ => f0 (phi j))
-          (shifted_n psi n) x _H1 another_sub) it holds that
+          (shifted_n psi n) x f0phi_lim another_sub) it holds that
         (fun k : ℕ => f0 (phi (shifted_n psi n k))) ⟶ x
         as (subseq_to_x).
       It holds that
@@ -1626,7 +1640,7 @@ Proof.
       We conclude that y = x.
     }
 
-    It holds that K(phi(n), x) as (Halfway_there).
+    It holds that K(phi(n), x).
     Use n := phi(n) in (HK_nested). { Indeed, phi(n) ∈ ℕ. }
     It holds that
       ∀ m ∈ ℕ, (m ≤ phi(n))%nat ⇨ ∀ x0 ∈ ℝ, K(phi(n), x0) ⇨ K(m, x0)
@@ -1678,15 +1692,15 @@ Proof.
   Assume that (forall n : ℕ, a n ∈ A) ∧ (forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m).
   It holds that forall n : ℕ, a n ∈ A as (Ha_A).
   It holds that forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m as (Ha_inj).
-  Assume that has_ub a as (Hub).
-  Assume that has_lb a as (Hlb).
+  Assume that has_ub a.
+  Assume that has_lb a.
 
   By Bolzano_Weierstrass it holds that
     ∃ (phi : ℕ → ℕ), ∃ (x : ℝ), is_index_seq phi ∧
       converges_to (fun k ↦ a (phi k)) x as (HBW).
  
   Obtain phi according to (HBW).
-  It holds that ∃ (x0 : ℝ), is_index_seq phi ∧ converges_to (fun k ↦ a (phi k)) x0 as (Hphi).
+  It holds that ∃ (x0 : ℝ), is_index_seq phi ∧ converges_to (fun k ↦ a (phi k)) x0.
   Obtain such a x0.
 
   It holds that is_index_seq phi as (Hphi_is).

@@ -67,7 +67,7 @@ Proof.
   }
 
   By (R_complete A (a 0%nat) Hnotempty HAbdd) it holds that
-    ∃ L ∈ ℝ, L is the _supremum_ of A as (HLsup).
+    ∃ L ∈ ℝ, L is the _supremum_ of A.
   Obtain such an L.
 
   By sup_is_upp_bd it holds that
@@ -124,7 +124,7 @@ Proof.
 
   Take ε > 0.
   Since (ε > 0) it holds that
-    ∃ Nm ∈ ℕ, ∀ n ≥ Nm, | a n - L | < ε as (HNm).
+    ∃ Nm ∈ ℕ, ∀ n ≥ Nm, | a n - L | < ε.
   
   Obtain such an Nm.
   Choose (Nm). { Indeed, Nm ∈ ℕ. }
@@ -190,7 +190,7 @@ Proof.
       ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a(n) - a(m)| < eps as (H').
     Obtain such a N1. Choose (N1).
     Take n : ℕ. Take m : ℕ. 
-    Assume that (n ≥ N1)%nat as (Hn) and (m ≥ N1)%nat as (Hm).
+    Assume that (n ≥ N1)%nat and (m ≥ N1)%nat.
     By H' we conclude that ｜a(n) - a(m)｜ < eps.
 
   - We need to show that (∀ eps, eps > 0 ⇨ ∃ N, ∀ n, ∀ m,
@@ -216,7 +216,7 @@ Theorem cauchy_is_bounded (a : ℕ → ℝ) : a is _Cauchy_ → a is _bounded_.
 Proof.
   Assume that a is _Cauchy_ as (HC).
   It holds that
-    ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε as (HC').
+    ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε.
   We need to show that a is _bounded_.
   By is_bounded_equivalence it holds that
     (is_bounded a ⇔ is_bounded_equivalent a) as (Hequiv).
@@ -227,7 +227,7 @@ Proof.
     ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, | a n - a m | < 1.
   Obtain such a N1.
 
-  We claim that Cauchy_crit a as (HCr).
+  We claim that Cauchy_crit a.
   { 
     By cauchy_crit_equiv it holds that a is _Cauchy_ ⇔ Cauchy_crit a.
     It suffices to show that a is _Cauchy_.
@@ -254,7 +254,7 @@ Proof.
   We claim that ∀ n ∈ ℕ, a n ≤ UB.
   {
     Take n ∈ ℕ.
-    We claim that EUn a (a n) as (Heun).
+    We claim that EUn a (a n).
     {
       We need to show that ∃ k : ℕ, a n = a k.
       Choose k := n. We conclude that a n = a k.

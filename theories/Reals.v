@@ -55,7 +55,7 @@ Proof.
       ∧ (∀ b ∈ ℝ, b is an _upper bound_ for A ⇒ s ≤ b).
 
     Take ε : ℝ; such that ε > 0.
-    It holds that s - ε < s as (Hsupeps).
+    It holds that s - ε < s.
 
     We argue by contradiction.
 
@@ -79,10 +79,10 @@ Proof.
 
     - We need to show that ∀ b ∈ ℝ, b is an _upper bound_ for A ⇒ s ≤ b.
       Take b ∈ ℝ.
-      Assume that b is an _upper bound_ for A as (Hub).
+      Assume that b is an _upper bound_ for A.
 
       We argue by contradiction.
-      Assume that ¬ (s ≤ b) as (Hcontra).
+      Assume that ¬ (s ≤ b).
 
       It holds that b < s as (Hbs).
       Define ε := s - b.
@@ -113,7 +113,7 @@ Proof.
       ∧ (∀ l ∈ ℝ, l is a _lower bound_ for A ⇨ l ≤ i).
 
     Take ε : ℝ; such that ε > 0.
-    It holds that i < i + ε as (Hiepslt).
+    It holds that i < i + ε.
 
     We argue by contradiction.
 
@@ -140,7 +140,7 @@ Proof.
       Assume that l is a _lower bound_ for A.
 
       We argue by contradiction.
-      Assume that ¬ (l ≤ i) as (Hcontra).
+      Assume that ¬ (l ≤ i).
 
       It holds that i < l.
       Define ε := l - i.
@@ -164,8 +164,8 @@ Proof.
   + We first show the base case
       ∀ m ∈ ℕ, (m ≤ 0)%nat → a m ≤ a 0%nat.
     Take m ∈ ℕ.
-    Assume that (m ≤ 0)%nat as (Hm0).
-    It holds that (m = 0)%nat as (Hm).
+    Assume that (m ≤ 0)%nat.
+    It holds that (m = 0)%nat.
 
     (** This claim is not strictly necessary but helps speeding up
         the proof checker, similarly as before. *)
@@ -174,15 +174,15 @@ Proof.
 
   + We now show the induction step.
     Take n ∈ ℕ.
-    Assume that (∀ m ∈ ℕ, (m ≤ n)%nat → a m ≤ a n) as (IH).
+    Assume that (∀ m ∈ ℕ, (m ≤ n)%nat → a m ≤ a n).
     Take m ∈ ℕ.
-    Assume that (m ≤ n + 1)%nat as (Hmn).
+    Assume that (m ≤ n + 1)%nat.
 
     Either (m ≤ n)%nat or (m = n + 1)%nat.
 
     - Case (m ≤ n)%nat.
-      It holds that a m ≤ a n as (H1).
-      It holds that a n ≤ a (n + 1)%nat as (H2).
+      It holds that a m ≤ a n.
+      It holds that a n ≤ a (n + 1)%nat.
       We conclude that (& a m ≤ a n ≤ a (n + 1)%nat).
 
     - Case (m = n + 1)%nat.
@@ -199,21 +199,21 @@ Proof.
   + We first show the base case
       ∀ m ∈ ℕ, (m ≤ 0)%nat → b 0%nat ≤ b m.
     Take m ∈ ℕ.
-    Assume that (m ≤ 0)%nat as (Hm0).
-    It holds that (m = 0)%nat as (Hm).
+    Assume that (m ≤ 0)%nat.
+    It holds that (m = 0)%nat.
     It holds that b 0%nat = b m.
     We conclude that b 0%nat ≤ b m.
 
   + We now show the induction step.
     Take n ∈ ℕ.
-    Assume that (∀ m ∈ ℕ, (m ≤ n)%nat → b n ≤ b m) as (IH).
+    Assume that (∀ m ∈ ℕ, (m ≤ n)%nat → b n ≤ b m).
     Take m ∈ ℕ.
-    Assume that (m ≤ n + 1)%nat as (Hmn).
+    Assume that (m ≤ n + 1)%nat.
 
     Either (m ≤ n)%nat or (m = n + 1)%nat.
     - Case (m ≤ n)%nat.
-      It holds that b n ≤ b m as (H1).
-      It holds that b (n + 1)%nat ≤ b n as (H2).
+      It holds that b n ≤ b m.
+      It holds that b (n + 1)%nat ≤ b n.
       We conclude that (& b (n + 1)%nat ≤ b n ≤ b m).
     - Case (m = n + 1)%nat.
       It holds that b (n + 1)%nat = b m.
@@ -254,24 +254,24 @@ Proof.
       (** [nondecr_ge: ∀ a,
             ∀ n ∈ ℕ, a(n) ≤ a((n + 1)%nat)
             ⇨ ∀ n ∈ ℕ, ∀ m ∈ ℕ, (m ≤ n)%nat ⇨ a(m) ≤ a(n)] *)
-      By nondecr_ge it holds that a n ≤ a k as (H1).
-      It holds that a k ≤ bseq k as (H2).
+      By nondecr_ge it holds that a n ≤ a k.
+      It holds that a k ≤ bseq k.
       We conclude that (& y = a n ≤ a k ≤ bseq k).
 
     - Case (k ≤ n)%nat.
-      By nonincr_le it holds that bseq n ≤ bseq k as (H1).
-      It holds that a n ≤ bseq n as (H2).
+      By nonincr_le it holds that bseq n ≤ bseq k.
+      It holds that a n ≤ bseq n.
       We conclude that (& y = a n ≤ bseq n ≤ bseq k).
   }
 
-  We claim that A is bounded from above as (HboundedA).
+  We claim that A is bounded from above.
   {
     We need to show that ∃ M ∈ ℝ, M is an _upper bound_ for A.
     Choose M := bseq 0%nat. { Indeed, M ∈ ℝ. }
     By Hallub we conclude that M is an _upper bound_ for A.
   }
 
-  We claim that a 0%nat ∈ A as (Ha0).
+  We claim that a 0%nat ∈ A.
   {
     We need to show that ∃ n : ℕ, a 0%nat = a n.
     Choose n := 0%nat.
@@ -280,7 +280,7 @@ Proof.
 
   (** [R_complete] is the name in the Waterproof.Analysis.SupAndInf
      module of the axiom of completeness *)
-  By R_complete it holds that ∃ x ∈ ℝ, x is the _supremum_ of A as (Hsup).
+  By R_complete it holds that ∃ x ∈ ℝ, x is the _supremum_ of A.
   Obtain such an x.
 
   (* This is here just to speed up things later on. *)
@@ -289,7 +289,7 @@ Proof.
     ∧ (∀ L ∈ ℝ, L is an _upper bound_ for A ⇨ x ≤ L).
 
   By sup_is_upp_bd it holds that
-    x is an _upper bound_ for A as (Hxub).
+    x is an _upper bound_ for A.
   Choose (x).
   * Indeed, x ∈ ℝ.
   * We need to show that ∀ n ∈ ℕ, a n ≤ x ∧ x ≤ bseq n.
@@ -297,7 +297,7 @@ Proof.
     We show both statements.
 
     - We need to show that a n ≤ x.
-      We claim that a n ∈ A as (Han).
+      We claim that a n ∈ A.
       {
         We need to show that ∃ k : ℕ, a n = a k.
         Choose k := n. We conclude that a n = a k.
@@ -328,9 +328,9 @@ Proof.
   (** Look at the way we use the division: in Rocq it is defined
       as [x / y  :=  x  *  / y]. Where [/ y] denotes the reciprocal
       of [y]. *)
-  It holds that 0 < / y as (Hy_inv_pos).
+  It holds that 0 < / y.
   By the Archimedean property it holds that
-    ∃ n1 ∈ ℕ, n1 > / y as (HN).
+    ∃ n1 ∈ ℕ, n1 > / y.
 
   Obtain such an n1.
   It holds that (& n1 + 1 > n1 > / y > 0).
@@ -359,7 +359,7 @@ Proof.
     We conclude that (1 - t) ^ 0 ≥ 1 - INR 0 * t.
   + We now show the induction step.
     Take k : ℕ.
-    Assume that (1 - t) ^ k ≥ 1 - INR k * t as (IH).
+    Assume that (1 - t) ^ k ≥ 1 - INR k * t.
     It holds that 1 - INR k * t ≤ (1 - t) ^ k.
     It holds that 0 ≤ 1 - t.
     By Rmult_le_compat_r it holds that
@@ -382,12 +382,12 @@ Lemma abs_eq_max (x : ℝ) : |x|= Rmax x (- x).
 Proof.
   Either x ≥ 0 or x < 0.
   - Case x ≥ 0.
-    It holds that |x| = x as (H1).
-    It holds that Rmax x (- x) = x as (H2).
+    It holds that |x| = x.
+    It holds that Rmax x (- x) = x.
     We conclude that |x| = Rmax x (- x).
   - Case x < 0.
-    It holds that |x| = - x as (H1).
-    It holds that Rmax x (- x) = - x as (H2).
+    It holds that |x| = - x.
+    It holds that Rmax x (- x) = - x.
     We conclude that |x| = Rmax x (- x).
 Qed.
 
@@ -451,31 +451,31 @@ Proof.
   (** TODO: Simplify. As it is now, this proof uses rocq syntax directly,
       likely we can rewrite it fully in Waterproof as we did in may other
       places. *)
-  It holds that hi - lo > 0 as (Hpos).
-  By archimedean_2 it holds that ∃ n : ℕ, 1 / (n + 1) < hi - lo as (Hn).
+  It holds that hi - lo > 0.
+  By archimedean_2 it holds that ∃ n : ℕ, 1 / (n + 1) < hi - lo.
   Obtain such an n.
   It holds that (& 0 < / (n + 1) < hi - lo).
 
   It holds that (n + 1) * 1 / (n + 1) = 1.
-  It holds that (n + 1) > 0 as (Hn_pos).
-  It holds that (n + 1) * (hi - lo) > 1 as (Hfar).
+  It holds that (n + 1) > 0.
+  It holds that (n + 1) * (hi - lo) > 1.
 
   By archimed it holds that
     IZR (up ((n + 1) * lo)) > (n + 1) * lo
     ∧ IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1.
 
   It holds that
-    IZR (up ((n + 1) * lo)) > (n + 1) * lo as (Hceil_gt).
+    IZR (up ((n + 1) * lo)) > (n + 1) * lo.
   It holds that
-    IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1 as (Hceil_le).
+    IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1.
   It holds that
-    IZR (up ((n + 1) * lo)) ≤ (n + 1) * lo + 1 as (Hceil_ub).
+    IZR (up ((n + 1) * lo)) ≤ (n + 1) * lo + 1.
 
   It holds that (n + 1) * hi > (n + 1) * lo + 1.
 
   (* Chain: IZR m ≤ (n+1)*lo + 1 < (n+1)*hi *)
   It holds that
-    IZR (up ((n + 1) * lo)) < (n + 1) * hi as (Hceil_lt).
+    IZR (up ((n + 1) * lo)) < (n + 1) * hi.
 
   (** Therefore we have an integer satisfying both bounds *)
   Define m := up ((n + 1) * lo).
@@ -487,11 +487,11 @@ Proof.
   Choose q := Z.of_nat (n + 1)%nat. It holds that (q > 0)%Z.
 
   (** From Hm we have IZR m > (n+1)*lo and IZR m < (n+1)*hi *)
-  By (Hm) it holds that IZR m > (n + 1) * lo as (Hlo).
-  By (Hm) it holds that IZR m < (n + 1) * hi as (Hhi).
+  By (Hm) it holds that IZR m > (n + 1) * lo.
+  By (Hm) it holds that IZR m < (n + 1) * hi.
 
   We claim that
-    IZR (Z.of_nat (n + 1)%nat) = (n + 1 : ℝ) as (Hqn).
+    IZR (Z.of_nat (n + 1)%nat) = (n + 1 : ℝ).
   {
     rewrite <- INR_IZR_INZ.
     rewrite plus_INR.

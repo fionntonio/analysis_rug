@@ -299,7 +299,7 @@ Proof.
     Rmin a b ≤ x ∧ x ≤ Rmax a b → f1 x + 1 * g x = f1 x + g x as (Hext).
   {
     Take x : ℝ.
-    Assume that Rmin a b ≤ x ∧ x ≤ Rmax a b as (Hx).
+    Assume that Rmin a b ≤ x ∧ x ≤ Rmax a b.
     We conclude that f1 x + 1 * g x = f1 x + g x.
   }
   exact (Riemann_integrable_ext
@@ -338,7 +338,7 @@ Proof.
   We claim that ∀ x : ℝ, a < x ∧ x < b → f1 x ≤ g x as (Hlt).
   {
     Take x : ℝ.
-    Assume that a < x ∧ x < b as (Hx).
+    Assume that a < x ∧ x < b.
     By Hle we conclude that f1 x ≤ g x.
   }
   exact (RiemannInt_P19 prf prg Hab Hlt).
@@ -381,7 +381,7 @@ Lemma uniform_approx_step_functions (g h : ℝ → ℝ) (a b ε η : ℝ) (Hab :
     step_approx g a b ε.
 Proof.
   It holds that b - a + 1 ≠ 0.
-  By Rinv_l it holds that / (b - a + 1) * (b - a + 1) = 1 as (Hinv).
+  By Rinv_l it holds that / (b - a + 1) * (b - a + 1) = 1.
   It holds that η * (b - a + 1) = ε / 2 * (/ (b - a + 1) * (b - a + 1)).
   It holds that (& η * (b - a + 1) = ε / 2 * (/ (b - a + 1) * (b - a + 1))
     = ε / 2 * 1 = ε / 2).
@@ -397,7 +397,7 @@ Proof.
     - We need to show that
         ∀ t : ℝ, (& Rmin a b ≤ t ≤ Rmax a b) → | g t - phi t | ≤ psi2 t.
       Take t : ℝ.
-      Assume that (& Rmin a b ≤ t ≤ Rmax a b) as (Ht).
+      Assume that (& Rmin a b ≤ t ≤ Rmax a b).
       By Rmin_left it holds that Rmin a b = a.
       By Rmax_right it holds that Rmax a b = b.
       It holds that a ≤ t ∧ t ≤ b.
@@ -482,10 +482,10 @@ Qed.
 Lemma abs_diff_le_of_bounds (A B A' B' D E l u : ℝ) :
     A' = A → B' = B → D = A + -1 * B → | D | ≤ E → l <= E <= u → | A' - B' | ≤ u.
 Proof.
-  Assume that A' = A as (HA) and B' = B as (HB).
-  Assume that D = A + -1 * B as (HD).
-  Assume that | D | ≤ E as (HE).
-  Assume that l <= E <= u as (Hu).
+  Assume that A' = A and B' = B.
+  Assume that D = A + -1 * B.
+  Assume that | D | ≤ E.
+  Assume that l <= E <= u.
   It holds that A' - B' = D.
   We conclude that (& | A' - B' | = | D | ≤ E ≤ u).
 Qed.

@@ -35,8 +35,8 @@ Set Warnings "-non-reference-hint-using".
 Lemma Rdiv_lt_compat_r (r1 : ℝ) (r2 : ℝ) (r3 : ℝ) :
   r1 < r2 → 0 < r3 → r1 / r3 < r2 / r3.
 Proof.
-  Assume that r1 < r2 as (Hlt).
-  Assume that 0 < r3 as (Hc).
+  Assume that r1 < r2.
+  Assume that 0 < r3.
   By Rmult_lt_compat_r it holds that r1 * / r3 < r2 * / r3.
   It holds that r1 * / r3 = r1 / r3. It holds that r2 * / r3 = r2 / r3.
   We conclude that r1 / r3 < r2 / r3.
@@ -49,15 +49,15 @@ Qed.
 Lemma le_succ_cases (n N1 : ℕ) :
   n ≤ S N1 -> n = S N1 \/ n ≤ N1.
 Proof.
-Assume that n ≤ S N1 as (H).
+Assume that n ≤ S N1.
 (** I'd like to do
    [By (Nat.eq_dec n (S N1)) it holds that n = S N1 ∨ n ≠ S N1].
    but it is not working, so I do it manually. *)
 destruct (Nat.eq_dec n (S N1)) as [Heq | Hneq].
 - left. We conclude that n = S N1.
 - right.
-  It holds that (n ≤ S N1)%nat as (Hle_nat).
-  It holds that (n ≤ N1)%nat as (Hle_nat_succ).
+  It holds that (n ≤ S N1)%nat.
+  It holds that (n ≤ N1)%nat.
   We conclude that n ≤ N1.
 Qed.
 
@@ -199,8 +199,8 @@ Lemma convergent_sequence_is_bounded (a : ℕ → ℝ) (L : ℝ) :
   a ⟶ L → bounded_sequence a.
 Proof.
   Assume that a ⟶ L.
-  It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - L | < ε as (HC).
-  It holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - L | < 1 as (H1).
+  It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - L | < ε.
+  It holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, | a n - L | < 1.
   Obtain such an N1.
   We claim that ∀ n ≥ N1, | a n | < 1 + | L |.
   {
@@ -248,8 +248,8 @@ Qed.
 Lemma algebraic_limit_theorem_sum (a b : ℕ → ℝ) (m l : ℝ) :
     a ⟶ m → b ⟶ l → (fun n => a n + b n) ⟶ (m + l).
 Proof.
-  Assume that a ⟶ m as (Ha).
-  Assume that b ⟶ l as (Hb).
+  Assume that a ⟶ m.
+  Assume that b ⟶ l.
   Define c := fun n => a n + b n.
   We need to show that c ⟶ (m + l).
   We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | c n - (m + l) | < ε.
@@ -288,16 +288,16 @@ Qed.
 Lemma algebraic_limit_theorem_product (a b : ℕ → ℝ) (m l : ℝ) :
     a ⟶ m → b ⟶ l → (fun n => a n * b n) ⟶ (m * l).
 Proof.
-  Assume that a ⟶ m as (Ha).
+  Assume that a ⟶ m.
 
   (** Importing the appropriate definitions, we could also write
       [a is bounded] instead of [bounded_sequence a] *)
   By convergent_sequence_is_bounded it holds that
     bounded_sequence a.
-  It holds that ∃ Ma ∈ ℝ, Ma > 0 ∧ ∀ n ∈ ℕ, | a n | ≤ Ma as (HMa).
+  It holds that ∃ Ma ∈ ℝ, Ma > 0 ∧ ∀ n ∈ ℕ, | a n | ≤ Ma.
   Obtain such a Ma.
   It holds that Ma > 0 as (HMa_pos).
-  Assume that b ⟶ l as (Hb).
+  Assume that b ⟶ l.
 
   We need to show that (fun n => a n * b n) ⟶ (m * l).
   We need to show that
@@ -445,7 +445,7 @@ Qed.
 Lemma algebraic_limit_theorem_const_mult (b : ℕ → ℝ) (m c : ℝ) :
     b ⟶ m → (fun n => c * b n) ⟶ (c * m).
 Proof.
-  Assume that b ⟶ m as (Hb).
+  Assume that b ⟶ m.
   Define a := constant_seq c.
   By (constant_seq_converges c) it holds that a ⟶ c.
   By algebraic_limit_theorem_product it holds that
@@ -479,7 +479,7 @@ Qed.
 Lemma neg_limit (a : ℕ → ℝ) (L : ℝ) :
     a ⟶ L → (fun n => - a n) ⟶ - L.
 Proof.
-  Assume that a ⟶ L as (Ha).
+  Assume that a ⟶ L.
   It holds that ∀ n ∈ ℕ, -1 * a n = - a n. It holds that -1 * L = - L.
   By algebraic_limit_theorem_const_mult it holds that
       (fun n => -1 * a n) ⟶ -1 * L as (Hneg).
@@ -507,8 +507,8 @@ Qed.
 Lemma order_limit_theorem_le (a b : ℕ → ℝ) (A B : ℝ) :
     a ⟶ A → b ⟶ B → (∀ n ∈ ℕ, a n ≤ b n) → A ≤ B.
 Proof.
-  Assume that a ⟶ A as (Ha).
-  Assume that b ⟶ B as (Hb).
+  Assume that a ⟶ A.
+  Assume that b ⟶ B.
   Assume that ∀ n ∈ ℕ, a n ≤ b n as (Hab).
   By neg_limit it holds that (fun n => - b n) ⟶ - B.
   Define c := fun n => a n - b n.
@@ -527,8 +527,8 @@ Qed.
 Lemma order_limit_theorem_const_le (b : ℕ → ℝ) (c B : ℝ) :
     b ⟶ B → (∀ n ∈ ℕ, c ≤ b n) → c ≤ B.
 Proof.
-  Assume that b ⟶ B as (Hb).
-  Assume that ∀ n ∈ ℕ, c ≤ b n as (Hcb).
+  Assume that b ⟶ B.
+  Assume that ∀ n ∈ ℕ, c ≤ b n.
   Define a := constant_seq c.
   By constant_seq_converges c it holds that a ⟶ c.
   By (order_limit_theorem_le a b c B) it holds that c ≤ B.
@@ -551,10 +551,10 @@ Lemma squeeze_theorem (a b c : ℕ → ℝ) (L : ℝ) :
     (∀ n ∈ ℕ, b n ≤ c n) →
     b ⟶ L.
 Proof.
-  Assume that a ⟶ L as (Ha).
-  Assume that c ⟶ L as (Hc).
-  Assume that ∀ n ∈ ℕ, a n ≤ b n as (Hab).
-  Assume that ∀ n ∈ ℕ, b n ≤ c n as (Hbc).
+  Assume that a ⟶ L.
+  Assume that c ⟶ L.
+  Assume that ∀ n ∈ ℕ, a n ≤ b n.
+  Assume that ∀ n ∈ ℕ, b n ≤ c n.
   (** This is in Waterproof already so we are going to take the
       convenient route, but it could be a good and fun exercise to
       try and formalize it yourselves! *)
