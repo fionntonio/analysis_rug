@@ -31,7 +31,7 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 (** ** Open intervals are open *)
 
-(** Theorem 6.1: the open interval [(a, b)] is an open set.
+(** Example (Abbott Example 3.2.2(ii)): the open interval [(a, b)] is an open set.
 
     Proof idea: for [x ∈ (a,b)], set [ε = min(x - a, b - x) > 0]. Any [y] with
     [|y - x| < ε] satisfies [y > x - ε ≥ a] and [y < x + ε ≤ b], so
@@ -56,7 +56,7 @@ Qed.
 
 (** ** Open sets are closed under finite intersection *)
 
-(** Theorem 6.3: the intersection of two open sets is open.
+(** _Unions and intersections_ of open sets (Abbott Theorem 3.2.3(ii)): the intersection of two open sets is open.
 
     Proof idea: for [x ∈ A ∩ B], openness gives [ε₁] with [V_{ε₁}(x) ⊆ A] and
     [ε₂] with [V_{ε₂}(x) ⊆ B]; then [ε = min(ε₁, ε₂)] gives [V_ε(x) ⊆ A ∩ B].
@@ -96,7 +96,7 @@ Qed.
 
 (** ** Open sets are closed under arbitrary union *)
 
-(** Theorem 6.2: the union of two open sets is open.
+(** _Unions and intersections_ of open sets (Abbott Theorem 3.2.3(i)): the union of two open sets is open.
 
     Proof idea: for [x ∈ A ∪ B], say [x ∈ A]; openness of [A] gives [ε > 0] with
     [V_ε(x) ⊆ A ⊆ A ∪ B]. (The same argument works for arbitrary unions.) *)
@@ -204,7 +204,7 @@ Proof.
     We conclude that x < b.
 Qed.
 
-(** Theorem 6.4: the closed interval [[a, b]] is a closed set.
+(** Example (Abbott Example 3.2.9(ii)): the closed interval [[a, b]] is a closed set.
 
     Proof idea: the complement [(-∞, a) ∪ (b, ∞)] is open, as it is the union
     of the two open half-lines [(-∞, a)] and [(b, ∞)]
@@ -250,10 +250,10 @@ Qed.
 
 (** ** Closed sets under finite union *)
 
-(** Theorem 6.5: the union of two closed sets is closed.
+(** _Unions and intersections_ of closed sets (Abbott Theorem 3.2.14(i)): the union of two closed sets is closed.
 
     Proof idea: by de Morgan the complement is [Fᶜ ∩ Gᶜ], an intersection of two
-    open sets, hence open (Theorem 6.3). *)
+    open sets, hence open ([open_inter]). *)
 Lemma closed_union (F G : ℝ → Prop)
     (HF : F is _closed_) (HG : G is _closed_) :
     (fun x => F x ∨ G x) is _closed_.
@@ -294,10 +294,10 @@ Qed.
 
 (** ** Closed sets under arbitrary intersection *)
 
-(** Theorem 6.6: an arbitrary intersection of closed sets is closed.
+(** _Unions and intersections_ of closed sets (Abbott Theorem 3.2.14(ii)): an arbitrary intersection of closed sets is closed.
 
     Proof idea: by de Morgan the complement is [⋃ᵢ Fᵢᶜ], an arbitrary union of
-    open sets, hence open (Theorem 6.2). *)
+    open sets, hence open ([open_union_arbitrary]). *)
 Lemma closed_inter_arbitrary (Idx : Type) (F : Idx → (ℝ → Prop))
     (HF : ∀ i : Idx, F i is _closed_) :
     (fun x => ∀ i : Idx, F i x) is _closed_.

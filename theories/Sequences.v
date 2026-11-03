@@ -698,7 +698,7 @@ Qed.
 
 (** ** A divergent sequence *)
 
-(** Theorem 3.6: the alternating sequence [(-1)ⁿ] does not converge.
+(** _Divergent sequences_ example: the alternating sequence [(-1)ⁿ] does not converge.
 
     Proof idea: suppose [aₙ → L]. Taking [ε = 1], there is an [N] beyond which
     [|aₙ - L| < 1]. But for even [n] we have [aₙ = 1] and for odd [n] we have

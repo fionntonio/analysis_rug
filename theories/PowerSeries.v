@@ -44,7 +44,7 @@ Proof.
 
 (** ** Uniform convergence on compact sub-intervals *)
 
-(** Theorem 13.3: if the radius of convergence is [R > 0], then [∑ aₙ xⁿ]
+(** _Uniform convergence_ of power series (Abbott Theorem 6.5.2): if the radius of convergence is [R > 0], then [∑ aₙ xⁿ]
     converges uniformly on every [[−r, r]] with [r < R].
 
     Proof idea: pick [r'] with [r < r' < R]. The series converges absolutely at
@@ -88,7 +88,7 @@ Proof.
 
 (** ** Absolute convergence strictly inside the radius *)
 
-(** Theorem 13.2: if the series converges at every [r] with [0 < r < R], then it
+(** _Pointwise convergence_ of power series (Abbott Theorem 6.5.1): if the series converges at every [r] with [0 < r < R], then it
     converges absolutely at every [x] with [|x| < R].
 
     Proof idea: pick [r] with [|x| < r < R] (e.g. [r = (|x| + R)/2]); the series
@@ -107,7 +107,7 @@ Proof.
 (** A power series is continuous on its open interval of convergence.
 
     Proof idea: on each [[−r, r]] with [r < R] the series converges uniformly
-    (Theorem 13.3), and each partial sum is a (continuous) polynomial; the
+    ([power_series_uniform_on_compact]), and each partial sum is a (continuous) polynomial; the
     uniform limit of continuous functions is continuous. *)
 Lemma power_series_continuous (a : ℕ → ℝ) (g : ℝ → ℝ) (R : ℝ) (HR : R > 0)
     (Hsum : is_series_sum a g R)
@@ -160,7 +160,7 @@ Proof.
 
 (** ** Term-by-term differentiation *)
 
-(** Theorem 13.4 (term-by-term differentiation): the sum [g] of [∑ aₙ xⁿ] is
+(** _Differentiation can be done term-by-term_ (Abbott Theorem 6.5.7): the sum [g] of [∑ aₙ xⁿ] is
     differentiable on [(−R, R)], and its derivative is the sum [h] of the derived
     series [∑ (n+1) a_{n+1} xⁿ] — which has the same radius [R].
 

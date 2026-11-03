@@ -97,7 +97,7 @@
 
 <div class="paragraph"> </div>
 
- Theorem 13.3: if the radius of convergence is <span class="inlinecode"><span class="id" title="var">R</span></span> <span class="inlinecode">&gt;</span> <span class="inlinecode">0</span>, then <span class="inlinecode">∑</span> <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span>
+ <i>Uniform convergence</i> of power series (Abbott Theorem 6.5.2): if the radius of convergence is <span class="inlinecode"><span class="id" title="var">R</span></span> <span class="inlinecode">&gt;</span> <span class="inlinecode">0</span>, then <span class="inlinecode">∑</span> <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span>
     converges uniformly on every <span class="inlinecode">[−<span class="id" title="var">r</span>,</span> <span class="inlinecode"><span class="id" title="var">r</span>]</span> with <span class="inlinecode"><span class="id" title="var">r</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">R</span></span>.
 
 <div class="paragraph"> </div>
@@ -167,7 +167,7 @@ The predicate "<span class="inlinecode"><span class="id" title="var">g</span></s
 
 <div class="paragraph"> </div>
 
- Theorem 13.2: if the series converges at every <span class="inlinecode"><span class="id" title="var">r</span></span> with <span class="inlinecode">0</span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">r</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">R</span></span>, then it
+ <i>Pointwise convergence</i> of power series (Abbott Theorem 6.5.1): if the series converges at every <span class="inlinecode"><span class="id" title="var">r</span></span> with <span class="inlinecode">0</span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">r</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">R</span></span>, then it
     converges absolutely at every <span class="inlinecode"><span class="id" title="var">x</span></span> with <span class="inlinecode">|<span class="id" title="var">x</span>|</span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">R</span></span>.
 
 <div class="paragraph"> </div>
@@ -198,7 +198,7 @@ The predicate "<span class="inlinecode"><span class="id" title="var">g</span></s
 <div class="paragraph"> </div>
 
     Proof idea: on each <span class="inlinecode">[−<span class="id" title="var">r</span>,</span> <span class="inlinecode"><span class="id" title="var">r</span>]</span> with <span class="inlinecode"><span class="id" title="var">r</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode"><span class="id" title="var">R</span></span> the series converges uniformly
-    (Theorem 13.3), and each partial sum is a (continuous) polynomial; the
+    (<span class="inlinecode"><span class="id" title="var">power_series_uniform_on_compact</span></span>), and each partial sum is a (continuous) polynomial; the
     uniform limit of continuous functions is continuous. 
 </div>
 <div class="code">
@@ -287,7 +287,7 @@ The predicate "<span class="inlinecode"><span class="id" title="var">g</span></s
 
 <div class="paragraph"> </div>
 
- Theorem 13.4 (term-by-term differentiation): the sum <span class="inlinecode"><span class="id" title="var">g</span></span> of <span class="inlinecode">∑</span> <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span> is
+ <i>Differentiation can be done term-by-term</i> (Abbott Theorem 6.5.7): the sum <span class="inlinecode"><span class="id" title="var">g</span></span> of <span class="inlinecode">∑</span> <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span> is
     differentiable on <span class="inlinecode">(−<span class="id" title="var">R</span>,</span> <span class="inlinecode"><span class="id" title="var">R</span>)</span>, and its derivative is the sum <span class="inlinecode"><span class="id" title="var">h</span></span> of the derived
     series <span class="inlinecode">∑</span> <span class="inlinecode">(<span class="id" title="var">n</span>+1)</span> <span class="inlinecode"><span class="id" title="var">a_</span>{<span class="id" title="var">n</span>+1}</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span> — which has the same radius <span class="inlinecode"><span class="id" title="var">R</span></span>.
 
