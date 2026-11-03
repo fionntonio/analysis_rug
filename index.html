@@ -259,7 +259,19 @@
     .slide-card img { max-height: 300px; object-fit: contain; }
     .slide-card .katex-display { overflow: visible; }
 
+
     .doc-wrap { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+
+    .tutorial-card {
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      padding: 22px 28px;
+      margin: 0.6rem 0 0;
+    }
+    .tutorial-card > :first-child { margin-top: 0; }
+    .tutorial-card > :last-child { margin-bottom: 0; }
+    @media (max-width: 600px) { .tutorial-card { padding: 16px 16px; } }
 
     /* ── Typography ─────────────────────────────────────────────── */
     .slide-card h1, .doc-wrap h1 {
@@ -347,6 +359,56 @@
     /* KaTeX display: allow horizontal scroll on narrow screens */
     .katex-display { overflow-x: auto; overflow-y: hidden; }
 
+    /* ── Slide layout (modelled on the old Beamer slides) ──────────
+       Larger sans-serif text, a centred frame title, the current section
+       in a slim running header, and a vertical rhythm driven by --gap,
+       which fitSlide() tightens only when a slide would overflow. */
+    .slide-card {
+      padding: 26px 56px 30px;
+      font-family: 'Latin Modern Sans', 'CMU Sans Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+    .slide-content { --gap: 0.95em; }
+    .slide-section {
+      font-size: 0.62em;
+      color: #6a7f96;
+      padding-bottom: 0.35em;
+      border-bottom: 1px solid #e3e8ee;
+      margin-bottom: 0.6em;
+    }
+    .slide-card h1 { font-size: 1.5em; font-weight: normal; text-align: center; margin: 0.2em 0 var(--gap); }
+    .slide-card h2 {
+      font-size: 1.4em;
+      font-weight: normal;
+      text-align: center;
+      color: #193352;
+      margin: 0.15em 0 var(--gap);
+      line-height: 1.25;
+    }
+    .slide-card h3 { font-size: 1.05em; margin: var(--gap) 0 calc(var(--gap) * 0.4); }
+    .slide-card p { margin: 0 0 var(--gap); }
+    .slide-card p:empty { display: none; }
+    .slide-card ul, .slide-card ol { margin: 0 0 var(--gap) 1.4em; }
+    .slide-card li { margin: calc(var(--gap) * 0.35) 0; }
+    .slide-card li::marker { color: #1e4976; }
+    .slide-card li > p { margin: 0 0 calc(var(--gap) * 0.35); }
+    .slide-card li > ul, .slide-card li > ol { margin-bottom: 0; }
+    .slide-card .katex { font-size: 1.1em; }
+    .slide-card .katex-display { margin: calc(var(--gap) * -0.2) 0 var(--gap); }
+    .slide-card .katex-display > .katex-display { margin: 0; }
+    .slide-card img { margin: calc(var(--gap) * 0.5) auto; }
+    .slide-card em { color: #444; font-size: 1em; }
+    .slide-card .slide-source { font-size: 0.6em; color: #777; text-align: center; margin-top: calc(var(--gap) * -0.4); }
+    .slide-card .slide-source em { color: inherit; }
+    .slide-card table { font-size: 0.85em; margin: 0 0 var(--gap); }
+    .slide-card pre { margin: 0 0 var(--gap); font-size: 0.85em; }
+    .slide-card blockquote { margin: 0 0 var(--gap); }
+    .slide-card .slide-title-block { text-align: center; margin: 1.2em 0 1.6em; padding-bottom: 1.1em; }
+    .slide-card .stb-course { font-size: 1.7em; font-weight: normal; }
+    .slide-card .stb-author { font-size: 0.85em; margin-top: 0.5em; }
+    .slide-card .stb-date   { font-size: 0.85em; margin-top: 0.3em; }
+
     /* ── Loading / error ────────────────────────────────────────── */
     .loading {
       display: flex;
@@ -366,6 +428,30 @@
       font-family: sans-serif;
       font-size: 0.9rem;
       margin: 1rem 0;
+    }
+
+    /* ── Phones ───────────────────────────────────────────────────
+       Slides are always scaled to fit the screen; on a phone held upright
+       that makes them small, so suggest landscape. In landscape the bars
+       are made thinner to leave more height for the slide. */
+    #rotate-hint {
+      display: none;
+      flex-shrink: 0;
+      text-align: center;
+      font: 0.8rem sans-serif;
+      color: #555;
+      background: #e6ecf2;
+      padding: 7px 12px;
+    }
+    @media (orientation: portrait) and (max-width: 600px) {
+      #content.slides-mode ~ #rotate-hint { display: block; }
+    }
+    @media (orientation: landscape) and (max-height: 500px) {
+      #topbar { height: 34px; }
+      #slide-nav { padding: 4px 12px; gap: 10px; }
+      .nav-btn { padding: 4px 12px; }
+      .slide-wrap { padding: 6px; }
+      #app:fullscreen .slide-wrap { padding-top: 40px; }
     }
 
     /* ── Mobile ─────────────────────────────────────────────────── */
@@ -417,6 +503,8 @@
       <div class="hint">Open the menu (☰) to select a lecture or the syllabus.</div>
     </div>
   </div>
+
+  <div id="rotate-hint" role="note">↻ Rotate your phone to landscape for larger slides</div>
 
   <div id="slide-nav">
     <button class="nav-btn" id="prev-btn" disabled>← Prev</button>
@@ -482,6 +570,10 @@
       } else if (mode === 'slides' && document.fullscreenEnabled) {
         closeMenu();
         await app.requestFullscreen();
+        // On touch devices that support it (e.g. Android), prefer landscape.
+        if (matchMedia('(pointer: coarse)').matches && screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(function () {});
+        }
       }
     } catch (err) {
       // Permission or browser policy can reject a fullscreen request.
@@ -659,6 +751,30 @@
     const height = card.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
     body.style.transform = '';
 
+    // Shrink only the display formulas that are too wide, not the whole slide.
+    body.querySelectorAll('.katex-display').forEach(function (eq) {
+      eq.style.fontSize = '';
+      const inner = eq.querySelector('.katex') || eq;
+      if (inner.scrollWidth > width) {
+        eq.style.fontSize = Math.max(0.7, width / inner.scrollWidth) + 'em';
+      }
+    });
+
+    // Like LaTeX, first absorb overflow in the vertical spacing.
+    const GAP_MAX = 0.95, GAP_MIN = 0.35;
+    function setGap(g) { body.style.setProperty('--gap', g + 'em'); }
+    setGap(GAP_MAX);
+    if (body.scrollHeight > height) {
+      let low = GAP_MIN, high = GAP_MAX;
+      for (let i = 0; i < 8; i++) {
+        const mid = (low + high) / 2;
+        setGap(mid);
+        if (body.scrollHeight <= height) low = mid;
+        else high = mid;
+      }
+      setGap(low);
+    }
+
     // Keep the text at its normal size if reducing figures is enough.
     const images = Array.from(body.querySelectorAll('img'));
     function sizeImages(factor) {
@@ -786,6 +902,15 @@
         updatePreview(PAGES[documentSlug].description);
         if (/\.ya?ml$/.test(file)) text = tutorialsToMd(jsyaml.load(text));
         contentEl.innerHTML = '<div class="doc-wrap">' + renderMd(text) + '</div>';
+        // Wrap the content under each "Tutorial N" title (up to the next separator) in a card.
+        if (/\.ya?ml$/.test(file)) {
+          contentEl.querySelectorAll('.doc-wrap > h1[id^="tutorial-"]').forEach(function (h1) {
+            var card = document.createElement('section');
+            card.className = 'tutorial-card';
+            h1.after(card);
+            while (card.nextSibling && !/^(HR|H1)$/.test(card.nextSibling.nodeName)) card.appendChild(card.nextSibling);
+          });
+        }
         // We use namespaces to make the in-document anchors work; links to
         // other pages (e.g. #lecture01, #course-info/...) are left untouched.
         contentEl.querySelectorAll('a[href^="#"]').forEach(function (link) {
@@ -806,16 +931,31 @@
         });
         updatePreview(preview.textContent.trim());
 
+        var section = '';
         slides = rawSlides.map(function (slide, i) {
           var html = '';
+          var tpl = document.createElement('template');
+          tpl.innerHTML = renderMd(slide);
+          // As in Beamer, a "# Section" heading goes into a running header
+          // shown on every following slide instead of taking body space.
+          var h1 = tpl.content.querySelector('h1');
+          if (h1 && tpl.content.querySelector('h2')) {
+            section = h1.innerHTML;
+            h1.remove();
+          }
+          tpl.content.querySelectorAll('p').forEach(function (p) {
+            if (/^\[Source:/.test(p.textContent.trim())) p.classList.add('slide-source');
+          });
           if (i === 0 && meta.title) {
             html = '<div class="slide-title-block">'
               + '<div class="stb-course">' + meta.title + '</div>'
               + (meta.author ? '<div class="stb-author">' + meta.author + '</div>' : '')
               + (meta.date   ? '<div class="stb-date">'   + meta.date   + '</div>' : '')
               + '</div>';
+          } else if (section) {
+            html = '<div class="slide-section">' + section + '</div>';
           }
-          return html + renderMd(slide);
+          return html + tpl.innerHTML;
         });
 
         showSlide(0);
