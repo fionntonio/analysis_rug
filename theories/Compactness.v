@@ -8,17 +8,10 @@
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
-From Stdlib Require Import Arith.PeanoNat.
-From Stdlib Require Import setoid_ring.Ring.
 
-From Waterproof Require Export Notations.Common.
-From Waterproof Require Export Notations.Reals.
-From Waterproof Require Export Notations.Sets.
 From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 From Waterproof Require Import Libs.Analysis.Subsequences.
 Require Export RUG.Analysis.Topology.
-Require Export RUG.Analysis.Sequences.
-Require Export RUG.Analysis.Reals.
 Require Export RUG.Analysis.Subsequences.
 Require Export RUG.Analysis.Lib.Compactness.
 

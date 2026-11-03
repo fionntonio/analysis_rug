@@ -10,9 +10,6 @@
   uniformly convergent sequences of functions (Abbott 7.2.5). *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.RiemannInt.
-From Stdlib Require Import Reals.PartSum.
-From Stdlib Require Import micromega.Lra.
 From Stdlib Require Import Logic.ClassicalDescription.
 From Stdlib Require Import Logic.ConstructiveEpsilon.
 Require Export RUG.Analysis.Continuity.

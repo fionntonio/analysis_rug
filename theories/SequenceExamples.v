@@ -12,11 +12,7 @@
   to Abbott's sequences starting from n=1. We use (n+1) or (INR n + 1) consistently. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.SeqProp.
-From Stdlib Require Import Reals.Rpower.
-From Stdlib Require Import Arith.Factorial.
 
-From Waterproof Require Export Libs.Analysis.Sequences.
 Require Export RUG.Analysis.Sequences.
 
 Waterproof Enable Automation RealsAndIntegers.

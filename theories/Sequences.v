@@ -8,7 +8,6 @@
 (* begin hide *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.SeqProp.
 
 From Waterproof Require Export Libs.Analysis.Sequences.
 Require Export RUG.Analysis.Reals.

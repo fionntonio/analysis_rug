@@ -12,13 +12,7 @@
 
 (* begin hide *)
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.PartSum.
-From Stdlib Require Import Reals.Rpower.
-From Stdlib Require Import micromega.Lia.
-From Stdlib Require Import micromega.Lra.
 From Waterproof Require Import Libs.Analysis.Series.
-From Waterproof Require Import Libs.Analysis.Subsequences.
-From Waterproof Require Import Libs.Analysis.LimsupLiminfBolzano.
 Require Export RUG.Analysis.CauchySequences.
 
 Waterproof Enable Automation RealsAndIntegers.

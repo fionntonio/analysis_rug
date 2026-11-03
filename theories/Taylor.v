@@ -6,11 +6,7 @@
   remainder formula, and Taylor series for exp, sin, cos. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.Ranalysis1.
-From Stdlib Require Import Reals.Rtrigo_def.
-From Stdlib Require Import Reals.Exp_prop.
 From Stdlib Require Import Arith.Factorial.
-From Stdlib Require Import micromega.Lra.
 Require Export RUG.Analysis.Derivatives.
 Require Export RUG.Analysis.PowerSeries.
 

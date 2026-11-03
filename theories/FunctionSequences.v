@@ -8,7 +8,6 @@
   Term-by-term integration is in [Analysis.Integration]. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import micromega.Lra.
 From Stdlib Require Import Logic.ClassicalDescription.
 Require Export RUG.Analysis.Continuity.
 Require Import RUG.Analysis.CauchySequences.

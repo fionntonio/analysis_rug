@@ -8,12 +8,7 @@
 
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Reals.Ranalysis5.
-From Stdlib Require Import Reals.Rtopology.
 From Stdlib Require Import Logic.ClassicalDescription.
-
-From Waterproof Require Export Notations.Common.
-From Waterproof Require Export Notations.Reals.
-From Waterproof Require Export Notations.Sets.
 
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
 Require Export RUG.Analysis.Lib.Compactness.

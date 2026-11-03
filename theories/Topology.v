@@ -6,7 +6,6 @@
   closures, and the relationship between open/closed sets. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import micromega.Lra.
 From Stdlib Require Import Logic.Classical_Pred_Type.
 From Stdlib Require Import Logic.Classical_Prop.
 From Stdlib Require Import Logic.FunctionalExtensionality.
