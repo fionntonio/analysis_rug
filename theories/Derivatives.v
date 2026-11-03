@@ -25,7 +25,7 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 (** ** Differentiable implies continuous *)
 
-(** Theorem 10.2: if [g] is differentiable at [x₀] then [g] is continuous at
+(** _Differentiability versus continuity_ (Abbott Theorem 5.2.3): if [g] is differentiable at [x₀] then [g] is continuous at
     [x₀]. *)
 Lemma differentiable_implies_continuous (g : ℝ → ℝ) (x0 : ℝ)
     (Hd : derivable_pt g x0) :
@@ -49,7 +49,7 @@ Proof.
 
 (** ** Mean value theorem *)
 
-(** Theorem 10.4 (mean value theorem): if [h] is continuous on [[a,b]] and
+(** _Mean value theorem_ (Abbott Theorem 5.3.2): if [h] is continuous on [[a,b]] and
     differentiable on [(a,b)], then there exists [c ∈ (a,b)] with
     [h'(c) = (h(b) - h(a))/(b - a)].
 
@@ -176,7 +176,7 @@ Qed.
 
 (** ** Derivative of the squaring function *)
 
-(** Theorem 10.1: the derivative of [x ↦ x²] at [x₀] is [2·x₀].
+(** Example (Abbott Example 5.2.2(i) with [n = 2]): the derivative of [x ↦ x²] at [x₀] is [2·x₀].
 
     Proof idea: apply the power rule [d/dx xⁿ = n·xⁿ⁻¹] with [n = 2]. *)
 Lemma sq_derivative (x0 : ℝ) :
@@ -189,7 +189,7 @@ Qed.
 
 (** ** Rolle's theorem *)
 
-(** Theorem 10.3 (Rolle's theorem): if [h] is continuous on [[a,b]],
+(** _Rolle's theorem_ (Abbott Theorem 5.3.1): if [h] is continuous on [[a,b]],
     differentiable on [(a,b)] and [h a = h b], then [h'(c) = 0] for some
     [c ∈ (a,b)].
 
@@ -218,7 +218,7 @@ Qed.
 
 (** ** Darboux's theorem *)
 
-(** Theorem 10.6 (Darboux): derivatives have the intermediate value property.
+(** _Darboux's theorem_ (Abbott Theorem 5.2.7): derivatives have the intermediate value property.
     If [h] is differentiable on [[a,b]] and [v] lies strictly between [h'(a)]
     and [h'(b)], then [h'(c) = v] for some [c ∈ (a,b)] — even though [h'] need
     not be continuous.
@@ -269,7 +269,7 @@ Proof.
 
 (** ** Positive derivative implies strictly increasing *)
 
-(** Theorem 10.5: if [ψ' > 0] on [(a,v)] then [ψ] is strictly increasing on
+(** A consequence of the _mean value theorem_: if [ψ' > 0] on [(a,v)] then [ψ] is strictly increasing on
     [[a,v]].
 
     Proof idea: for [a ≤ x < y ≤ v], the mean value theorem gives a point

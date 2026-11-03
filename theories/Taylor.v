@@ -96,7 +96,7 @@ Lemma generalized_rolle (df : ℕ → ℝ → ℝ) (n : ℕ) (pts : ℕ → ℝ)
 Proof.
   Admitted.
 
-(** _Taylor's theorem with Lagrange remainder_ (Theorem 14.2): if [f] is
+(** _Taylor's theorem with Lagrange remainder_ (Abbott Theorem 6.6.3): if [f] is
     [(n+1)]-times differentiable, with [df k = f⁽ᵏ⁾] and [df (S k)] the
     derivative of [df k] (and [df 0 = f]), then for every [x] there is a [c]
     strictly between [a] and [x] with
@@ -121,14 +121,14 @@ Proof.
 (** The first-order Taylor polynomial of [sin] at [0]. *)
 Definition T_sin1 (x : R) : R := x.
 
-(** Theorem 14.3 (upper bound): [sin x < x] for [x > 0]. The degree-1 Taylor
+(** _Taylor series for sin(x)_ (upper bound): [sin x < x] for [x > 0]. The degree-1 Taylor
     polynomial of [sin] at [0] is [s₁(x) = x], and this is the Stdlib lemma
     [sin_lt_x]. *)
 Lemma sin_lt_x (x : R) (Hx : 0 < x) : sin x < x.
 Proof.
   Admitted.
 
-(** Theorem 14.3 (lower bound): [x - x³/6 ≤ sin x] for [0 ≤ x ≤ π/2].
+(** _Taylor series for sin(x)_ (lower bound): [x - x³/6 ≤ sin x] for [0 ≤ x ≤ π/2].
 
     Proof idea: this follows from the alternating series estimate for
     [sin x = x - x³/3! + x⁵/5! - ⋯]; truncating after the cubic term gives a
@@ -140,7 +140,7 @@ Proof.
 
 (** ** Error bound for the linear approximation of sin *)
 
-(** Theorem 14.4: [|sin x - x| ≤ x³/6] for [0 < x ≤ π/2], so the linear
+(** _Taylor series for sin(x)_ (cf. Abbott Example 6.6.4): [|sin x - x| ≤ x³/6] for [0 < x ≤ π/2], so the linear
     approximation [sin x ≈ x] has error at most [x³/6].
 
     Proof idea: the upper bound [sin x < x] gives [sin x - x < 0], so

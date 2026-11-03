@@ -31,7 +31,7 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 (** ** Continuity at a point *)
 
-(** Theorem 9.1: the squaring function [x ↦ x²] is continuous at every point [c].
+(** Example: the squaring function [x ↦ x²] is continuous at every point [c].
 
     Proof idea: use the ε–δ definition. The factorization
     [|x² - c²| = |x - c| · |x + c|] is key. If [|x - c| < 1] then
@@ -250,7 +250,7 @@ Proof.
 
 (** ** Extreme value theorem *)
 
-(** Theorem 9.2 (extreme value theorem): a continuous function on a closed
+(** _Extreme value theorem_ (Abbott Theorem 4.4.2): a continuous function on a closed
     interval [[a,b]] attains its maximum.
 
     Proof idea: the image [f([a,b])] is compact, as the continuous image of the
@@ -291,7 +291,7 @@ Qed.
 
 (** ** Intermediate value theorem *)
 
-(** Theorem 9.3 (intermediate value theorem): if [f] is continuous on [[a,b]]
+(** _Intermediate value theorem_ (Abbott Theorem 4.5.1): if [f] is continuous on [[a,b]]
     and [f(a) < v < f(b)], then there exists [c ∈ (a,b)] with [f(c) = v].
 
     Proof idea: the bisection method constructs nested intervals
@@ -353,7 +353,7 @@ Qed.
 
 (** ** Uniform continuity *)
 
-(** Theorem 9.4 (Heine's theorem): a continuous function on a compact set is
+(** _Uniform continuity on compact sets_ (Abbott Theorem 4.4.7): a continuous function on a compact set is
     uniformly continuous.
 
     Proof idea: for each point [c] of the set, continuity gives a neighborhood

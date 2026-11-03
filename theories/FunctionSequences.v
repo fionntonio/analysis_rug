@@ -90,7 +90,7 @@ Qed.
 
 (** ** Cauchy criterion for uniform convergence *)
 
-(** Theorem 12.4: [(fₙ)] converges uniformly on [A] iff it is uniformly Cauchy:
+(** _Cauchy criterion_ for uniform convergence (Abbott Theorem 6.2.5): [(fₙ)] converges uniformly on [A] iff it is uniformly Cauchy:
     for every ε > 0 there exists N such that for all [n, m ≥ N] and all [x ∈ A],
     [|fₙ(x) - fₘ(x)| < ε].
 
@@ -242,7 +242,7 @@ Qed.
 
 (** ** Uniform limit of continuous functions is continuous *)
 
-(** Theorem 12.1 (Abbott 6.2.6): if [(fₙ) ⇉ g] uniformly on [A] and each [fₙ]
+(** _Preservation of continuity_ (Abbott Theorem 6.2.6): if [(fₙ) ⇉ g] uniformly on [A] and each [fₙ]
     is continuous at [a ∈ A], then [g] is continuous at [a]. As in Abbott, the
     functions live on [A], so continuity at [a] is relative to [A]: for every
     [ε > 0] there is [δ > 0] with [|h(x) - h(a)| < ε] for all [x ∈ A] with
@@ -293,7 +293,7 @@ Qed.
 
 (** ** Weierstrass M-test *)
 
-(** Theorem 12.2 (Weierstrass M-test): if [|fₙ(x)| ≤ Mₙ] for all [x ∈ A] and
+(** _Weierstrass M-test_ (Abbott Corollary 6.4.5): if [|fₙ(x)| ≤ Mₙ] for all [x ∈ A] and
     [∑ Mₙ] converges, then [∑ fₙ] converges uniformly on [A].
 
     Proof idea: use the Cauchy criterion. Since [∑ Mₙ] converges, for [ε > 0]
@@ -668,7 +668,7 @@ Qed.
 
 (** ** Uniform convergence of the geometric series on [[−r, r]] *)
 
-(** Theorem 12.3: for [0 ≤ r < 1], the partial sums [∑ xᵏ] converge uniformly on
+(** Application of the _Weierstrass M-test_: for [0 ≤ r < 1], the partial sums [∑ xᵏ] converge uniformly on
     [[−r, r]].
 
     Proof idea: apply the Weierstrass M-test with [Mₙ = rⁿ]. For [x ∈ [−r, r]],

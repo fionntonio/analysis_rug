@@ -73,7 +73,7 @@ A set <span class="inlinecode"><span class="id" title="var">O</span></span> <spa
 
 <div class="paragraph"> </div>
 
- Theorem 6.1: the open interval <span class="inlinecode">(<span class="id" title="var">a</span>,</span> <span class="inlinecode"><span class="id" title="var">b</span>)</span> is an open set.
+ Example (Abbott Example 3.2.2(ii)): the open interval <span class="inlinecode">(<span class="id" title="var">a</span>,</span> <span class="inlinecode"><span class="id" title="var">b</span>)</span> is an open set.
 
 <div class="paragraph"> </div>
 
@@ -108,7 +108,7 @@ A set <span class="inlinecode"><span class="id" title="var">O</span></span> <spa
 
 <div class="paragraph"> </div>
 
- Theorem 6.3: the intersection of two open sets is open.
+ <i>Unions and intersections</i> of open sets (Abbott Theorem 3.2.3(ii)): the intersection of two open sets is open.
 
 <div class="paragraph"> </div>
 
@@ -158,7 +158,7 @@ A set <span class="inlinecode"><span class="id" title="var">O</span></span> <spa
 
 <div class="paragraph"> </div>
 
- Theorem 6.2: the union of two open sets is open.
+ <i>Unions and intersections</i> of open sets (Abbott Theorem 3.2.3(i)): the union of two open sets is open.
 
 <div class="paragraph"> </div>
 
@@ -302,7 +302,7 @@ The lower half-line <span class="inlinecode">(-∞,</span> <span class="inlineco
 </div>
 
 <div class="doc">
-Theorem 6.4: the closed interval <span class="inlinecode">[<span class="id" title="var">a</span>,</span> <span class="inlinecode"><span class="id" title="var">b</span>]</span> is a closed set.
+Example (Abbott Example 3.2.9(ii)): the closed interval <span class="inlinecode">[<span class="id" title="var">a</span>,</span> <span class="inlinecode"><span class="id" title="var">b</span>]</span> is a closed set.
 
 <div class="paragraph"> </div>
 
@@ -365,12 +365,12 @@ We use some Rocq to let Waterproof recognise the equality of the two
 
 <div class="paragraph"> </div>
 
- Theorem 6.5: the union of two closed sets is closed.
+ <i>Unions and intersections</i> of closed sets (Abbott Theorem 3.2.14(i)): the union of two closed sets is closed.
 
 <div class="paragraph"> </div>
 
     Proof idea: by de Morgan the complement is <span class="inlinecode"><span class="id" title="var">F</span>ᶜ</span> <span class="inlinecode">∩</span> <span class="inlinecode"><span class="id" title="var">G</span>ᶜ</span>, an intersection of two
-    open sets, hence open (Theorem 6.3). 
+    open sets, hence open (<span class="inlinecode"><span class="id" title="var">open_inter</span></span>). 
 </div>
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="closed_union" class="idref" href="#closed_union"><span class="id" title="lemma">closed_union</span></a> (<a id="F:241" class="idref" href="#F:241"><span class="id" title="binder">F</span></a> <a id="G:242" class="idref" href="#G:242"><span class="id" title="binder">G</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="keyword">Prop</span>)<br/>
@@ -419,12 +419,12 @@ We use some Rocq to let Waterproof recognise the equality of the two
 
 <div class="paragraph"> </div>
 
- Theorem 6.6: an arbitrary intersection of closed sets is closed.
+ <i>Unions and intersections</i> of closed sets (Abbott Theorem 3.2.14(ii)): an arbitrary intersection of closed sets is closed.
 
 <div class="paragraph"> </div>
 
     Proof idea: by de Morgan the complement is <span class="inlinecode">⋃ᵢ</span> <span class="inlinecode"><span class="id" title="var">F</span>ᵢᶜ</span>, an arbitrary union of
-    open sets, hence open (Theorem 6.2). 
+    open sets, hence open (<span class="inlinecode"><span class="id" title="var">open_union_arbitrary</span></span>). 
 </div>
 <div class="code">
 <span class="id" title="keyword">Lemma</span> <a id="closed_inter_arbitrary" class="idref" href="#closed_inter_arbitrary"><span class="id" title="lemma">closed_inter_arbitrary</span></a> (<a id="Idx:286" class="idref" href="#Idx:286"><span class="id" title="binder">Idx</span></a> : <span class="id" title="keyword">Type</span>) (<a id="F:287" class="idref" href="#F:287"><span class="id" title="binder">F</span></a> : <a class="idref" href="RUG.Analysis.Topology.html#Idx:286"><span class="id" title="variable">Idx</span></a> <span class="id" title="notation">→</span> <span class="id" title="notation">(</span><span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="keyword">Prop</span><span class="id" title="notation">)</span>)<br/>
