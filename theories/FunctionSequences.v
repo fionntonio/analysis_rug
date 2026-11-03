@@ -145,6 +145,13 @@ Proof.
         ∃ L ∈ ℝ, (fun n => fn n x) ⟶ L.
     }
     (** We choose [g(x)] as the limit of [fₙ(x)] for [x ∈ A], and [0] elsewhere. *)
+    (** Remark: here we need to deal with [x ∉ A] due to the way we conveniently
+        defined [g], as a total function [ℝ → ℝ]: [unique_choice] needs exactly
+        one value at every [x]. We can probably circumvent this by using
+        [choice] (from [Logic.ClassicalChoice]), shifting the complexity to the
+        axiom. We are paying this price due to the way we defined
+        [converges_uniformly], which simplifies the functions at the expense of
+        the proofs. We may want to reconsider this. *)
     Define Rlim := fun (x : ℝ) (L : ℝ) =>
       (x ∈ A ∧ (fun n => fn n x) ⟶ L) ∨ (¬ x ∈ A ∧ L = 0).
     We claim that ∀ x : ℝ, ∃ L : ℝ, Rlim x L ∧ ∀ L1 : ℝ, Rlim x L1 → L = L1 as (Hunique).
