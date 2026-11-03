@@ -343,6 +343,39 @@ Proof.
   ).
 Qed.
 
+(** ** Bernoulli's inequality *)
+
+(** Bernoulli's inequality: [(1 - t)ᵏ ≥ 1 - k t] for [0 ≤ t ≤ 1].
+
+    Proof idea: induction on [k]. For the step, multiply the induction
+    hypothesis by [1 - t ≥ 0] to get
+    [(1 - t)^(k+1) ≥ (1 - k t)(1 - t) = 1 - (k + 1) t + k t² ≥ 1 - (k + 1) t]. *)
+Lemma bernoulli_inequality (t : ℝ) (Ht0 : 0 ≤ t) (Ht1 : t ≤ 1) :
+    ∀ k : ℕ, (1 - t) ^ k ≥ 1 - INR k * t.
+Proof.
+  We use induction on k.
+  + We first show the base case (1 - t) ^ 0 ≥ 1 - INR 0 * t.
+    It holds that (1 - t) ^ 0 = 1.
+    It holds that INR 0 = 0.
+    We conclude that (1 - t) ^ 0 ≥ 1 - INR 0 * t.
+  + We now show the induction step.
+    Take k : ℕ.
+    Assume that (1 - t) ^ k ≥ 1 - INR k * t as (IH).
+    It holds that 1 - INR k * t ≤ (1 - t) ^ k.
+    It holds that 0 ≤ 1 - t.
+    By Rmult_le_compat_r it holds that
+      (1 - INR k * t) * (1 - t) ≤ (1 - t) ^ k * (1 - t).
+    It holds that (k + 1)%nat = S k.
+    It holds that (1 - t) ^ (S k) = (1 - t) * (1 - t) ^ k.
+    By S_INR it holds that INR (S k) = INR k + 1.
+    By pos_INR it holds that 0 ≤ INR k.
+    By Rmult_le_pos it holds that 0 ≤ INR k * t.
+    By Rmult_le_pos it holds that 0 ≤ INR k * t * t.
+    It holds that (1 - INR k * t) * (1 - t) = 1 - (INR k + 1) * t + INR k * t * t.
+    It holds that (1 - t) ^ (S k) ≥ 1 - INR (S k) * t.
+    We conclude that (1 - t) ^ (k + 1)%nat ≥ 1 - INR (k + 1)%nat * t.
+Qed.
+
 (** ** Absolute value *)
 
 (** [|x| = max{x, -x}]. *)

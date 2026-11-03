@@ -708,34 +708,6 @@ Lemma x_pow_n_not_uniform :
     ¬ (∃ g : ℝ → ℝ,
         converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1)).
 Proof.
-  (** Bernoulli's inequality [(1 - t)ᵏ ≥ 1 - k t] for [0 ≤ t ≤ 1]. *)
-  We claim that ∀ t ∈ ℝ, 0 ≤ t → t ≤ 1 → ∀ k : ℕ,
-    (1 - t) ^ k ≥ 1 - INR k * t as (Hbern).
-  {
-    Take t ∈ ℝ.
-    Assume that 0 ≤ t and t ≤ 1.
-    We use induction on k.
-    + We first show the base case (1 - t) ^ 0 ≥ 1 - INR 0 * t.
-      It holds that (1 - t) ^ 0 = 1.
-      It holds that INR 0 = 0.
-      We conclude that (1 - t) ^ 0 ≥ 1 - INR 0 * t.
-    + We now show the induction step.
-      Take k : ℕ.
-      Assume that (1 - t) ^ k ≥ 1 - INR k * t as (IH).
-      It holds that 1 - INR k * t ≤ (1 - t) ^ k.
-      It holds that 0 ≤ 1 - t.
-      By Rmult_le_compat_r it holds that
-        (1 - INR k * t) * (1 - t) ≤ (1 - t) ^ k * (1 - t).
-      It holds that (k + 1)%nat = S k.
-      It holds that (1 - t) ^ (S k) = (1 - t) * (1 - t) ^ k.
-      By S_INR it holds that INR (S k) = INR k + 1.
-      By pos_INR it holds that 0 ≤ INR k.
-      By Rmult_le_pos it holds that 0 ≤ INR k * t.
-      By Rmult_le_pos it holds that 0 ≤ INR k * t * t.
-      It holds that (1 - INR k * t) * (1 - t) = 1 - (INR k + 1) * t + INR k * t * t.
-      It holds that (1 - t) ^ (S k) ≥ 1 - INR (S k) * t.
-      We conclude that (1 - t) ^ (k + 1)%nat ≥ 1 - INR (k + 1)%nat * t.
-  }
   Assume that ∃ g : ℝ → ℝ,
     converges_uniformly (fun n x => x ^ n) g (fun x => 0 ≤ x ∧ x < 1) as (Hex).
   Obtain such a g.
@@ -761,7 +733,8 @@ Proof.
   Define x := 1 - t.
   It holds that 0 ≤ x ∧ x < 1.
   (** By Bernoulli, [x^N ≥ 1 - N t = 1/2 + t > 1/2]. *)
-  By Hbern it holds that (1 - t) ^ N1 ≥ 1 - INR N1 * t.
+  It holds that 0 ≤ t ∧ t ≤ 1.
+  By bernoulli_inequality it holds that (1 - t) ^ N1 ≥ 1 - INR N1 * t.
   It holds that (1 - t) ^ N1 > / 2.
   It holds that x ^ N1 = (1 - t) ^ N1.
   It holds that x ^ N1 > / 2.
