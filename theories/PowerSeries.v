@@ -6,10 +6,7 @@
   term-by-term differentiation and integration of power series. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.PSeries_reg.
-From Stdlib Require Import micromega.Lra.
 From Waterproof Require Import Libs.Analysis.Series.
-From Waterproof Require Import Libs.Analysis.Subsequences.
 Require Export RUG.Analysis.FunctionSequences.
 Require Export RUG.Analysis.Series.
 

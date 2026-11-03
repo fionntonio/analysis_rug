@@ -8,10 +8,6 @@
   derivatives. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.Ranalysis1.
-From Stdlib Require Import Reals.Ranalysis5.
-From Stdlib Require Import Reals.MVT.
-From Stdlib Require Import micromega.Lra.
 Require Export RUG.Analysis.Continuity.
 
 Waterproof Enable Automation RealsAndIntegers.

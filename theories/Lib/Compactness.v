@@ -3,9 +3,6 @@
   The plan is to move this to the Waterproof library eventually.
 *)
 
-From Stdlib Require Import Classical_Pred_Type.
-From Stdlib Require Import Lra.
-
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Lists.List.
 
@@ -13,9 +10,7 @@ From Waterproof Require Import Tactics.
 From Waterproof Require Import Automation.
 From Waterproof Require Import Notations.Common.
 From Waterproof Require Import Notations.Reals.
-From Waterproof Require Import Notations.Sets.
 From Waterproof Require Import Chains.
-From Waterproof Require Import Libs.Analysis.SupAndInf.
 From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 From Waterproof Require Import Libs.Analysis.LimsupLiminfBolzano.
 From Waterproof Require Import Libs.Analysis.Subsequences.

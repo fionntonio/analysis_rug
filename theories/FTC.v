@@ -7,9 +7,6 @@
   parts of the fundamental theorem, and integration by parts. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.RiemannInt.
-From Stdlib Require Import Reals.Ranalysis1.
-From Stdlib Require Import micromega.Lra.
 Require Export RUG.Analysis.Integration.
 Require Export RUG.Analysis.Derivatives.
 

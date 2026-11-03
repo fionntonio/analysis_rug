@@ -11,7 +11,6 @@
 (* Re-exports the core Waterproof infrastructure so that files importing
   [Analysis.Reals] do not need to separately import Waterproof. *)
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import ZArith.ZArith.
 
 From Waterproof Require Export Tactics.
 From Waterproof Require Export Notations.Common.

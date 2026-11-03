@@ -9,10 +9,6 @@
 (* begin hide *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import micromega.Lra.
-From Waterproof Require Export Notations.Common.
-From Waterproof Require Export Notations.Reals.
-From Waterproof Require Export Notations.Sets.
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
 Require Export RUG.Analysis.Sequences.
 
