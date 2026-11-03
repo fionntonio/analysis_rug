@@ -24,12 +24,6 @@ Notes:
 - The ratio $a_n / b_n$ only makes sense when $b_n \neq 0$, so we assume
   $b_n > 0$ throughout. (In Rocq `x / 0` is `0`, which would make the statement
   false as written.)
-- Convergence of a series only depends on its tail, but the comparison test of
-  Lecture 4 asks for the inequality $a_n \leq b_n$ for *all* $n$. Part 1 below
-  removes that restriction once and for all; Parts 3 and 4 then use it.
-- In the second half of the assignment you do not need the ratio test: one
-  direction is a plain comparison ($\frac{a_n}{1+a_n} \le a_n$), the other one
-  uses that the terms of a convergent series tend to $0$.
 - **Invoke lemmas together with their hypotheses**, as in
   `By (my_lemma x Hx) it holds that ...` rather than `By my_lemma it holds that ...`.
   Otherwise the automation has to search for the arguments itself, and checking

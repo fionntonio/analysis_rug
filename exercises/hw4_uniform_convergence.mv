@@ -20,8 +20,6 @@ $(0,\infty)$.
 
 Notes:
 
-- The exercise below is cut into four steps. Steps 1, 2 and 4 are pure
-  computations with real numbers; only step 3 is about uniform convergence.
 - Recall that `a / b` is `a * / b` for Waterproof, and that the automation needs
   help with inverses: the fact `b * / b = 1` (from `Rinv_r`, valid when
   `b ≠ 0`) is usually all it is missing.
