@@ -328,6 +328,21 @@ Qed.
 
 (** ** Limit points *)
 
+(** [x] is a *limit point* of [A] if every neighbourhood of [x] contains a
+    point of [A] distinct from [x]. *)
+Definition is_limit_point (A : ℝ → Prop) (x : ℝ) : Prop :=
+    ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
+
+Notation "x 'is' 'a' '_limit' 'point_' 'of' A" :=
+  (is_limit_point A x) (at level 69).
+
+Notation "x 'is' 'a' 'limit' 'point' 'of' A" :=
+  (is_limit_point A x) (at level 69, only parsing).
+
+Waterproof Register Expand "limit" "point";
+  for is_limit_point;
+  as "Definition limit point".
+
 (** A point [x] is a limit point of [A] iff every neighbourhood contains a
     point of [A] other than [x] itself; equivalently, iff there is a sequence in
     [A \ {x}] converging to [x].
@@ -336,16 +351,17 @@ Qed.
     [0 < |aₙ - x| < 1/n], so [aₙ → x]. (⇐) given such a sequence and [ε > 0],
     convergence provides a term within [ε] of [x] and distinct from it. *)
 Lemma limit_point_characterization (A : ℝ → Prop) (x : ℝ) :
-    (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) ⇔
+    (x is a _limit point_ of A) ⇔
     (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x).
 Proof.
   We show both directions.
 
   - We need to show that
-      (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) ⇨
+      (x is a _limit point_ of A) ⇨
       (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x).
 
-    Assume that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε as (Hlp).
+    Assume that x is a _limit point_ of A as (Hlp0).
+    It holds that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε as (Hlp).
     We claim that
       ∀ n : ℕ, ∃ y : ℝ, y ∈ A ∧ 0 < | y - x | < 1 / (INR n + 1) as (Hsteps).
     {
@@ -414,10 +430,11 @@ Proof.
 
   - We need to show that
       (∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x) ⇒
-      (∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε).
+      (x is a _limit point_ of A).
     Assume that
       ∃ a : ℕ → ℝ, (∀ n ∈ ℕ, a n ∈ A) ∧ (∀ n ∈ ℕ, a n ≠ x) ∧ a ⟶ x
       as (Hrp).
+    We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < Rabs (y - x) < ε.
     Take ε > 0.
     Obtain a according to (Hrp).
     By Hrp it holds that a ⟶ x as (lim_a).
@@ -501,15 +518,16 @@ Qed.
     contradicting that [x] is a limit point. *)
 Lemma closed_iff_contains_limit_points (A : ℝ → Prop) :
     A is _closed_ ⇔
-    (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x).
+    (∀ x : ℝ, x is a _limit point_ of A → A x).
 Proof.
   We show both directions.
   - We need to show that
       (A is _closed_) ⇨
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x).
+      (∀ x : ℝ, x is a _limit point_ of A → A x).
     Assume that (A is _closed_) as (Hcl).
     Take x : ℝ.
-    Assume that (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) as (Hlp).
+    Assume that (x is a _limit point_ of A) as (Hlp0).
+    It holds that (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) as (Hlp).
     We argue by contradiction.
     Assume that ¬ A x as (Hnx).
     It holds that x ∈ (ℝ\A) as (HxC).
@@ -525,19 +543,20 @@ Proof.
     It holds that ¬ A y as (HnyA).
     Contradiction.
   - We need to show that
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x) ⇨
+      (∀ x : ℝ, x is a _limit point_ of A → A x) ⇨
       (A is _closed_).
     Assume that
-      (∀ x : ℝ, (∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε) → A x) as (Hlp).
+      (∀ x : ℝ, x is a _limit point_ of A → A x) as (Hlp).
     We need to show that ∀ a ∈ (ℝ\A), is_interior_point a (ℝ\A).
     Take a ∈ (ℝ\A).
     It holds that ¬ A a as (Hna).
-    We claim that ¬ (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hnlp).
+    We claim that ¬ (a is a _limit point_ of A) as (Hnlp0).
     { We argue by contradiction.
-      Assume that ¬ ¬ (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hnn).
-      It holds that (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hlpa).
+      Assume that ¬ ¬ (a is a _limit point_ of A) as (Hnn).
+      It holds that (a is a _limit point_ of A) as (Hlpa).
       By Hlp it holds that A a as (HAa).
       Contradiction. }
+    It holds that ¬ (∀ ε > 0, ∃ y ∈ A, 0 < | y - a | < ε) as (Hnlp).
     By not_all_ex_not it holds that
       (∃ ε, ¬ (ε > 0 → (∃ y ∈ A, 0 < | y - a | < ε))) as (Hex).
     Obtain such a ε.
@@ -569,11 +588,6 @@ Qed.
 
 (** ** Isolated points *)
 
-(** [x] is a *limit point* of [A] if every neighbourhood of [x] contains a
-    point of [A] distinct from [x]. *)
-Definition is_limit_point (A : ℝ → Prop) (x : ℝ) : Prop :=
-    ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
-
 (** A point [x ∈ A] is *isolated* in [A] if some neighbourhood of [x] meets [A]
     only at [x] itself — equivalently, [x ∈ A] is not a limit point of [A]. *)
 Definition is_isolated_point (A : ℝ → Prop) (x : ℝ) : Prop :=
@@ -583,7 +597,7 @@ Definition is_isolated_point (A : ℝ → Prop) (x : ℝ) : Prop :=
 
 (** The *closure* [Ā] of [A] is [A] together with all its limit points. *)
 Definition closure (A : ℝ → Prop) : ℝ → Prop :=
-    fun x => A x ∨ is_limit_point A x.
+    fun x => A x ∨ (x is a _limit point_ of A).
 
 (** Characterization of the closure: [x ∈ Ā] iff every neighbourhood of [x]
     contains a point of [A]. Equivalently, iff there is a sequence in [A]
@@ -598,15 +612,15 @@ Lemma closure_characterization (A : ℝ → Prop) (x : ℝ) :
 Proof.
   We show both directions.
   - We need to show that
-      (A x ∨ is_limit_point A x) ⇨ (∀ ε > 0, ∃ y ∈ A, | y - x | < ε).
-    Assume that (A x ∨ is_limit_point A x) as (Hcl').
+      (A x ∨ (x is a _limit point_ of A)) ⇨ (∀ ε > 0, ∃ y ∈ A, | y - x | < ε).
+    Assume that (A x ∨ (x is a _limit point_ of A)) as (Hcl').
     Take ε > 0.
-    Either (A x) or (is_limit_point A x).
+    Either (A x) or (x is a _limit point_ of A).
     + Case (A x).
       Choose y := x.
       * Indeed, x ∈ A.
       * We conclude that | x - x | < ε.
-    + Case (is_limit_point A x).
+    + Case (x is a _limit point_ of A).
       By H it holds that (∃ y ∈ A, 0 < | y - x | < ε) as (Hy).
       Obtain such a y. It holds that y ∈ A ∧ 0 < | y - x | < ε as (Hy').
       It holds that y ∈ A as (HyA). It holds that 0 < | y - x | < ε as (Hyb).
@@ -614,12 +628,12 @@ Proof.
       * Indeed, y ∈ A.
       * We conclude that | y - x | < ε.
   - We need to show that
-      (∀ ε > 0, ∃ y ∈ A, | y - x | < ε) ⇨ (A x ∨ is_limit_point A x).
+      (∀ ε > 0, ∃ y ∈ A, | y - x | < ε) ⇨ (A x ∨ (x is a _limit point_ of A)).
     Assume that (∀ ε > 0, ∃ y ∈ A, | y - x | < ε) as (Hnb).
     Either (A x) or (¬ A x).
-    + Case (A x). It holds that A x ∨ is_limit_point A x. We conclude that closure A x.
+    + Case (A x). It holds that A x ∨ (x is a _limit point_ of A). We conclude that closure A x.
     + Case (¬ A x).
-      It suffices to show that is_limit_point A x.
+      It suffices to show that (x is a _limit point_ of A).
       We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
       Take ε > 0.
       By Hnb it holds that (∃ y ∈ A, | y - x | < ε) as (Hy).
@@ -646,7 +660,8 @@ Lemma closure_is_closed (A : ℝ → Prop) :
 Proof.
   apply (closed_iff_contains_limit_points (closure A)).
   Take x : ℝ.
-  Assume that (∀ ε > 0, ∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hlp).
+  Assume that (x is a _limit point_ of (closure A)) as (Hlp0).
+  It holds that (∀ ε > 0, ∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hlp).
   apply (closure_characterization A x).
   Take ε > 0.
   By Hlp it holds that (∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hy).

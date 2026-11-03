@@ -29,25 +29,6 @@ Open Scope subset_scope.
 Axiom countable_choice : ∀ (P : ℕ → ℝ → Prop),
   (∀ n : ℕ, ∃ y : ℝ, P n y) → ∃ f : ℕ → ℝ, ∀ n : ℕ, P n (f n).
 
-(** * Limit points of sets
-
-A point [x] is a limit point (or accumulation point) of [A] if every open interval
-around [x] contains a point of [A] different from [x].
-*)
-
-Definition is_limit_point_of (x : ℝ) (A : subset ℝ) : Prop :=
-  ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
-
-Notation "x 'is' 'a' '_limit' 'point_' 'of' A" :=
-  (is_limit_point_of x A) (at level 69).
-
-Notation "x 'is' 'a' 'limit' 'point' 'of' A" :=
-  (is_limit_point_of x A) (at level 69, only parsing).
-
-Waterproof Register Expand "limit" "point";
-  for is_limit_point_of;
-  as "Definition limit point".
-
 (** * Compactness
 
 We rely on rocq Stdlib's notion of compactness: every open cover has a finite subcover.
@@ -250,9 +231,10 @@ Proof.
   apply compact_P1.
 Qed.
 
-(** * Bounded injective sequences and limit points
+(** * Bounded injective sequences
 
-Every bounded infinite set has a limit point (Bolzano-Weierstrass route).
+Helpers for [inj_bounded_seq_has_limit_point] in [RUG.Analysis.Compactness]:
+every bounded infinite set has a limit point (Bolzano-Weierstrass route).
 *)
 
 (** A sequence [(aₙ)] gives infinitely many distinct points in [A] if it is
@@ -272,91 +254,6 @@ Proof.
   assumption.
 Qed.
 
-(** If [(aₙ)] is a bounded injective sequence in [A], then [A] has a limit point.
-
-    Proof: Bolzano-Weierstrass gives a convergent subsequence [a_{φ(k)} → x].
-    Then [x] is a limit point of [A]: every ball around [x] contains infinitely many
-    terms [a_{φ(k)}], all distinct from each other, and all in [A].
-*)
-Theorem inj_bounded_seq_has_limit_point
-    (A : subset ℝ) (a : ℕ → ℝ) :
-  inj_seq_in A a →
-  (* We cannot write a is bounded since it conflicts with bounded sets here *)
-  has_ub a →
-  has_lb a →
-  ∃ x ∈ ℝ, x is a _limit point_ of A.
-Proof.
-  (* Let's introduce and name the necessary hypotheses,
-     what in Rocq can be done as intros [Ha_A Ha_inj] Hub Hlb. *)
-  Assume that (forall n : ℕ, a n ∈ A) ∧ (forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m).
-  It holds that forall n : ℕ, a n ∈ A as (Ha_A).
-  It holds that forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m as (Ha_inj).
-  Assume that has_ub a as (Hub).
-  Assume that has_lb a as (Hlb).
-
-  By Bolzano_Weierstrass it holds that
-    ∃ (phi : ℕ → ℕ), ∃ (x : ℝ), is_index_seq phi ∧
-      converges_to (fun k ↦ a (phi k)) x as (HBW).
- 
-  Obtain phi according to (HBW).
-  It holds that ∃ (x0 : ℝ), is_index_seq phi ∧ converges_to (fun k ↦ a (phi k)) x0 as (Hphi).
-  Obtain such a x0.
-
-  It holds that is_index_seq phi as (Hphi_is).
-  It holds that (fun k ↦ a (phi k)) ⟶ x0 as (Hphi_cv).
-
-  Choose x := x0. { Indeed, x ∈ ℝ. }
-
-  (* We need to show that x is a _limit point_ of A. *)
-  We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
-  Take ε > 0.
-
-  By (Hphi_cv) it holds that
-    ∃ M ∈ ℕ, ∀ n ≥ M, | a (phi n) - x | < ε / 2 as (Hphi_cv').
-  Obtain M according to (Hphi_cv').
-
-  Either (a (phi M) = x) or (a (phi M) ≠ x).
-  - Case (a (phi M) = x).
-    Choose y := a (phi (S M)). {
-      We need to verify that y ∈ A.
-      By (Ha_A) it holds that a (phi (S M)) ∈ A.
-      We conclude that y ∈ A.
-    }
-    We need to show that 0 < | y - x | < ε.
-    
-    By (Hphi_cv') it holds that (&
-      | y - x |
-      = | a (phi (S M)) - x |
-      < ε / 2 < ε
-    ).
-
-    (* Mixing ≠ and < makes it hard for Rocq, we need to
-       give it a little help. *)
-    By (Hphi_is) it holds that phi M < phi (S M).
-    By Nat.lt_neq it holds that phi M ≠ phi (S M).
-    By (Ha_inj) it holds that a (phi M) ≠ a (phi (S M)).
-    By neq_implies_abs_pos it holds that 0 < | y - x |.
-
-    We conclude that 0 < | y - x | < ε.
-
-  - Case (a (phi M) ≠ x).
-    Choose y := a (phi M). {
-      We need to verify that y ∈ A.
-      By (Ha_A) it holds that a (phi M) ∈ A.
-      We conclude that y ∈ A.
-    }
-    We need to show that 0 < | y - x | < ε.
-
-    By (Hphi_cv') it holds that (&
-      | y - x |
-      = | a (phi M) - x |
-      < ε / 2 < ε
-    ).
-
-    By neq_implies_abs_pos it holds that 0 < | y - x |.
-
-    We conclude that 0 < | y - x | < ε.
-Qed.
 
 Close Scope subset_scope.
 Close Scope R_scope.

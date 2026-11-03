@@ -11,6 +11,7 @@ From Stdlib Require Import Logic.Classical_Prop.
 
 From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 From Waterproof Require Import Libs.Analysis.Subsequences.
+From Waterproof Require Import Libs.Analysis.LimsupLiminfBolzano.
 Require Export RUG.Analysis.Topology.
 Require Export RUG.Analysis.Subsequences.
 Require Export RUG.Analysis.Lib.Compactness.
@@ -78,10 +79,12 @@ Lemma sequentially_compact_implies_closed (K : ℝ → Prop)
 Proof.
   We need to show that K is closed.
   It holds that sequentially_compact K as (HK_seq).
-  By closed_iff_contains_limit_points it suffices to show that
-    ∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x.
+  By (closed_iff_contains_limit_points K) it holds that
+    (K is closed ⇔ ∀ x : ℝ, (x is a _limit point_ of K) → K x) as (Hiff).
+  By Hiff it suffices to show that
+    ∀ x : ℝ, (x is a _limit point_ of K) → K x.
   Take x0 : R.
-  Assume that ∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x0) < ε as (x_lim).
+  Assume that x0 is a _limit point_ of K as (x_lim).
   By (limit_point_characterization K x0) and x_lim it holds that
     ∃ a : ℕ → ℝ,
       (∀ n ∈ ℕ, a n ∈ K) ∧
@@ -401,12 +404,18 @@ Proof.
     Obtain x according to (Hsubseq').
     It holds that is_index_seq phi as (Hphi).
     It holds that (fun k => a (phi k)) ⟶ x as (subseq_converges_to_x).
-    By (closed_iff_contains_limit_points K) and Hclosed it holds that
-      ∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x
+    By (closed_iff_contains_limit_points K) it holds that
+      (K is _closed_ ⇔ ∀ x : ℝ, (x is a _limit point_ of K) → K x) as (Hiff).
+    Because (Hiff) both
+      (K is _closed_ → ∀ x : ℝ, (x is a _limit point_ of K) → K x) as (Hto)
+      and ((∀ x : ℝ, (x is a _limit point_ of K) → K x) → K is _closed_)
+      as (Hfrom).
+    By (Hto Hclosed) it holds that
+      ∀ x : ℝ, (x is a _limit point_ of K) → K x
       as (K_limitpoint).
     Use x0 := x in (K_limitpoint).
     It holds that
-      (∀ ε > 0, ∃ y ∈ K, 0 < |y - x| < ε) ⇨ K(x) as (K_limitpoint').
+      (x is a _limit point_ of K) ⇨ K(x) as (K_limitpoint').
     We claim that K x as (x_in_K).
     {
       We need to show that K x.
@@ -424,8 +433,8 @@ Proof.
       - Case (¬(∃ n : ℕ, a n = x)).
         We need to show that K x.
         By H it holds that ∀ n : ℕ, a n ≠ x as (Hnot_hit).
-        By K_limitpoint' it suffices to show that
-          ∀ ε > 0, ∃ y ∈ K, 0 < |y - x| < ε.
+        By K_limitpoint' it suffices to show that x is a _limit point_ of K.
+        We need to show that ∀ ε > 0, ∃ y ∈ K, 0 < |y - x| < ε.
         Take ε > 0.
         We need to show that ∃ y ∈ K, 0 < |y - x| < ε.
         By subseq_converges_to_x it holds that
@@ -670,28 +679,28 @@ Proof.
     every_open_cover_has_finite_subcover K as (Kfinite).
   By Hfinite_notclosed it holds that ¬(K is closed) as (Knot_closed).
   We claim that
-    ¬((∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x))
+    ¬((∀ x : ℝ, (x is a _limit point_ of K) → K x))
     as (Knot_closed').
   {
     We need to show that
-      ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x).
+      ¬(∀ x : ℝ, (x is a _limit point_ of K) → K x).
     By (closed_iff_contains_limit_points K) it holds that
-      K is closed ⇔ ∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x
+      K is closed ⇔ ∀ x : ℝ, (x is a _limit point_ of K) → K x
       as (Kclosed_iff).
     By Kclosed_iff and Knot_closed it holds that
-      ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x)
+      ¬(∀ x : ℝ, (x is a _limit point_ of K) → K x)
       as (Knot_closed').
     We conclude that
-      ¬(∀ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) → K x).
+      ¬(∀ x : ℝ, (x is a _limit point_ of K) → K x).
   }
   By Knot_closed' it holds that
-    ∃ x : ℝ, (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) ∧ ¬(K x)
+    ∃ x : ℝ, (x is a _limit point_ of K) ∧ ¬(K x)
     as (Klim).
   Obtain x according to (Klim).
   It holds that
-    (∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε) ∧ ¬(K x) as (xlimK).
-  By xlimK it holds that
-    ∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε as (xball).
+    (x is a _limit point_ of K) ∧ ¬(K x) as (xlimK).
+  By xlimK it holds that x is a _limit point_ of K as (xlp).
+  It holds that ∀ ε > 0, ∃ y ∈ K, 0 < Rabs (y - x) < ε as (xball).
   By xlimK it holds that ¬(K x) as (Knotx).
   By Kfinite it holds that
     forall (I : Type) (U : I → (ℝ → Prop)),
@@ -1647,3 +1656,91 @@ Theorem closed_subset_of_compact_is_compact
     sequentially_compact(F).
 Proof.
   Admitted.
+
+(** ** Bounded infinite sets have a limit point *)
+
+(** If [(aₙ)] is a bounded injective sequence in [A], then [A] has a limit point.
+
+    Proof: Bolzano-Weierstrass gives a convergent subsequence [a_{φ(k)} → x].
+    Then [x] is a limit point of [A]: every ball around [x] contains infinitely many
+    terms [a_{φ(k)}], all distinct from each other, and all in [A].
+*)
+Theorem inj_bounded_seq_has_limit_point
+    (A : subset ℝ) (a : ℕ → ℝ) :
+  inj_seq_in A a →
+  (* We cannot write a is bounded since it conflicts with bounded sets here *)
+  has_ub a →
+  has_lb a →
+  ∃ x ∈ ℝ, x is a _limit point_ of A.
+Proof.
+  (* Let's introduce and name the necessary hypotheses,
+     what in Rocq can be done as intros [Ha_A Ha_inj] Hub Hlb. *)
+  Assume that (forall n : ℕ, a n ∈ A) ∧ (forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m).
+  It holds that forall n : ℕ, a n ∈ A as (Ha_A).
+  It holds that forall n m : ℕ, (n ≠ m)%nat -> a n ≠ a m as (Ha_inj).
+  Assume that has_ub a as (Hub).
+  Assume that has_lb a as (Hlb).
+
+  By Bolzano_Weierstrass it holds that
+    ∃ (phi : ℕ → ℕ), ∃ (x : ℝ), is_index_seq phi ∧
+      converges_to (fun k ↦ a (phi k)) x as (HBW).
+ 
+  Obtain phi according to (HBW).
+  It holds that ∃ (x0 : ℝ), is_index_seq phi ∧ converges_to (fun k ↦ a (phi k)) x0 as (Hphi).
+  Obtain such a x0.
+
+  It holds that is_index_seq phi as (Hphi_is).
+  It holds that (fun k ↦ a (phi k)) ⟶ x0 as (Hphi_cv).
+
+  Choose x := x0. { Indeed, x ∈ ℝ. }
+
+  (* We need to show that x is a _limit point_ of A. *)
+  We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < | y - x | < ε.
+  Take ε > 0.
+
+  By (Hphi_cv) it holds that
+    ∃ M ∈ ℕ, ∀ n ≥ M, | a (phi n) - x | < ε / 2 as (Hphi_cv').
+  Obtain M according to (Hphi_cv').
+
+  Either (a (phi M) = x) or (a (phi M) ≠ x).
+  - Case (a (phi M) = x).
+    Choose y := a (phi (S M)). {
+      We need to verify that y ∈ A.
+      By (Ha_A) it holds that a (phi (S M)) ∈ A.
+      We conclude that y ∈ A.
+    }
+    We need to show that 0 < | y - x | < ε.
+    
+    By (Hphi_cv') it holds that (&
+      | y - x |
+      = | a (phi (S M)) - x |
+      < ε / 2 < ε
+    ).
+
+    (* Mixing ≠ and < makes it hard for Rocq, we need to
+       give it a little help. *)
+    By (Hphi_is) it holds that phi M < phi (S M).
+    By Nat.lt_neq it holds that phi M ≠ phi (S M).
+    By (Ha_inj) it holds that a (phi M) ≠ a (phi (S M)).
+    By neq_implies_abs_pos it holds that 0 < | y - x |.
+
+    We conclude that 0 < | y - x | < ε.
+
+  - Case (a (phi M) ≠ x).
+    Choose y := a (phi M). {
+      We need to verify that y ∈ A.
+      By (Ha_A) it holds that a (phi M) ∈ A.
+      We conclude that y ∈ A.
+    }
+    We need to show that 0 < | y - x | < ε.
+
+    By (Hphi_cv') it holds that (&
+      | y - x |
+      = | a (phi M) - x |
+      < ε / 2 < ε
+    ).
+
+    By neq_implies_abs_pos it holds that 0 < | y - x |.
+
+    We conclude that 0 < | y - x | < ε.
+Qed.
