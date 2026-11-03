@@ -57,6 +57,18 @@ Definition fn_seq : ℕ → ℝ → ℝ := fun n x => INR n / (INR n * x + 1).
 Definition f_lim : ℝ → ℝ := fun x => 1 / x.
 ```
 
+**Waterproof remark: natural numbers as real numbers.** Rocq keeps `ℕ` and `ℝ`
+apart: `INR n` is the natural number `n` seen as a real number. The automation
+knows very little about `INR`, so for some basic properties of real numbers
+involving `INR n` (for instance that it is non-negative, or at least $1$) you
+will need to supply facts yourself. These standard-library lemmas provide them:
+
+- `le_INR : (n ≤ m)%nat → INR n ≤ INR m`: the inclusion `ℕ → ℝ` preserves `≤`;
+- `S_INR : INR (S n) = INR n + 1`: the successor `S n` becomes `+ 1` in `ℝ`;
+- `pos_INR : 0 ≤ INR n`: natural numbers are non-negative.
+
+Use them as any other lemma, e.g. `By S_INR it holds that INR (S n) = INR n + 1.`
+
 ## Part 1: the exact value of the error
 
 Show that for $x > 0$ and $n \geq 1$,
@@ -97,11 +109,14 @@ $$
 where the inequality holds because $(nx+1)x = nx^2 + x \geq na^2$ for $x \geq a$.
 
 **Waterproof remark.** The automation does not find `a*a ≤ x*x` inside a bigger
-goal: state it separately first.
+goal: state it separately first. It also cannot compare inverses on its own;
+supply the facts you need with
+`Rinv_mult : / (r1 * r2) = / r1 * / r2` and
+`Rinv_le_contravar : 0 < x → x ≤ y → / y ≤ / x`.
 
 <hint title="💡 Hint (click to open/close)">
-Use `diff_value`; the quantity inside the absolute value is negative. To compare
-the inverses use `Rinv_mult` and `Rinv_le_contravar`.
+Use `diff_value`; the quantity inside the absolute value is negative. Then
+compare the two inverses.
 </hint>
 
 ```coq
@@ -121,8 +136,12 @@ Qed.
 Also prove the following auxiliary fact, which turns "$m$ is large" into
 "$1/m$ is small".
 
+**Waterproof remark.** As in Part 2, the automation cannot compare inverses on
+its own. Use `Rinv_lt_contravar : 0 < r1 * r2 → r1 < r2 → / r2 < / r1` and
+`Rinv_inv : / / r = r`.
+
 <hint title="💡 Hint (click to open/close)">
-Compare inverses with `Rinv_lt_contravar`; recall `/ / ε = ε` (`Rinv_inv`).
+Taking inverses reverses inequalities between positive numbers.
 </hint>
 
 ```coq
@@ -145,8 +164,9 @@ threshold $N$ below depends on $\varepsilon$ and $a$, but *not* on $x$: that is
 exactly what uniform convergence means.
 
 **Waterproof remark.** After `Choose N1 := ...`, restate the goal with
-`We need to show that ...` before using `Take`. The automation knows little
-about `INR`: supply facts with `le_INR`, `S_INR` and `pos_INR`.
+`We need to show that ...` before using `Take`. For the facts about `INR n` you
+need here, use `le_INR`, `S_INR` and `pos_INR` (see the remark after the
+definition of `fn_seq`).
 
 <hint title="💡 Hint (click to open/close)">
 The threshold comes from the Archimedean property applied to
@@ -204,7 +224,8 @@ convergence would provide.
 
 **Waterproof remark.** While deriving a contradiction `Use` is not available.
 Specialise a hypothesis `H` by applying it to its arguments instead, as in
-`By (H (1/2) Hhalf) it holds that ...`.
+`By (H (1/2) Hhalf) it holds that ...`. Facts about `INR (S N1)` again need
+`S_INR` and `pos_INR`.
 
 <hint title="💡 Hint (click to open/close)">
 Take $\varepsilon = \frac12$ and evaluate at $n = N_1 + 1$, $x = 1/(N_1+1)$,

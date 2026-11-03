@@ -135,6 +135,20 @@ Qed.
 
 The following technical fact about lists is given to you (`In` and `map` are
 from the standard library of Rocq).
+
+- A finite subcover is described by a list `l : list ball_index` of indices,
+  i.e. of pairs (centre, radius).
+- `In x l` means "`x` is one of the elements of the list `l`".
+- `map fst l` applies `fst` to every element of `l`: it is the list of the
+  *centres* of the balls in `l`.
+
+In words, the lemma says: if `a` is not one of the centres of the balls in `l`,
+and `p` is one of the balls in `l`, then `a` is not the centre of `p`. In the
+main result this is what clashes with the definition of `iso_ball`, which forces
+a point of `A` lying in `iso_ball A p` to be the centre `fst p`.
+
+Its proof is written with plain Rocq tactics rather than Waterproof sentences.
+You do not need to read it: just use the lemma.
 ```coq
 Lemma not_in_map_fst (l : list ball_index) (a : ℝ) (p : ball_index)
     (Hnot : ¬ In a (map fst l)) (Hin : In p l) : a ≠ fst p.

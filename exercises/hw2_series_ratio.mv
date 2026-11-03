@@ -105,12 +105,16 @@ a_n \le \frac{3c}{2} b_n \quad\text{and}\quad b_n \le \frac2c a_n .
 $$
 
 **Waterproof remark.** The automation treats `/ u` as an unknown. To pass from
-`a n / b n` to a statement about `a n`, give it `b n * / b n = 1` (`Rinv_r`),
-and likewise `c * / c = 1`.
+`a n / b n` to a statement about `a n`, give it `b n * / b n = 1`, and likewise
+`c * / c = 1`, using `Rinv_r : r ≠ 0 → r * / r = 1`.
+The automation also does not remove absolute values from hypotheses on its
+own. To turn `|t| < a` into two inequalities without absolute values, use
+`Rabs_def2 : |x| < a → x < a ∧ - a < x`, e.g.
+`By Rabs_def2 it holds that t < a ∧ - a < t as (H).`
 
 <hint title="💡 Hint (click to open/close)">
-Use the definition of the limit with $\varepsilon = c/2$ and split the absolute
-value with `Rabs_def2`, then multiply by $b_n > 0$.
+Use the definition of the limit with $\varepsilon = c/2$, remove the absolute
+value, then multiply by $b_n > 0$.
 </hint>
 
 ```coq
@@ -192,10 +196,14 @@ $$
 $$
 
 **Waterproof remark.** As in Part 2, the automation needs `(1 + x) * / (1 + x) = 1`
-(`Rinv_r`) before it can handle `x / (1 + x)`.
+(`Rinv_r`) before it can handle `x / (1 + x)`. It also does not cancel a
+common factor in an inequality on its own: for that use
+`Rmult_le_reg_r : 0 < r → r1 * r ≤ r2 * r → r1 ≤ r2`, e.g. once you know
+`0 < 1 + x` and `u * (1 + x) ≤ v * (1 + x)`, write
+`By Rmult_le_reg_r we conclude that u ≤ v.`
 
 <hint title="💡 Hint (click to open/close)">
-Clear the denominator: multiply by `1 + x` and cancel with `Rmult_le_reg_r`.
+Clear the denominator: multiply by `1 + x` and cancel the common factor.
 For the third fact, first show `x ≤ 1`.
 </hint>
 
@@ -243,6 +251,7 @@ Now prove the equivalence.
 
 **Waterproof remark.** The hypotheses of `series_comparison_test` are stated with
 `∀ n ∈ ℕ`, those of Part 1 with `∀ n : ℕ`; state them in exactly that form.
+As in Part 2, use `Rabs_def2` to remove an absolute value from a hypothesis.
 
 <hint title="💡 Hint (click to open/close)">
 (⇒) Use `series_comparison_test`.
