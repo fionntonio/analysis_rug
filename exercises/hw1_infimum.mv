@@ -9,11 +9,16 @@ $$
 
 - Lecture 1: [the real numbers, suprema and infima](../index.html#lecture01)
   (Abbott §1.2–1.4).
-- Formalisation: [`theories/Reals.v`](../theories/Reals.v) and the Waterproof
-  library `Waterproof.Libs.Analysis.SupAndInf` (`is_lower_bound`, `is_inf`,
-  `alt_char_inf`).
+- Formalisation: [`theories/Reals.v`](../theories/Reals.v), in particular
+  `inf_characterization`. The notions `_ is a _lower bound_ for _` and
+  `_ is the _infimum_ of _` come from the Waterproof library
+  `Waterproof.Libs.Analysis.SupAndInf`, which `RUG.Analysis.Reals` re-exports.
 
 <hint title="Import libraries (click to open/close)">
+
+Run `dune build` once before opening this file, so that the `RUG.Analysis.*`
+modules of the course library are available.
+
 ```coq
 Require Import Stdlib.Reals.Reals.
 Require Import Waterproof.Tactics.
@@ -23,6 +28,7 @@ Require Import Waterproof.Notations.Sets.
 Require Import Waterproof.Chains.
 Require Import Waterproof.Automation.
 Require Import Waterproof.Libs.Analysis.SupAndInf.
+Require Import RUG.Analysis.Reals.
 
 Waterproof Enable Automation RealsAndIntegers.
 Waterproof Enable Automation Intuition.
@@ -48,6 +54,16 @@ Waterproof Register Expand "A";
 
 ## Part 1: 0 is a lower bound for A
 
+**Waterproof remark.** To unpack a nested existential `∃ x : ℝ, ∃ y : ℝ, ...`,
+obtain `x` first, then restate the remaining `∃ y : ℝ, ...` with
+`It holds that ... as (...)` before obtaining `y`. Split a conjunction with
+`Because (H) both (...) as (...) and (...) as (...)`.
+
+<hint title="💡 Hint (click to open/close)">
+Every element of $A$ is a quotient: show that its numerator and its denominator
+are positive, and use `Rdiv_lt_0_compat`.
+</hint>
+
 ```coq
 Lemma A_lower_bound : 0 is a _lower bound_ for A.
 Proof.
@@ -65,6 +81,15 @@ Qed.
 
 It is useful to prove this lemma separately.
 
+**Waterproof remark.** After `Choose a := ...` for a goal `∃ a ∈ A, ...`, first
+show that `a ∈ A` in a block `{ We need to verify that a ∈ A. ... }`. The
+automation treats `/ u` as an unknown: give it `u * / u = 1` (`Rinv_r`), and
+cancel a positive factor with `Rmult_lt_reg_r`.
+
+<hint title="💡 Hint (click to open/close)">
+Fix $x = \frac12$ and choose $y$ large, depending on $\varepsilon$.
+</hint>
+
 ```coq
 Lemma A_near_zero : ∀ ε > 0, ∃ a ∈ A, a < 0 + ε.
 Proof.
@@ -80,8 +105,8 @@ Qed.
 
 ## Main result: 0 is the infimum of A
 
-Note that the `alt_char_inf_mpr` theorem in `Waterproof.Analysis.SupAndInf`
-can be of great help.
+The $\varepsilon$-characterisation of the infimum from Lecture 1,
+`inf_characterization` in `theories/Reals.v`, can be of great help.
 
 ```coq
 Lemma inf_A : 0 is the _infimum_ of A.

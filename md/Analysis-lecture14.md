@@ -1,392 +1,397 @@
 ---
 title: "Analysis"
-author: "Marcello Seri, m.seri@rug.nl, slides by Alef Sterk"
-date: "Lecture 14, Wednesday 15 January 2025"
+author: "Marcello Seri, m.seri@rug.nl, adapted from slides by Alef Sterk"
+date: "Lecture 15"
 ---
 
 Topics:
-- Abbott §6.6: Taylor series
+- Abbott §7.4: properties of integrals
+- Abbott §7.5: the fundamental theorem of calculus
 
-Formalization: [`Taylor.v`](docs/rocq/RUG.Analysis.Taylor.html)
+Formalization: [`Integration.v`](docs/rocq/RUG.Analysis.Integration.html), [`FTC.v`](docs/rocq/RUG.Analysis.FTC.html)
+
+Tutorial: [Tutorial 14](#tutorials/tutorial-14)
 
 ---
 
-# Taylor series
+## A useful lemma
 
-## Taylor series
-
-**Recap:**
+**Lemma:**
 $$
-\sum_{n=0}^\infty a_n x^n \to f(x) \text{ on } (-R,R)
+x \leq y + \epsilon \quad\forall\,\epsilon > 0
 \quad\Rightarrow\quad
-f : (-R,R) \to \mathbb{R} \text{ is infinitely often differentiable}
+x \leq y
 $$
 
-**Converse question:**
+**Proof:** assume $x > y$
 
-Can we write any inf. often differentiable function as a power series?
+Taking $0 < \epsilon < x-y$ gives
+$$
+y + \epsilon < y + (x-y) = x
+$$
+Contradiction!
 
 ---
 
-## Taylor series
+# Properties of integrals
 
-| | | | | |
-|---|---|---|---|---|
-| $f(x)$ | $=$ | $a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$ | $\Rightarrow$ | $f(0) = a_0$ |
-| $f'(x)$ | $=$ | $a_1 + 2a_2 x + 3a_3 x^2 + \cdots$ | $\Rightarrow$ | $f'(0) = a_1$ |
-| $f''(x)$ | $=$ | $2a_2 + 6a_3 x + \cdots$ | $\Rightarrow$ | $f''(0) = 2a_2$ |
-| $f'''(x)$ | $=$ | $6a_3 + \cdots$ | $\Rightarrow$ | $f'''(0) = 6a_3$ |
+## The split property
 
-Taylor's formula: $\displaystyle \quad a_n = \frac{f^{(n)}(0)}{n!}$
+**Theorem:** let $f : [a,b] \to \mathbb{R}$ be bounded and $c \in (a,b)$, then
+$$
+f \text{ integrable on } [a,b]
+\quad\Leftrightarrow\quad
+f \text{ integrable on } [a,c] \text{ and } [c,b]
+$$
+
+In that case
+$$
+\int_a^b f = \int_a^c f + \int_c^b f
+$$
 
 ---
 
-## Taylor series
+## The split property
 
-Assume $f$ is inf. often differentiable on interval around $x=0$
-
-**Definition:** the Taylor series of $f$ around $x=0$ is given by
+**Proof ($\Rightarrow$):** let $\epsilon>0$ and pick a partition $P$ of $[a,b]$ s.t.
 $$
-\sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} x^n
+U(f,P)-L(f,P) < \epsilon
 $$
 
-**Question:** does the series converge to $f$?
+Let $P_c = P \cup \{c\}$ then
+$$
+U(f,P_c)-L(f,P_c) < \epsilon
+$$
+
+Then $Q = P_c \cap [a,c]$ is a partition of $[a,c]$ and
+$$
+m := \# \text{intervals in } Q < n := \# \text{intervals in } P_c
+$$
 
 ---
 
-# Lagrange remainder
+## The split property
 
-## Lagrange remainder
-
-**Definition:**
+**Proof ($\Rightarrow$, ctd):** $m < n$ implies
 $$\begin{aligned}
-s_n(x) & = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}x^k \hspace{28mm}\text{(partial sum)} \\[4mm]
-E_n(x) & = f(x) - s_n(x) \hspace{30mm}\text{(remainder)}
+U(f,Q) - L(f,Q)
+& = \sum_{k=1}^{m} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
+& \leq \sum_{k=1}^{n} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
+& = U(f,P_c) - L(f,P_c) \\[3mm]
+& < \epsilon
 \end{aligned}$$
 
-**Theorem:** for $n \in \mathbb{N}$ and $x > 0$ there exists $c \in (0,x)$ such that
-$$
-E_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
-$$
+Conclusion: $f$ is integrable on $[a,c]$
 
-**Note:** $c$ depends on both $n$ and $x$!
-
-*If $x<0$, then $c \in (x,0)$*
+*Proof for $[c,b]$ is similar*
 
 ---
 
-## Lagrange remainder
+## The split property
 
-**Lemma:** assume that
+**Proof ($\Leftarrow$):** let $P_1$ and $P_2$ be partitions of $[a,c]$ and $[c,b]$ s.t.
+$$
+U(f,P_i) - L(f,P_i) < \tfrac{1}{2}\epsilon, \qquad i=1,2
+$$
 
-- $x>0$ and $h(t)$ is $n+1$ times differentiable on $[0,x]$
-- $h(x)=0$ and $h^{(k)}(0) = 0$ for all $k = 0,\dots,n$
-
-Then $h^{(n+1)}(c) = 0$ for some $c \in (0,x)$
-
-**Proof:** repeated application of Rolle's theorem gives
+Then $P = P_1 \cup P_2$ is a partition of $[a,b]$ and
 $$\begin{aligned}
-h(0) = h(x) & \Rightarrow h'(c_1) = 0 \text{ for some } c_1 \in (0,x) \\
-h'(0) = h'(c_1) & \Rightarrow h''(c_2) = 0 \text{ for some } c_2 \in (0,c_1) \\
-& \vdots \\
-h^{(n)}(0) = h^{(n)}(c_n) & \Rightarrow h^{(n+1)}(c_{n+1}) = 0 \text{ for some } c_{n+1} \in (0,c_n)
+U(f,P) & = U(f,P_1) + U(f,P_2) \\[3mm]
+L(f,P) & = L(f,P_1) + L(f,P_2) \\[3mm]
+U(f,P) - L(f,P) & < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon \;\; = \;\; \epsilon
 \end{aligned}$$
 
----
-
-## Lagrange remainder
-
-**Theorem:** for $n \in \mathbb{N}$ and $x > 0$ there exists $c \in (0,x)$ such that
-$$
-E_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
-$$
-
-**Proof:** fix $x>0$ and consider
-$$
-h(t) = f(t) - s_n(t) - \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right)t^{n+1}
-$$
-
-Note that:
-$$
-h(x) = 0
-\quad\text{and}\quad
-h^{(k)}(0) = 0, \quad k = 0,\dots,n
-$$
-
-*If $x<0$, then $c \in (x,0)$*
+Conclusion: $f$ is integrable on $[a,b]$
 
 ---
 
-## Lagrange remainder
+## The split property
 
-**Proof (ctd):** the lemma gives $c \in (0,x)$ such that
-$$
-f^{(n+1)}(c) - \underbrace{s_n^{(n+1)}(c)}_{= \, 0} - (n+1)! \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right) = 0
-$$
-
-Rearranging gives
-$$
-f(x) - s_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
-$$
-
----
-
-## Taylor series around different points
-
-Assume $f$ is inf. often differentiable on interval around $a$
-
-**Definition:** the Taylor series of $f$ around $x=a$ is given by
-$$
-\sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
-$$
-
-**Lagrange remainder:** for $x>a$ there exists $c \in (a,x)$ such that
-$$
-E_n(x) = f(x) - s_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!}(x-a)^{n+1}
-$$
-
-*If $x<a$, then $c \in (x,a)$*
-
----
-
-# Examples
-
-## Taylor series for $f(x) = e^x$
-
-| $n$ | $f^{(n)}(x)$ | $a_n = f^{(n)}(0) / n!$ |
-|---|---|---|
-| $0$ | $e^x$ | $1$ |
-| $1$ | $e^x$ | $1$ |
-| $2$ | $e^x$ | $1/2!$ |
-| $3$ | $e^x$ | $1/3!$ |
-| $4$ | $e^x$ | $1/4!$ |
-| $\vdots$ | $\vdots$ | $\vdots$ |
-
----
-
-## Taylor series for $f(x) = e^x$
-
-For $x \neq 0$ there exists $c \in (-|x|,|x|)$ such that
-$$
-e^x = \sum_{k=0}^n \frac{1}{k!}x^k + \frac{e^c}{(n+1)!}x^{n+1}
-$$
-
-For any $a>0$ we have
-$$
-\sup_{x \in [-a,a]} \bigg|e^x - \sum_{k=0}^n \frac{1}{k!}x^k\bigg|\leq e^a\cdot\frac{a^{n+1}}{(n+1)!} \to 0
-\quad\text{as}\quad n\to\infty
-$$
-
-The Taylor series of $f$ converges uniformly to $f$ on $[-a,a]$!
-
----
-
-## Taylor series for $f(x) = e^x$
-
-![](../fig/lec15-taylor-exp1.pdf)
-
-$f(x) = e^x$, $s_1(x) = 1+x$
-
----
-
-## Taylor series for $f(x) = e^x$
-
-![](../fig/lec15-taylor-exp2.pdf)
-
-$f(x) = e^x$, $s_2(x) = 1+x+\dfrac{x^2}{2!}$
-
----
-
-## Taylor series for $f(x) = e^x$
-
-![](../fig/lec15-taylor-exp3.pdf)
-
-$f(x) = e^x$, $s_3(x) = 1+x+\dfrac{x^2}{2!}+\dfrac{x^3}{3!}$
-
----
-
-## Taylor series for $f(x) = e^x$
-
-![](../fig/lec15-taylor-exp4.pdf)
-
-$f(x) = e^x$, $s_4(x) = 1+x+\dfrac{x^2}{2!}+\dfrac{x^3}{3!}+\dfrac{x^4}{4!}$
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-| $n$ | $f^{(n)}(x)$ | $a_n = f^{(n)}(0) / n!$ |
-|---|---|---|
-| $0$ | $\phantom{-}\sin(x)$ | $\phantom{-}0$ |
-| $1$ | $\phantom{-}\cos(x)$ | $\phantom{-}1$ |
-| $2$ | $-\sin(x)$ | $\phantom{-}0$ |
-| $3$ | $-\cos(x)$ | $-1/3!$ |
-| $4$ | $\phantom{-}\sin(x)$ | $\phantom{-}0$ |
-| $5$ | $\phantom{-}\cos(x)$ | $\phantom{-}1/5!$ |
-| $\vdots$ | $\phantom{--}\vdots$ | $\phantom{-}\vdots$ |
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-For $x \neq 0$ there exists $c \in (-|x|,|x|)$ such that
-$$
-|E_n(x)|
-=
-\left|\frac{f^{(n+1)}(c)}{(n+1)!}x^{n+1}\right|
-\leq
-\frac{|x|^{n+1}}{(n+1)!}
-$$
-
-Remainder converges to 0 uniformly on any interval $[-a,a]$:
-$$
-\sup_{x\in[-a,a]} |E_n(x)| \leq  \frac{a^{n+1}}{(n+1)!} \to 0
-\quad\text{as}\quad
-n\to\infty
-$$
-
-Conclusion:
-$$
-\sin(x) = x - \frac{1}{3!}x^3 + \frac{1}{5!}x^5 - \frac{1}{7!}x^7 + \cdots \qquad\forall\,x\in\mathbb{R}
-$$
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-![](../fig/lec15-taylor-sin1.pdf)
-
-$f(x) = \sin(x)$, $s_1(x) = x$
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-![](../fig/lec15-taylor-sin2.pdf)
-
-$f(x) = \sin(x)$, $s_3(x) = x - \dfrac{x^3}{3!}$
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-![](../fig/lec15-taylor-sin3.pdf)
-
-$f(x) = \sin(x)$, $s_5(x) = x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!}$
-
----
-
-## Taylor series for $f(x) = \sin(x)$
-
-![](../fig/lec15-taylor-sin4.pdf)
-
-$f(x) = \sin(x)$, $s_7(x) = x - \dfrac{x^3}{3!} + \dfrac{x^5}{5!} - \dfrac{x^7}{7!}$
-
----
-
-## Taylor series for $f(x) = \ln(1+x)$
-
-$$
-f(x) = \ln(1+x)
-\quad\Rightarrow\quad
-f^{(n)}(x) = \frac{(-1)^{n+1} (n-1)!}{(1+x)^n} \qquad \forall\, n \in \mathbb{N}
-$$
-
-For $x>0$ there exists $c \in (0,x)$ such that
-$$
-\ln(1+x) = \sum_{k=1}^n \frac{(-1)^{k+1}}{k}x^k + \frac{(-1)^n}{(n+1)(1+c)^{n+1}}\,x^{n+1}
-$$
-
-**Exercise:** prove that
-
-1. the Taylor series converges uniformly to $f$ on $[0,1]$
-2. $\ln(2) = 1 - \tfrac{1}{2} + \tfrac{1}{3} - \tfrac{1}{4} + \cdots$
-
----
-
-## Taylor series for $f(x)=\arctan(x)$
-
-On $[-1,1]$ we have
-$$
-\arctan(x) = x - \frac{1}{3} x^3 + \frac{1}{5}x^5 - \frac{1}{7}x^7 + \cdots
-$$
-
-The convergence is uniform on $[-1,1]$
-
-For $x=1$ we get
-$$
-\frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots
-$$
-
----
-
-## A counter example
-
-![](../fig/lec15-counterexample.pdf)
-
-$$
-f(x) = \begin{cases} e^{-1/x^2} & \text{if } x \neq 0 \\ 0 & \text{if } x = 0 \end{cases}
-\qquad\Rightarrow\qquad
-f^{(n)}(0)=0 \quad\forall\,n\in\mathbb{N}
-$$
-
-The Taylor series of $f$ does **NOT** converge to $f$!
-
----
-
-# Applications
-
-## Approximating square roots
-
-2nd order approximation of $\sqrt{5} = 2.236...$
-
+**Proof ($\Leftarrow$, ctd):** let $\epsilon$ and $P_1,P_2$ be as before
 $$\begin{aligned}
-\sqrt{x} & = 1 + \tfrac{1}{2}(x-1) - \tfrac{1}{8}(x-1)^2 + E_3(x) \\[2mm]
-\sqrt{5} & \approx 1 + \tfrac{4}{2} - \tfrac{16}{8} \;\; = \;\; 1 \\[6mm]
-\sqrt{x} & = 2 + \tfrac{1}{4}(x-4) - \tfrac{1}{64}(x-4)^2 + \widetilde{E}_3(x) \\[2mm]
-\sqrt{5} & \approx 2 + \tfrac{1}{4} - \tfrac{1}{64} \;\; = \;\; 2.234375
-\end{aligned}$$
-
-Truncated Taylor series around $x=4$ much more accurate!
-
----
-
-## Approximating integrals
-
-According to Wolfram Alpha:
-
-$$
-\int_0^1 \frac{e^x-1}{x}\,dx = \text{Ei}(1) - \gamma \approx 1.3179
-$$
-
----
-
-## Approximating integrals
-
-For $x > 0$ there exists $c \in (0,x)$ such that
-$$\begin{aligned}
-e^x & = \sum_{k=0}^n \frac{x^k}{k!} + \frac{e^{c}}{(n+1)!}x^{n+1} \\[5mm]
-\frac{e^x-1}{x} & = \sum_{k=1}^n \frac{x^{k-1}}{k!} + \frac{e^{c}}{(n+1)!}x^{n} \\[5mm]
-\int_0^1 \frac{e^x-1}{x}\,dx & = \sum_{k=1}^n \frac{1}{k!\,k} + \int_0^1 \frac{e^{c}}{(n+1)!}x^{n}\,dx
+\int_a^b f & \leq U(f,P) \\[3mm]
+& < L(f,P) + \epsilon \\[3mm]
+& = L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
+& \leq \int_a^c f + \int_c^b f + \epsilon \\[8mm]
+\int_a^b f & \leq \int_a^c f + \int_c^b f
 \end{aligned}$$
 
 ---
 
-## Approximating integrals
+## The split property
 
-Upper bound for remainder term:
+**Proof ($\Leftarrow$, ctd):** let $\epsilon$ and $P_1,P_2$ be as before
 $$\begin{aligned}
-R_n
-& = \int_0^1 \frac{e^{c}}{(n+1)!}x^{n}\,dx \\
-& < \int_0^1 \frac{3}{(n+1)!}x^{n}\,dx \\
-& = \frac{3}{(n+1)!\,(n+1)}
+\int_a^c f + \int_c^b f
+& \leq U(f,P_1) + U(f,P_2) \\[3mm]
+& < L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
+& = L(f,P) + \epsilon \\[3mm]
+& \leq \int_a^b f + \epsilon \\[8mm]
+\int_a^c f + \int_c^b f & \leq \int_a^b f
 \end{aligned}$$
 
-Approximation with $n=5$:
+---
+
+## The split property
+
+**Definition:** if $f$ is integrable on $[a,b]$ then
 $$
-\int_0^1 \frac{e^x-1}{x}\,dx
-\approx
-\sum_{k=1}^5\frac{1}{k!\,k} =
-1.31763...
-\qquad (R_5 < 0.001)
+\int_a^b f = -\int_b^a f
+\qquad\text{and}\qquad
+\int_c^c f = 0 \quad\text{for all } c \in [a,b]
 $$
+
+**Corollary:** regardless of the order of $a,b,c$ we have
+$$
+\int_a^b f = \int_a^c f + \int_c^b f
+$$
+
+---
+
+## Algebraic properties
+
+**Theorem:** if $f,g$ are integrable on $[a,b]$ then
+
+1. $f+g$ integrable and $\displaystyle\int_a^b (f+g) = \int_a^b f + \int_a^b g$
+2. $kf$ integrable and $\displaystyle\int_a^b kf = k\int_a^b f$ for all $k\in\mathbb{R}$
+
+**Proof:** see book
+
+---
+
+## Order properties
+
+**Theorem:** if $f$ is integrable on $[a,b]$ then
+$$
+m \leq f(x) \leq M \quad\Rightarrow\quad m(b-a) \leq \int_a^b f \leq M(b-a)
+$$
+
+**Proof:** for all partitions $P$ of $[a,b]$
+$$
+L(f,P) \leq \int_a^b f \leq U(f,P)
+$$
+Taking $P = \{a,b\}$ gives
+$$\begin{aligned}
+U(f,P) & = (b-a)\cdot \sup\{f(x)\,:\, x\in[a,b]\} \;\; \leq \;\; M(b-a) \\[3mm]
+L(f,P) & = (b-a)\cdot \inf\{f(x)\,:\, x\in[a,b]\} \;\;\; \geq \;\; m(b-a)
+\end{aligned}$$
+
+---
+
+## Order properties
+
+**Theorem:** if $f,g$ are integrable on $[a,b]$ then
+$$
+f(x) \leq g(x) \quad\text{for all } x\in [a,b] \quad\Rightarrow\quad \int_a^b f \leq \int_a^b g
+$$
+
+**Proof:** since $0 \leq g(x) - f(x)$ for all $x \in [a,b]$ we have
+
+$$
+0 \cdot (b-a) \leq \int_a^b (g-f)
+\Rightarrow 0 \leq \int_a^b g - \int_a^b f
+$$
+
+---
+
+## Order properties
+
+**Theorem:** if $f$ is integrable on $[a,b]$ then $|f|$ is integrable and
+$$
+\left|\int_a^b f\right| \leq \int_a^b |f|
+$$
+
+**Proof:** let $P$ be any partition of $[a,b]$ and
+$$\begin{aligned}
+M_k   & = \sup\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+m_k   & = \inf\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+M_k' & = \sup\{|f(x)|\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+m_k' & = \inf\{|f(x)|\,:\, x\in[x_{k-1},x_k]\}
+\end{aligned}$$
+
+**Claim:** $M_k'-m_k' \leq M_k - m_k$
+
+---
+
+## Order properties
+
+**Proof (ctd):** for all $\epsilon>0$ there exist $y,z \in [x_{k-1},x_k]$ s.t.
+$$\begin{aligned}
+M_k' - \tfrac{1}{2}\epsilon & < |f(y)| \\[3mm]
+m_k' + \tfrac{1}{2}\epsilon & > |f(z)| \\[6mm]
+M_k'-m_k' -\epsilon & < |f(y)| - |f(z)| \\[2mm]
+& \leq |f(y)-f(z)| \\[2mm]
+& \leq M_k - m_k \\[6mm]
+M_k'-m_k' & \leq M_k - m_k
+\end{aligned}$$
+
+---
+
+## Order properties
+
+**Proof (ctd):** let $P$ be any partition of $[a,b]$ then
+$$\begin{aligned}
+U(|f|,P) - L(|f|,P)
+& = \sum_{k=1}^n (M_k' - m_k')(x_k-x_{k-1}) \\[4mm]
+& \leq \sum_{k=1}^n (M_k - m_k)(x_k-x_{k-1}) \\[4mm]
+& = U(f,P) - L(f,P)
+\end{aligned}$$
+
+Hence, $f$ integrable $\;\Rightarrow\; |f|$ integrable
+
+---
+
+## Order properties
+
+**Proof (ctd):**
+$$\begin{aligned}
+-|f(x)| \leq f(x) \leq |f(x)| & \Rightarrow -\int_a^b |f| \leq \int_a^b f \leq \int_a^b |f| \\[5mm]
+& \Rightarrow \left|\int_a^b f\right| \leq \int_a^b |f|
+\end{aligned}$$
+
+---
+
+# Fundamental theorem of calculus
+
+## The fundamental theorem
+
+**Theorem (FTC part 1):** assume that
+
+1. $f$ is integrable on $[a,b]$
+2. $F$ is differentiable on $[a,b]$ and
+   $$F'(x) = f(x) \qquad\forall\,x \in [a,b]$$
+
+Then
+$$
+\int_a^b f = F(b) - F(a)
+$$
+
+---
+
+## The fundamental theorem
+
+**Proof:** let $P$ be any partition of $[a,b]$
+$$\begin{aligned}
+F(b)-F(a)
+& = \sum_{k=1}^n \big[F(x_k)-F(x_{k-1})\big] \\[1mm]
+& \stackrel{\text{MVT}}{=} \sum_{k=1}^n f(t_k)(x_k-x_{k-1}) \qquad t_k \in (x_{k-1},x_k) \\[1mm]
+& \leq \sum_{k=1}^n M_k(x_k-x_{k-1}) \\[1mm]
+& = U(f,P) \\[5mm]
+F(b)-F(a) & \geq L(f,P) \qquad \text{by similar proof}
+\end{aligned}$$
+
+---
+
+## The fundamental theorem
+
+**Proof:** let $P$ be any partition of $[a,b]$, then
+$$
+L(f,P) \leq F(b) - F(a) \leq U(f,P)
+$$
+
+Taking sup/inf over all partitions gives
+$$
+L(f) \leq F(b) - F(a) \leq U(f)
+$$
+
+Since $f$ is integrable it follows that
+$$
+L(f) = U(f) = F(b) - F(a)
+$$
+
+---
+
+## The fundamental theorem
+
+**Theorem (FTC part 2):** let $f$ be integrable on $[a,b]$ and define
+$$
+F(x) = \int_a^x f(t)\,dt \qquad\text{where}\quad x \in [a,b]
+$$
+
+Then
+
+1. $F$ is uniformly continuous on $[a,b]$
+2. if $f$ is **continuous** at $c$, then $F$ is differentiable at $c$ and
+   $$F'(c) = f(c)$$
+
+---
+
+## The fundamental theorem
+
+**Proof (1):** since $f$ is integrable on $[a,b]$ there exists $M>0$ s.t.
+$$
+|f(x)| \leq M \qquad\forall\,x \in [a,b]
+$$
+
+If $x,y \in [a,b]$ with $x \geq y$, then
+$$\begin{aligned}
+|F(x) - F(y)|
+& = \left|\int_y^x f(t)\,dt\right| \\[3mm]
+& \leq \int_y^x |f(t)|\,dt \\[3mm]
+& \leq M |x-y|
+\end{aligned}$$
+
+For given $\epsilon>0$ take $\delta=\epsilon/M$
+
+---
+
+## The fundamental theorem
+
+**Proof (2):** for $x\neq c$ we have
+
+$$\begin{aligned}
+\frac{F(x)-F(c)}{x-c}-f(c)
+& = \frac{1}{x-c}\int_c^x f(t)\,dt - f(c) \\[7mm]
+& = \frac{1}{x-c}\int_c^x f(t)-f(c)\,dt
+\end{aligned}$$
+
+---
+
+## The fundamental theorem
+
+**Proof (2):** let $\epsilon>0$ be arbitrary and pick $\delta>0$ s.t.
+$$
+|x-c| < \delta \quad\Rightarrow\quad |f(x)-f(c)| < \epsilon
+$$
+
+Since $|t-c| \leq |x-c| < \delta$ it follows that
+$$\begin{aligned}
+\left|\frac{F(x)-F(c)}{x-c}-f(c)\right|
+& = \frac{1}{|x-c|}\left|\int_c^x f(t)-f(c)\,dt\right| \\[5mm]
+& \leq \frac{1}{|x-c|} \cdot |x-c|\cdot \epsilon \\[5mm]
+& = \epsilon
+\end{aligned}$$
+
+---
+
+## The fundamental theorem
+
+**Example:** let
+$f(x) = \begin{cases} 1 & \text{if } x \neq 1 \\ 0 & \text{if } x = 1 \end{cases}$
+
+$f$ is integrable on $[0,2]$ and define $F(x) = \displaystyle\int_0^x f(t)\,dt$
+
+**Common mistake:** $F'(1) = f(1) = 0$
+
+FTC2 **NOT** applicable because $f$ is not continuous at $x=1$!
+
+---
+
+## The fundamental theorem
+
+**Example (ctd):** write $f(x) = 1 + g(x)$ where
+$$
+g(x) = \begin{cases} \phantom{-}0 & \text{if } x \neq 1 \\ -1 & \text{if } x = 1 \end{cases}
+$$
+
+**Exercise:** show that $g$ is integrable and
+$$
+\int_0^x g(t)\,dt = 0 \qquad \forall\,x\in[0,2]
+$$
+
+Hence,
+$$
+F(x) = \int_0^x 1 + g(t)\,dt = \int_0^x 1\,dt + \int_0^x g(t)\,dt = x
+$$
+
+In particular, $F'(1)=1 \neq f(1)$!

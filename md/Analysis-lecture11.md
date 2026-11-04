@@ -1,340 +1,384 @@
 ---
 title: "Analysis"
-author: "Marcello Seri, m.seri@rug.nl, slides by Alef Sterk"
-date: "Lecture 11, Wednesday 18 December 2024"
+author: "Marcello Seri, m.seri@rug.nl, adapted from slides by Alef Sterk"
+date: "Lecture 11"
 ---
 
 Topics:
-- Abbott §6.2: Pointwise and uniform convergence
+- Abbott §6.3: Differentiation of function sequences
+- Abbott §6.4: Series of functions
+- Abbott §6.5: Power series and radius of convergence
 
-Formalization: [`FunctionSequences.v`](docs/rocq/RUG.Analysis.FunctionSequences.html)
+Formalization: [`FunctionSequences.v`](docs/rocq/RUG.Analysis.FunctionSequences.html), [`PowerSeries.v`](docs/rocq/RUG.Analysis.PowerSeries.html)
 
+Tutorial: [Tutorial 11](#tutorials/tutorial-11)
+
+---
+
+
+
+## Uniform convergence, continuity and differentiability
+
+**Last lecture**: uniform convergence preserves continuity.
+
+**Question**: Does it also preserve differentiability?
+---
+
+## A counter example
+
+![](../fig/lec12-example6a.svg)
+
+**Exercise:** $f_n(x) = \sqrt{x^2 + 1/n} \to |x|$ uniformly on $[-1,1]$
+
+Every $f_n$ is differentiable at $x=0$, but the limit is **NOT**!
+---
+
+## Preservation of differentiability
+
+**Lemma:** assume that
+
+1. $f_n : [a,b] \to \mathbb{R}$ differentiable for all $n$
+2. $f_n'$ converges uniformly on $[a,b]$ *(note the prime!)*
+3. $f_n(x_0)$ converges for some $x_0\in [a,b]$
+
+Then $f_n$ converges uniformly on $[a,b]$
+---
+
+## Preservation of differentiability
+
+**Proof:** for each $\epsilon>0$ there exists $N_1, N_2\in\mathbb{N}$ such that
+$$\begin{aligned}
+n,m \geq N_1
+ & \;\;\Rightarrow\;\;
+|f_n'(x)-f_m'(x)| < \frac{\epsilon}{2(b-a)}\qquad\forall\,x\in [a,b]  \\[5mm]
+n,m \geq N_2
+ & \;\;\Rightarrow\;\; \big|f_n(x_0)-f_m(x_0)\big| < \frac{\epsilon}{2}
+\end{aligned}$$
+
+**Claim:**
+$$
+n,m \geq \max\{N_1,N_2\}
+\quad\Rightarrow\quad
+|f_n(x) - f_m(x)| < \epsilon \qquad\forall\,x\in [a,b]
+$$
+---
+
+## Preservation of differentiability
+
+**Proof of claim:** apply MVT to $g = f_n - f_m$:
+
+$$\begin{aligned}
+g(x)
+& = g(x) - g(x_0) + g(x_0) \\[3mm]
+& = g'(c)(x-x_0) + g(x_0) \qquad\text{$c$ between $x$ and $x_0$} \\[6mm]
+|g(x)| & \leq |g'(c)|\cdot|x-x_0| + |g(x_0)| \\[3mm]
+& \leq |g'(c)|\cdot(b-a) + |g(x_0)| \\[6mm]
+|f_n(x) - f_m(x)| & \leq |f_n'(c)-f_m'(c)|\cdot(b-a) + |f_n(x_0) - f_m(x_0)|
+\end{aligned}$$
+---
+
+## Preservation of differentiability
+
+**Theorem:** assume that
+
+1. $f_n : [a,b] \to \mathbb{R}$ differentiable for all $n$
+2. $f_n'\to g$ uniformly on $[a,b]$
+3. $f_n(x_0)$ converges for some $x_0\in [a,b]$
+
+Then there exists a differentiable $f : [a,b]\to\mathbb{R}$ such that
+$$
+f_n \to f \quad\text{uniformly} \qquad\text{and}\qquad f'=g
+$$
+
+**Moral:** $(\lim f_n)' = \lim (f_n')$ *— limit and derivative can be swapped*
+---
+
+## Preservation of differentiability
+
+**Proof:** Lemma $\;\Rightarrow\; f_n\to f$ uniformly on $[a,b]$ for some $f$
+
+Let $c \in [a,b]$ and $\epsilon>0$ be arbitrary
+
+To prove: there exists $\delta>0$ such that
+$$
+0 < |x-c|<\delta
+\quad\Rightarrow\quad
+\left|\frac{f(x)-f(c)}{x-c}-g(c)\right| < \epsilon
+$$
+---
+
+## Preservation of differentiability
+
+**Proof (ctd):** show there exists $n\in\mathbb{N}$ and $\delta>0$ s.t.
+$$\begin{aligned}
+\left|\frac{f(x)-f(c)}{x-c}-\frac{f_n(x)-f_n(c)}{x-c}\right| & \leq \epsilon / 3 \\[5mm]
+\left|\frac{f_n(x)-f_n(c)}{x-c}-f_n'(c)\right| & < \epsilon / 3 \quad\text{for}\quad 0 < |x-c| < \delta \\[5mm]
+\left|f_n'(c)-g(c)\right| & < \epsilon / 3 \\[5mm]
+\Longrightarrow\quad\left|\frac{f(x)-f(c)}{x-c}-g(c)\right| & < \epsilon \qquad \text{by triangle inequality}
+\end{aligned}$$
+---
+
+## Preservation of differentiability
+
+**Proof (ctd):** MVT $\;\Rightarrow\;$ there exists $\alpha$ between $x$ and $c$ s.t.
+$$
+\left|\frac{(f_m(x)-f_n(x)) - (f_m(c)-f_n(c))}{x-c}\right| = |f_m'(\alpha) - f_n'(\alpha)|
+$$
+
+There exists $N_1\in\mathbb{N}$ s.t.
+$$
+n,m \geq N_1 \;\;\Rightarrow\;\; |f_m'(x) - f_n'(x)| < \frac{\epsilon}{3}\qquad\forall\,x \in [a,b]
+$$
+
+Order Limit Theorem with $m\to\infty$ gives
+$$
+n \geq N_1 \;\;\Rightarrow\;\;
+\left|\frac{f(x)-f(c)}{x-c} - \frac{f_n(x)-f_n(c)}{x-c}\right| \leq \frac{\epsilon}{3}
+$$
+---
+
+## Preservation of differentiability
+
+**Proof (ctd):** there exists $N_2\in\mathbb{N}$ s.t.
+$$
+n \geq N_2 \quad\Rightarrow\quad |f_n'(c)-g(c)| < \frac{\epsilon}{3}
+$$
+
+Now fix $n = \max\{N_1,N_2\}$ and pick $\delta>0$ s.t.
+$$
+0 < |x-c| < \delta
+\quad\Rightarrow\quad
+\left|\frac{f_n(x)-f_n(c)}{x-c}-f_n'(c)\right| < \frac{\epsilon}{3}
+$$
+---
+
+# Series of functions
+
+## Series of functions
+
+**Definition:** let $f_n : A \to \mathbb{R}$ and $s_n = f_1 + \dots + f_n$, then
+
+$$\begin{aligned}
+\sum_{n=1}^\infty f_n \to f \text{ pointwise} & \quad\text{means}\quad s_n \to f \text{ pointwise} \\[5mm]
+\sum_{n=1}^\infty f_n \to f \text{ uniformly} & \quad\text{means}\quad s_n \to f \text{ uniformly}
+\end{aligned}$$
+---
+
+## Cauchy criterion
+
+**Theorem:** the following statements are equivalent
+
+1. $\sum_{n=1}^\infty f_n$ converges uniformly on $A$
+2. for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
+$$
+n > m \geq N \quad\Rightarrow\quad |f_{m+1}(x) + \dots + f_n(x)| < \epsilon \quad\text{for all } x\in A
+$$
+
+**Proof:** follows from
+$$
+|s_m(x) - s_n(x)| = |f_{m+1}(x) + \dots + f_n(x)|
+$$
+---
+
+## The Weierstrass test
+
+**Theorem:** assume that
+
+1. $|f_n(x)| \leq C_n$ for all $x\in A$
+2. $\sum_{n=1}^\infty C_n$ converges
+
+Then $\sum_{n=1}^\infty f_n$ converges uniformly on $A$
+
+**Proof:** for all $x \in A$ we have
+$$
+|s_n(x) - s_m(x)| = |f_{m+1}(x) + \dots + f_n(x)| \leq C_{m+1} + \dots + C_n
+$$
+
+Cauchy criterion for $\sum_{n=1}^\infty C_n \;\Rightarrow\;$ Cauchy criterion for $s_n$
+---
+
+## Preservation of continuity
+
+**Theorem:** assume
+
+1. $\sum_{n=1}^\infty f_n \to f$ uniformly on $A$
+2. $f_n$ is continuous on $A$ for all $n$
+
+Then $f$ is continuous on $A$
+
+**Proof:**
+
+$s_n=f_1+\dots+f_n$ is continuous on $A$ for all $n\in\mathbb{N}$
+
+$s_n\to f$ uniformly $\;\Rightarrow\; f$ is continuous on $A$
+---
+
+## Preservation of differentiability
+
+**Theorem:** assume
+
+1. $f_n : [a,b] \to \mathbb{R}$ is differentiable for all $n$
+2. $\sum_{n=1}^\infty f_n' \to g$ uniformly on $[a,b]$
+3. $\sum_{n=1}^\infty f_n(x_0)$ converges for some $x_0\in[a,b]$
+
+Then there exists a differentiable $f : [a,b]\to\mathbb{R}$ s.t.
+$$
+\sum_{n=1}^\infty f_n \to f \quad\text{uniformly}
+\qquad\text{and}\qquad
+f' = \sum_{n=1}^\infty f_n'
+$$
+
+*Term-wise Differentiability Theorem*
+---
+
+## Preservation of differentiability
+
+**Example:** $f(x)=\displaystyle\sum_{n=0}^\infty \frac{\sin(2^n x)}{3^n}$ is
+differentiable on every $[-c,c]$
+
+- $f_n(x) = \sin(2^n x) / 3^n$ is differentiable for all $n \in \mathbb{N}$
+
+- $|f_n'(x)| \leq (\tfrac{2}{3})^n \quad\forall\,x\in[-c,c]$
+
+  Weierstrass $\;\Rightarrow\; \sum_{n=1}^\infty f_n'(x)$ converges uniformly on $[-c,c]$
+
+- $\sum_{n=1}^\infty f_n(x)$ converges at $x=0$
+
+Apply "Term-wise Differentiability Theorem" *(needs compact intervals!)*
+---
+
+## From function series to power series
+
+A **power series** is a series of functions of the special form
+
+$$\sum_{n=0}^\infty a_n(x-c)^n.$$
+
+The Weierstrass test will let us control its convergence on intervals strictly inside its radius of convergence.
+
+**Question:** why can the behavior at the two endpoints be different?
 ---
 
 # Pointwise convergence
 
-## Sequences of functions
+## Power series
 
-Consider a **sequence of functions** $f_n : A \to \mathbb{R}$
+General form of a PS:
 
-1. What does "$f = \lim f_n$" mean?
+$$
+\sum_{n=0}^\infty a_n x^n = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots
+$$
 
-2. Which properties of $f_n$ carry over to $f$?
+Convergence?
 
+Continuity / differentiability of the limit?
 ---
 
 ## Pointwise convergence
 
-**Definition:** consider $f_n : A \to \mathbb{R}$
+**Theorem:**
+$$
+\sum_{n=0}^\infty a_n x^n \text{ converges at } c\neq 0
+\;\;\Rightarrow\;\;
+\sum_{n=0}^\infty \big|a_n x^n\big| \text{ converges for } |x| < |c|
+$$
 
-$(f_n)$ **converges pointwise** to $f : A \to \mathbb{R}$ if for all **fixed** $x \in A$
+**Proof:**
+$$\begin{aligned}
+\sum_{n=0}^\infty a_n c^n \;\text{ converges}
+& \Rightarrow  \lim a_n c^n = 0 \\[2mm]
+& \Rightarrow  \big(a_n c^n\big) \text{ is bounded} \\[4mm]
+& \Rightarrow  \exists\,M>0 \quad\text{s.t.}\quad \big|a_n c^n\big| \leq M \quad\forall\,n\in\mathbb{N}
+\end{aligned}$$
+---
+
+## Pointwise convergence
+
+**Proof (ctd):**
 $$
-\lim f_n(x) = f(x)
+\big|a_n x^n\big|
+=
+\left|a_n\left(c\cdot\frac{x}{c}\right)^n\right|
+=
+\big|a_n c^n\big| \cdot \left|\frac{x}{c}\right|^n
+\leq
+M\cdot \left|\frac{x}{c}\right|^n \qquad \forall\,n\in\mathbb{N}
 $$
 
-Thus: for each **fixed** $x \in A$ we have
+Note: $|x| < |c| \;\Rightarrow\; \left|\displaystyle\frac{x}{c}\right|<1$
+
+Apply comparison test:
 $$
-\forall\,\epsilon>0 \quad
-\exists\,N_{\epsilon, x} \in \mathbb{N}
-\quad\text{s.t.}\quad
-n \geq N_{\epsilon, x}
+\sum_{n=0}^\infty M\left|\frac{x}{c}\right|^n \text{ converges}
 \quad\Rightarrow\quad
-|f_n(x)-f(x)| < \epsilon
+\sum_{n=0}^\infty \big|a_n x^n\big| \text{ converges}
 $$
-*[So $N$ depends on *both* $\epsilon$ and $x$!]*
-
 ---
 
-## The classical example
+## Radius of convergence
 
-![](../fig/lec12-example1a.pdf)
+**Corollary:** there exists $R \geq 0$ such that
 
-**Example:** $f_n(x) = x^n$ gives
-$$
-f(x) = \lim f_n(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
-\quad
-\text{ on } A = [0,1]
-$$
+- $|x| < R \;\;\Rightarrow\;\;$ PS converges at $x$
+- $|x| > R \;\;\Rightarrow\;\;$ PS diverges at $x$
 
+$R$ is called the **radius of convergence**
 ---
 
-## The classical example
+## Radius of convergence
 
-**Example (ctd):** let $\epsilon>0$ be arbitrary
+Methods for **computing** $R$ from the $a_n$'s
+
+**Root test:** if $L = \lim \sqrt[n]{|a_n|}$ exists, then $R = 1/L$
+
+**Ratio test:** if $L = \lim \left|\displaystyle\frac{a_{n+1}}{a_n}\right|$ exists, then $R = 1/L$
+
+*[interpret $L = 0$ as $R = \infty$]*
+---
+
+## Root test
+
+**Proof:** $\lim \sqrt[n]{|a_n x^n|} = L|x| \qquad\forall\,x\in\mathbb{R}$ fixed
+
+For all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
 $$\begin{aligned}
-x = 0 \text{ or } 1 & : & \text{take } N_{\epsilon, x} = 1 \\[4mm]
-n \geq N_{\epsilon, x} & \Rightarrow & |f_n(x)-f(x)| = 0 < \epsilon \\[8mm]
-0 < x < 1 & : & \text{take } N_{\epsilon, x} > \frac{\log\epsilon}{\log x} \\[4mm]
-n \geq N_{\epsilon, x} & \Rightarrow & |f_n(x)-f(x)| = |x^n-0| = x^n < \epsilon
+n \geq N
+& \Rightarrow  \left|\sqrt[n]{|a_nx^n|} - L|x|\right| < \epsilon \\[5mm]
+& \Rightarrow  L|x|-\epsilon < \sqrt[n]{|a_nx^n|} < L|x| + \epsilon \\[7mm]
+& \Rightarrow  (L|x|-\epsilon)^n < |a_n x^n| < (L|x|+\epsilon)^n
 \end{aligned}$$
-
-*[Observe how $N$ depends on both $\epsilon$ and $x$!]*
-
 ---
 
-## The triangle sequence
+## Root test
 
-![](../fig/lec12-example2a.pdf)
+**Example:** $\displaystyle\sum_{n=0}^\infty \frac{x^n}{5^{n^2}}$
 
-**Example:**
-$f_n(x) =
-\begin{cases}
-2nx   & \text{if}\quad 0 \leq x < 1/2n      \\
-2-2nx & \text{if}\quad 1/2n \leq x \leq 1/n \\
-0     & \text{if}\quad 1/n \leq x \leq 1
-\end{cases}$
-
-Then $f(x) = \lim f_n(x)=0$ for all $x\in [0,1]$
-
----
-
-## The triangle sequence
-
-![](../fig/lec12-example2a.pdf)
-
-**Example (ctd):**
+Radius of convergence:
 $$\begin{aligned}
-0 < x \leq 1 & : & \text{take } N_{\epsilon,x} > 1/x \\[2mm]
-n \geq N_{\epsilon,x} & \Rightarrow & \frac{1}{n} < x
-\;\; \Rightarrow \;\; |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
+a_n = \frac{1}{5^{n^2}}
+& \quad\Rightarrow\quad \sqrt[n]{|a_n|} = \frac{1}{5^n} \\[4mm]
+& \quad\Rightarrow\quad L = 0 \\[4mm]
+& \quad\Rightarrow\quad R = \infty
 \end{aligned}$$
-
-*[Observe how $N$ depends on $x$!]*
-
 ---
 
-## The triangle sequence
+## Ratio test
 
-![](../fig/lec12-example2a.pdf)
+**Example:** $\displaystyle\sum_{n=1}^\infty \frac{x^n}{n^2}$
 
-**Example (ctd):**
+Radius of convergence:
 $$\begin{aligned}
-x=0 & : & \text{take } N_{\epsilon,x} =1 \\[2mm]
-n \geq N_{\epsilon,x} & \Rightarrow & |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
+a_n = \frac{1}{n^2}
+& \quad\Rightarrow\quad \frac{a_{n+1}}{a_n} = \frac{n^2}{(n+1)^2} \\[4mm]
+& \quad\Rightarrow\quad L = 1 \\[4mm]
+& \quad\Rightarrow\quad R = 1
 \end{aligned}$$
-
 ---
 
-# Uniform convergence
-
-## Uniform convergence
-
-**Definition:** $(f_n)$ **converges uniformly** to $f : A \to \mathbb{R}$ if
-
-$$
-\forall\,\epsilon>0\quad
-\exists\,N_\epsilon\in\mathbb{N}
-\quad\text{s.t.}\quad
-n \geq N_\epsilon
-\quad\Rightarrow\quad
-|f_n(x)-f(x)| < \epsilon
-\quad
-\forall\, x \in A
-$$
-
-**Note:** uniform means that **$N_\epsilon$ is independent of $x \in A$**
-
----
-
-## Uniform convergence
-
-![](../fig/lec12-uniform.png)
-*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
-
-$f_n\to f$ uniformly means that for $n\geq N$ the graph of $f_n$ is within an **$\epsilon$-ribbon** around the graph of $f$
-
-*[Note: the graph of $f_n$ lies within a $\epsilon$-tubular neighbourhood of the graph of $f$]*
-
----
-
-## The classical example
-
-![](../fig/lec12-example1b.pdf)
-
-**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
-$$
-f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
-$$
-In the figure: $\epsilon=1/4$
-
----
-
-## The triangle sequence
-
-![](../fig/lec12-example2b.pdf)
-
-**Example:** the triangle sequence does **NOT** converge uniformly to $0$
-
-(the dotted line is an $\epsilon$-ribbon around $f=0$ for $\epsilon=\tfrac{1}{2}$)
-
----
-
-## A useful characterization
-
-**Theorem:** if $f_n \to f$ uniformly on $A$, then
-$$
-\lim \left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
-$$
-
-**Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
-$$\begin{aligned}
-n \geq N_\epsilon
-& \Rightarrow & |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A \\[5mm]
-& \Rightarrow & \sup_{x\in A} |f_n(x)-f(x)| \leq \epsilon
-\end{aligned}$$
-
-*[Note: $\sup_{x\in A} |f_n(x)-f(x)| \to 0$ implies that $|f_n-f|$ is bounded on $A$ for all $n$ sufficiently large]*
-
----
-
-## A useful characterization
-
-**Theorem:** if
-$$
-\lim\left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
-$$
-then $f_n \to f$ uniformly on $A$
-
-**Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
-$$\begin{aligned}
-n \geq N_\epsilon
-& \Rightarrow & \sup_{x\in A} |f_n(x)-f(x)| < \epsilon \\[5mm]
-& \Rightarrow & |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A
-\end{aligned}$$
-
----
-
-## A useful characterization
-
-**Theorem:** consider $f_n : A \to \mathbb{R}$ then
-$$
-f_n \to f \text{ uniformly}
-\quad\Leftrightarrow\quad
-\lim \left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
-$$
-
-**Notes:**
-- $(\Rightarrow)$-proof shows: $|f_n-f|$ is bounded on $A$ for all $n$ suff. large
-
-- If $|f_n-f|$ is not bounded on $A$ for all $n$ sufficiently large, then $f_n \to f$ is not uniform
-
----
-
-## A useful characterization
-
-**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
-$$
-f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
-$$
-
-Reason: for all $n \in \mathbb{N}$ we have
-$$
-\sup_{x\in [0,1]} |f_n(x)-f(x)| = \sup_{x\in [0,1)} x^n = 1
-$$
-
----
-
-## A useful characterization
-
-![](../fig/lec12-example2a.pdf)
-
-**Example:** the triangle sequence does **NOT** converge uniformly to zero since
-$$
-\sup_{x\in [0,1]} |f_n(x)-f(x)| = \sup_{x\in [0,1]} f_n(x) = 1
-\quad\text{for all } n\in\mathbb{N}
-$$
-
----
-
-## A useful characterization
-
-![](../fig/lec12-example3a.pdf)
-
-**Example:** $f_n(x) = (1-x)x^n\to 0$ uniformly on $A=[0,1]$
-
----
-
-## A useful characterization
-
-**Example:** $f_n(x) = (1-x)x^n\to 0$ uniformly on $A=[0,1]$
-
-Calculus methods $\;\Rightarrow\; f_n(x)$ has a maximum at $x_n = \displaystyle\frac{n}{n+1}$ so
-
-$$
-\sup_{x\in [0,1]} |f_n(x)-0| = f_n(x_n) = \frac{1}{n+1}\left(\frac{n}{n+1}\right)^n < \frac{1}{n+1} \to 0
-$$
-
----
-
-## A useful characterization
-
-![](../fig/lec12-example4a.pdf)
-
-**Example:** $f_n(x) = \displaystyle\frac{x^2}{1+nx^2}\to 0$ uniformly on $A=\mathbb{R}$
-
----
-
-## A useful characterization
-
-**Example (ctd):**
-$$\begin{aligned}
-x = 0     & \Rightarrow & f_n(x) = 0 \\[5mm]
-x \neq  0 & \Rightarrow & f_n(x) = \frac{x^2}{1+nx^2} = \frac{1}{\displaystyle\frac{1}{x^2} + n} <
-\frac{1}{n} \\[5mm]
-& \Rightarrow & \sup_{x\in\mathbb{R}} |f_n(x)| \leq \frac{1}{n} \to 0
-\end{aligned}$$
-
----
-
-## Preservation of continuity
-
-**Theorem:** assume $f_n : A \to \mathbb{R}$ satisfies
-
-1. $f_n\to f$ uniformly on $A$
-
-2. $f_n$ is continuous at $c \in A$ for all $n \in \mathbb{N}$
-
-Then $f$ is continuous at $c$
-
-**Moral:** uniform convergence "preserves" continuity!
-
----
-
-## Preservation of continuity
-
-**Proof:** for $\epsilon>0$ there exist
-
-- $N\in\mathbb{N}$ s.t. $|f_N(x)-f(x)| < \tfrac{1}{3}\epsilon$ for all $x\in A$
-
-- $\delta>0$ s.t. $|x-c| < \delta \;\;\Rightarrow\;\; |f_N(x)-f_N(c)| < \tfrac{1}{3}\epsilon$
-
-If $|x-c|<\delta$ then
-$$\begin{aligned}
-|f(x) - f(c)|
-& = & |f(x) - f_N(x) + f_N(x) - f_N(c) + f_N(c) - f(c)| \\[2mm]
-& \leq & |f(x) - f_N(x)| + |f_N(x) - f_N(c)| + |f_N(c) - f(c)| \\[2mm]
-& < & \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon \\[2mm]
-& = & \epsilon
-\end{aligned}$$
-
----
-
-## Preservation of continuity
-
-**Example:** the seq. $f_n(x)=x^n$ does **NOT** uniformly converge to
-$$
-f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
-$$
-on the set $A=[0,1]$
-
-Reason: each $f_n$ is continuous at $x=1$, but the limit $f$ is not
-
----
-
-## A word of caution...
-
-**Exercise:** for $f_n(x) = x^n$, prove that
-- $f_n\to 0$ uniformly on each set $A=[0,b]$ with $0 < b < 1$
-- $f_n\to 0$ pointwise but **NOT** uniformly on $A=[0,1)$
-
-**Moral:** whether or not we have uniform convergence also depends on the set $A$!
+## Beware of the boundary points!
+
+| Example | Radius | at $x=-R$ | at $x=R$ |
+|---|---|---|---|
+| $\displaystyle\sum_{n=1}^\infty x^n$ | $R=1$ | **divergent** | **divergent** |
+| $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | convergent | **divergent** |
+| $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | **divergent** | convergent |
+| $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | convergent | convergent |

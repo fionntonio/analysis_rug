@@ -1,12 +1,14 @@
 (** * RUG.Analysis.CauchySequences — Cauchy sequences and completeness of ℝ.
 
-  #<a href="../../index.html##lecture05">Lecture 5</a>#, first part.
+  #<a href="../../index.html##lecture04">Lecture 4</a>#, first part.
 
   Formalizes Abbott §2.6 (Cauchy criterion for sequences): a real sequence
   converges iff it is Cauchy. The forward direction is elementary; the converse
   is completeness of ℝ, proved via Bolzano–Weierstrass.
 
-  These results are used by [Analysis.Series] for the Cauchy criterion of series. *)
+  Cauchy sequences ([is_cauchy] / [_Cauchy_]) and [cauchy_is_bounded] are
+  developed in [Analysis.Subsequences] (lecture 3) and reused here. These results
+  are in turn used by [Analysis.Series] for the Cauchy criterion of series. *)
 
 From Stdlib Require Import Reals.Reals.
 From Waterproof Require Import Libs.Analysis.Subsequences.
@@ -181,9 +183,9 @@ Proof.
   Assume that ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N, | a n - L | < ε as (Hac).
   We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε.
   Take ε > 0.
-  By Hac it holds that ∃ N12 ∈ ℕ, ∀ n ≥ N12, |a n - L| < ε/2 as (HN).
+  By Hac it holds that ∃ N12 ∈ ℕ, ∀ n ≥ N12, |a n - L| < ε/2.
   Obtain such an N12.
-  It holds that ∀ n ≥ N12, |a n - L| < ε/2 as (Hconv).
+  It holds that ∀ n ≥ N12, |a n - L| < ε/2.
   Choose N1 := N12. { Indeed, N1 ∈ ℕ. }
   We need to show that ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε.
   Take n ≥ N1. It holds that |a n - L| < ε/2.
@@ -211,7 +213,7 @@ Proof.
   It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε as (HC).
   By cauchy_is_bounded it holds that a is bounded.
   By is_bounded_equivalence it holds that (a is bounded ⇔ is_bounded_equivalent a) as (Hequiv).
-  By Hequiv it holds that ∃ M > 0, ∀ n ∈ ℕ, | a n | ≤ M as (HB).
+  By Hequiv it holds that ∃ M > 0, ∀ n ∈ ℕ, | a n | ≤ M.
   Obtain such a M.
 
   We claim that has_ub a.
@@ -251,7 +253,7 @@ Proof.
   By HC it holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε/2 as (Hcauchy).
   Obtain such an N1.
 
-  Since (fun k ↦ a (phi k)) ⟶ l it holds that ∀ ε > 0, ∃ K ∈ ℕ, ∀ k ≥ K, |a (phi k) - l| < ε as (Hsubconv).
+  Since (fun k ↦ a (phi k)) ⟶ l it holds that ∀ ε > 0, ∃ K ∈ ℕ, ∀ k ≥ K, |a (phi k) - l| < ε.
 
   It holds that ∃ K ∈ ℕ, ∀ k ≥ K, |a (phi k) - l| < ε/2.
   Obtain such a K.
@@ -263,10 +265,10 @@ Proof.
       We conclude that (0 ≤ phi 0)%nat.
     + We now show the induction step.
       Take n : ℕ.
-      Assume that (n ≤ phi(n))%nat as (IH).
+      Assume that (n ≤ phi(n))%nat.
       Since is_index_seq phi it holds that ∀ n ∈ ℕ, (phi n < phi (S n))%nat as (Hmono).
 
-      By Hmono it holds that phi n < phi (S n) as (Hlt).
+      By Hmono it holds that phi n < phi (S n).
       It holds that (& n ≤ phi n < phi (S n)).
       It holds that (S n ≤ phi (S n))%nat.
       It holds that S n = (n + 1)%nat.

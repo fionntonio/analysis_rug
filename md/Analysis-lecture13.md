@@ -1,199 +1,182 @@
 ---
 title: "Analysis"
-author: "Marcello Seri, m.seri@rug.nl, slides by Alef Sterk"
-date: "Lecture 13, Wednesday 8 January 2025"
+author: "Marcello Seri, m.seri@rug.nl, adapted from slides by Alef Sterk"
+date: "Lecture 14"
 ---
 
 Topics:
+- Abbott §7.2: the Riemann integral
+- Abbott §7.3: integrals of discontinuous functions
 
-- Abbott §6.5: Power series
+Formalization: [`Integration.v`](docs/rocq/RUG.Analysis.Integration.html)
 
-Formalization: [`PowerSeries.v`](docs/rocq/RUG.Analysis.PowerSeries.html)
-
----
-
-# Pointwise convergence
-
-## Power series
-
-General form of a PS:
-
-$$
-\sum_{n=0}^\infty a_n x^n = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots
-$$
-
-Convergence?
-
-Continuity / differentiability of the limit?
+Tutorial: [Tutorial 13](#tutorials/tutorial-13)
 
 ---
 
-## Pointwise convergence
+# Upper and lower sums
 
-**Theorem:**
+## Partitions
+
+**Definition:** a **partition** of $[a,b]$ is a set of the form
 $$
-\sum_{n=0}^\infty a_n x^n \text{ converges at } c\neq 0
-\;\;\Rightarrow\;\;
-\sum_{n=0}^\infty \big|a_n x^n\big| \text{ converges for } |x| < |c|
+P = \{a = x_0 < x_1 < x_2 < \dots < x_n = b\}
 $$
+
+**Examples:**
+
+$P_1 = \{0, \tfrac{1}{4}, \tfrac{1}{2}, 1\}$ is a partition of $[0,1]$
+
+$P_2 = \{0, 1, 2\}$ is NOT a partition of $[0,1]$
+
+$P_3 = \{0, \tfrac{1}{2}\}$ is NOT a partition of $[0,1]$
+
+---
+
+## Lower sums
+
+Let $f : [a,b]\to\mathbb{R}$ be bounded and $P$ be a partition of $[a,b]$
+
+**Definition:** **lower sum** of $f$ w.r.t. $P$
+$$\begin{aligned}
+m_k & = \inf\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[5mm]
+L(f,P) & = \sum_{k=1}^n m_k (x_k-x_{k-1})
+\end{aligned}$$
+
+"Approximate area below the graph of $f$"
+
+---
+
+## Upper sums
+
+Let $f : [a,b]\to\mathbb{R}$ be bounded and $P$ be a partition of $[a,b]$
+
+**Definition:** **upper sum** of $f$ w.r.t. $P$
+$$\begin{aligned}
+M_k & = \sup\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[5mm]
+U(f,P) & = \sum_{k=1}^n M_k (x_k-x_{k-1})
+\end{aligned}$$
+
+"Approximate area above the graph of $f$"
+
+---
+
+## Approximate areas
+
+![](../fig/lec16-sums.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+$L(f,P) \leq U(f,P)$ for any partition $P$ of $[a,b]$
+
+---
+
+## Refinements
+
+**Definition:** $Q$ is called a **refinement** of $P$ if $P \subseteq Q$
+
+*(Provided that $P$ and $Q$ are partitions of the same interval)*
+
+**Example:**
+
+$P = \{0, \tfrac{1}{2}, 1\}$ is a partition of $[0,1]$
+
+$Q_1 = \{0, \tfrac{1}{4}, \tfrac{1}{2}, \tfrac{9}{10}, 1\}$ refines $P$
+
+$Q_2 = \{0, \tfrac{1}{2}, 1, 2\}$ does NOT refine $P$
+
+---
+
+## Refinements
+
+**Lemma:** if $P \subseteq Q$ then
+$$
+L(f,P) \leq L(f,Q)
+\quad\text{and}\quad
+U(f,P) \geq U(f,Q)
+$$
+
+**Corollary:** if $P \subseteq Q$ then
+$$
+U(f,Q) - L(f,Q) \leq U(f,P) - L(f,P)
+$$
+
+---
+
+## Refinements
+
+![](../fig/lec16-refine.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+---
+
+## Refinements
+
+**Proof (lower sum):** refine $P$ by adding one point $z \in [x_{k-1}, x_k]$
+$$\begin{aligned}
+m_k   & = \inf\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[3mm]
+m_k'  & = \inf\{f(x) \,:\, x \in [z,x_k]\} \\[3mm]
+m_k'' & = \inf\{f(x) \,:\, x \in [x_{k-1},z]\} \\[6mm]
+m_k(x_k-x_{k-1}) & = m_k(x_k - z) + m_k (z - x_{k-1}) \\[3mm]
+& \leq m_k'(x_k-z) + m_k'' (z-x_{k-1})
+\end{aligned}$$
+
+Then proceed by induction
+
+---
+
+## Refinements
+
+**Lemma:** for any two partitions $P_1$ and $P_2$ we have
+$$
+L(f, P_1) \leq U(f, P_2)
+$$
+
+**Proof:** let $Q = P_1 \cup P_2$ then $P_1, P_2 \subseteq Q$ so
+$$
+L(f,P_1) \leq L(f,Q) \leq U(f,Q) \leq U(f,P_2)
+$$
+
+---
+
+# The Riemann integral
+
+## Best possible approximate area
+
+Assume $f : [a,b] \to \mathbb{R}$ is bounded
+
+Let $\mathcal{P}$ denote the collection of all partitions of $[a,b]$
+
+**Definition:**
+$$\begin{aligned}
+U(f) & = \inf\{ U(f,P) \,:\, P \in \mathcal{P}\} \\[5mm]
+L(f) & = \sup\{ L(f,P) \,:\, P \in \mathcal{P}\}
+\end{aligned}$$
+
+---
+
+## Best possible approximate area
+
+**Lemma:** $L(f) \leq U(f)$
 
 **Proof:**
 $$\begin{aligned}
-\sum_{n=0}^\infty a_n c^n \;\text{ converges}
-& \Rightarrow  \lim a_n c^n = 0 \\[2mm]
-& \Rightarrow  \big(a_n c^n\big) \text{ is bounded} \\[4mm]
-& \Rightarrow  \exists\,M>0 \quad\text{s.t.}\quad \big|a_n c^n\big| \leq M \quad\forall\,n\in\mathbb{N}
+L(f,P_1) & \leq U(f,P_2) \hspace{10mm} \text{for all } P_1, P_2 \in \mathcal{P} \\[3mm]
+L(f) & \leq U(f,P_2) \hspace{10mm} \text{for all } P_2 \in \mathcal{P} \text{ (take sup over $P_1$)}\\[3mm]
+L(f) & \leq U(f) \hspace{16mm}\text{(take inf over $P_2$)}
 \end{aligned}$$
 
 ---
 
-## Pointwise convergence
+## The Riemann integral
 
-**Proof (ctd):**
+**Definition:** a bounded function $f : [a,b] \to \mathbb{R}$ is called **Riemann integrable** if $U(f) = L(f)$
+
+**Notation:**
 $$
-\big|a_n x^n\big|
-=
-\left|a_n\left(c\cdot\frac{x}{c}\right)^n\right|
-=
-\big|a_n c^n\big| \cdot \left|\frac{x}{c}\right|^n
-\leq
-M\cdot \left|\frac{x}{c}\right|^n \qquad \forall\,n\in\mathbb{N}
-$$
-
-Note: $|x| < |c| \;\Rightarrow\; \left|\displaystyle\frac{x}{c}\right|<1$
-
-Apply comparison test:
-$$
-\sum_{n=0}^\infty M\left|\frac{x}{c}\right|^n \text{ converges}
-\quad\Rightarrow\quad
-\sum_{n=0}^\infty \big|a_n x^n\big| \text{ converges}
-$$
-
----
-
-## Radius of convergence
-
-**Corollary:** there exists $R \geq 0$ such that
-
-- $|x| < R \;\;\Rightarrow\;\;$ PS converges at $x$
-- $|x| > R \;\;\Rightarrow\;\;$ PS diverges at $x$
-
-$R$ is called the **radius of convergence**
-
----
-
-## Radius of convergence
-
-Methods for **computing** $R$ from the $a_n$'s
-
-**Root test:** if $L = \lim \sqrt[n]{|a_n|}$ exists, then $R = 1/L$
-
-**Ratio test:** if $L = \lim \left|\displaystyle\frac{a_{n+1}}{a_n}\right|$ exists, then $R = 1/L$
-
-*[interpret $L = 0$ as $R = \infty$]*
-
----
-
-## Root test
-
-**Proof:** $\lim \sqrt[n]{|a_n x^n|} = L|x| \qquad\forall\,x\in\mathbb{R}$ fixed
-
-For all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
-$$\begin{aligned}
-n \geq N
-& \Rightarrow  \left|\sqrt[n]{|a_nx^n|} - L|x|\right| < \epsilon \\[5mm]
-& \Rightarrow  L|x|-\epsilon < \sqrt[n]{|a_nx^n|} < L|x| + \epsilon \\[7mm]
-& \Rightarrow  (L|x|-\epsilon)^n < |a_n x^n| < (L|x|+\epsilon)^n
-\end{aligned}$$
-
----
-
-## Root test
-
-**Proof (ctd):** if $|x| < 1/L$ then pick $\epsilon < 1 - L|x|$
-
-Apply comparison test:
-$$\begin{aligned}
-L|x|+\epsilon < 1
-& \quad\Rightarrow\quad
-\sum_{n=0}^\infty (L|x|+\epsilon)^n \text{ converges} \\
-& \quad\Rightarrow\quad
-\sum_{n=0}^\infty |a_n x^n| \text{ converges} \\
-& \quad\Rightarrow\quad
-\sum_{n=0}^\infty a_n x^n \text{ converges}
-\end{aligned}$$
-
----
-
-## Root test
-
-**Proof (ctd):** if $|x| > 1/L$ then pick $\epsilon < L|x|-1$:
-
-$$\begin{aligned}
-L|x|-\epsilon > 1
-& \quad\Rightarrow\quad
-(L|x|-\epsilon)^n \text{ unbounded} \\[4mm]
-& \quad\Rightarrow\quad
-|a_n x^n| \text{ unbounded} \\[3mm]
-& \quad\Rightarrow\quad
-\sum_{n=0}^\infty a_n x^n \text{ diverges}
-\end{aligned}$$
-
----
-
-## Root test
-
-**Example:** $\displaystyle\sum_{n=0}^\infty \frac{x^n}{5^{n^2}}$
-
-Radius of convergence:
-$$\begin{aligned}
-a_n = \frac{1}{5^{n^2}}
-& \quad\Rightarrow\quad \sqrt[n]{|a_n|} = \frac{1}{5^n} \\[4mm]
-& \quad\Rightarrow\quad L = 0 \\[4mm]
-& \quad\Rightarrow\quad R = \infty
-\end{aligned}$$
-
----
-
-## Ratio test
-
-**Example:** $\displaystyle\sum_{n=1}^\infty \frac{x^n}{n^2}$
-
-Radius of convergence:
-$$\begin{aligned}
-a_n = \frac{1}{n^2}
-& \quad\Rightarrow\quad \frac{a_{n+1}}{a_n} = \frac{n^2}{(n+1)^2} \\[4mm]
-& \quad\Rightarrow\quad L = 1 \\[4mm]
-& \quad\Rightarrow\quad R = 1
-\end{aligned}$$
-
----
-
-## Beware of the boundary points!
-
-| Example | Radius | at $x=-R$ | at $x=R$ |
-|---|---|---|---|
-| $\displaystyle\sum_{n=1}^\infty x^n$ | $R=1$ | **divergent** | **divergent** |
-| $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | convergent | **divergent** |
-| $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | **divergent** | convergent |
-| $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | convergent | convergent |
-
----
-
-# Uniform convergence
-
-## Uniform convergence
-
-**Theorem:**
-$$
-\sum_{n=0}^\infty |a_n c^n| \text{ convergent}
-\;\;\Rightarrow\;\;
-\sum_{n=0}^\infty a_n x^n \text{ uniformly conv.~on } [-|c|,|c|]
-$$
-
-**Proof:** for $|x| \leq |c|$ we have
-$$
-|a_n x^n| = |a_n|\cdot |x|^n \leq |a_n|\cdot |c|^n = |a_n c^n| =: M_n
+<<<<<<< HEAD
+h(t) = f(t) - s_n(t) - \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right)t^{n+1}
 $$
 
 Apply Weierstrass' test:
@@ -246,49 +229,6 @@ What if convergence is **conditional** at $x=R$ or $x=-R$?
 
 ---
 
-## Summation by parts
-
-**Lemma:** if $s_n = u_1 + \dots + u_n$, then
-$$
-\sum_{k=1}^n u_k v_k = s_n v_{n+1} + \sum_{k=1}^n s_k(v_k - v_{k+1})
-$$
-
-**Proof:** set $s_0 = 0$, then
-$$\begin{aligned}
-u_k v_k
-& =  (s_k-s_{k-1})v_k \\[4mm]
-& =  s_k (v_k-v_{k+1}) + \underbrace{s_k v_{k+1} - s_{k-1}v_k}_{\text{telescoping terms!}} \qquad \forall\, k=1,\dots,n
-\end{aligned}$$
-
----
-
-## Abel's lemma
-
-**Lemma:** assume that $(u_n)$ and $(v_n)$ satisfy
-
-- $|u_1 + \dots + u_n| \leq C \quad \forall\,n\in\mathbb{N}$
-- $0 \leq v_{n+1} \leq v_n \quad \forall\,n\in\mathbb{N}$
-
-Then
-$$
-\bigg|\sum_{k=1}^n u_k v_k \bigg| \leq C v_{1} \qquad\forall\,n\in\mathbb{N}
-$$
-
----
-
-## Abel's lemma
-
-**Proof:** if $s_n = u_1 + \dots + u_n$, then
-$$\begin{aligned}
-\left|\sum_{k=1}^n u_k v_k \right|
-& =     \left|s_n v_{n+1} + \sum_{k=1}^n s_k(v_k - v_{k+1})\right| \\[3mm]
-& \leq  |s_n| v_{n+1} + \sum_{k=1}^n |s_k|(v_k - v_{k+1}) \\[3mm]
-& \leq  C\left(v_{n+1} + \sum_{k=1}^n (v_k - v_{k+1})\right) \\[4mm]
-& =     Cv_{1}
-\end{aligned}$$
-
----
-
 ## Abel's theorem
 
 **Theorem:**
@@ -296,35 +236,7 @@ $$\begin{aligned}
 1. PS converges at $x=R \;\;\Rightarrow\;\;$ PS conv.~uniformly on $[0,R]$
 2. PS converges at $x=-R \;\;\Rightarrow\;\;$ PS conv.~uniformly on $[-R,0]$
 
----
-
-## Abel's theorem
-
-**Proof (1):** for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
-$$
-n > m \geq N \quad\Rightarrow\quad
-\bigg|\sum_{k=m+1}^n a_k R^k\bigg| < \epsilon
-$$
-
-Take any $x\in[0,R]$ and set
-$$
-v_k = \left(\frac{x}{R}\right)^k, \qquad
-u_k
-=
-\begin{cases}
-a_k R^k & \text{if } k \geq m+1, \\
-0       & \text{otherwise}
-\end{cases}
-$$
-
-From Abel's lemma we get the Cauchy criterion:
-$$
-\bigg|\sum_{k=m+1}^n a_k x^k \bigg|
-=
-\bigg|\sum_{k=1}^n u_k v_k\bigg|
-<
-\epsilon \cdot \frac{x}{R} \leq \epsilon \qquad \forall\, x\in[0,R]
-$$
+_Without proof_
 
 ---
 
@@ -403,29 +315,186 @@ $$\begin{aligned}
 \end{aligned}$$
 
 Note that:
+$$
+h(x) = 0
+\quad\text{and}\quad
+h^{(k)}(0) = 0, \quad k = 0,\dots,n
+$$
 
-- $C = f(0) = 0$ so $f(x) = \log|1+x|$
-- Abel's Theorem $\;\Rightarrow\;$ PS in ($*$) converges uniformly on $[0,1]$
-- Hence, PS in ($*$) is continuous at $x=1$
+*If $x<0$, then $c \in (x,0)$*
 
 ---
 
-## Differentiation
+## Lagrange remainder
 
-**Example (ctd):**
+**Proof (ctd):** the lemma gives $c \in (0,x)$ such that
 $$
-\sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}
-=
-\lim_{x \to 1} \sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}x^n
-=
-\lim_{x \to 1} f(x)
-=
-f(1)
-=
-\log 2
+f^{(n+1)}(c) - \underbrace{s_n^{(n+1)}(c)}_{= \, 0} - (n+1)! \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right) = 0
 $$
 
-Conclusion:
+Rearranging gives
 $$
-\log 2 = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots
+f(x) - s_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
 $$
+
+---
+
+## Criterion for integrability
+
+**Theorem:** the following statements are equivalent
+
+1. $f$ is integrable
+2. for all $\epsilon>0$ there exists a partition $P_\epsilon$ such that
+   $$
+   U(f,P_\epsilon) - L(f,P_\epsilon) < \epsilon
+   $$
+
+**Proof ($2 \Rightarrow 1$):**
+$$
+\left.
+\begin{matrix}
+U(f) & \leq U(f,P_\epsilon) \\[3mm]
+L(f) & \geq L(f,P_\epsilon)
+\end{matrix}
+\right\}
+\quad\Rightarrow\quad
+U(f)-L(f) \leq U(f,P_\epsilon) - L(f,P_\epsilon) < \epsilon
+$$
+
+This holds for all $\epsilon>0$ so $U(f)=L(f)$
+
+---
+
+## Criterion for integrability
+
+**Proof ($1 \Rightarrow 2$)**: let $\epsilon>0$ and choose $P_1$ and $P_2$ such that
+$$
+L(f,P_1) > L(f) - \tfrac{1}{2}\epsilon
+\quad\text{and}\quad
+U(f,P_2) < U(f) + \tfrac{1}{2}\epsilon
+$$
+
+Let $P_\epsilon = P_1 \cup P_2$ then
+$$\begin{aligned}
+U(f,P_\epsilon) - L(f,P_\epsilon) & \leq U(f,P_2) - L(f,P_1) \\[3mm]
+& = \big[U(f, P_2) - U(f)\big] + \big[L(f) - L(f,P_1)\big] \\[3mm]
+& < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon \\[3mm]
+& = \epsilon
+\end{aligned}$$
+
+---
+
+## Continuous functions are integrable
+
+**Theorem:** $f$ continuous on $[a,b] \;\Rightarrow\; f$ integrable on $[a,b]$
+
+**Proof:** $f$ is uniformly continuous on $[a,b]$
+
+For all $\epsilon>0$ there exists $\delta>0$ such that
+$$
+|x-y| < \delta \quad\Rightarrow\quad |f(x)-f(y)| < \frac{\epsilon}{b-a} \qquad\text{for all } x,y \in [a,b]
+$$
+
+Let $P$ be a partition such that $x_k - x_{k-1} < \delta$ for all $k=1,\dots,n$
+
+---
+
+## Continuous functions are integrable
+
+**Proof (ctd):** there exist $y_k, z_k \in [x_{k-1},x_k]$ such that
+$$
+f(y_k) = M_k
+\qquad\text{and}\qquad
+f(z_k) = m_k
+$$
+
+Note
+$$
+|y_k-z_k| < \delta
+\quad\Rightarrow\quad
+M_k - m_k = f(y_k) - f(z_k) < \frac{\epsilon}{b-a}
+$$
+
+---
+
+## Continuous functions are integrable
+
+**Proof (ctd):**
+$$\begin{aligned}
+U(f,P)-L(f,P) & = \sum_{k=1}^n (M_k-m_k)(x_k - x_{k-1}) \\[4mm]
+& < \frac{\epsilon}{b-a}\sum_{k=1}^n (x_k - x_{k-1}) \\[4mm]
+& = \frac{\epsilon}{b-a}\cdot (b-a) \;\; = \;\; \epsilon
+\end{aligned}$$
+
+---
+
+# Integrals of discontinuous functions
+
+## Integrals of discontinuous functions
+
+**Example:** $f(x) = \begin{cases} 1 & \text{if } x\neq 1 \\ 0 & \text{if } x=1\end{cases}$
+is integrable on $[0,2]$
+
+Let $0<\epsilon<1$ and take the partition
+$$\begin{aligned}
+P & = \{0, 1 - \tfrac{1}{4}\epsilon, 1+\tfrac{1}{4}\epsilon, 2\} \\[3mm]
+U(f,P) & = 2 \\[3mm]
+L(f,P) & = 2-\tfrac{1}{2}\epsilon \\[3mm]
+U(f,P) - L(f, P) & < \epsilon
+\end{aligned}$$
+
+*[What if $\epsilon \geq 1$?]*
+
+---
+
+## Integrals of discontinuous functions
+
+![](../fig/lec09-dirichlet.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+**Example:**
+$f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q}\end{cases}$
+is NOT integrable on $[0,1]$
+
+---
+
+## Integrals of discontinuous functions
+
+Let $P$ be any partition of $[0,1]$ then
+$$\begin{aligned}
+[x_{k-1},x_k]\cap\mathbb{Q}^c \neq \varnothing
+& \Rightarrow m_k=0 \text{ for all } k=1,\dots,n \\[3mm]
+& \Rightarrow L(f,P) = 0 \\[6mm]
+[x_{k-1},x_k]\cap\mathbb{Q} \neq \varnothing
+& \Rightarrow M_k=1 \text{ for all } k=1,\dots,n \\[3mm]
+& \Rightarrow U(f,P) = 1
+\end{aligned}$$
+
+---
+
+## Integrals of discontinuous functions
+
+**Example:** any **increasing** function $f : [a,b]\to\mathbb{R}$ is integrable
+
+For **any** partition of $[a,b]$ we have
+$$\begin{aligned}
+M_k & = \sup\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[2mm]
+& = f(x_k) \\[6mm]
+m_k & = \inf\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[2mm]
+& = f(x_{k-1})
+\end{aligned}$$
+
+---
+
+## Integrals of discontinuous functions
+
+**Example (ctd):** an **equispaced** partition $P$ gives
+$$\begin{aligned}
+U(f,P) - L(f,P)
+& = \sum_{k=1}^n (M_k-m_k)(x_k-x_{k-1}) \\[2mm]
+& = \frac{(b-a)}{n} \sum_{k=1}^n \big[f(x_k)-f(x_{k-1})\big] \\[2mm]
+& = \frac{(b-a)(f(b)-f(a))}{n} \to 0 \quad\text{ as }\quad n \to \infty
+\end{aligned}$$
+
+**Exercise:** show that decreasing functions are also integrable

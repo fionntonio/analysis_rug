@@ -1,346 +1,372 @@
 ---
 title: "Analysis"
 author: "Marcello Seri, m.seri@rug.nl"
-date: "Lecture 7, Friday 29 November 2023"
+date: "Lecture 7"
 ---
 
 Topics:
-- Abbott §3.3. Compact sets
+- Abbott §4.2. Limits of functions
+- Abbott §4.3. Continuity
 
-Formalization: [`Topology.v`](docs/rocq/RUG.Analysis.Topology.html), [`Compactness.v`](docs/rocq/RUG.Analysis.Compactness.html)
+Formalization: [`Limits.v`](docs/rocq/RUG.Analysis.Limits.html), [`Continuity.v`](docs/rocq/RUG.Analysis.Continuity.html)
+
+Tutorial: [Tutorial 7](#tutorials/tutorial-7)
 
 ---
 
-# Recap: open and closed sets
+# Functional limits
 
-## Open sets
+## Limit of a function
 
-**Definition:** $O\subseteq\mathbb{R}$ is **open** if
+Let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$.
+
+**Question:** if $\lim f(x_n)=L$ **for all** $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$, can we claim that
+$$
+\displaystyle\lim_{x\to c} f(x) = L
+$$
+in the sense of the definition from Calculus 1?
+
+---
+
+## $\epsilon$ and $\delta$ definition
+
+**Definition:** let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$
+
+We say that $\displaystyle\lim_{x\to c} f(x) = L$ when
 
 $$
-\forall\,a \in O \quad\exists\,\epsilon>0 \quad\text{s.t.}\quad V_\epsilon(a) \subseteq O
+\forall\,\epsilon>0\quad
+\exists\,\delta>0\quad\text{s.t.}\quad
+0 < |x - c| < \delta,\; x \in A
+\quad\Rightarrow\quad
+|f(x) - L| < \epsilon
 $$
 
-Recall: $V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon,a+\epsilon)$
+**Note:** $f$ **need not** be defined at $c$
 
 ---
 
-## Closed sets
+## $\epsilon$ and $\delta$ definition
 
-**Definition:** $F\subseteq\mathbb{R}$ is **closed** if $F$ contains its limit points
+![](../fig/lec08-functional-limit.png)
 
-**Theorem:** the following statements are equivalent:
-1. $F$ is closed
-2. Every Cauchy sequence in $F$ has its limit in $F$
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
 ---
 
-## Relation between open and closed
+## $\epsilon$ and $\delta$ definition
 
-**Theorem:**
-1. $O$ open $\Leftrightarrow O^c$ closed
-2. $F$ closed $\Leftrightarrow F^c$ open
+**Example:** $\displaystyle\lim_{x\to 2} \frac{x^2+x-6}{5x-10} = 1$
 
-**Warning:** sets can be
-- neither open nor closed
-- both open and closed
+Let $\epsilon>0$ be arbitrary.
 
----
-
-# Compact sets
-
-## Sequential definition
-
-**Definition:** $K\subseteq\mathbb{R}$ is **compact** if
-
-*every* sequence in $K$ has a convergent subsequence
-
-whose limit is contained in $K$
+If $0 < |x-2| < \delta$, then
+$$\begin{aligned}
+\bigg|\frac{x^2+x-6}{5x-10} - 1\bigg|
+& = \bigg|\frac{(x+3)(x-2)}{5(x-2)} - 1\bigg| \\[2mm]
+& = \bigg|\frac{x+3}{5} - 1\bigg| \\[2mm]
+& = \frac{|x-2|}{5} < \frac{\delta}{5} = \epsilon
+\end{aligned}$$
+by choosing $\delta = 5\epsilon$
 
 ---
 
-## Sequential definition
+## $\epsilon$ and $\delta$ definition
 
-**Example:** every finite set is compact
+**Example:** $\displaystyle\lim_{x\to c} \sqrt{x} = \sqrt{c}$ when $c > 0$
 
-Let $K = \{a_1,a_2,\dots,a_p\}$
+$$\begin{aligned}
+\left|\sqrt{x}-\sqrt{c}\right| & = \left|\frac{x-c}{\sqrt{x}+\sqrt{c}}\right| \\[4mm]
+& = \frac{|x-c|}{\sqrt{x}+\sqrt{c}} \\[4mm]
+& \leq \frac{|x-c|}{\sqrt{c}}
+\end{aligned}$$
 
-Let $(x_n) \subseteq K$ be arbitrary
+With $\epsilon>0$ and $\delta = \sqrt{c}\cdot\epsilon$ the definition is satisfied
 
-Without loss of generality: $x_n = a_1$ for infinitely many $n \in \mathbb{N}$
-
-Take $(x_{n_k})$ such that $x_{n_k} = a_1$ for all $k \in \mathbb{N}$
-
-$\lim x_{n_k} = a_1 \in K$
-
----
-
-## Sequential definition
-
-**Example:** $[a,b]$ is compact
-
-Let $(x_n) \subseteq [a,b]$ be arbitrary
-
-$(x_n)$ is bounded
-
-B--W Theorem $\;\Rightarrow\; (x_n)$ has a convergent subsequence $(x_{n_k})$
-
-Let $x = \lim x_{n_k}$
-
-Order Limit Theorem: $a \leq x_{n_k} \leq b$ for all $k \;\Rightarrow\; a \leq x \leq b$
+*Exercise: adapt the proof for $c=0$*
 
 ---
 
-## Sequential definition
+## Sequential characterization
 
-**Example:** $(0,1]$ is NOT compact
+**Theorem:** let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$
 
-Take $x_n = \displaystyle\frac{1}{n} \in (0,1]$
+The following statements are equivalent
 
-Every subsequence $(x_{n_k})$ satisfies $\lim x_{n_k} = 0$, but $0 \notin (0,1]$
+1. $\displaystyle\lim_{x\to c} f(x) = L$
 
-**Example:** $\mathbb{R}$ is NOT compact
-
-$x_n = n$ has no convergent subsequence
-
----
-
-## Characterization of compact sets
-
-**Theorem:** $K\subseteq\mathbb{R}$ compact $\;\Leftrightarrow\; K$ closed and bounded
-
-**Proof ($\Rightarrow$):**
-
-Assume $K$ is NOT bounded
-
-There exists $(x_n) \subseteq K$ with $|x_n| > n$ for all $n\in\mathbb{N}$
-
-$(x_n)$ has no convergent subsequence
-
-Contradiction!
-
----
-
-## Characterization of compact sets
-
-**Theorem:** $K\subseteq\mathbb{R}$ compact $\;\Leftrightarrow\; K$ closed and bounded
-
-**Proof ($\Rightarrow$):**
-
-Let $x$ be a limit point of $K$ *[to prove: $x\in K$]*
-
-There exists $(x_n)\subseteq K$ such that $x = \lim x_n$
-
-$K$ compact $\;\Rightarrow\;$ there exists a subsequence $(x_{n_k})\to y\in K$
-
-$(x_{n_k}) \to x$ as well $\;\Rightarrow\;$ $x=y\in K$
-
----
-
-## Characterization of compact sets
-
-**Theorem:** $K\subseteq\mathbb{R}$ compact $\;\Leftrightarrow\; K$ closed and bounded
-
-**Proof ($\Leftarrow$):**
-
-Let $(x_n) \subseteq K$
-
-$K$ bounded $\;\Rightarrow\; (x_n)$ is bounded
-
-B--W Theorem $\;\Rightarrow\;$ $(x_n)$ has a convergent subsequence
-
-Let $x = \lim x_{n_k}$
-
-$K$ closed $\;\Rightarrow\; x \in K$
-
----
-
-## Characterization of compact sets
-
-**Example:** every finite set is compact
-
-Let $K = \{a_1,a_2,\dots,a_p\}$
-
-$K$ is bounded:
-$$
-x \in K \;\Rightarrow\; |x| \leq M = \max\{|a_1|,\dots,|a_p|\}
-$$
-
-$K$ is closed: assume that $a_1 < a_2 < \dots < a_p$ then
-$$
-K^c = (-\infty,a_1)\cup(a_1,a_2)\cup\dots\cup(a_p,\infty) \text{ is open}
-$$
-
----
-
-## Characterization of compact sets
-
-**Example:** $K = \{1/n \,:\, n\in\mathbb{N}\} \cup \{0\}$ is compact
-
-$K$ is bounded: $|x| \leq 1$ for each $x \in K$
-
-$K$ is closed:
-- if $x < 0$ or $x>0$, then $x$ is not a limit point of $K$ (exercise!)
-- $x=0$ is a limit point of $K$ which is contained in $K$
-
----
-
-## Generalization of the NIP
-
-**Theorem:** assume that $K_n\neq\varnothing$ is compact for all $n \in \mathbb{N}$ and
-$$
-K_1 \supseteq K_2 \supseteq K_3 \supseteq \cdots
-$$
-Then $\bigcap_{n=1}^\infty K_n$ is nonempty
+2. $\lim f(x_n)=L$ **for all** $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$
 
 **Proof:** see book
 
 ---
 
-# Open covers
+## Sequential characterization
 
-## Open covers
+**Corollary:** consider $f : A \to \mathbb{R}$ and let $c$ be a limit point of $A$
 
-**Definition:** let $A\subseteq\mathbb{R}$
+$\displaystyle\lim_{x\to c} f(x)$ does **NOT** exist if there exist $(x_n), (y_n)\subseteq A$ s.t.
 
-and assume that the sets $O_\lambda \subseteq \mathbb{R}$, where $\lambda \in \Lambda$, are open
+- $x_n \neq c$ and $y_n\neq c$
 
-We call the sets $O_\lambda$ an **open cover** for $A$ if
+- $\lim x_n = \lim y_n = c$
+
+- $\lim f(x_n) \neq \lim f(y_n)$
+
+---
+
+## Sequential characterization
+
+**Example:** $\displaystyle\lim_{x\to 0} f(x)$ does not exist for
 $$
-A \subseteq \bigcup_{\lambda \in \Lambda} O_\lambda
+f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}
 $$
 
-**Does every open cover have a finite subcover?**
+Take $x_n = 1/n$ and $y_n = \sqrt{2}/n$ then
+
+- $\lim x_n = \lim y_n = 0$
+
+- $\lim f(x_n) = 1$
+
+- $\lim f(y_n) = 0$
 
 ---
 
-## Open covers
+## Algebraic properties
 
-**Example:** possible open covers for $A = (0,1)$:
+**Theorem:** let $f, g : A \to \mathbb{R}$, $c$ a limit point of $A$, and
+$$
+\lim_{x\to c} f(x) = L
+\quad\text{and}\quad
+\lim_{x\to c} g(x) = M
+$$
+Then
 
-- $O_1 = (0,\tfrac{1}{2})$ and $O_2 = (\tfrac{1}{3}, 5)$
+1. $\displaystyle\lim_{x\to c} kf(x) = kL \quad (k \in \mathbb{R})$
 
-- $O_n = (-\tfrac{n}{10}, \tfrac{n}{10}), \; n \in \mathbb{N}$ has a finite subcover!
+2. $\displaystyle\lim_{x\to c} f(x)+g(x) = L+M$
 
-- $O_a = (\tfrac{1}{a},2), \; a \geq 1$ does **NOT** have a finite subcover!
+3. $\displaystyle\lim_{x\to c} f(x)g(x) = LM$
 
----
-
-## Characterization of compact sets
-
-**Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
-
-**Proof ($\Rightarrow$):**
-
-Let $O_\lambda$, $\lambda \in \Lambda$, be an open cover for $K$ **without** finite subcover
-
-Take a bounded, closed interval $J_1\supseteq K$
-
-Halving process: construct $J_n$ be closed intervals s.t.
-- $J_1 \supseteq J_2 \supseteq J_3 \supseteq \cdots$
-- $K\cap J_n$ can **NOT** be covered by finitely many $O_\lambda$'s
-
-*[Note: $\text{Length}(J_n) = \text{Length}(J_1)/2^{n-1} \to 0$]*
+4. $\displaystyle\lim_{x\to c} f(x)/g(x) = L/M \qquad$ (provided $M\neq 0$)
 
 ---
 
-## Characterization of compact sets
+# Continuity
 
-**Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
+## $\epsilon$ and $\delta$ definition
 
-**Proof ($\Rightarrow$):**
+**Definition:** $f : A \to \mathbb{R}$ is **continuous** at $c \in A$ if
+$$
+\forall\,\epsilon>0 \quad
+\exists\,\delta>0\quad\text{s.t.}\quad
+|x - c| < \delta,\; x \in A
+\quad\Rightarrow\quad
+|f(x)-f(c)| < \epsilon
+$$
 
-$K\cap J_n$ compact for all $n\in\mathbb{N} \;\Rightarrow\; \bigcap_{n=1}^\infty (K\cap J_n) \neq \varnothing$
+**Notes:**
 
-There exists $x \in K$ such that $x \in J_n$ for all $n$
+- $f(c)$ needs to be defined, but $c$ **need not** be a limit point of $A$
 
-$x \in O_\lambda$ for some $\lambda \in \Lambda$ and let $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_\lambda$
-
-There exists $N \in \mathbb{N}$ such that $\text{length}(J_N) < \epsilon$
-
-Hence, $K \cap J_N \subseteq J_N \subseteq V_\epsilon(x) \subseteq O_\lambda$. Contradiction!
-
----
-
-## Characterization of compact sets
-
-**Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
-
-**Proof ($\Leftarrow$):**
-
-$O_n = (-n,n)$, $n \in \mathbb{N}$, is an open cover for $K$
-
-$K \subseteq O_1 \cup O_2 \cup \dots \cup O_N = (-N, N)$ for some $N \in \mathbb{N}$
-
-Therefore, $K$ is bounded
+- $\delta$ may depend on both $\epsilon$ and $c$
 
 ---
 
-## Characterization of compact sets
+## $\epsilon$ and $\delta$ definition
 
-**Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
+**Example:** if $c\in A$ is **isolated** then $f : A \to \mathbb{R}$ is continuous at $c$
 
-**Proof ($\Leftarrow$):**
+Let $\epsilon > 0$ be arbitrary
 
-Let $y$ be a limit point of $K$
+Take $\delta>0$ such that $V_\delta(c)\cap A = \{c\}$, then
 
-There exists $(y_n) \subseteq K$ with $y = \lim y_n$. Assume $y \notin K$
-
-Let $x \in K$ and $O_x = V_\epsilon(x)$ with $\epsilon = \tfrac{1}{2}|x-y|$
-
-The sets $O_x$, where $x \in K$, form an open cover for $K$
-
----
-
-## Characterization of compact sets
-
-**Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
-
-**Proof ($\Leftarrow$):**
-
-There exist $x_1,\dots,x_n \in K$ such that $K \subseteq O_{x_1} \cup \dots \cup O_{x_n}$
-
-Pick $N \in \mathbb{N}$ such that $|y_N - y| < \min\big\{\tfrac{1}{2}|x_i-y| \,:\, i=1,\dots,n\big\}$
-
-Hence, $y_N \notin O_{x_1} \cup \dots \cup O_{x_n}$. Contradiction!
+$$\begin{aligned}
+|x-c| < \delta \text{ and } x\in A
+& \Rightarrow x \in V_\delta(c)\cap A \\[3mm]
+& \Rightarrow x = c \\[3mm]
+& \Rightarrow f(x) = f(c) \\[3mm]
+& \Rightarrow |f(x)-f(c)| = 0 < \epsilon
+\end{aligned}$$
 
 ---
 
-## Characterization of compact sets
+## $\epsilon$ and $\delta$ definition
 
-**Theorem (Heine--Borel):** Let $K \subseteq \mathbb{R}$
+**Example:** $f(x) = x^2$ is continuous at every point $c\in\mathbb{R}$
+
+For $|x-c|<1$ we have $|x| < |c|+1$ and
+
+$$\begin{aligned}
+|f(x)-f(c)|
+& = |x^2-c^2| \\[3mm]
+& = |x+c|\,|x-c| \\[3mm]
+& \leq (|x| + |c|)\,|x-c| \\[3mm]
+& \leq (2|c|+1)|x-c|
+\end{aligned}$$
+
+For a given $\epsilon>0$ take $\delta = \min\left\{1, \displaystyle\frac{\epsilon}{2|c|+1}\right\}$
+
+---
+
+## $\epsilon$ and $\delta$ definition
+
+**Example:** $f(x) = |x|$ is continuous at every $c\in\mathbb{R}$
+
+For all $x,c\in\mathbb{R}$ we have
+$$
+\big|f(x)-f(c)\big| = \big| |x|-|c| \big| \leq \big|x-c\big|
+$$
+
+For a given $\epsilon>0$ take $\delta = \epsilon$
+
+**Note:** $\delta$ independent of $c$ in this example
+
+---
+
+## Sequential characterization
+
+**Theorem:** let $f : A \to \mathbb{R}$ and $c \in A$
 
 The following statements are equivalent:
-1. $K$ is compact
-2. $K$ is closed and bounded
-3. Any open cover for $K$ has a finite subcover
+
+1. $f$ is continuous at $c$
+
+2. $(x_n) \subseteq A$ and $\lim x_n = c \;\Rightarrow\; \lim f(x_n) = f(c)$
+
+If $c$ is a limit point of $A$ then 1 and 2 are also equivalent with
+
+3. $\displaystyle\lim_{x \to c} f(x) = f(c)$
+
+**Proof:** see book
 
 ---
 
-## Open covers
+## Sequential characterization
 
-**Example:** every finite set is compact
+**Corollary:** let $f : A \to \mathbb{R}$ and $c\in A$ a limit point
 
-Let $K = \{a_1,a_2,\dots,a_p\}$
+$f$ is **NOT** continuous at $x=c$ if there exists $(x_n) \subseteq A$ s.t.
 
-Let $O_\lambda$, where $\lambda \in \Lambda$, be an open cover for $K$
+- $x_n \neq c$
 
-There exist $\lambda_1,\dots,\lambda_p \in \Lambda$ such that $a_k \in O_{\lambda_k}$
+- $\lim x_n = c$
 
-Therefore, $K \subseteq O_{\lambda_1} \cup \dots \cup O_{\lambda_p}$
+- $\lim f(x_n) \neq f(c)$
 
 ---
 
-## Open covers
+## Sequential characterization
 
-**Example:** $K = \{1/n \,:\, n\in\mathbb{N}\} \cup \{0\}$ is compact
+**Example:** there exists no number $a \in \mathbb{R}$ that makes
+$$
+f(x) = \begin{cases} \sin(1/x) & \text{if } x \neq 0 \\ a & \text{if } x = 0 \end{cases}
+$$
+continuous at $x=0$
 
-Let $O_\lambda$, where $\lambda \in \Lambda$, be an open cover for $K$
+- if $a \neq 0$, then with $x_n = 1/(n\pi)$ we have
+  $\lim x_n = 0$ but $\lim f(x_n) = 0 \neq a = f(0)$
 
-$0 \in O_{\lambda_0}$ for some $\lambda_0 \in \Lambda$ and $V_\epsilon(0) \subseteq O_{\lambda_0}$ for some $\epsilon > 0$
+- if $a = 0$, then with $x_n = 1/(2n\pi + \pi/2)$ we have
+  $\lim x_n = 0$ but $\lim f(x_n) = 1 \neq a = f(0)$
 
-Pick $N\in \mathbb{N}$ such that $1/N < \epsilon$
+---
 
-$1/n \in V_\epsilon(0) \subseteq O_{\lambda_0}$ for all $n \geq N$
+# Pathologies
 
-Pick $\lambda_1,\dots,\lambda_{N-1}$ such that $1/n \in O_{\lambda_n}$ for $n < N$
+## Dirichlet's function
+
+![](../fig/lec09-dirichlet.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+$g(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is **NOWHERE** continuous!
+
+---
+
+## Dirichlet's function
+
+$g(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$
+
+**Proof** of discontinuity at $c \in \mathbb{Q}$:
+
+Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ (note: $x_n \notin \mathbb{Q}$)
+
+Then $\lim x_n = c$
+
+But $\lim g(x_n) = 0 \neq g(c)$
+
+---
+
+## Dirichlet's function
+
+**Proof** of discontinuity at $c \in \mathbb{R}\setminus \mathbb{Q}$:
+
+Take $x_n \in \mathbb{Q}$ s.t. $|x_n-c| < \frac{1}{n}$ for all $n\in\mathbb{N}$ ($\mathbb{Q}$ is dense in $\mathbb{R}$!)
+
+Then $\lim x_n = c$
+
+But $\lim g(x_n) = 1 \neq g(c)$
+
+---
+
+## Modified Dirichlet's function
+
+![](../fig/lec09-modified-dirichlet.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+$h(x) = \begin{cases} x & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is **ONLY** continuous at $x = 0$!
+
+---
+
+## Modified Dirichlet's function
+
+Continuity at $c=0$ follows from $|h(x)| \leq |x|$:
+
+- either use $\lim x_n = 0 \;\Rightarrow\; \lim h(x_n) = 0$
+
+- or use $\epsilon$ and $\delta$ definition
+
+Proof of discontinuity at $c \neq 0$ as for Dirichlet's function
+
+---
+
+## Thomae's function
+
+![](../fig/lec09-thomae.png)
+
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+$t(x) = \begin{cases} 1 & \text{if } x=0 \\ 1/n & \text{if } x = m/n \in\mathbb{Q}\setminus\{0\} \text{ in lowest terms with } n > 0 \\ 0 & \text{if } x \notin \mathbb{Q}\end{cases}$
+
+Discontinuous at each $c \in \mathbb{Q}$, but continuous at each $c \in \mathbb{R}\setminus\mathbb{Q}$!
+
+---
+
+## Thomae's function
+
+**Proof** of discontinuity at $c \in \mathbb{Q}$:
+
+Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ (note: $x_n \notin \mathbb{Q}$)
+
+Then $\lim x_n = c$
+
+But $\lim t(x_n) = 0 \neq t(c) > 0$
+
+---
+
+## Thomae's function
+
+**Proof** of continuity at $c \in \mathbb{R} \setminus \mathbb{Q}$
+
+Let $\epsilon > 0$ and pick $k \in \mathbb{N}$ with $\displaystyle\frac{1}{k} < \epsilon$
+
+$(c-1,c+1)$ contains **finitely** many $r \in \mathbb{Q}$ with denominator $\leq k$
+
+Pick $0 < \delta < 1$ such that $(c-\delta, c+\delta)$ contains no rationals with denominator $\leq k$, then
+$$
+|x - c| < \delta
+\quad\Rightarrow\quad
+|t(x) - t(c)| = |t(x)| = t(x) < \frac{1}{k} < \epsilon
+$$

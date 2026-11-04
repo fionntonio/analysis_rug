@@ -6,10 +6,11 @@ point.
 
 **Course material.**
 
-- Lecture 6: [open and closed sets](../index.html#lecture06) (Abbott §3.2),
-  Lecture 7: [compactness](../index.html#lecture07) (Abbott §3.3).
-- Formalisation: [`theories/Topology.v`](../theories/Topology.v) (the definitions
-  of `is_open` and of a limit point) and
+- Lecture 5: [open and closed sets](../index.html#lecture05) (Abbott §3.2),
+  Lecture 6: [compactness](../index.html#lecture06) (Abbott §3.3).
+- Formalisation: [`theories/Topology.v`](../theories/Topology.v) (open sets
+  `A is _open_`, from the Waterproof library `Waterproof.Libs.Analysis.OpenAndClosed`,
+  and limit points `x is a _limit point_ of A`, i.e. `is_limit_point A x`) and
   [`theories/Compactness.v`](../theories/Compactness.v) (`open_cover`,
   `has_finite_subcover`, `compact_iff_finite_subcover`).
 
@@ -22,7 +23,7 @@ point of $A$. Hence $A$ is finite, a contradiction.
 
 Notes:
 
-- You may use the Heine–Borel theorem (Lecture 7): it appears below as the
+- You may use the Heine–Borel theorem (Lecture 6): it appears below as the
   hypothesis `HHB` of the main theorem, in the "every open cover of $[-M,M]$ has
   a finite subcover" form. You may **not** use Bolzano–Weierstrass.
 - The cover is indexed by *pairs* (centre, radius): choosing one radius per
@@ -85,11 +86,8 @@ $A$ at most in $c$.
 
 <hint title="💡 Hint (click to open/close)">
 Recall that `c is a _limit point_ of A` unfolds to
-`∀ ε > 0, ∃ y ∈ A, 0 < | y - c | < ε`. Push the negation inside with the
-classical lemmas `not_all_ex_not`, `imply_to_and` and `not_ex_all_not`; this
-gives you an `ε > 0` such that no `y ∈ A` satisfies `0 < |y - c| < ε`. For
-`y ∈ A` with `|y - c| < ε` you then know `¬ (0 < |y - c|)`, hence
-`|y - c| = 0`, and `Rabs_pos_lt` turns that into `y - c = 0`.
+`∀ ε > 0, ∃ y ∈ A, 0 < | y - c | < ε`. A proof by contradiction works well.
+`Rabs_pos_lt` gives `0 < | t |` from `t ≠ 0`.
 </hint>
 
 ```coq
@@ -113,12 +111,13 @@ Show that each `iso_ball A p` is open. (If the radius `snd p` is not a good
 radius for the centre `fst p`, the set is empty, and the argument below still
 works.)
 
+**Waterproof remark.** If you state an identity such as
+`(x - y) + (y - fst p) = x - fst p` as `(Hid)`, then `By Hid it holds that ...`
+can rewrite with it inside `| ... |`.
+
 <hint title="💡 Hint (click to open/close)">
-This is the usual "balls are open" proof: for `y ∈ iso_ball A p` take the radius
-`snd p - | y - fst p | > 0` and use the triangle inequality `Rabs_triang` in the
-form `| (x - y) + (y - fst p) | ≤ | x - y | + | y - fst p |`. State the ring
-identity `(x - y) + (y - fst p) = x - fst p` first, so that the automation can
-use it. Compare with `open_interval_is_open` in `theories/Topology.v`.
+This is the usual "balls are open" proof (compare with `open_interval_is_open`
+in `theories/Topology.v`) together with the triangle inequality `Rabs_triang`.
 </hint>
 
 ```coq
@@ -136,6 +135,20 @@ Qed.
 
 The following technical fact about lists is given to you (`In` and `map` are
 from the standard library of Rocq).
+
+- A finite subcover is described by a list `l : list ball_index` of indices,
+  i.e. of pairs (centre, radius).
+- `In x l` means "`x` is one of the elements of the list `l`".
+- `map fst l` applies `fst` to every element of `l`: it is the list of the
+  *centres* of the balls in `l`.
+
+In words, the lemma says: if `a` is not one of the centres of the balls in `l`,
+and `p` is one of the balls in `l`, then `a` is not the centre of `p`. In the
+main result this is what clashes with the definition of `iso_ball`, which forces
+a point of `A` lying in `iso_ball A p` to be the centre `fst p`.
+
+Its proof is written with plain Rocq tactics rather than Waterproof sentences.
+You do not need to read it: just use the lemma.
 ```coq
 Lemma not_in_map_fst (l : list ball_index) (a : ℝ) (p : ball_index)
     (Hnot : ¬ In a (map fst l)) (Hin : In p l) : a ≠ fst p.
@@ -152,19 +165,15 @@ Qed.
 
 Now put the pieces together.
 
+**Waterproof remark.** Unpack an existential, such as the list given by
+`has_finite_subcover`, with `Obtain ... according to (...)`. Apply lemmas and
+`∀`-hypotheses to their arguments, e.g. `By (iso_ball_open A i) ...`: a bare
+`By iso_ball_open ...` makes the check way too slow.
+
 <hint title="💡 Hint (click to open/close)">
-Argue by contradiction: assume `¬ (∃ x : ℝ, x is a _limit point_ of A)` and use
-`not_ex_all_not` to get that *no* real number is a limit point of `A`.
-
-Then prove `open_cover (iso_ball A) [-M, M]` as a claim: it is a conjunction of
-"every set of the family is open" (Part 2) and "every point of `[-M,M]` is
-covered" (Part 1, applied to that point). Feed the claim to `HHB` to obtain a
-finite subcover; `destruct Hfin as [l Hl].` unpacks the list `l` of indices.
-
-Finally apply `Hinf` to the list of centres `map fst l`: it gives a point
-`a ∈ A` which is not a centre. But `a ∈ [-M,M]`, so `a` lies in some
-`iso_ball A p` with `p` in `l`, and then the definition of `iso_ball` forces
-`a = fst p` — contradicting `not_in_map_fst`.
+Argue by contradiction, so that no real number is a limit point of `A`. Then
+show `open_cover (iso_ball A) [-M, M]` (Parts 1 and 2), apply `HHB`, and use
+`Hinf` with the list of centres `map fst l`.
 </hint>
 
 ```coq

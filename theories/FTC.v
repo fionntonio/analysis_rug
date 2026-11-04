@@ -1,15 +1,12 @@
 (** * RUG.Analysis.FTC — The fundamental theorem of calculus.
 
-  #<a href="../../index.html##lecture16">Lecture 16</a>#.
+  #<a href="../../index.html##lecture14">Lecture 14</a>#.
 
   Formalizes Abbott §7.4–7.5: further properties of the integral (bound by the
   supremum, order property, [|∫f| ≤ ∫|f|]), the oriented integral, the two
   parts of the fundamental theorem, and integration by parts. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.RiemannInt.
-From Stdlib Require Import Reals.Ranalysis1.
-From Stdlib Require Import micromega.Lra.
 Require Export RUG.Analysis.Integration.
 Require Export RUG.Analysis.Derivatives.
 
@@ -48,7 +45,7 @@ Qed.
 
 (** _Order property_: if [f ≤ g] on [[a, b]] then [∫_a^b f ≤ ∫_a^b g]. (This is
     [integral_monotone] from [Analysis.Integration], restated as the order form
-    of Lecture 16.) *)
+    of Lecture 15.) *)
 (* [f] renamed to [f1]: a bare [f] resolves to [Stdlib.Reals.Rtopology.f]. *)
 Lemma integral_order (f1 g : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
     (prf : Riemann_integrable f1 a b)

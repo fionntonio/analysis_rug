@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analysis — Lecture Notes</title>
+  <meta name="description" content="Real analysis lecture notes and course information.">
+  <meta property="og:title" content="Analysis — Lecture Notes">
+  <meta property="og:description" content="Real analysis lecture notes and course information.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Analysis — Lecture Notes">
+  <meta name="twitter:description" content="Real analysis lecture notes and course information.">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,7 +17,7 @@
     html, body { height: 100%; font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; background: #f2f2ef; }
 
     /* ── App shell ─────────────────────────────────────────────── */
-    #app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 
     /* ── Top bar ────────────────────────────────────────────────── */
     #topbar {
@@ -52,8 +58,16 @@
       text-overflow: ellipsis;
     }
 
+    #share-link {
+      margin-left: auto;
+      flex-shrink: 0;
+      color: inherit;
+      font: 0.8rem sans-serif;
+    }
+
     /* ── Content area ───────────────────────────────────────────── */
-    #content { flex: 1; overflow: auto; }
+    #content { flex: 1; min-height: 0; overflow: auto; }
+    #content.slides-mode { overflow: hidden; }
 
     /* ── Welcome ────────────────────────────────────────────────── */
     #welcome {
@@ -90,6 +104,20 @@
       border-top: 1px solid #ddd;
     }
     #slide-nav.on { display: flex; }
+
+    #exit-fullscreen-btn { display: none; }
+    #app:fullscreen { width: 100%; height: 100%; background: #f2f2ef; }
+    #app:fullscreen #topbar { display: none; }
+    #app:fullscreen #exit-fullscreen-btn {
+      display: block;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 20;
+    }
+    #app:fullscreen .slide-wrap { padding-top: 48px; }
+    #app:fullscreen #fullscreen-btn { display: none; }
+    .nav-btn:focus-visible { outline: 3px solid #5aabdc; outline-offset: 3px; }
 
     .nav-btn {
       background: #193352;
@@ -207,22 +235,43 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100%;
-      padding: 20px 16px;
+      height: 100%;
+      padding: 16px;
     }
 
+    .slide-frame { position: relative; flex-shrink: 0; }
+
     .slide-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top left;
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 18px rgba(0,0,0,0.09);
       padding: 38px 48px;
       width: 760px;
-      max-width: 100%;
-      aspect-ratio: 4 / 3;
-      overflow-y: auto;
+      height: 570px;
+      overflow: hidden;
     }
 
+    .slide-content { display: flow-root; transform-origin: top left; }
+    .slide-card img { max-height: 300px; object-fit: contain; }
+    .slide-card .katex-display { overflow: visible; }
+
+
     .doc-wrap { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+
+    .tutorial-card {
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      padding: 22px 28px;
+      margin: 0.6rem 0 0;
+    }
+    .tutorial-card > :first-child { margin-top: 0; }
+    .tutorial-card > :last-child { margin-bottom: 0; }
+    @media (max-width: 600px) { .tutorial-card { padding: 16px 16px; } }
 
     /* ── Typography ─────────────────────────────────────────────── */
     .slide-card h1, .doc-wrap h1 {
@@ -286,6 +335,7 @@
       overflow-x: auto;
       margin: 0.6rem 0;
     }
+    .slide-card pre { overflow: visible; white-space: pre-wrap; overflow-wrap: anywhere; }
     .slide-card pre code, .doc-wrap pre code { background: none; padding: 0; }
 
     .slide-card hr, .doc-wrap hr {
@@ -306,22 +356,58 @@
     .stb-author { font-size: 0.93rem; color: #666; margin-top: 4px; }
     .stb-date   { font-size: 0.87rem; color: #888; margin-top: 2px; }
 
-    .pdf-link {
-      display: inline-block;
-      background: #f0f4f8;
-      border: 1px solid #c8d4df;
-      border-radius: 4px;
-      padding: 5px 13px;
-      color: #193352;
-      text-decoration: none;
-      font-family: sans-serif;
-      font-size: 0.86rem;
-      margin: 0.6rem 0;
-    }
-    .pdf-link:hover { background: #dce8f0; }
-
     /* KaTeX display: allow horizontal scroll on narrow screens */
     .katex-display { overflow-x: auto; overflow-y: hidden; }
+
+    /* ── Slide layout (modelled on the old Beamer slides) ──────────
+       Larger sans-serif text, a centred frame title, the current section
+       in a slim running header, and a vertical rhythm driven by --gap,
+       which fitSlide() tightens only when a slide would overflow. */
+    .slide-card {
+      padding: 26px 56px 30px;
+      font-family: 'Latin Modern Sans', 'CMU Sans Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+    .slide-content { --gap: 0.95em; }
+    .slide-section {
+      font-size: 0.62em;
+      color: #6a7f96;
+      padding-bottom: 0.35em;
+      border-bottom: 1px solid #e3e8ee;
+      margin-bottom: 0.6em;
+    }
+    .slide-card h1 { font-size: 1.5em; font-weight: normal; text-align: center; margin: 0.2em 0 var(--gap); }
+    .slide-card h2 {
+      font-size: 1.4em;
+      font-weight: normal;
+      text-align: center;
+      color: #193352;
+      margin: 0.15em 0 var(--gap);
+      line-height: 1.25;
+    }
+    .slide-card h3 { font-size: 1.05em; margin: var(--gap) 0 calc(var(--gap) * 0.4); }
+    .slide-card p { margin: 0 0 var(--gap); }
+    .slide-card p:empty { display: none; }
+    .slide-card ul, .slide-card ol { margin: 0 0 var(--gap) 1.4em; }
+    .slide-card li { margin: calc(var(--gap) * 0.35) 0; }
+    .slide-card li::marker { color: #1e4976; }
+    .slide-card li > p { margin: 0 0 calc(var(--gap) * 0.35); }
+    .slide-card li > ul, .slide-card li > ol { margin-bottom: 0; }
+    .slide-card .katex { font-size: 1.1em; }
+    .slide-card .katex-display { margin: calc(var(--gap) * -0.2) 0 var(--gap); }
+    .slide-card .katex-display > .katex-display { margin: 0; }
+    .slide-card img { margin: calc(var(--gap) * 0.5) auto; }
+    .slide-card em { color: #444; font-size: 1em; }
+    .slide-card .slide-source { font-size: 0.6em; color: #777; text-align: center; margin-top: calc(var(--gap) * -0.4); }
+    .slide-card .slide-source em { color: inherit; }
+    .slide-card table { font-size: 0.85em; margin: 0 0 var(--gap); }
+    .slide-card pre { margin: 0 0 var(--gap); font-size: 0.85em; }
+    .slide-card blockquote { margin: 0 0 var(--gap); }
+    .slide-card .slide-title-block { text-align: center; margin: 1.2em 0 1.6em; padding-bottom: 1.1em; }
+    .slide-card .stb-course { font-size: 1.7em; font-weight: normal; }
+    .slide-card .stb-author { font-size: 0.85em; margin-top: 0.5em; }
+    .slide-card .stb-date   { font-size: 0.85em; margin-top: 0.3em; }
 
     /* ── Loading / error ────────────────────────────────────────── */
     .loading {
@@ -344,11 +430,32 @@
       margin: 1rem 0;
     }
 
+    /* ── Phones ───────────────────────────────────────────────────
+       Slides are always scaled to fit the screen; on a phone held upright
+       that makes them small, so suggest landscape. In landscape the bars
+       are made thinner to leave more height for the slide. */
+    #rotate-hint {
+      display: none;
+      flex-shrink: 0;
+      text-align: center;
+      font: 0.8rem sans-serif;
+      color: #555;
+      background: #e6ecf2;
+      padding: 7px 12px;
+    }
+    @media (orientation: portrait) and (max-width: 600px) {
+      #content.slides-mode ~ #rotate-hint { display: block; }
+    }
+    @media (orientation: landscape) and (max-height: 500px) {
+      #topbar { height: 34px; }
+      #slide-nav { padding: 4px 12px; gap: 10px; }
+      .nav-btn { padding: 4px 12px; }
+      .slide-wrap { padding: 6px; }
+      #app:fullscreen .slide-wrap { padding-top: 40px; }
+    }
+
     /* ── Mobile ─────────────────────────────────────────────────── */
     @media (max-width: 600px) {
-      .slide-card { padding: 20px 16px; }
-      .slide-card h1 { font-size: 1.25rem; }
-      .slide-card h2 { font-size: 1.05rem; }
       .nav-btn { padding: 6px 11px; font-size: 0.83rem; }
     }
   </style>
@@ -364,6 +471,8 @@
   <div class="nav-body" id="nav-body">
     <div class="nav-section">Info</div>
     <button class="nav-item" data-file="md/Analysis-course-info.md" data-mode="doc">Course Information</button>
+    <button class="nav-item" data-file="md/Analysis-final-exam-info.md" data-mode="slides">Information for the final exam</button>
+    <button class="nav-item" data-file="tutorials.yaml" data-mode="doc" data-slug="tutorials">Tutorials</button>
     <div class="nav-section">Lectures</div>
     <!-- populated by JS -->
   </div>
@@ -373,6 +482,7 @@
 
 <!-- ── App ──────────────────────────────────────────────────────── -->
 <div id="app">
+  <button class="nav-btn" id="exit-fullscreen-btn" aria-label="Exit fullscreen" aria-keyshortcuts="f" title="Exit fullscreen (F or Esc)">Exit fullscreen ↙</button>
   <header id="topbar">
     <button id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-panel">
       <svg width="17" height="13" viewBox="0 0 17 13" fill="none">
@@ -382,6 +492,7 @@
       </svg>
     </button>
     <span id="topbar-title">Analysis — Lecture Notes</span>
+    <a id="share-link" hidden title="Copy this link for a lecture-specific preview">Share link</a>
   </header>
 
   <div id="content">
@@ -393,23 +504,38 @@
     </div>
   </div>
 
+  <div id="rotate-hint" role="note">↻ Rotate your phone to landscape for larger slides</div>
+
   <div id="slide-nav">
     <button class="nav-btn" id="prev-btn" disabled>← Prev</button>
     <span id="slide-counter">1 / 1</span>
     <button class="nav-btn" id="next-btn">Next →</button>
+    <button class="nav-btn" id="fullscreen-btn" aria-label="Enter fullscreen" aria-keyshortcuts="f" title="Enter fullscreen (F)">Fullscreen ⛶</button>
   </div>
 </div>
 
 <!-- ── Scripts ───────────────────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js" crossorigin="anonymous"></script>
 <script>
 (function () {
   'use strict';
 
   // ── Config ────────────────────────────────────────────────────────
-  const LECTURE_COUNT = 17;
+  const LECTURE_COUNT = 14;
   const COURSE_FILE   = 'md/Analysis-course-info.md';
+  const PAGES = {
+    'course-info': {
+      title: 'Course Information',
+      description: 'Analysis course information: syllabus, tutorials, and assignments.'
+    },
+    'final-exam-info': { title: 'Information for the Final Exam' },
+    'tutorials': {
+      title: 'Analysis - Tutorials',
+      description: 'Analysis tutorials: lecture content, questions to start the tutorial, and exercises.'
+    }
+  };
 
   // ── State ─────────────────────────────────────────────────────────
   let slides     = [];
@@ -429,6 +555,40 @@
   const prevBtn      = document.getElementById('prev-btn');
   const nextBtn      = document.getElementById('next-btn');
   const slideCounter = document.getElementById('slide-counter');
+  const app = document.getElementById('app');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+  const exitFullscreenBtn = document.getElementById('exit-fullscreen-btn');
+
+  // ── Fullscreen presentation ───────────────────────────────────────
+  fullscreenBtn.disabled = !document.fullscreenEnabled;
+  if (fullscreenBtn.disabled) fullscreenBtn.title = 'Fullscreen is not supported by this browser';
+
+  async function toggleFullscreen() {
+    try {
+      if (document.fullscreenElement === app) {
+        await document.exitFullscreen();
+      } else if (mode === 'slides' && document.fullscreenEnabled) {
+        closeMenu();
+        await app.requestFullscreen();
+        // On touch devices that support it (e.g. Android), prefer landscape.
+        if (matchMedia('(pointer: coarse)').matches && screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(function () {});
+        }
+      }
+    } catch (err) {
+      // Permission or browser policy can reject a fullscreen request.
+      fullscreenBtn.title = 'Could not enter fullscreen: ' + err.message;
+    }
+  }
+
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+  exitFullscreenBtn.addEventListener('click', toggleFullscreen);
+  document.addEventListener('fullscreenchange', function () {
+    if (mode === 'slides') {
+      (document.fullscreenElement === app ? exitFullscreenBtn : fullscreenBtn).focus();
+    }
+    requestAnimationFrame(fitSlide);
+  });
 
   // ── Build lecture nav items ───────────────────────────────────────
   for (let i = 1; i <= LECTURE_COUNT; i++) {
@@ -468,8 +628,8 @@
       return id;
     });
 
-    // Inline math: $...$ (single line, no nesting)
-    src = src.replace(/(?<!\$)\$(?!\$)((?:[^$\n\\]|\\.)+)\$(?!\$)/g, function (_, tex) {
+    // Single-dollar math may span lines (e.g. a cases environment).
+    src = src.replace(/(?<!\$)\$(?!\$)((?:[^$\\]|\\[\s\S])+?)\$(?!\$)/g, function (_, tex) {
       var id = '@@MI' + store.length + '@@';
       store.push({ display: false, tex: tex });
       return id;
@@ -506,17 +666,54 @@
     // Fix image paths: ../fig/ -> fig/
     html = html.replace(/(<img[^>]+src=")\.\.\/fig\//g, '$1fig/');
 
-    // Replace PDF <img> with a plain link
-    html = html.replace(
-      /<img[^>]+src="([^"]*\.pdf)"(?:[^>]*alt="([^"]*)")?[^>]*\/?>/g,
-      function (_, src, alt) {
-        return '<a class="pdf-link" href="' + src + '" target="_blank" rel="noopener">'
-          + 'View figure (PDF)' + (alt ? ': ' + alt : '') + '</a>';
-      }
-    );
-
     html = restoreMath(html, protected_.store);
-    return html;
+
+    // Workaround to make Markdown contents links work.
+    var template = document.createElement('template');
+    template.innerHTML = html;
+    var usedIds = new Set();
+    template.content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function (heading) {
+      var base = heading.textContent.toLowerCase().trim()
+        .replace(/[^\p{L}\p{N}\p{M}_\s-]/gu, '').replace(/\s/g, '-');
+      var id = base;
+      var suffix = 0;
+      while (usedIds.has(id)) id = base + '-' + (++suffix);
+      usedIds.add(id);
+      heading.id = id;
+    });
+    return template.innerHTML;
+  }
+
+  // ── Tutorials page (tutorials.yaml -> Markdown) ─────────────────
+  function lectureSlug(n) { return 'lecture' + String(n).padStart(2, '0'); }
+
+  function tutorialsToMd(data) {
+    var tutorials = data.tutorials || [];
+    var out = ['# ' + (data.title || 'Tutorials'), ''];
+    if (data.intro) out.push(data.intro.trim(), '');
+
+    out.push('## Contents', '');
+    tutorials.forEach(function (t) {
+      out.push(t.number + '. [Tutorial ' + t.number + '](#tutorial-' + t.number + ')'
+        + (t.reading ? ' — ' + t.reading : ''));
+    });
+
+    tutorials.forEach(function (t) {
+      out.push('', '---', '', '# Tutorial ' + t.number, '');
+      out.push('## Content from the lecture', '');
+      out.push((t.reading ? '**' + t.reading + '** — ' : '')
+        + '[Lecture ' + t.number + ' slides](#' + lectureSlug(t.number) + ')', '');
+      if (t.content) out.push(t.content.trim(), '');
+
+      if (t.questions) out.push('## Questions to start the tutorial', '', t.questions.trim(), '');
+
+      if (t.exercises && t.exercises.length) {
+        out.push('## Tutorial exercises', '');
+        t.exercises.forEach(function (e) { out.push('- ' + String(e).trim()); });
+        out.push('');
+      }
+    });
+    return out.join('\n');
   }
 
   // ── YAML frontmatter ──────────────────────────────────────────────
@@ -543,10 +740,87 @@
   }
 
   // ── Render & navigate slides ──────────────────────────────────────
+  function fitSlide() {
+    if (mode !== 'slides') return;
+    const card = contentEl.querySelector('.slide-card');
+    if (!card) return;
+    const frame = card.parentElement;
+    const body = card.querySelector('.slide-content');
+    const style = getComputedStyle(card);
+    const width = card.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+    const height = card.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+    body.style.transform = '';
+
+    // Shrink only the display formulas that are too wide, not the whole slide.
+    body.querySelectorAll('.katex-display').forEach(function (eq) {
+      eq.style.fontSize = '';
+      const inner = eq.querySelector('.katex') || eq;
+      if (inner.scrollWidth > width) {
+        eq.style.fontSize = Math.max(0.7, width / inner.scrollWidth) + 'em';
+      }
+    });
+
+    // Like LaTeX, first absorb overflow in the vertical spacing.
+    const GAP_MAX = 0.95, GAP_MIN = 0.35;
+    function setGap(g) { body.style.setProperty('--gap', g + 'em'); }
+    setGap(GAP_MAX);
+    if (body.scrollHeight > height) {
+      let low = GAP_MIN, high = GAP_MAX;
+      for (let i = 0; i < 8; i++) {
+        const mid = (low + high) / 2;
+        setGap(mid);
+        if (body.scrollHeight <= height) low = mid;
+        else high = mid;
+      }
+      setGap(low);
+    }
+
+    // Keep the text at its normal size if reducing figures is enough.
+    const images = Array.from(body.querySelectorAll('img'));
+    function sizeImages(factor) {
+      images.forEach(function (img) { img.style.maxHeight = (300 * factor) + 'px'; });
+    }
+    sizeImages(1);
+    if (images.length && body.scrollHeight > height) {
+      let low = 0, high = 1;
+      for (let i = 0; i < 12; i++) {
+        const mid = (low + high) / 2;
+        sizeImages(mid);
+        if (body.scrollHeight <= height) low = mid;
+        else high = mid;
+      }
+      // If text alone is too tall, retain useful figures and scale everything.
+      sizeImages(low > 0.15 ? low : 1);
+    }
+    const innerScale = Math.min(1, width / body.scrollWidth, height / body.scrollHeight);
+    body.style.transform = 'scale(' + innerScale + ')';
+
+    // Scale the complete 4:3 card to the space between the two navigation bars.
+    const wrap = frame.parentElement;
+    const wrapStyle = getComputedStyle(wrap);
+    const availableWidth = wrap.clientWidth - parseFloat(wrapStyle.paddingLeft) - parseFloat(wrapStyle.paddingRight);
+    const availableHeight = wrap.clientHeight - parseFloat(wrapStyle.paddingTop) - parseFloat(wrapStyle.paddingBottom);
+    const maxScale = document.fullscreenElement === app ? Infinity : 1;
+    const scale = Math.max(0, Math.min(maxScale, availableWidth / 760, availableHeight / 570));
+    frame.style.width = (760 * scale) + 'px';
+    frame.style.height = (570 * scale) + 'px';
+    card.style.transform = 'scale(' + scale + ')';
+  }
+
+  // Refit after viewport changes, image decoding and web-font loading.
+  new ResizeObserver(fitSlide).observe(contentEl);
+  if (document.fonts) document.fonts.addEventListener('loadingdone', fitSlide);
+
   function showSlide(idx) {
     slideIdx = Math.max(0, Math.min(idx, slides.length - 1));
     contentEl.innerHTML =
-      '<div class="slide-wrap"><div class="slide-card">' + slides[slideIdx] + '</div></div>';
+      '<div class="slide-wrap"><div class="slide-frame"><div class="slide-card"><div class="slide-content">'
+      + slides[slideIdx] + '</div></div></div></div>';
+    contentEl.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('load', fitSlide, { once: true });
+      img.addEventListener('error', fitSlide, { once: true });
+    });
+    fitSlide();
     contentEl.scrollTop = 0;
     slideCounter.textContent = (slideIdx + 1) + ' / ' + slides.length;
     prevBtn.disabled = slideIdx === 0;
@@ -559,6 +833,14 @@
   // Keyboard navigation
   document.addEventListener('keydown', function (e) {
     if (mode !== 'slides') return;
+    if (e.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key.toLowerCase() === 'f' ||
+        (e.key === 'Escape' && document.fullscreenElement === app)) {
+      e.preventDefault();
+      if (!e.repeat) toggleFullscreen();
+      return;
+    }
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
       e.preventDefault();
       showSlide(slideIdx + 1);
@@ -581,9 +863,32 @@
     }
   }, { passive: true });
 
+  // Trick make the preview show the appropriate title
+  // and description
+  function updatePreview(description) {
+    var slug = slugFor(activeItem);
+    var lecture = slug.match(/^lecture(\d+)$/);
+    var title = lecture ? 'Analysis - Lecture ' + Number(lecture[1]) : PAGES[slug].title;
+    document.title = title;
+    topbarTitle.textContent = title;
+    document.querySelector('meta[name="description"]').content = description;
+    ['og', 'twitter'].forEach(function (prefix) {
+      var attr = prefix === 'og' ? 'property' : 'name';
+      document.querySelector('meta[' + attr + '="' + prefix + ':title"]').content = title;
+      document.querySelector('meta[' + attr + '="' + prefix + ':description"]').content = description;
+    });
+    var shareLink = document.getElementById('share-link');
+    shareLink.href = slug + '.html';
+    shareLink.hidden = false;
+  }
+
   // ── Load file ─────────────────────────────────────────────────────
   async function loadFile(file, fileMode) {
     mode = fileMode;
+    if (fileMode !== 'slides' && document.fullscreenElement === app) {
+      await document.exitFullscreen();
+    }
+    contentEl.classList.toggle('slides-mode', fileMode === 'slides');
     contentEl.innerHTML = '<div class="loading">Loading…</div>';
     slideNav.classList.toggle('on', fileMode === 'slides');
 
@@ -593,27 +898,64 @@
       var text = await res.text();
 
       if (fileMode === 'doc') {
+        var documentSlug = slugFor(activeItem);
+        updatePreview(PAGES[documentSlug].description);
+        if (/\.ya?ml$/.test(file)) text = tutorialsToMd(jsyaml.load(text));
         contentEl.innerHTML = '<div class="doc-wrap">' + renderMd(text) + '</div>';
+        // Wrap the content under each "Tutorial N" title (up to the next separator) in a card.
+        if (/\.ya?ml$/.test(file)) {
+          contentEl.querySelectorAll('.doc-wrap > h1[id^="tutorial-"]').forEach(function (h1) {
+            var card = document.createElement('section');
+            card.className = 'tutorial-card';
+            h1.after(card);
+            while (card.nextSibling && !/^(HR|H1)$/.test(card.nextSibling.nodeName)) card.appendChild(card.nextSibling);
+          });
+        }
+        // We use namespaces to make the in-document anchors work; links to
+        // other pages (e.g. #lecture01, #course-info/...) are left untouched.
+        contentEl.querySelectorAll('a[href^="#"]').forEach(function (link) {
+          var id = link.getAttribute('href').slice(1);
+          if (id && document.getElementById(id) && contentEl.contains(document.getElementById(id))) {
+            link.setAttribute('href', '#' + documentSlug + '/' + id);
+          }
+        });
       } else {
         var parsed   = parseFrontmatter(text);
         var meta     = parsed.meta;
         var rawSlides = splitSlides(parsed.body);
 
-        // Update header
-        topbarTitle.textContent = meta.date
-          ? (meta.title || 'Analysis') + ' — ' + meta.date
-          : 'Analysis — ' + (activeItem ? activeItem.textContent : '');
+        var preview = document.createElement('div');
+        preview.innerHTML = renderMd(rawSlides[0] || '');
+        preview.querySelectorAll('p, li, h1, h2, h3').forEach(function (el) {
+          el.appendChild(document.createTextNode('\n'));
+        });
+        updatePreview(preview.textContent.trim());
 
+        var section = '';
         slides = rawSlides.map(function (slide, i) {
           var html = '';
+          var tpl = document.createElement('template');
+          tpl.innerHTML = renderMd(slide);
+          // As in Beamer, a "# Section" heading goes into a running header
+          // shown on every following slide instead of taking body space.
+          var h1 = tpl.content.querySelector('h1');
+          if (h1 && tpl.content.querySelector('h2')) {
+            section = h1.innerHTML;
+            h1.remove();
+          }
+          tpl.content.querySelectorAll('p').forEach(function (p) {
+            if (/^\[Source:/.test(p.textContent.trim())) p.classList.add('slide-source');
+          });
           if (i === 0 && meta.title) {
             html = '<div class="slide-title-block">'
               + '<div class="stb-course">' + meta.title + '</div>'
               + (meta.author ? '<div class="stb-author">' + meta.author + '</div>' : '')
               + (meta.date   ? '<div class="stb-date">'   + meta.date   + '</div>' : '')
               + '</div>';
+          } else if (section) {
+            html = '<div class="slide-section">' + section + '</div>';
           }
-          return html + renderMd(slide);
+          return html + tpl.innerHTML;
         });
 
         showSlide(0);
@@ -624,13 +966,14 @@
     }
   }
 
-  // ── Item selection + hash routing (#lecture05, #course-info) ──────
+  // ── Item selection + hash routing (#lecture05, #course-info, #tutorials/tutorial-5, …) ──
   function slugFor(item) {
-    var m = item.dataset.file.match(/Analysis-(lecture\d+|course-info)\.md$/);
+    if (item.dataset.slug) return item.dataset.slug;
+    var m = item.dataset.file.match(/Analysis-(lecture\d+|course-info|final-exam-info)\.md$/);
     return m ? m[1] : null;
   }
 
-  function activate(item, updateHash) {
+  async function activate(item, updateHash) {
     navBody.querySelectorAll('.nav-item').forEach(function (b) { b.classList.remove('active'); });
     item.classList.add('active');
     activeItem = item;
@@ -644,15 +987,28 @@
       if (slug) history.replaceState(null, '', '#' + slug);
     }
 
-    loadFile(item.dataset.file, item.dataset.mode);
+    await loadFile(item.dataset.file, item.dataset.mode);
   }
 
-  function openFromHash() {
-    var slug = location.hash.replace(/^#/, '');
+  async function openFromHash() {
+    var parts = location.hash.replace(/^#/, '').split('/');
+    var slug = parts.shift();
     if (!slug) return;
     var items = navBody.querySelectorAll('.nav-item');
     for (var i = 0; i < items.length; i++) {
-      if (slugFor(items[i]) === slug) { activate(items[i], false); return; }
+      if (slugFor(items[i]) !== slug) continue;
+      if (activeItem !== items[i] || !contentEl.querySelector('.doc-wrap')) {
+        await activate(items[i], false);
+      }
+      if (parts.length) {
+        var id;
+        try { id = decodeURIComponent(parts.join('/')); } catch (_) { return; }
+        var target = document.getElementById(id);
+        if (target && contentEl.contains(target)) target.scrollIntoView();
+      } else {
+        contentEl.scrollTop = 0;
+      }
+      return;
     }
   }
 

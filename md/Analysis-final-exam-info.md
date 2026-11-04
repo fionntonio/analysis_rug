@@ -1,7 +1,7 @@
 ---
-title: "Analysis"
-author: "Marcello Seri / m.seri@rug.nl / slides by Alef Sterk"
-date: "Bonus slides / Thursday 18 January 2024"
+title: "Information for the final exam"
+author: "Marcello Seri / m.seri@rug.nl / adapted from slides by Alef Sterk"
+date: "Bonus slides"
 ---
 
 Topics:
@@ -106,11 +106,11 @@ When applying a theorem, always check that the conditions are satisfied!
 ## Standard limits
 
 $$\begin{aligned}
-\lim_{n\to\infty} \frac{1}{n^p} & = & 0 \quad\text{for all}\quad p>0 \\[4mm]
-\lim_{n\to\infty} \frac{1}{n!} & = & 0  \\[4mm]
-\lim_{n\to\infty} \frac{n^k}{n!} & = & 0 \quad\text{for all}\quad k>0  \\[4mm]
-\lim_{x\to \infty} e^{-x} & = & 0\\[4mm]
-\lim_{x\to 0} \frac{\sin(x)}{x} & = & 1
+\lim_{n\to\infty} \frac{1}{n^p} & = 0 \quad\text{for all}\quad p>0 \\[4mm]
+\lim_{n\to\infty} \frac{1}{n!} & = 0  \\[4mm]
+\lim_{n\to\infty} \frac{n^k}{n!} & = 0 \quad\text{for all}\quad k>0  \\[4mm]
+\lim_{x\to \infty} e^{-x} & = 0\\[4mm]
+\lim_{x\to 0} \frac{\sin(x)}{x} & = 1
 \end{aligned}$$
 
 ---

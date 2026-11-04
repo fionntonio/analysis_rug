@@ -12,7 +12,7 @@ numbers, $\sum a_n$ converges if and only if $\sum \frac{a_n}{1+a_n}$ converges.
 
 **Course material.**
 
-- Lecture 5: [Cauchy sequences and series](../index.html#lecture05)
+- Lecture 4: [Cauchy sequences and series](../index.html#lecture04)
   (Abbott §2.6–2.7).
 - Formalisation: [`theories/Series.v`](../theories/Series.v). The results used
   below are `series_comparison_test`, `series_convergent_terms_zero` and
@@ -24,12 +24,10 @@ Notes:
 - The ratio $a_n / b_n$ only makes sense when $b_n \neq 0$, so we assume
   $b_n > 0$ throughout. (In Rocq `x / 0` is `0`, which would make the statement
   false as written.)
-- Convergence of a series only depends on its tail, but the comparison test of
-  Lecture 5 asks for the inequality $a_n \leq b_n$ for *all* $n$. Part 1 below
-  removes that restriction once and for all; Parts 3 and 4 then use it.
-- In the second half of the assignment you do not need the ratio test: one
-  direction is a plain comparison ($\frac{a_n}{1+a_n} \le a_n$), the other one
-  uses that the terms of a convergent series tend to $0$.
+- **Invoke lemmas together with their hypotheses**, as in
+  `By (my_lemma x Hx) it holds that ...` rather than `By my_lemma it holds that ...`.
+  Otherwise the automation has to search for the arguments itself, and checking
+  becomes way too slow.
 
 <hint title="Import libraries (click to open/close)">
 
@@ -65,21 +63,17 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 Show that if $0 \le a_n$, $0 \le b_n$, and $a_n \le b_n$ for all $n > N$, then
 convergence of $\sum b_n$ implies convergence of $\sum a_n$.
 
+**Waterproof remark.** If you use induction, note that in the induction step the
+goal is stated for `(n + 1)%nat`, not `S n`. In a base case write `0%nat`, because a plain `0` is read as a real
+number. To move between `⟶` and `Un_cv` with `convergence_equivalence`, state
+the `⇔` first: the automation does not split an equivalence on its own.
+
 <hint title="💡 Hint (click to open/close)">
 The partial sums of $\sum a_n$ are non-decreasing (`partial_sums_pos_incr`), so
-by the monotone convergence theorem (`Un_cv_crit`) it is enough to bound them.
-For $n > N$ split the sum with `tech2`:
-```
-sum_f_R0 An n = sum_f_R0 An m + sum_f_R0 (fun i => An (S m + i)) (n - S m)
-```
-(use `Nat.add (S Nn) i` and `Nat.sub n (S Nn)` rather than `%nat` annotations,
-which confuse the elaborator inside a lambda). Compare the two tails with
-`sum_Rle`, and bound the partial sums of $\sum b_n$ by their limit with
-`growing_ineq`. `cond_pos_sum` gives that a sum of non-negative terms is
-non-negative, and `growing_prop` gives monotonicity of a growing sequence.
-Move between `⟶` and `Un_cv` with `convergence_equivalence` (state the
-equivalence first, then use it: the automation shield does not split an `⇔` on
-its own).
+by the monotone convergence theorem (`Un_cv_crit`) it is enough to bound them,
+e.g. by `partial_sums a Nn + L`. One way is induction on `n`; useful lemmas are
+`growing_prop`, `cond_pos_sum` and `growing_ineq`. The proof of
+`series_comparison_test` in `theories/Series.v` is a good model.
 </hint>
 
 ```coq
@@ -110,12 +104,17 @@ $$
 a_n \le \frac{3c}{2} b_n \quad\text{and}\quad b_n \le \frac2c a_n .
 $$
 
+**Waterproof remark.** The automation treats `/ u` as an unknown. To pass from
+`a n / b n` to a statement about `a n`, give it `b n * / b n = 1`, and likewise
+`c * / c = 1`, using `Rinv_r : r ≠ 0 → r * / r = 1`.
+The automation also does not remove absolute values from hypotheses on its
+own. To turn `|t| < a` into two inequalities without absolute values, use
+`Rabs_def2 : |x| < a → x < a ∧ - a < x`, e.g.
+`By Rabs_def2 it holds that t < a ∧ - a < t as (H).`
+
 <hint title="💡 Hint (click to open/close)">
-Split the absolute value with `Rabs_def2`. To turn a statement about the
-quotient into one about the product, give the automation `b n * / b n = 1`
-(from `Rinv_r`) and the resulting identity `(a n / b n) * b n = a n`; then
-multiply the inequalities by `b n > 0`. For the second bound you also need
-`c * / c = 1`.
+Use the definition of the limit with $\varepsilon = c/2$, remove the absolute
+value, then multiply by $b_n > 0$.
 </hint>
 
 ```coq
@@ -140,9 +139,8 @@ rescaling a series does not affect convergence. Here `sprod b K` is the sequence
 $n \mapsto K \cdot b_n$ (see `theories/Series.v`).
 
 <hint title="💡 Hint (click to open/close)">
-This is the first half of `series_algebraic_limit`; instantiate that lemma with
-both sequences equal to `b` and use `Because ... both ... and ...` to keep the
-half you need.
+This is the first half of `series_algebraic_limit`, with both sequences equal
+to `b`.
 </hint>
 
 ```coq
@@ -163,12 +161,12 @@ Qed.
 
 Both series converge, or neither does.
 
+**Waterproof remark.** A statement about `sprod a K n` is easier to prove after
+unfolding it with `We need to show that 0 ≤ K * a n.` (or similar).
+
 <hint title="💡 Hint (click to open/close)">
-Prove the two implications with `We show both directions.` They are symmetric:
-in one direction compare `b` with `sprod a (2/c)`, in the other compare `a` with
-`sprod b (3*c/2)`, in both cases using Part 1 with the index `Nn` from Part 2.
-Supply the arguments of `tail_comparison` explicitly — leaving them to the
-automation makes the search very slow.
+Prove the two implications separately. They are symmetric: combine Part 2,
+`scaled_series_converges` and Part 1.
 </hint>
 
 ```coq
@@ -197,11 +195,16 @@ $$
 \frac{x}{1+x} \le \frac12 \;\Rightarrow\; x \le 2\cdot\frac{x}{1+x}.
 $$
 
+**Waterproof remark.** As in Part 2, the automation needs `(1 + x) * / (1 + x) = 1`
+(`Rinv_r`) before it can handle `x / (1 + x)`. It also does not cancel a
+common factor in an inequality on its own: for that use
+`Rmult_le_reg_r : 0 < r → r1 * r ≤ r2 * r → r1 ≤ r2`, e.g. once you know
+`0 < 1 + x` and `u * (1 + x) ≤ v * (1 + x)`, write
+`By Rmult_le_reg_r we conclude that u ≤ v.`
+
 <hint title="💡 Hint (click to open/close)">
-In each case: state `1 + x > 0`, get `(1 + x) * / (1 + x) = 1` from `Rinv_r`,
-and then clear the denominator by multiplying with `1 + x` and cancelling with
-`Rmult_le_reg_r` (`0 < r → r1 * r ≤ r2 * r → r1 ≤ r2`).
-For the third fact, first derive `x ≤ 1` from the hypothesis.
+Clear the denominator: multiply by `1 + x` and cancel the common factor.
+For the third fact, first show `x ≤ 1`.
 </hint>
 
 ```coq
@@ -246,14 +249,17 @@ Qed.
 
 Now prove the equivalence.
 
-<hint title="💡 Hint (click to open/close)">
-(⇒) is `series_comparison_test` applied to $\frac{a_n}{1+a_n} \le a_n$; mind
-that its hypotheses are stated with `∀ n ∈ ℕ`.
+**Waterproof remark.** The hypotheses of `series_comparison_test` are stated with
+`∀ n ∈ ℕ`, those of Part 1 with `∀ n : ℕ`; state them in exactly that form.
+As in Part 2, use `Rabs_def2` to remove an absolute value from a hypothesis.
 
-(⇐) if $\sum \frac{a_n}{1+a_n}$ converges then its terms tend to $0$
-(`series_convergent_terms_zero`), so from some index on
-$\frac{a_n}{1+a_n} < \frac12$, and then $a_n \le 2 \cdot \frac{a_n}{1+a_n}$ by
-`frac_ge`. Conclude with Part 1 and `scaled_series_converges`.
+<hint title="💡 Hint (click to open/close)">
+(⇒) Use `series_comparison_test`.
+
+(⇐) The terms of a convergent series tend to $0$
+(`series_convergent_terms_zero`), so eventually
+$\frac{a_n}{1+a_n} \le \frac12$, and then `frac_ge` applies. Conclude with
+Part 1.
 </hint>
 
 ```coq

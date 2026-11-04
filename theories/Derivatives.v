@@ -1,6 +1,6 @@
 (** * RUG.Analysis.Derivatives — Differentiability and the mean value theorem.
 
-  #<a href="../../index.html##lecture10">Lecture 10</a>#.
+  #<a href="../../index.html##lecture09">Lecture 9</a>#.
 
   Formalizes Abbott §5.2–5.3: differentiability at a point,
   differentiable implies continuous, Fermat's theorem on local extrema,
@@ -8,10 +8,6 @@
   derivatives. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.Ranalysis1.
-From Stdlib Require Import Reals.Ranalysis5.
-From Stdlib Require Import Reals.MVT.
-From Stdlib Require Import micromega.Lra.
 Require Export RUG.Analysis.Continuity.
 
 Waterproof Enable Automation RealsAndIntegers.
@@ -25,7 +21,7 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 (** ** Differentiable implies continuous *)
 
-(** Theorem 10.2: if [g] is differentiable at [x₀] then [g] is continuous at
+(** _Differentiability versus continuity_ (Abbott Theorem 5.2.3): if [g] is differentiable at [x₀] then [g] is continuous at
     [x₀]. *)
 Lemma differentiable_implies_continuous (g : ℝ → ℝ) (x0 : ℝ)
     (Hd : derivable_pt g x0) :
@@ -45,11 +41,42 @@ Lemma fermat (h : ℝ → ℝ) (a b c : ℝ)
             (∃ δ > 0, ∀ x, Rabs (x - c) < δ → h c ≤ h x)) :
     derive_pt h c (Hd c (conj Hac HcB)) = 0.
 Proof.
-  Admitted.
+  Because (Hloc) either (∃ δ > 0, ∀ x, |x - c| < δ → h x ≤ h c)
+    or (∃ δ > 0, ∀ x, |x - c| < δ → h c ≤ h x).
+  - Case (∃ δ > 0, ∀ x, |x - c| < δ → h x ≤ h c).
+    Obtain such a δ.
+    It holds that ∀ x, |x - c| < δ → h x ≤ h c as (Hmax).
+    We claim that ∀ x : ℝ, c - δ < x → x < c + δ → h x ≤ h c as (Hmax').
+    {
+      Take x : ℝ. Assume that c - δ < x. Assume that x < c + δ.
+      It holds that x - c < δ ∧ - δ < x - c.
+      By (Rabs_def1 (x - c) δ) it holds that |x - c| < δ as (H4).
+      By (Hmax x H4) we conclude that h x ≤ h c.
+    }
+    It holds that c - δ < c as (Hl).
+    It holds that c < c + δ as (Hr).
+    By (deriv_maximum h (c - δ) (c + δ) c (Hd c (conj Hac HcB)) Hl Hr Hmax')
+      we conclude that derive_pt h c (Hd c (conj Hac HcB)) = 0.
+  - Case (∃ δ > 0, ∀ x, |x - c| < δ → h c ≤ h x).
+    Obtain such a δ.
+    It holds that ∀ x, |x - c| < δ → h c ≤ h x as (Hmin).
+    We claim that ∀ x : ℝ, c - δ < x → x < c + δ → h c ≤ h x as (Hmin').
+    {
+      Take x : ℝ. Assume that c - δ < x. Assume that x < c + δ.
+      It holds that x - c < δ ∧ - δ < x - c.
+      By (Rabs_def1 (x - c) δ) it holds that |x - c| < δ as (H4).
+      By (Hmin x H4) we conclude that h c ≤ h x.
+    }
+    It holds that c - δ < c as (Hl).
+    It holds that c < c + δ as (Hr).
+    By (deriv_minimum h (c - δ) (c + δ) c (Hd c (conj Hac HcB)) Hl Hr Hmin')
+      we conclude that derive_pt h c (Hd c (conj Hac HcB)) = 0.
+Qed.
+
 
 (** ** Mean value theorem *)
 
-(** Theorem 10.4 (mean value theorem): if [h] is continuous on [[a,b]] and
+(** _Mean value theorem_ (Abbott Theorem 5.3.2): if [h] is continuous on [[a,b]] and
     differentiable on [(a,b)], then there exists [c ∈ (a,b)] with
     [h'(c) = (h(b) - h(a))/(b - a)].
 
@@ -67,13 +94,13 @@ Proof.
   We claim that
     ∀ x : ℝ, a < x ∧ x < b → derivable_pt (fun y => y) x as (Hid).
   {
-    Take x : ℝ. Assume that a < x ∧ x < b as (Hx).
+    Take x : ℝ. Assume that a < x ∧ x < b.
     exact (derivable_pt_id x).
   }
   We claim that
     ∀ x : ℝ, a ≤ x ∧ x ≤ b → continuity_pt (fun y => y) x as (Hcid).
   {
-    Take x : ℝ. Assume that a ≤ x ∧ x ≤ b as (Hx).
+    Take x : ℝ. Assume that a ≤ x ∧ x ≤ b.
     exact (derivable_continuous_pt (fun y => y) x (derivable_pt_id x)).
   }
   destruct (MVT h (fun y => y) a b Hdiff Hid Hab Hcont Hcid) as [c Hc].
@@ -81,26 +108,26 @@ Proof.
   (* The derivative of the identity is 1, independently of the proof term. *)
   By (pr_nu (fun y => y) c (Hid c P) (derivable_pt_id c)) it holds that
     derive_pt (fun y => y) c (Hid c P)
-      = derive_pt (fun y => y) c (derivable_pt_id c) as (Hpr).
+      = derive_pt (fun y => y) c (derivable_pt_id c).
   By derive_pt_id it holds that
-    derive_pt (fun y => y) c (derivable_pt_id c) = 1 as (Hd1).
+    derive_pt (fun y => y) c (derivable_pt_id c) = 1.
   It holds that
-    (b - a) * derive_pt h c (Hdiff c P) = h b - h a as (Heq2).
+    (b - a) * derive_pt h c (Hdiff c P) = h b - h a.
   (* Divide by [b - a]. *)
-  It holds that b - a ≠ 0 as (Hne).
-  By Rinv_r it holds that (b - a) * / (b - a) = 1 as (Ei).
-  It holds that (b - a) * ((h b - h a) / (b - a)) = h b - h a as (Hr).
+  It holds that b - a ≠ 0.
+  By Rinv_r it holds that (b - a) * / (b - a) = 1.
+  It holds that (b - a) * ((h b - h a) / (b - a)) = h b - h a.
   It holds that (b - a) * derive_pt h c (Hdiff c P)
-    = (b - a) * ((h b - h a) / (b - a)) as (Hmul).
+    = (b - a) * ((h b - h a) / (b - a)).
   By Rmult_eq_reg_l it holds that
     derive_pt h c (Hdiff c P) = (h b - h a) / (b - a) as (Hfin).
   Choose c1 := c.
   We claim that
     ∃ Hc : derivable_pt h c,
-      derive_pt h c Hc = (h b - h a) / (b - a) as (Hex).
+      derive_pt h c Hc = (h b - h a) / (b - a).
   { Choose Hc := (Hdiff c P). exact Hfin. }
-  It holds that a < c as (H1).
-  It holds that c < b as (H2).
+  It holds that a < c.
+  It holds that c < b.
   We conclude that
     (a < c ∧ c < b ∧
      ∃ Hc : derivable_pt h c, derive_pt h c Hc = (h b - h a) / (b - a)).
@@ -132,16 +159,16 @@ Lemma mvt_bound (psi : ℝ → ℝ) (Hd : derivable psi) (a v : ℝ)
     Rabs (psi v - psi a) ≤ M * Rabs (v - a).
 Proof.
   (* [MVT_cor1] on the relevant orientation of [[a, v]]. *)
-  By HM it holds that Rabs (derive_pt psi a (Hd a)) ≤ M as (Hma).
-  By Rabs_pos it holds that 0 ≤ Rabs (derive_pt psi a (Hd a)) as (Hpa).
-  It holds that 0 ≤ M as (HM0).
+  By HM it holds that Rabs (derive_pt psi a (Hd a)) ≤ M.
+  By Rabs_pos it holds that 0 ≤ Rabs (derive_pt psi a (Hd a)).
+  It holds that 0 ≤ M.
   Either (a < v) or (¬ (a < v)).
   - Case (a < v).
     It holds that a < v as (Hav).
     destruct (MVT_cor1 psi a v Hd Hav) as [c Hc].
     destruct Hc as [Heq Hcin].
-    By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M as (Hb).
-    By Rabs_pos it holds that 0 ≤ Rabs (v - a) as (Hp).
+    By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M.
+    By Rabs_pos it holds that 0 ≤ Rabs (v - a).
     rewrite Heq.
     By Rabs_mult it holds that
       Rabs (derive_pt psi c (Hd c) * (v - a))
@@ -155,12 +182,12 @@ Proof.
       It holds that v < a as (Hva).
       destruct (MVT_cor1 psi v a Hd Hva) as [c Hc].
       destruct Hc as [Heq Hcin].
-      By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M as (Hb).
+      By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M.
       By Rabs_minus_sym it holds that
         Rabs (psi v - psi a) = Rabs (psi a - psi v) as (Hsym).
       By Rabs_minus_sym it holds that
         Rabs (a - v) = Rabs (v - a) as (Hsym2).
-      By Rabs_pos it holds that 0 ≤ Rabs (v - a) as (Hp).
+      By Rabs_pos it holds that 0 ≤ Rabs (v - a).
       rewrite Hsym. rewrite Heq.
       By Rabs_mult it holds that
         Rabs (derive_pt psi c (Hd c) * (a - v))
@@ -176,7 +203,7 @@ Qed.
 
 (** ** Derivative of the squaring function *)
 
-(** Theorem 10.1: the derivative of [x ↦ x²] at [x₀] is [2·x₀].
+(** Example (Abbott Example 5.2.2(i) with [n = 2]): the derivative of [x ↦ x²] at [x₀] is [2·x₀].
 
     Proof idea: apply the power rule [d/dx xⁿ = n·xⁿ⁻¹] with [n = 2]. *)
 Lemma sq_derivative (x0 : ℝ) :
@@ -189,7 +216,7 @@ Qed.
 
 (** ** Rolle's theorem *)
 
-(** Theorem 10.3 (Rolle's theorem): if [h] is continuous on [[a,b]],
+(** _Rolle's theorem_ (Abbott Theorem 5.3.1): if [h] is continuous on [[a,b]],
     differentiable on [(a,b)] and [h a = h b], then [h'(c) = 0] for some
     [c ∈ (a,b)].
 
@@ -208,17 +235,84 @@ Proof.
   destruct Hc as [P Hderiv].
   Choose c1 := c.
   We claim that
-    ∃ Hc : a < c ∧ c < b, derive_pt h c (Hd c Hc) = 0 as (Hex).
+    ∃ Hc : a < c ∧ c < b, derive_pt h c (Hd c Hc) = 0.
   { Choose Hc := P. exact Hderiv. }
-  It holds that a < c as (H1).
-  It holds that c < b as (H2).
+  It holds that a < c.
+  It holds that c < b.
   We conclude that
     (a < c ∧ c < b ∧ ∃ Hc : a < c ∧ c < b, derive_pt h c (Hd c Hc) = 0).
 Qed.
 
 (** ** Darboux's theorem *)
 
-(** Theorem 10.6 (Darboux): derivatives have the intermediate value property.
+(** A negative derivative at [x₀] gives smaller values just to the right of [x₀]. *)
+Lemma deriv_neg_right (phi : ℝ → ℝ) (x0 l d0 : ℝ)
+    (Hl : derivable_pt_lim phi x0 l) (Hneg : l < 0) (Hd0 : d0 > 0) :
+    ∃ k : ℝ, 0 < k ∧ k < d0 ∧ phi (x0 + k) < phi x0.
+Proof.
+  It holds that - l > 0 as (Hnl).
+  By (Hl (- l) Hnl) it holds that ∃ δ : posreal, ∀ k : ℝ, k ≠ 0 → |k| < δ →
+    |(phi (x0 + k) - phi x0) / k - l| < - l as (Hδ).
+  Obtain δ according to (Hδ).
+  It holds that ∀ k : ℝ, k ≠ 0 → |k| < δ →
+    |(phi (x0 + k) - phi x0) / k - l| < - l as (Hδ').
+  By (cond_pos δ) it holds that δ > 0 as (Hδpos).
+  Define k := Rmin (δ / 2) (d0 / 2).
+  By (Rmin_l (δ / 2) (d0 / 2)) it holds that k ≤ δ / 2.
+  By (Rmin_r (δ / 2) (d0 / 2)) it holds that k ≤ d0 / 2.
+  By (Rmin_pos (δ / 2) (d0 / 2)) it holds that 0 < k.
+  It holds that k ≠ 0 as (Hkn).
+  By (Rabs_pos_eq k) it holds that |k| = k.
+  It holds that |k| < δ as (Hkd).
+  By (Hδ' k Hkn Hkd) it holds that |(phi (x0 + k) - phi x0) / k - l| < - l as (Hq).
+  By (Rabs_def2 ((phi (x0 + k) - phi x0) / k - l) (- l) Hq) it holds that
+    (phi (x0 + k) - phi x0) / k - l < - l ∧ - - l < (phi (x0 + k) - phi x0) / k - l.
+  It holds that (phi (x0 + k) - phi x0) / k < 0.
+  By (Rinv_l k Hkn) it holds that / k * k = 1.
+  It holds that (phi (x0 + k) - phi x0) / k * k = phi (x0 + k) - phi x0.
+  It holds that (phi (x0 + k) - phi x0) / k * k < 0.
+  It holds that phi (x0 + k) < phi x0.
+  It holds that k < d0.
+  Choose k0 := k.
+  We conclude that 0 < k0 ∧ k0 < d0 ∧ phi (x0 + k0) < phi x0.
+Qed.
+
+(** Dually, a positive derivative at [x₀] gives smaller values just to the left. *)
+Lemma deriv_pos_left (phi : ℝ → ℝ) (x0 l d0 : ℝ)
+    (Hl : derivable_pt_lim phi x0 l) (Hpos : l > 0) (Hd0 : d0 > 0) :
+    ∃ k : ℝ, 0 < k ∧ k < d0 ∧ phi (x0 - k) < phi x0.
+Proof.
+  By (Hl l Hpos) it holds that ∃ δ : posreal, ∀ k : ℝ, k ≠ 0 → |k| < δ →
+    |(phi (x0 + k) - phi x0) / k - l| < l as (Hδ).
+  Obtain δ according to (Hδ).
+  It holds that ∀ k : ℝ, k ≠ 0 → |k| < δ →
+    |(phi (x0 + k) - phi x0) / k - l| < l as (Hδ').
+  By (cond_pos δ) it holds that δ > 0 as (Hδpos).
+  Define k := Rmin (δ / 2) (d0 / 2).
+  By (Rmin_l (δ / 2) (d0 / 2)) it holds that k ≤ δ / 2.
+  By (Rmin_r (δ / 2) (d0 / 2)) it holds that k ≤ d0 / 2.
+  By (Rmin_pos (δ / 2) (d0 / 2)) it holds that 0 < k.
+  It holds that - k ≠ 0 as (Hkn).
+  By (Rabs_Ropp k) it holds that |- k| = |k|.
+  By (Rabs_pos_eq k) it holds that |k| = k.
+  It holds that |- k| < δ as (Hkd).
+  By (Hδ' (- k) Hkn Hkd) it holds that
+    |(phi (x0 + - k) - phi x0) / (- k) - l| < l as (Hq).
+  By (Rabs_def2 ((phi (x0 + - k) - phi x0) / (- k) - l) l Hq) it holds that
+    (phi (x0 + - k) - phi x0) / (- k) - l < l ∧ - l < (phi (x0 + - k) - phi x0) / (- k) - l.
+  It holds that 0 < (phi (x0 + - k) - phi x0) / (- k).
+  By (Rinv_l (- k) Hkn) it holds that / (- k) * (- k) = 1.
+  It holds that (phi (x0 + - k) - phi x0) / (- k) * (- k) = phi (x0 + - k) - phi x0.
+  It holds that (phi (x0 + - k) - phi x0) / (- k) * (- k) < 0.
+  It holds that x0 + - k = x0 - k as (Ex).
+  It holds that phi (x0 + - k) < phi x0.
+  By Ex it holds that phi (x0 - k) < phi x0.
+  It holds that k < d0.
+  Choose k0 := k.
+  We conclude that 0 < k0 ∧ k0 < d0 ∧ phi (x0 - k0) < phi x0.
+Qed.
+
+(** _Darboux's theorem_ (Abbott Theorem 5.2.7): derivatives have the intermediate value property.
     If [h] is differentiable on [[a,b]] and [v] lies strictly between [h'(a)]
     and [h'(b)], then [h'(c) = v] for some [c ∈ (a,b)] — even though [h'] need
     not be continuous.
@@ -233,7 +327,91 @@ Theorem darboux_theorem (h : ℝ → ℝ) (a b v : ℝ) (Hab : a < b)
     (Hvb : v < derive_pt h b (Hd b)) :
     ∃ c, a < c ∧ c < b ∧ derive_pt h c (Hd c) = v.
 Proof.
-  Admitted.
+  (** The auxiliary function [φ(x) = h(x) - v·x] has [φ' = h' - v]. *)
+  We claim that ∀ y : ℝ, derivable_pt_lim (fun x => h x - v * x) y (derive_pt h y (Hd y) - v)
+    as (Hphi).
+  {
+    Take y : ℝ.
+    It holds that derive_pt h y (Hd y) = derive_pt h y (Hd y) as (Er).
+    By (derive_pt_eq_1 h y (derive_pt h y (Hd y)) (Hd y) Er) it holds that
+      derivable_pt_lim h y (derive_pt h y (Hd y)) as (H1).
+    By (derivable_pt_lim_scal id v y 1 (derivable_pt_lim_id y)) it holds that
+      derivable_pt_lim (fun x => v * x) y (v * 1) as (H2).
+    By (derivable_pt_lim_minus h (fun x => v * x) y _ _ H1 H2) it holds that
+      derivable_pt_lim (fun x => h x - v * x) y (derive_pt h y (Hd y) - v * 1) as (H3).
+    It holds that derive_pt h y (Hd y) - v = derive_pt h y (Hd y) - v * 1 as (E1).
+    By E1 we conclude that
+      derivable_pt_lim (fun x => h x - v * x) y (derive_pt h y (Hd y) - v).
+  }
+  (** [φ] is continuous, so it attains a minimum on [[a, b]]. *)
+  We claim that ∀ x, a ≤ x ∧ x ≤ b → continuity_pt (fun x => h x - v * x) x as (Hcont).
+  {
+    Take x : ℝ. Assume that a ≤ x ∧ x ≤ b.
+    Define Hdx := @exist ℝ (fun l : ℝ => derivable_pt_abs (fun x => h x - v * x) x l)
+      (derive_pt h x (Hd x) - v) (Hphi x).
+    By (derivable_continuous_pt (fun x => h x - v * x) x Hdx) we conclude that
+      continuity_pt (fun x => h x - v * x) x.
+  }
+  It holds that a ≤ b as (Hab').
+  By (extreme_value_theorem_min (fun x => h x - v * x) a b Hab' Hcont) it holds that
+    ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → h c - v * c ≤ h x - v * x as (Hmin).
+  Obtain c according to (Hmin).
+  It holds that a ≤ c.
+  It holds that c ≤ b.
+  It holds that ∀ x, a ≤ x ∧ x ≤ b → h c - v * c ≤ h x - v * x as (Hminc).
+  It holds that b - a > 0 as (Hba).
+  (** The minimum is not at [a], because [φ'(a) < 0]. *)
+  We claim that a < c as (Hac').
+  {
+    We argue by contradiction.
+    Assume that ¬ (a < c).
+    It holds that c = a as (Eca).
+    It holds that derive_pt h a (Hd a) - v < 0 as (Hneg).
+    By (deriv_neg_right (fun x => h x - v * x) a (derive_pt h a (Hd a) - v) (b - a)
+          (Hphi a) Hneg Hba) it holds that
+      ∃ k : ℝ, 0 < k ∧ k < b - a ∧ h (a + k) - v * (a + k) < h a - v * a as (Hk).
+    Obtain k according to (Hk).
+    It holds that h (a + k) - v * (a + k) < h a - v * a.
+    It holds that a ≤ a + k ∧ a + k ≤ b as (Hk2).
+    By (Hminc (a + k) Hk2) it holds that h c - v * c ≤ h (a + k) - v * (a + k).
+    By Eca it holds that h a - v * a ≤ h (a + k) - v * (a + k).
+    Contradiction.
+  }
+  (** The minimum is not at [b], because [φ'(b) > 0]. *)
+  We claim that c < b as (Hcb').
+  {
+    We argue by contradiction.
+    Assume that ¬ (c < b).
+    It holds that c = b as (Ecb).
+    It holds that derive_pt h b (Hd b) - v > 0 as (Hpos).
+    By (deriv_pos_left (fun x => h x - v * x) b (derive_pt h b (Hd b) - v) (b - a)
+          (Hphi b) Hpos Hba) it holds that
+      ∃ k : ℝ, 0 < k ∧ k < b - a ∧ h (b - k) - v * (b - k) < h b - v * b as (Hk).
+    Obtain k according to (Hk).
+    It holds that h (b - k) - v * (b - k) < h b - v * b.
+    It holds that a ≤ b - k ∧ b - k ≤ b as (Hk2).
+    By (Hminc (b - k) Hk2) it holds that h c - v * c ≤ h (b - k) - v * (b - k).
+    By Ecb it holds that h b - v * b ≤ h (b - k) - v * (b - k).
+    Contradiction.
+  }
+  (** At the interior minimum, [φ'(c) = 0] (Fermat). *)
+  Define Hdc := @exist ℝ (fun l : ℝ => derivable_pt_abs (fun x => h x - v * x) c l)
+    (derive_pt h c (Hd c) - v) (Hphi c).
+  We claim that ∀ x : ℝ, a < x → x < b → h c - v * c ≤ h x - v * x as (Hmin').
+  {
+    Take x : ℝ. Assume that a < x. Assume that x < b.
+    It holds that a ≤ x ∧ x ≤ b as (H3).
+    By (Hminc x H3) we conclude that h c - v * c ≤ h x - v * x.
+  }
+  By (deriv_minimum (fun x => h x - v * x) a b c Hdc Hac' Hcb' Hmin') it holds that
+    derive_pt (fun x => h x - v * x) c Hdc = 0.
+  By (derive_pt_eq_0 (fun x => h x - v * x) c (derive_pt h c (Hd c) - v) Hdc (Hphi c))
+    it holds that derive_pt (fun x => h x - v * x) c Hdc = derive_pt h c (Hd c) - v.
+  It holds that derive_pt h c (Hd c) = v.
+  Choose c0 := c.
+  We conclude that a < c0 ∧ c0 < b ∧ derive_pt h c0 (Hd c0) = v.
+Qed.
+
 
 (** ** A differentiability example *)
 
@@ -248,7 +426,34 @@ Lemma differentiable_example
     (Hg : ∀ x : ℝ, x ≠ 0 → g x = x ^ 2 * sin (1 / x)) (Hg0 : g 0 = 0) :
     ∃ Hd : derivable_pt g 0, derive_pt g 0 Hd = 0.
 Proof.
-  Admitted.
+  We claim that derivable_pt_lim g 0 0 as (Hlim).
+  {
+    We need to show that ∀ eps : ℝ, 0 < eps → ∃ δ : posreal, ∀ k : ℝ, k ≠ 0 → |k| < δ →
+      |(g (0 + k) - g 0) / k - 0| < eps.
+    Take eps : ℝ. Assume that 0 < eps as (Heps).
+    Choose δ := mkposreal eps Heps.
+    Take k : ℝ. Assume that k ≠ 0 as (Hk). Assume that |k| < δ.
+    It holds that |k| < eps.
+    It holds that 0 + k = k as (E0).
+    By (Hg k Hk) it holds that g k = k ^ 2 * sin (1 / k).
+    By (Rinv_r k Hk) it holds that k * / k = 1.
+    It holds that k ^ 2 * sin (1 / k) / k = k * sin (1 / k).
+    It holds that (g k - g 0) / k - 0 = k * sin (1 / k).
+    By (Rabs_mult k (sin (1 / k))) it holds that
+      |k * sin (1 / k)| = |k| * |sin (1 / k)|.
+    By (SIN_bound (1 / k)) it holds that -1 ≤ sin (1 / k) ∧ sin (1 / k) ≤ 1 as (Hs).
+    By (Rabs_le (sin (1 / k)) 1 Hs) it holds that |sin (1 / k)| ≤ 1.
+    By (Rabs_pos (sin (1 / k))) it holds that 0 ≤ |sin (1 / k)|.
+    By (Rabs_pos k) it holds that 0 ≤ |k|.
+    It holds that |k| * |sin (1 / k)| ≤ |k|.
+    It holds that |(g k - g 0) / k - 0| < eps.
+    By E0 we conclude that |(g (0 + k) - g 0) / k - 0| < eps.
+  }
+  Define Hd := @exist ℝ (fun l : ℝ => derivable_pt_abs g 0 l) 0 Hlim.
+  Choose Hd0 := Hd.
+  By (derive_pt_eq_0 g 0 0 Hd0 Hlim) we conclude that derive_pt g 0 Hd0 = 0.
+Qed.
+
 
 (** ** A continuous nowhere-differentiable function *)
 
@@ -269,7 +474,7 @@ Proof.
 
 (** ** Positive derivative implies strictly increasing *)
 
-(** Theorem 10.5: if [ψ' > 0] on [(a,v)] then [ψ] is strictly increasing on
+(** A consequence of the _mean value theorem_: if [ψ' > 0] on [(a,v)] then [ψ] is strictly increasing on
     [[a,v]].
 
     Proof idea: for [a ≤ x < y ≤ v], the mean value theorem gives a point
@@ -282,9 +487,9 @@ Lemma positive_derivative_strictly_increasing (psi : ℝ → ℝ) (Hd : derivabl
 Proof.
   (* Exactly Stdlib's [derive_increasing_interv]. *)
   Take x ∈ ℝ. Take y ∈ ℝ.
-  Assume that a ≤ x as (H1).
+  Assume that a ≤ x.
   Assume that x < y as (H2).
-  Assume that y ≤ v as (H3).
+  Assume that y ≤ v.
   It holds that a < v as (Hav).
   It holds that a ≤ x ∧ x ≤ v as (Hx).
   It holds that a ≤ y ∧ y ≤ v as (Hy).

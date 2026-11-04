@@ -1,6 +1,6 @@
 (** * RUG.Analysis.Limits — Functional limits (ε-δ definition).
 
-  #<a href="../../index.html##lecture08">Lecture 8</a>#.
+  #<a href="../../index.html##lecture07">Lecture 7</a>#.
 
   Formalizes Abbott §4.2: the ε-δ definition of [lim_{x→c} f(x) = L],
   uniqueness of limits, algebraic limit theorem for functions, and
@@ -9,10 +9,6 @@
 (* begin hide *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import micromega.Lra.
-From Waterproof Require Export Notations.Common.
-From Waterproof Require Export Notations.Reals.
-From Waterproof Require Export Notations.Sets.
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
 Require Export RUG.Analysis.Sequences.
 
@@ -56,7 +52,7 @@ Proof.
   Choose δ := ε / 3. { Indeed, δ > 0. }
   We need to show that
     ∀ x ∈ ℝ, 0 < |x - 2| < δ ⇒ |(3 * x - 1) - 5| < ε.
-  Take x ∈ ℝ. Assume that 0 < |x - 2| < δ as (Hx).
+  Take x ∈ ℝ. Assume that 0 < |x - 2| < δ.
   
   It holds that |x - 2| < ε / 3.
   We claim that |(3 * x - 1) - 5| = 3 * |x - 2|.
@@ -109,7 +105,7 @@ Proof.
   We need to show that
       ∀ x ∈ ℝ, 0 < |x - c| < δ
       ⇨ |(f' x + g x) - (L + M)| < ε.
-  Take x ∈ ℝ. Assume that 0 < |x - c| < δ as (Hx).
+  Take x ∈ ℝ. Assume that 0 < |x - c| < δ.
   
   By Rmin_l it holds that Rmin δ1 δ2 ≤ δ1.
   By Rmin_r it holds that Rmin δ1 δ2 ≤ δ2.
@@ -142,14 +138,14 @@ Proof.
     ⇒ |(f' x * g x) - (L * M)| < ε.
   
   Take ε > 0.
-  It holds that |L| + 1 > 0 as (HL1).
-  It holds that |M| + 1 > 0 as (HM1).
+  It holds that |L| + 1 > 0.
+  It holds that |M| + 1 > 0.
 
   (** The next two lines are only useful to speed up the checker. *)
   It holds that / (2 * (|M| + 1)) > 0.
   It holds that / (2 * (|L| + 1)) > 0.
-  It holds that ε / (2 * (|M| + 1)) > 0 as (HbM).
-  It holds that ε / (2 * (|L| + 1)) > 0 as (HbL).
+  It holds that ε / (2 * (|M| + 1)) > 0.
+  It holds that ε / (2 * (|L| + 1)) > 0.
   
   (** Near [c], [f'] is bounded:
       [|f' x - L| < 1] forces [|f' x| < |L| + 1]. *)
@@ -178,7 +174,7 @@ Proof.
   
   Take x ∈ ℝ. Assume that 0 < |x - c| < δ.
   By Rmin_l it holds that Rmin δ0 (Rmin δ1 δ2) ≤ δ0.
-  By Rmin_r it holds that Rmin δ0 (Rmin δ1 δ2) ≤ Rmin δ1 δ2 as (Hmr).
+  By Rmin_r it holds that Rmin δ0 (Rmin δ1 δ2) ≤ Rmin δ1 δ2.
   By Rmin_l it holds that Rmin δ1 δ2 ≤ δ1.
   By Rmin_r it holds that Rmin δ1 δ2 ≤ δ2.
   
@@ -186,7 +182,7 @@ Proof.
   It holds that 0 < |x - c| < δ1.
   It holds that 0 < |x - c| < δ2.
   
-  By Hfbd it holds that |f' x - L| < 1 as (Hb0).
+  By Hfbd it holds that |f' x - L| < 1.
   By HfM it holds that
     |f' x - L| < ε / (2 * (|M| + 1)).
   By HgL it holds that
@@ -471,11 +467,9 @@ Proof.
   
   Obtain such a L'.
   By functional_limit_imp_seq it holds that
-    (fun n => f' (a n)) ⟶ L'
-  as (Hfa').
+    (fun n => f' (a n)) ⟶ L'.
   By functional_limit_imp_seq it holds that
-    (fun n => f' (b n)) ⟶ L'
-  as (Hfb').
+    (fun n => f' (b n)) ⟶ L'.
 
   By limit_unique (fun n => f' (a n)) L L' it holds that L = L'.
   By limit_unique (fun n => f' (b n)) M L' it holds that M = L'.

@@ -10,16 +10,16 @@ $(0,\infty)$.
 
 **Course material.**
 
-- Lectures 11 and 12: [uniform convergence](../index.html#lecture11),
-  [interchanging limits](../index.html#lecture12) (Abbott §6.2–6.4).
+- Lecture 10: [pointwise and uniform convergence](../index.html#lecture10)
+  (Abbott §6.2).
 - Formalisation: [`theories/FunctionSequences.v`](../theories/FunctionSequences.v),
-  in particular the definitions `converges_pointwise` / `converges_uniformly` and
-  the examples `x_over_n_uniform`, `x_pow_n_not_uniform`.
+  in particular the examples `x_over_n_uniform`, `x_pow_n_not_uniform`; the
+  definitions `converges_pointwise` / `converges_uniformly` are in
+  [`theories/Lib/UniformConvergence.v`](../theories/Lib/UniformConvergence.v)
+  and are re-exported by `FunctionSequences`.
 
 Notes:
 
-- The exercise below is cut into four steps. Steps 1, 2 and 4 are pure
-  computations with real numbers; only step 3 is about uniform convergence.
 - Recall that `a / b` is `a * / b` for Waterproof, and that the automation needs
   help with inverses: the fact `b * / b = 1` (from `Rinv_r`, valid when
   `b ≠ 0`) is usually all it is missing.
@@ -57,6 +57,18 @@ Definition fn_seq : ℕ → ℝ → ℝ := fun n x => INR n / (INR n * x + 1).
 Definition f_lim : ℝ → ℝ := fun x => 1 / x.
 ```
 
+**Waterproof remark: natural numbers as real numbers.** Rocq keeps `ℕ` and `ℝ`
+apart: `INR n` is the natural number `n` seen as a real number. The automation
+knows very little about `INR`, so for some basic properties of real numbers
+involving `INR n` (for instance that it is non-negative, or at least $1$) you
+will need to supply facts yourself. These standard-library lemmas provide them:
+
+- `le_INR : (n ≤ m)%nat → INR n ≤ INR m`: the inclusion `ℕ → ℝ` preserves `≤`;
+- `S_INR : INR (S n) = INR n + 1`: the successor `S n` becomes `+ 1` in `ℝ`;
+- `pos_INR : 0 ≤ INR n`: natural numbers are non-negative.
+
+Use them as any other lemma, e.g. `By S_INR it holds that INR (S n) = INR n + 1.`
+
 ## Part 1: the exact value of the error
 
 Show that for $x > 0$ and $n \geq 1$,
@@ -66,10 +78,12 @@ $$
 The statement is about a *real* number `nR` instead of `INR n`: this keeps the
 algebra readable, and we will apply it with `nR := INR n`.
 
+**Waterproof remark.** The automation needs `u * / u = 1` (`Rinv_r`) for each
+denominator `u`; with those facts in the context, `We conclude that ...` proves
+the identity.
+
 <hint title="💡 Hint (click to open/close)">
-State the two facts `(nR*x + 1) * / (nR*x + 1) = 1` and `x * / x = 1` with
-`By Rinv_r it holds that ...`; afterwards the identity is a polynomial one and
-`We conclude that ...` closes it.
+Once the denominators are taken care of, this is a polynomial identity.
 </hint>
 
 ```coq
@@ -94,13 +108,15 @@ $$
 $$
 where the inequality holds because $(nx+1)x = nx^2 + x \geq na^2$ for $x \geq a$.
 
+**Waterproof remark.** The automation does not find `a*a ≤ x*x` inside a bigger
+goal: state it separately first. It also cannot compare inverses on its own;
+supply the facts you need with
+`Rinv_mult : / (r1 * r2) = / r1 * / r2` and
+`Rinv_le_contravar : 0 < x → x ≤ y → / y ≤ / x`.
+
 <hint title="💡 Hint (click to open/close)">
-Use `diff_value`, then remove the absolute value (the quantity inside is
-negative). To compare the two inverses use `Rinv_mult`
-(`/ (u * v) = / u * / v`) and `Rinv_le_contravar`
-(`0 < r1 → r1 ≤ r2 → / r2 ≤ / r1`).
-The automation does not find `a*a ≤ x*x` inside a bigger goal: state it
-separately first.
+Use `diff_value`; the quantity inside the absolute value is negative. Then
+compare the two inverses.
 </hint>
 
 ```coq
@@ -120,9 +136,12 @@ Qed.
 Also prove the following auxiliary fact, which turns "$m$ is large" into
 "$1/m$ is small".
 
+**Waterproof remark.** As in Part 2, the automation cannot compare inverses on
+its own. Use `Rinv_lt_contravar : 0 < r1 * r2 → r1 < r2 → / r2 < / r1` and
+`Rinv_inv : / / r = r`.
+
 <hint title="💡 Hint (click to open/close)">
-A chain does it: `We conclude that (& 1 / m = / m < / / ε = ε).`
-(you first need `/ ε > 0` and `m > 0` in the context).
+Taking inverses reverses inequalities between positive numbers.
 </hint>
 
 ```coq
@@ -144,20 +163,15 @@ Now prove uniform convergence on $[a,\infty)$ for every $a > 0$. Note how the
 threshold $N$ below depends on $\varepsilon$ and $a$, but *not* on $x$: that is
 exactly what uniform convergence means.
 
-<hint title="💡 Hint (click to open/close)">
-Start with
-```
-We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat →
-  ∀ x ∈ [a, ∞), | fn_seq n x - f_lim x | < ε.
-```
-Then `Take ε > 0.` and use
-`By the Archimedean property it holds that ∃ n1 ∈ ℕ, n1 > / (ε * (a*a)).`
-Choose `N1 := S n1` (this also guarantees `1 ≤ INR n` for `n ≥ N1`, which
-`diff_bound` needs). After `Choose`, restate the goal with
-`We need to show that ∀ n : ℕ, ...` before using `Take`.
+**Waterproof remark.** After `Choose N1 := ...`, restate the goal with
+`We need to show that ...` before using `Take`. For the facts about `INR n` you
+need here, use `le_INR`, `S_INR` and `pos_INR` (see the remark after the
+definition of `fn_seq`).
 
-`INR (S n1) = INR n1 + 1` comes from `S_INR`, and
-`/ (ε * (a*a)) = / ε * / (a*a)` from `Rinv_mult`.
+<hint title="💡 Hint (click to open/close)">
+The threshold comes from the Archimedean property applied to
+$\frac{1}{\varepsilon a^2}$; taking `N1 := S n1` also gives `1 ≤ INR n`. Then
+combine Part 2 and `small_inv`.
 </hint>
 
 ```coq
@@ -185,6 +199,11 @@ $$
 
 First the computation at that point.
 
+<hint title="💡 Hint (click to open/close)">
+Simplify `m * / m` and `/ / m` first (`Rinv_r`, `Rinv_inv`). `Rabs_Ropp` and
+`Rabs_pos_eq` remove the absolute value.
+</hint>
+
 ```coq
 Lemma gap_at_inv (m : ℝ) (Hm : 1 ≤ m) :
   | m / (m * / m + 1) - 1 / / m | ≥ 1/2.
@@ -203,13 +222,14 @@ And then the negative result. Take $\varepsilon = 1/2$ and evaluate the uniform
 estimate at the point $x = 1/N$, where $N$ is the threshold that uniform
 convergence would provide.
 
+**Waterproof remark.** While deriving a contradiction `Use` is not available.
+Specialise a hypothesis `H` by applying it to its arguments instead, as in
+`By (H (1/2) Hhalf) it holds that ...`. Facts about `INR (S N1)` again need
+`S_INR` and `pos_INR`.
+
 <hint title="💡 Hint (click to open/close)">
-Begin with `Assume that (fn_seq _converges uniformly on_ (0, ∞) to f_lim) as (Hunif).`
-(the goal is a negation, so this leaves you with `Derive a contradiction`).
-Instantiate `Hunif` at `ε := 1/2`, obtain the threshold `N1`, and specialise the
-resulting statement at `n := S N1` and `x := / INR (S N1)`. Specialising a
-hypothesis is easiest with `By ... it holds that ... as (...)`, restating the
-instance you want. Conclude with `Contradiction.`
+Take $\varepsilon = \frac12$ and evaluate at $n = N_1 + 1$, $x = 1/(N_1+1)$,
+then use `gap_at_inv`.
 </hint>
 
 ```coq

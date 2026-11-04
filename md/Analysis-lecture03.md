@@ -1,409 +1,414 @@
 ---
 title: "Analysis"
 author: "Marcello Seri, m.seri@rug.nl"
-date: "Lecture 3, Wednesday 20 November 2024"
+date: "Lecture 3"
 ---
 
 Topics:
-- Abbott §2.2. The limit of a sequence
-- Abbott §2.3. The algebraic and order limit theorems
+- Abbott §2.4. The monotone convergence theorem
+- Abbott §2.5. The Bolzano--Weierstrass theorem
 
-Formalization: [`Sequences.v`](docs/rocq/RUG.Analysis.Sequences.html), [`SequenceExamples.v`](docs/rocq/RUG.Analysis.SequenceExamples.html)
+Formalization: [`Sequences.v`](docs/rocq/RUG.Analysis.Sequences.html), [`Subsequences.v`](docs/rocq/RUG.Analysis.Subsequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
 
----
-
-# Motivation
-
-## Newton's root finding method
-
-![](../fig/newton1.png)
-
-*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
-
-Equation of tangent line: $y = f'(x_1)(x - x_1) + f(x_1)$
-
-Root of tangent line: $\displaystyle x_2 := x_1 - \frac{f(x_1)}{f'(x_1)}$
+Tutorial: [Tutorial 3](#tutorials/tutorial-3)
 
 ---
 
-## Newton's root finding method
+# Monotone sequences
 
-![](../fig/newton2.png)
-
-*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
-
-Iterative process: $\displaystyle x_{n+1} := x_n - \frac{f(x_n)}{f'(x_n)} \qquad n=1,2,3,\dots$
-
----
-
-# Sequences and limits
-
-## Sequences
-
-**Definition:** a **sequence** is a function with domain $\mathbb{N}$
-
-Sequences can be written as infinite lists of numbers:
-- $(1, \tfrac{1}{2}, \tfrac{1}{3}, \tfrac{1}{4}, \dots)$
-- $(\frac{n+1}{n})_{n=1}^\infty = (\tfrac{2}{1}, \tfrac{3}{2}, \tfrac{4}{3}, \dots)$
-- $(x_n)$ where $x_1 = 2$ and $x_{n+1} = \tfrac{1}{2}(x_n + 1)$
-
----
-
-## Limits
+## Sequences and limits
 
 **Definition:** $(a_n)$ **converges** to $a$ if
-
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
 n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
 $$
 
-**Notation:** $a = \displaystyle\lim_{n\to\infty} a_n \quad\text{or}\quad a = \lim a_n \quad\text{or}\quad a_n \rightarrow a$
-
-**Meaning:** $a_n$ gets arbitrarily close to $a$ as $n$ grows larger
-
----
-
-## Limits
-
-**Definition:** for $a \in \mathbb{R}$ and $\epsilon>0$ the set
-
-$$
-V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon, a+\epsilon)
-$$
-
-is called the **$\epsilon$-neighborhood** of $a$
-
-![](../fig/lec04-epsnbh.png)
-
-*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
-
----
-
-## Limits
-
-**Alternative definition:** $(a_n)$ **converges** to $a$ if
-
-$$
-\forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
-n \geq N \quad\Rightarrow\quad a_n \in V_\epsilon(a)
-$$
+**Notation:** $a = \lim a_n$ or $a_n \rightarrow a$
 
 ![](../fig/lec04-convergent.png)
-
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-**Moral:** the tail of the sequence gets trapped in $V_\epsilon(a)$
+---
+
+## Monotone sequences
+
+**Definition:** $(a_n)$ is called **monotone** if it is either
+
+- increasing: $\quad\; a_n \leq a_{n+1} \quad\forall\,n \in \mathbb{N}$
+
+  or
+
+- decreasing: $\quad a_{n+1} \leq a_n \quad\forall\,n \in \mathbb{N}$
+
+**Examples:**
+- $(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\tfrac{1}{4},\dots)$ is monotone
+- $(b_n) = (1,1,2,2,4,4,8,8,\dots)$ is monotone
+- $(c_n) = (1,0,1,0,\dots)$ is **NOT** monotone
 
 ---
 
-## Limits
+## Monotone convergence theorem
 
-**Example:** $\lim \displaystyle\frac{1}{n} = 0$
+**Theorem:** $(a_n)$ bounded & monotone $\;\Rightarrow\; (a_n)$ converges
 
-Let $\epsilon > 0$ be arbitrary
+**Proof:** $A = \{a_n \,:\, n \in \mathbb{N}\}$ is bounded
 
-Archimedean property $\;\Rightarrow\; \exists\,N \in \mathbb{N} \quad\text{s.t.}\quad \displaystyle\frac{1}{N} < \epsilon$
+Strategy of proof:
 
-This choice of $N$ gives
-
-$$
-n \geq N
-\qquad\Rightarrow\qquad
-\frac{1}{n} \leq \frac{1}{N} < \epsilon
-\qquad\Rightarrow\qquad
-\left|\frac{1}{n} - 0\right| = \frac{1}{n} < \epsilon
-$$
+- $a_n$ increasing $\;\Rightarrow\; \lim a_n = \sup A$
+- $a_n$ decreasing $\;\Rightarrow\; \lim a_n = \inf A$ (exercise!)
 
 ---
 
-## Limits
+## Monotone convergence theorem
 
-**Example:** $\lim \displaystyle\left(\frac{6n+7}{3n+1}\right) = 2$
+**Proof (ctd):** assume that $(a_n)$ increases
 
-Note:
+Let $s=\sup\{a_n \,:\, n \in \mathbb{N}\}$
 
+Let $\epsilon>0$ be arbitrary, then $s-\epsilon$ is not an upper bound
+
+There exists $N \in \mathbb{N}$ s.t. $s-\epsilon < a_N$
+
+For $n \geq N$ we have
 $$
-\left|\frac{6n+7}{3n+1}-2\right|
-=
-\left|\frac{6n+7}{3n+1}-\frac{6n+2}{3n+1}\right|
-=
-\frac{5}{3n+1}
-< \frac{5}{3n}
-$$
-
----
-
-## Limits
-
-**Example:** $\lim \displaystyle\left(\frac{6n+7}{3n+1}\right) = 2$
-
-Let $\epsilon > 0$ be arbitrary
-
-Choose $N\in\mathbb{N}$ such that $\displaystyle\frac{1}{N} < \frac{3}{5}\epsilon$
-
-This choice of $N$ gives
-
-$$
-n \geq N
-\quad\Rightarrow\quad
-\left|\frac{6n+7}{3n+1}-2\right| < \frac{5}{3n} \leq \frac{5}{3N} < \epsilon
+s-\epsilon < a_N \leq a_n \leq s < s+\epsilon \quad\Rightarrow\quad |a_n-s| < \epsilon
 $$
 
 ---
 
-## Standard limits
+## Monotone convergence theorem
 
-- $\lim 1/n^\alpha = 0 \qquad (\alpha > 0)$
-- $\lim c^n = 0 \quad\qquad (-1 < c < 1)$
-- $\lim c^n n^\alpha = 0 \qquad (-1 < c < 1, \; \alpha\in\mathbb{R})$
-- $\lim \sqrt[n]{c} = 1 \;\;\,\qquad (c>0)$
-- $\lim \sqrt[n]{n} = 1$
-- $\lim n! / n^n = 0$
+**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
 
-*[For a proof, see document "Course information" on Brightspace]*
-
----
-
-## Divergent sequences
-
-**Definition:** a sequence that does not converge is called **divergent**
-
-**Example:** $(a_n) = (-1, 1, -1, 1, \dots)$ is divergent
-
-*[But how to prove this?]*
+Induction proof that $(a_n)$ is increasing:
+$$\begin{aligned}
+a_1 = 1, \;\; a_2 = \sqrt{2} & \Rightarrow a_1 < a_2 \\[5mm]
+a_n < a_{n+1} \text{ for some } n & \Rightarrow 1 + a_n < 1 + a_{n+1} \\[3mm]
+& \Rightarrow \sqrt{1+a_n} < \sqrt{1+a_{n+1}} \\[3mm]
+& \Rightarrow a_{n+1} < a_{n+2}
+\end{aligned}$$
 
 ---
 
-## Divergent sequences
+## Monotone convergence theorem
 
-**Definition of convergence:**
+**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
 
+Induction proof that $(a_n)$ is bounded:
+$$\begin{aligned}
+a_1 = 1 & \Rightarrow a_1 < 2 \\[5mm]
+a_n < 2 \text{ for some } n & \Rightarrow 1 + a_n < 3 \\[3mm]
+& \Rightarrow \sqrt{1+a_n} < \sqrt{3} < 2 \\[3mm]
+& \Rightarrow a_{n+1} < 2
+\end{aligned}$$
+
+---
+
+## Monotone convergence theorem
+
+**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+
+$(a_n)$ bounded and increasing $\;\Rightarrow\;$ $a = \lim a_n$ exists by MCT
+
+Moreover:
 $$
-\forall\,\epsilon>0 \quad \exists\, N \in \mathbb{N} \quad\text{s.t.}\quad
-n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
-$$
-
-**Logical negation:**
-
-$$
-\exists\,\epsilon>0 \quad\text{s.t.}\quad
-\forall\,N\in \mathbb{N}\quad\exists\, n \geq N \quad\text{s.t.}\quad |a_n-a| \geq \epsilon
+\begin{split}
+a_{n+1}^2 = 1 + a_n
+ & \quad\Rightarrow\quad \lim a_{n+1}^2 = \lim\,(1+a_n) \\[4mm]
+ & \quad\Rightarrow\quad a^2 = 1 + a \\[2mm]
+ & \quad\Rightarrow\quad a = \frac{1+\sqrt{5}}{2}
+\end{split}
 $$
 
 ---
 
-## Divergent sequences
+# Subsequences
+
+## Subsequences
+
+**Definition:** pick $n_k \in \mathbb{N}$ such that
+$$
+1 \leq n_1 < n_2 < n_3 < \cdots
+$$
+If $(a_n)$ is a sequence then
+$$
+(a_{n_k}) = (a_{n_1}, a_{n_2}, a_{n_3}, \dots)
+$$
+is called a **subsequence** of $(a_n)$
+
+**Note:** $n_k \geq k$ for all $k \in \mathbb{N}$
+
+---
+
+## Subsequences
+
+**Example:** consider
+$$
+(a_n) = (a_1, a_2, a_3, a_4, a_5,\dots)
+$$
+
+Some subsequences are given by:
+$$\begin{aligned}
+n_k = k+4
+ & \quad\Rightarrow\quad &
+(a_{n_k}) = (a_5, a_6, a_7,\dots) \\[5mm]
+n_k = 2k
+ & \quad\Rightarrow\quad &
+(a_{n_k}) = (a_2, a_4, a_6,\dots) \\[5mm]
+n_k = 10^k & \quad\Rightarrow\quad &
+(a_{n_k}) = (a_{10}, a_{100}, a_{1000},\dots)
+\end{aligned}$$
+
+---
+
+## Subsequences
+
+**Warning:** the indices $n_k$ must be **strictly increasing**!
+
+The following examples **DO NOT** qualify as subsequences of $(a_n)$:
+- $(a_3, a_5, a_1, a_7, a_2,\dots)$
+  *[the ordering of the terms is not respected]*
+- $(a_1, a_1, a_2, a_3, a_4,\dots)$
+  *[repetitions are not allowed]*
+
+---
+
+## Subsequences
+
+**Theorem:** $\lim a_n = a \quad\Rightarrow\quad \lim a_{n_k} = a$
+
+**Proof:** let $\epsilon>0$ be arbitrary, then
+
+$$\begin{aligned}
+\exists\, N \in \mathbb{N} \quad \text{s.t.}\quad n \geq N & \Rightarrow |a_n - a| < \epsilon \\[5mm]
+k \geq N & \Rightarrow n_k \geq N \qquad\qquad\quad \text{(use $n_k\geq k$)} \\[2mm]
+          & \Rightarrow |a_{n_k} - a| < \epsilon
+\end{aligned}$$
+
+---
+
+## Subsequences
 
 **Example:** $(a_n) = (-1,1,-1,1,\dots)$ diverges
 
-*[no number $a\in\mathbb{R}$ can be a limit]*
-
-Choose $\epsilon = 1$ and $N\in\mathbb{N}$ arbitrary
-
-Case $a \geq 0$:
-
-$n=2N+1 \;\Rightarrow\; |a_n - a| = |{-1}-a| = 1 + a \geq \epsilon$
-
-Case $a < 0$:
-
-$n=2N \;\Rightarrow\; |a_n - a| = |1-a| = 1 - a > \epsilon$
-
----
-
-## Bounded sequences
-
-**Definition:** $(a_n)$ is **bounded** if
-
-$$
-\exists\, M > 0 \quad\text{s.t.}\quad |a_n| \leq M \quad\forall\, n \in \mathbb{N}
-$$
-
-**Examples:**
-
-$(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\dots)$ is bounded (take $M=1$)
-
-$(b_n) = (1,4,9,16,25,\dots)$ is **NOT** bounded
-
----
-
-## Bounded sequences
-
-**Theorem:** $(a_n)$ is convergent $\;\Rightarrow\; (a_n)$ is bounded
-
-**Proof:** let $a=\lim a_n$ then for $\epsilon = 1$ there exists $N \in \mathbb{N}$ such that
-
+Take two subsequences:
 $$\begin{aligned}
-n \geq N
-& \quad\Rightarrow\quad
-|a_n-a| < 1 \\[2mm]
-& \quad\Rightarrow\quad
-\big||a_n|-|a|\big| < 1 \\[2mm]
-& \quad\Rightarrow\quad
-|a_n|-|a| < 1 \\[2mm]
-& \quad\Rightarrow\quad
-|a_n| < 1 + |a|
+n_k = 2k   & \quad\Rightarrow\quad & (a_{n_k}) = (1,1,1,\dots) \\[2mm]
+           & \quad\Rightarrow\quad & \lim a_{n_k} = 1 \\[5mm]
+n_k = 2k-1 & \quad\Rightarrow\quad & (a_{n_k}) = (-1,-1,-1,\dots) \\[2mm]
+           & \quad\Rightarrow\quad & \lim a_{n_k} = -1
 \end{aligned}$$
 
-For $M = \max\{|a_1|,|a_2|,\dots,|a_{N-1}|,1+|a|\}$ we have
+Different subsequences have different limits $\;\Rightarrow\;$ $(a_n)$ diverges
 
+---
+
+## Bolzano--Weierstrass theorem
+
+**Theorem:** every bounded sequence has a convergent subsequence
+
+**Proof:** there exists $M>0$ such that $a_n \in [-M, M]$ for all $n$
+
+![](../fig/lec05-bolzano.png)
+*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+Halving-process gives nested closed intervals
 $$
-|a_n| \leq M \quad \forall\, n\in \mathbb{N}
+I_1 \supseteq I_2 \supseteq I_3 \supseteq \cdots
+$$
+NIP $\Rightarrow$ there exists $x\in \bigcap_{n=1}^\infty I_n$
+
+---
+
+## Bolzano--Weierstrass theorem
+
+**Proof (ctd):** each $I_k$ contains **infinitely many** terms of the seq.
+- pick $n_1 \in \mathbb{N}$ with $a_{n_1} \in I_1$
+- pick $n_2 \in \mathbb{N}$ with $n_2 > n_1$ and $a_{n_2} \in I_2$
+- pick $n_3 \in \mathbb{N}$ with $n_3 > n_2$ and $a_{n_3} \in I_3$
+  $\quad\quad\vdots$
+
+Note that
+$$
+\left.
+\begin{matrix*}
+x & \in I_k \\[2mm]
+a_{n_k} & \in I_k
+\end{matrix*}
+\right\}
+\quad\Rightarrow\quad
+|a_{n_k} - x| \leq \text{length}(I_k) = \frac{2M}{2^k} \to 0
 $$
 
 ---
 
-## Bounded sequences
+# Introduction to series
 
-**Theorem:** $(a_n)$ is convergent $\;\Rightarrow\; (a_n)$ is bounded
+## How to add infinitely many numbers?
 
-**Warning:** the converse is not true!
-
-$(a_n) = (-1, 1, -1, 1, \dots)$ is bounded but **NOT** convergent
+**Definition:**
+- infinite **series**:
+$$
+\sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots
+$$
+- $n$-th **partial sum**:
+$$
+s_n = a_1 + a_2 + \dots + a_n
+$$
+- if $\lim s_n = s$, then we say the series **converges** to $s$
 
 ---
 
-## Bounded sequences
+## Euler's famous example
 
-**Theorem:** $(a_n)$ is convergent $\;\Rightarrow\; (a_n)$ is bounded
+**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k^2}$ converges
 
-**Note:** theorem can be used to prove that a sequence diverges
-
-**Example:** $(a_n) = (n^2)$ diverges because it is not bounded
-
----
-
-# Properties of limits
-
-## Algebraic properties
-
-**Theorem:** if $a = \lim a_n$ and $b = \lim b_n$ then
-
-1. $\lim (ca_n) = ca \qquad (\text{where } c \in \mathbb{R})$
-2. $\lim (a_n + b_n) = a+b$
-3. $\lim (a_nb_n) = ab$
-4. $\lim (a_n/b_n) = a/b \qquad\qquad (\text{if } b\neq 0)$
-
-**Proof:** for (1) and (4) see text book
-
----
-
-## Algebraic properties
-
-**Proof of (2):**
-
-$$
-\begin{split}
-|(a_n+b_n) - (a+b)| & = |(a_n-a) + (b_n-b)| \\[2mm]
- & \leq |a_n-a| + |b_n-b|
-\end{split}
-$$
-
-Let $\epsilon>0$ be arbitrary, then
-
-$$
-\begin{split}
-\exists\,N_1 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_1 & \quad\Rightarrow\quad |a_n-a| < \tfrac{1}{2}\epsilon \\[3mm]
-\exists\,N_2 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \tfrac{1}{2}\epsilon
-\end{split}
-$$
-
-Define $N = \max\{N_1,N_2\}$ then
-
-$$
-n \geq N \quad\Rightarrow\quad |(a_n+b_n) - (a+b)| < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon = \epsilon
-$$
-
----
-
-## Algebraic properties
-
-**Proof of (3):**
-
+**Proof:**
 $$\begin{aligned}
-|a_nb_n - ab| & =    |a_nb_n - ab_n + ab_n - ab| \\[5mm]
-              & =    |b_n(a_n-a) + a(b_n-b)| \\[5mm]
-              & \leq |b_n(a_n-a)| + |a(b_n-b)| \\[5mm]
-              & =    |b_n|\,|a_n-a| + |a|\,|b_n-b| \\[5mm]
-              & \leq M |a_n-a| + |a|\,|b_n-b|
-\end{aligned}$$
-
-Recall: $(b_n)$ is convergent and therefore bounded!
-
----
-
-## Algebraic properties
-
-**Proof of (3):**
-
-$$
-|a_nb_n - ab| \leq M |a_n-a| + |a||b_n-b|
-$$
-
-Let $\epsilon>0$ be arbitrary, then
-
-$$
-\begin{split}
-\exists\, N_1 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_1 & \quad\Rightarrow\quad |a_n-a| < \frac{\epsilon}{2M} \\[2mm]
-\exists\, N_2 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \frac{\epsilon}{2|a|}
-\end{split}
-$$
-
-Define $N = \max\{N_1,N_2\}$ then
-
-$$
-n \geq N \quad\Rightarrow\quad |a_nb_n - ab| < \epsilon
-$$
-
----
-
-## Order properties
-
-**Theorem:** if $\lim a_n = a$ and $\lim b_n = b$ then
-
-1. $a_n \geq 0 \;\,\quad\forall n \in \mathbb{N} \quad\Rightarrow\quad a \geq 0$
-2. $a_n \leq b_n \quad\forall n \in \mathbb{N} \quad\Rightarrow\quad a \leq b$
-3. $c \leq b_n \;\,\quad\forall n \in \mathbb{N} \quad\Rightarrow\quad c \leq b$
-4. $a_n \leq c \;\,\quad\forall n \in \mathbb{N} \quad\Rightarrow\quad a \leq c$
-
-**Moral:** limits preserve (nonstrict!) inequalities
-
----
-
-## Order properties
-
-**Proof (1):** assume that $a < 0$
-
-For $\epsilon = |a|$ there exists $N \in \mathbb{N}$ such that
-
-$$\begin{aligned}
-n \geq N & \quad\Rightarrow\quad  |a_n - a| < \epsilon \\[5mm]
-         & \quad\Rightarrow\quad  {-\epsilon} < a_n - a < \epsilon \\[5mm]
-         & \quad\Rightarrow\quad  a-\epsilon < a_n < a+\epsilon \\[5mm]
-         & \quad\Rightarrow\quad  a_n < a+|a|=0 \\[3mm]
-         &                        \text{Contradiction!}
+s_n & = 1 + \frac{1}{4} + \frac{1}{9} + \dots + \frac{1}{n^2} \\[5mm]
+s_n & < s_{n+1} \qquad\forall\, n \in \mathbb{N} \\[5mm]
+s_n & < 2 \qquad\forall\, n \in \mathbb{N} \qquad \text{*(see next slide)*}\\[5mm]
+\text{MCT} & \Rightarrow \lim s_n \text{ exists}
 \end{aligned}$$
 
 ---
 
-## Order properties
+## Euler's famous example
 
-**Proof (2):** if $a_n \leq b_n$ then $b_n-a_n\geq 0$ so that
-
-$$
-b-a = \lim(b_n - a_n) \geq 0 \quad\Rightarrow\quad b \geq a
-$$
-
-**Proof (3):** apply part (2) with $a_n = c$
-
-**Proof (4):** apply part (2) with $b_n = c$
+**Proof (ctd):**
+$$\begin{aligned}
+s_n
+ & = 1 + \frac{1}{2 \cdot 2} + \frac{1}{3 \cdot 3} + \frac{1}{4 \cdot 4} + \dots + \frac{1}{n\cdot n} \\[4mm]
+  & < 1 + \frac{1}{2 \cdot 1} + \frac{1}{3 \cdot 2} + \frac{1}{4 \cdot 3} + \dots + \frac{1}{n\cdot (n-1)} \\[4mm]
+  & = 1 + \left(1-\frac{1}{2}\right) + \left(\frac{1}{2}-\frac{1}{3}\right) + \left(\frac{1}{3}-\frac{1}{4}\right) + \dots + \left(\frac{1}{n-1}-\frac{1}{n}\right) \\[4mm]
+  & = 1 + 1 - \frac{1}{n} \\[4mm]
+  & < 2
+\end{aligned}$$
 
 ---
 
-## Order properties
+## Euler's famous example
 
-**Warning:** strict inequalities are not always preserved!
+**Remark:** since $s_n < 2$ for all $n$ the order limit theorem implies
+$$
+\sum_{k=1}^\infty \frac{1}{k^2} = \lim s_n \leq 2
+$$
 
-**Example:** $\displaystyle\frac{1}{n} > 0$ for all $n \in \mathbb{N}$ but $\displaystyle\lim\frac{1}{n}=0$
+Euler proved in 1734 that in fact
+$$
+\sum_{k=1}^\infty \frac{1}{k^2} = \frac{\pi^2}{6} = 1.644934\dots
+$$
 
-**Example:** $\displaystyle\frac{n}{n+1} < 1$ for all $n \in \mathbb{N}$ but $\displaystyle\lim\frac{n}{n+1}=1$
+---
+
+## More curious examples...
+
+$$\begin{aligned}
+\sum_{k=1}^\infty \frac{1}{k^4} & = \frac{\pi^4}{90} \\[4mm]
+\sum_{k=1}^\infty \frac{1}{k^6} & = \frac{\pi^6}{945} \\[4mm]
+\sum_{k=1}^\infty \frac{1}{k^8} & = \frac{\pi^8}{9450} \\
+ & \vdots
+\end{aligned}$$
+
+For odd powers of $k$ the sums are unknown!
+
+---
+
+## The harmonic series
+
+**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k}$ **diverges**
+
+**Proof:**
+$$\begin{aligned}
+s_n & = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \dots + \frac{1}{n} \\[6mm]
+s_{2^p} & \geq 1 + \frac{p}{2} \qquad\text{for all $p\in\mathbb{N}$ (see book)}
+\end{aligned}$$
+
+$(s_n)$ is unbounded and therefore divergent
+
+---
+
+## The integral test for convergence
+
+**Theorem:** assume that $f : [1,\infty) \to \mathbb{R}$ is
+1. positive
+2. continuous
+3. monotonically decreasing
+
+Let $a_k=f(k)$ then
+$$
+\sum_{k=1}^\infty a_k \text{ converges}
+\qquad\Leftrightarrow\qquad
+\displaystyle\int_1^\infty f(x) dx < \infty
+$$
+
+---
+
+## The integral test for convergence
+
+![](../fig/lec05-integral1.png)
+*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
+
+**Proof:** on the one hand
+$$
+\displaystyle\int_1^{n+1} f(x) dx \leq a_1 + a_2 + \cdots + a_n
+$$
+
+---
+
+## The integral test for convergence
+
+![](../fig/lec05-integral2.png)
+*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
+
+**Proof (ctd):** on the other hand
+$$
+a_1 + a_2 + \cdots + a_n \leq a_1 + \displaystyle\int_1^n f(x) dx
+$$
+
+---
+
+## The integral test for convergence
+
+**Proof (ctd):** for all $n \in \mathbb{N}$ we have
+$$
+\int_1^{n+1} f(x) dx
+\;\leq\;
+\underbrace{a_1 + a_2 + \cdots + a_n}_{s_n}
+\;\leq\;
+a_1 + \int_1^n f(x) dx
+$$
+
+Note that $(s_n)$ is increasing since all $a_k > 0$!
+
+If $\int_1^\infty f(x)\,dx < \infty$, then $(s_n)$ also bounded and hence convergent
+
+If $\int_1^\infty f(x)\,dx = \infty$, then $(s_n)$ unbounded and hence divergent
+
+---
+
+## The integral test for convergence
+
+**Example:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k^p}$ converges $\;\Leftrightarrow\; p>1$
+
+**Proof:** apply the theorem with $f(x) = \displaystyle\frac{1}{x^p}$
+
+---
+
+## The integral test for convergence
+
+**Example:** $\displaystyle\sum_{k=1}^\infty ke^{-k^2}$ converges
+
+**Proof:**
+$$
+\begin{split}
+f(x) = xe^{-x^2}
+\quad\Rightarrow\quad
+\int_1^b f(x)\,dx
+& = \bigg[-\tfrac{1}{2}e^{-x^2}\bigg]_1^b \\[4mm]
+& = \tfrac{1}{2}(e^{-1}-e^{-b^2}) \to \tfrac{1}{2}e^{-1} \\[4mm]
+& \quad\;\,\text{as } b \to \infty
+\end{split}
+$$

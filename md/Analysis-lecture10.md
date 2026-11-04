@@ -1,320 +1,333 @@
 ---
 title: "Analysis"
-author: "Marcello Seri, m.seri@rug.nl"
-date: "Lecture 10, Friday 13 December 2024"
+author: "Marcello Seri, m.seri@rug.nl, adapted from slides by Alef Sterk"
+date: "Lecture 10"
 ---
 
 Topics:
-- Abbott §5.2: Derivatives
-- Abbott §5.3: Mean value theorem
-- Abbott §5.4: A continuous, nowhere differentiable function
+- Abbott §6.2: Pointwise and uniform convergence
 
-Formalization: [`Derivatives.v`](docs/rocq/RUG.Analysis.Derivatives.html)
+Formalization: [`FunctionSequences.v`](docs/rocq/RUG.Analysis.FunctionSequences.html)
 
----
-
-# Derivatives
-
-## Derivative = limit of a difference quotient
-
-**Definition:** let $I\subseteq\mathbb{R}$ be an interval and $f : I \to \mathbb{R}$
-
-$f$ is called **differentiable** at $c \in I$ if
-
-$$
-f'(c) := \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \quad\text{exists}
-$$
+Tutorial: [Tutorial 10](#tutorials/tutorial-10)
 
 ---
 
-## Differentiability versus continuity
+# Pointwise convergence
 
-**Theorem:** $f : I \to \mathbb{R}$ differentiable at $c\in I \;\Rightarrow\; f$ continuous at $c$
+## Sequences of functions
 
-**Proof:**
+Consider a **sequence of functions** $f_n : A \to \mathbb{R}$
+
+1. What does "$f = \lim f_n$" mean?
+
+2. Which properties of $f_n$ carry over to $f$?
+---
+
+## Pointwise convergence
+
+**Definition:** consider $f_n : A \to \mathbb{R}$
+
+$(f_n)$ **converges pointwise** to $f : A \to \mathbb{R}$ if for all **fixed** $x \in A$
+$$
+\lim f_n(x) = f(x)
+$$
+
+Thus: for each **fixed** $x \in A$ we have
+$$
+\forall\,\epsilon>0 \quad
+\exists\,N_{\epsilon, x} \in \mathbb{N}
+\quad\text{s.t.}\quad
+n \geq N_{\epsilon, x}
+\quad\Rightarrow\quad
+|f_n(x)-f(x)| < \epsilon
+$$
+*[So $N$ depends on *both* $\epsilon$ and $x$!]*
+---
+
+## The classical example
+
+![](../fig/lec12-example1a.svg)
+
+**Example:** $f_n(x) = x^n$ gives
+$$
+f(x) = \lim f_n(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
+\quad
+\text{ on } A = [0,1]
+$$
+---
+
+## The classical example
+
+**Example (ctd):** let $\epsilon>0$ be arbitrary
 $$\begin{aligned}
-\lim_{x\to c} \big[f(x)-f(c)\big]
- & = \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \cdot (x-c) \\[4mm]
- & = \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \cdot \lim_{x\to c} \big[x-c\big] \\[4mm]
- & = f'(c)\cdot 0 \\[4mm]
- & = 0
+x = 0 \text{ or } 1 & : \text{take } N_{\epsilon, x} = 1 \\[4mm]
+n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = 0 < \epsilon \\[8mm]
+0 < x < 1 & : \text{take } N_{\epsilon, x} > \frac{\log\epsilon}{\log x} \\[4mm]
+n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = |x^n-0| = x^n < \epsilon
 \end{aligned}$$
 
+*[Observe how $N$ depends on both $\epsilon$ and $x$!]*
 ---
 
-## Differentiability versus continuity
+## The triangle sequence
 
-**Example:** $f(x) = \begin{cases} 1 & \text{if } x > 0 \\[3mm] 0 & \text{if } x \leq 0 \end{cases}$
-is **NOT** differentiable at $c=0$
-
-Reason: $f$ is **NOT** continuous at $c=0$
-
----
-
-## Differentiability versus continuity
-
-**Example:** $f(x) = |x|$ continuous but **NOT** differentiable at $c=0$
-
-$$
-\lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = \lim_{x\to 0} \frac{|x|}{x}\qquad\text{does \textbf{NOT} exist}
-$$
-
-**Exercise:** show $f$ is differentiable at every $c\neq 0$ and
-$$
-f'(c) = \begin{cases} \phantom{-}1 & \text{ if } c > 0 \\ -1 & \text{ if } c < 0 \end{cases}
-$$
-
----
-
-## When to use the definition?
-
-**Example:** $f(x) = \displaystyle\frac{x}{1+|x|} \;\Rightarrow\; f'(0) = 1$
-
-Apply the definition:
-
-$$\begin{aligned}
-\left|\frac{f(x)-f(0)}{x-0} - 1\right|
-& = \left|\frac{1}{1+|x|} - 1\right|
-= \frac{|x|}{1+|x|}
-\leq |x| \\[8mm]
-f'(0) & = \lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = 1 \quad\text{by $\epsilon,\delta$-argument}
-\end{aligned}$$
-
-**Remark:** for $c \neq 0$ we can compute $f'(c)$ using calculus rules
-
----
-
-# Darboux's theorem
-
-## Interior extremum theorem
-
-**Theorem:** assume
-
-- $f : (a,b)\to\mathbb{R}$ is differentiable
-- $f$ attains a maximum or minimum at $c \in (a,b)$
-
-Then $f'(c) = 0$
-
----
-
-## Interior extremum theorem
-
-**Proof (maximum):** $f(c) \geq f(x)$ for all $x \in (a,b)$
-
-Take sequences $(x_n)$ and $(y_n)$ in $(a,b)$ such that
-$$
-x_n < c < y_n \quad\forall\,n\in\mathbb{N} \quad\text{ and }\quad \lim x_n = \lim y_n = c
-$$
-
-$f'(c)=0$ by the order limit theorem:
-$$\begin{aligned}
-f'(c) & = \lim \frac{f(x_n)-f(c)}{x_n-c} \;\; \geq 0 \\[4mm]
-f'(c) & = \lim \frac{f(y_n)-f(c)}{y_n-c} \;\; \leq 0
-\end{aligned}$$
-
----
-
-## Interior extremum theorem
-
-**Warning:** previous theorem **need not be true** for closed intervals!
-
-Counter-example: $f(x) = x$ on $[0,1]$
-- minimum at $x=0$ but $f'(0) = 1$
-- maximum at $x=1$ but $f'(1) = 1$
-
----
-
-## Darboux's theorem
-
-**Theorem:** if $f : [a,b] \to \mathbb{R}$ is differentiable and
-$$
-f'(a) < L < f'(b)
-\qquad\text{or}\qquad
-f'(a) > L > f'(b)
-$$
-then there exists $c \in (a,b)$ with $f'(c)=L$
-
-**Notes:**
-- proof $\neq$ intermediate value theorem applied to $f'$!
-- we do **NOT** assume $f'$ to be continuous!
-
-**Proof:** restrict to the case $f'(a) < 0 < f'(b)$
-
-Otherwise replace $f(x)$ by $\pm(f(x) - Lx)$
-
----
-
-## Darboux's theorem
-
-**Proof (ctd):** let $f'(a) < 0 < f'(b)$
-
-Claim: $\exists\,s \in (a,b)$ s.t. $f(s) < f(a)$
-
-Otherwise $f(x) \geq f(a) \quad\forall\,x\in (a,b)\quad$ so that
-$$f'(a) = \lim_{x\to a} \frac{f(x)-f(a)}{x-a} \geq 0 \qquad\text{Contradiction!}
-$$
-
-Similarly: $\exists\,t \in (a,b)$ s.t. $f(t) < f(b)$
-
----
-
-## Darboux's theorem
-
-**Proof (ctd):**
-
-$[a,b]$ compact and $f$ continuous $\;\Rightarrow\; f$ attains a minimum on $[a,b]$
-
-$f(s) < f(a)$ and $f(t)<f(b) \;\Rightarrow\; f$ attains a minimum in $(a,b)$
-
-Interior extremum theorem $\;\Rightarrow\; f'(c)=0$ for some $c\in(a,b)$
-
----
-
-## Darboux's theorem
+![](../fig/lec12-example2a.svg)
 
 **Example:**
-$f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\[3mm] 0 & \text{if } x \notin\mathbb{Q} \end{cases}$
-is **NOT** a derivative
+$f_n(x) =
+\begin{cases}
+2nx   & \text{if}\quad 0 \leq x < 1/2n      \\
+2-2nx & \text{if}\quad 1/2n \leq x \leq 1/n \\
+0     & \text{if}\quad 1/n \leq x \leq 1
+\end{cases}$
 
-Assume there exists $F : \mathbb{R} \to \mathbb{R}$ such that $F'(x)=f(x)$
-
-Darboux $\;\Rightarrow\; f$ attains all values in $(0,1)$
-
-Contradiction!
-
+Then $f(x) = \lim f_n(x)=0$ for all $x\in [0,1]$
 ---
 
-# Mean value theorem
+## The triangle sequence
 
-## Rolle's theorem
+![](../fig/lec12-example2a.svg)
 
-![](../fig/lec11-rolle.png)
+**Example (ctd):**
+$$\begin{aligned}
+0 < x \leq 1 & : \text{take } N_{\epsilon,x} > 1/x \\[2mm]
+n \geq N_{\epsilon,x} & \Rightarrow \frac{1}{n} < x
+\;\; \Rightarrow \;\; |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
+\end{aligned}$$
 
+*[Observe how $N$ depends on $x$!]*
+---
+
+## The triangle sequence
+
+![](../fig/lec12-example2a.svg)
+
+**Example (ctd):**
+$$\begin{aligned}
+x=0 & : \text{take } N_{\epsilon,x} =1 \\[2mm]
+n \geq N_{\epsilon,x} & \Rightarrow |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
+\end{aligned}$$
+---
+
+# Uniform convergence
+
+## Uniform convergence
+
+**Definition:** $(f_n)$ **converges uniformly** to $f : A \to \mathbb{R}$ if
+
+$$
+\forall\,\epsilon>0\quad
+\exists\,N_\epsilon\in\mathbb{N}
+\quad\text{s.t.}\quad
+n \geq N_\epsilon
+\quad\Rightarrow\quad
+|f_n(x)-f(x)| < \epsilon
+\quad
+\forall\, x \in A
+$$
+
+**Note:** uniform means that **$N_\epsilon$ is independent of $x \in A$**
+---
+
+## Uniform convergence
+
+![](../fig/lec12-uniform.png)
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
+$f_n\to f$ uniformly means that for $n\geq N$ the graph of $f_n$ is within an **$\epsilon$-ribbon** around the graph of $f$
+
+*[Note: the graph of $f_n$ lies within a $\epsilon$-tubular neighbourhood of the graph of $f$]*
 ---
 
-## Rolle's theorem
+## The classical example
 
-**Theorem:** assume that
+![](../fig/lec12-example1b.svg)
 
-- $f : [a,b] \to \mathbb{R}$ is continuous and differentiable on $(a,b)$
-- $f(a) = f(b)$
-
-Then there exists $c\in(a,b)$ such that $f'(c)=0$
-
+**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
+$$
+f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
+$$
+In the figure: $\epsilon=1/4$
 ---
 
-## Rolle's theorem
+## The triangle sequence
 
-**Proof:** $f$ cont. and $[a,b]$ cpt. $\;\Rightarrow\; f$ attains max/min values
+![](../fig/lec12-example2b.svg)
 
-$f(a) = f(b)$ both max and min $\;\Rightarrow\; f$ is constant
-$\;\Rightarrow\; f'(x)=0$ for all $x$
-$\;\Rightarrow\;$ take any $c\in(a,b)$
+**Example:** the triangle sequence does **NOT** converge uniformly to $0$
 
-Otherwise, a max or min is attained at $c \in (a,b)$
-
-Then $f'(c)=0$ by interior extremum theorem
-
+(the dotted line is an $\epsilon$-ribbon around $f=0$ for $\epsilon=\tfrac{1}{2}$)
 ---
 
-## Mean value theorem
+## A useful characterization
 
-![](../fig/lec11-mvt.png)
+**Theorem:** if $f_n \to f$ uniformly on $A$, then
+$$
+\lim \left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
+$$
 
-*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+**Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
+$$\begin{aligned}
+n \geq N_\epsilon
+& \Rightarrow |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A \\[5mm]
+& \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| \leq \epsilon
+\end{aligned}$$
 
+*[Note: $\sup_{x\in A} |f_n(x)-f(x)| \to 0$ implies that $|f_n-f|$ is bounded on $A$ for all $n$ sufficiently large]*
 ---
 
-## Mean value theorem
+## A useful characterization
 
 **Theorem:** if
-- $f : [a,b] \to \mathbb{R}$ is continuous
-- $f$ is differentiable on $(a,b)$
-
-Then there exists $c\in (a,b)$ such that
 $$
-f'(c) = \frac{f(b)-f(a)}{b-a}
+\lim\left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
 $$
+then $f_n \to f$ uniformly on $A$
 
-**Proof:** apply Rolle's theorem to
-$$
-h(x) = f(x) - \bigg[{\frac{f(b)-f(a)}{b-a}(x-a) + f(a)}\bigg]
-$$
-
----
-
-## Mean value theorem
-
-**Proof:**
+**Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
 $$\begin{aligned}
-k(x) & = \frac{f(b)-f(a)}{b-a}(x-a) + f(a) \\[5mm]
-h(x) & = f(x) - k(x) \quad\text{is continuous on $[a,b]$} \\
-     &   \phantom{f(x) - k(x) \quad} \text{and differentiable on $(a,b)$}\\[5mm]
-h(a) & = h(b) \;\; = \;\; 0
+n \geq N_\epsilon
+& \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| < \epsilon \\[5mm]
+& \Rightarrow |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A
 \end{aligned}$$
-
-By Rolle's theorem: $\exists\,c \in (a,b)$ s.t.
-$$
-h'(c) = 0
-\quad\Rightarrow\quad
-f'(c) = k'(c)
-\quad\Rightarrow\quad
-f'(c) = \frac{f(b)-f(a)}{b-a}
-$$
-
 ---
 
-## Application: uniform continuity
+## A useful characterization
 
-**Example:** $f(x) = \arctan(x)$ is uniformly continuous on $\mathbb{R}$
+**Theorem:** consider $f_n : A \to \mathbb{R}$ then
+$$
+f_n \to f \text{ uniformly}
+\quad\Leftrightarrow\quad
+\lim \left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
+$$
 
-MVT $\;\Rightarrow\; \forall\,x,y \in \mathbb{R} \quad\exists\,c\in(x,y)\quad$ such that
+**Notes:**
+- $(\Rightarrow)$-proof shows: $|f_n-f|$ is bounded on $A$ for all $n$ suff. large
+
+- If $|f_n-f|$ is not bounded on $A$ for all $n$ sufficiently large, then $f_n \to f$ is not uniform
+---
+
+## A useful characterization
+
+**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
+$$
+f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
+$$
+
+Reason: for all $n \in \mathbb{N}$ we have
+$$
+\sup_{x\in [0,1]} |f_n(x)-f(x)| = \sup_{x\in [0,1)} x^n = 1
+$$
+---
+
+## A useful characterization
+
+![](../fig/lec12-example2a.svg)
+
+**Example:** the triangle sequence does **NOT** converge uniformly to zero since
+$$
+\sup_{x\in [0,1]} |f_n(x)-f(x)| = \sup_{x\in [0,1]} f_n(x) = 1
+\quad\text{for all } n\in\mathbb{N}
+$$
+---
+
+## A useful characterization
+
+![](../fig/lec12-example3a.svg)
+
+**Example:** $f_n(x) = (1-x)x^n\to 0$ uniformly on $A=[0,1]$
+---
+
+## A useful characterization
+
+**Example:** $f_n(x) = (1-x)x^n\to 0$ uniformly on $A=[0,1]$
+
+Calculus methods $\;\Rightarrow\; f_n(x)$ has a maximum at $x_n = \displaystyle\frac{n}{n+1}$ so
+
+$$
+\sup_{x\in [0,1]} |f_n(x)-0| = f_n(x_n) = \frac{1}{n+1}\left(\frac{n}{n+1}\right)^n < \frac{1}{n+1} \to 0
+$$
+---
+
+## A useful characterization
+
+![](../fig/lec12-example4a.svg)
+
+**Example:** $f_n(x) = \displaystyle\frac{x^2}{1+nx^2}\to 0$ uniformly on $A=\mathbb{R}$
+---
+
+## A useful characterization
+
+**Example (ctd):**
 $$\begin{aligned}
-\arctan(x)-\arctan(y)\phantom{|}
- & = \arctan'(c)(x-y) \\[3mm]
- & = \frac{1}{1+c^2}(x-y) \\[7mm]
-|\arctan(x)-\arctan(y)|
- & \leq |x-y|
+x = 0     & \Rightarrow f_n(x) = 0 \\[5mm]
+x \neq  0 & \Rightarrow f_n(x) = \frac{x^2}{1+nx^2} = \frac{1}{\displaystyle\frac{1}{x^2} + n} <
+\frac{1}{n} \\[5mm]
+& \Rightarrow \sup_{x\in\mathbb{R}} |f_n(x)| \leq \frac{1}{n} \to 0
 \end{aligned}$$
-
-For $\epsilon>0$ take $\delta=\epsilon$ to satisfy the definition of unif. cont.
-
 ---
 
-# Pathologies
+## Cauchy criterion
 
-## A continuous, nowhere differentiable function
+**Theorem:** the following statements are equivalent:
 
-![](../fig/lec11-saw1.pdf)
-
-Define $h : \mathbb{R} \to \mathbb{R}$ by
-- $h(x) = |x|$ for $x \in [-1,1]$
-- $h(x+2) = h(x)$ for all $x \in \mathbb{R}$
-
+1. $f_n$ converges uniformly on $A$
+2. for all $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ s.t.
+$$
+n, m \geq N_\epsilon
+\quad\Rightarrow\quad
+|f_n(x)-f_m(x)| < \epsilon
+\qquad\forall\,x\in A
+$$
 ---
 
-## A continuous, nowhere differentiable function
+## Preservation of continuity
 
-![](../fig/lec11-saw2.pdf)
+**Theorem:** assume $f_n : A \to \mathbb{R}$ satisfies
 
-Define $h_n(x) = \displaystyle \frac{1}{2^n} h(2^n x)$
+1. $f_n\to f$ uniformly on $A$
 
+2. $f_n$ is continuous at $c \in A$ for all $n \in \mathbb{N}$
+
+Then $f$ is continuous at $c$
+
+**Moral:** uniform convergence "preserves" continuity!
 ---
 
-## A continuous, nowhere differentiable function
+## Preservation of continuity
 
-![](../fig/lec11-saw3.pdf)
+**Proof:** for $\epsilon>0$ there exist
 
-Define $g_m(x) = \displaystyle \sum_{n=0}^m h_n(x)$ and let $m \to \infty$
+- $N\in\mathbb{N}$ s.t. $|f_N(x)-f(x)| < \tfrac{1}{3}\epsilon$ for all $x\in A$
 
+- $\delta>0$ s.t. $|x-c| < \delta \;\;\Rightarrow\;\; |f_N(x)-f_N(c)| < \tfrac{1}{3}\epsilon$
+
+If $|x-c|<\delta$ then
+$$\begin{aligned}
+|f(x) - f(c)|
+& = |f(x) - f_N(x) + f_N(x) - f_N(c) + f_N(c) - f(c)| \\[2mm]
+& \leq |f(x) - f_N(x)| + |f_N(x) - f_N(c)| + |f_N(c) - f(c)| \\[2mm]
+& < \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon \\[2mm]
+& = \epsilon
+\end{aligned}$$
 ---
 
-## A continuous, nowhere differentiable function
+## Preservation of continuity
 
-![](../fig/lec11-saw4.pdf)
+**Example:** the seq. $f_n(x)=x^n$ does **NOT** uniformly converge to
+$$
+f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
+$$
+on the set $A=[0,1]$
 
-$g(x) = \displaystyle \sum_{n=0}^\infty h_n(x)$
+Reason: each $f_n$ is continuous at $x=1$, but the limit $f$ is not
+---
 
-**EVERYWHERE** continuous, **NOWHERE** differentiable!
+## A word of caution...
+
+**Exercise:** for $f_n(x) = x^n$, prove that
+- $f_n\to 0$ uniformly on each set $A=[0,b]$ with $0 < b < 1$
+- $f_n\to 0$ pointwise but **NOT** uniformly on $A=[0,1)$
+
+**Moral:** whether or not we have uniform convergence also depends on the set $A$!

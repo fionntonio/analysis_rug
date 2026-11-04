@@ -1,22 +1,18 @@
 (** * RUG.Analysis.SequenceExamples — Examples of sequence limits.
 
-  #<a href="../../index.html##lecture03">Lecture 3</a>#.
+  #<a href="../../index.html##lecture02">Lecture 2</a>#.
 
-  Contains examples from Lecture 3: specific limit computations and standard limits.
+  Contains examples from Lecture 2: specific limit computations and standard limits.
   Formalizes examples from Abbott §2.2–2.3.
 
   Note: The rational-limit example and the standard limits 1/n, 1/n^2 and c^n
   are fully proved. The nth-root limits and n!/n^n are still admitted: they
   require logarithm/l'Hôpital-style machinery not yet developed here.
-  Note: In Rocq/Coq, natural numbers start from 0, but our sequences correspond
+  Note: In Rocq, natural numbers start from 0, but our sequences correspond
   to Abbott's sequences starting from n=1. We use (n+1) or (INR n + 1) consistently. *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.SeqProp.
-From Stdlib Require Import Reals.Rpower.
-From Stdlib Require Import Arith.Factorial.
 
-From Waterproof Require Export Libs.Analysis.Sequences.
 Require Export RUG.Analysis.Sequences.
 
 Waterproof Enable Automation RealsAndIntegers.
@@ -29,7 +25,7 @@ Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 
-(** ** Basic limit examples from lecture 3 *)
+(** ** Basic limit examples from lecture 2 *)
 
 
 (** ** Example: limit of (6n+7)/(3n+1)
@@ -56,41 +52,41 @@ Proof.
     ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1,
       | (6 * (INR n + 1) + 7) / (3 * (INR n + 1) + 1) - 2 | < ε.
   Take ε > 0.
-  It holds that 3 * ε / 5 > 0 as (Heps).
+  It holds that 3 * ε / 5 > 0.
   By archimedean_2 it holds that
-    ∃ n1 : ℕ, 1 / (INR n1 + 1) < 3 * ε / 5 as (Hn1).
+    ∃ n1 : ℕ, 1 / (INR n1 + 1) < 3 * ε / 5.
   Obtain such an n1.
   Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
   We need to show that ∀ n ≥ N1,
     | (6 * (INR n + 1) + 7) / (3 * (INR n + 1) + 1) - 2 | < ε.
   Take n ≥ N1.
-  It holds that INR n ≥ INR n1 as (Hnn1).
-  By pos_INR it holds that INR n ≥ 0 as (Hn0).
-  By pos_INR it holds that INR n1 ≥ 0 as (Hn10).
-  It holds that 3 * (INR n + 1) + 1 > 0 as (Hden).
-  It holds that 3 * (INR n1 + 1) > 0 as (Hden1).
+  It holds that INR n ≥ INR n1.
+  By pos_INR it holds that INR n ≥ 0.
+  By pos_INR it holds that INR n1 ≥ 0.
+  It holds that 3 * (INR n + 1) + 1 > 0.
+  It holds that 3 * (INR n1 + 1) > 0.
   (** The error simplifies to [5 / (3(n+1)+1)], which is positive. *)
   It holds that
     (6 * (INR n + 1) + 7) / (3 * (INR n + 1) + 1) - 2
-    = 5 / (3 * (INR n + 1) + 1) as (Hval).
-  It holds that 0 < 5 / (3 * (INR n + 1) + 1) as (Hvalpos).
+    = 5 / (3 * (INR n + 1) + 1).
+  It holds that 0 < 5 / (3 * (INR n + 1) + 1).
   It holds that
     | (6 * (INR n + 1) + 7) / (3 * (INR n + 1) + 1) - 2 |
-    = 5 / (3 * (INR n + 1) + 1) as (Habs).
-  It holds that 3 * (INR n1 + 1) < 3 * (INR n + 1) + 1 as (Hchain).
+    = 5 / (3 * (INR n + 1) + 1).
+  It holds that 3 * (INR n1 + 1) < 3 * (INR n + 1) + 1.
   By Rinv_lt_contravar it holds that
-    / (3 * (INR n + 1) + 1) < / (3 * (INR n1 + 1)) as (Hinv).
+    / (3 * (INR n + 1) + 1) < / (3 * (INR n1 + 1)).
   It holds that
-    5 / (3 * (INR n + 1) + 1) = 5 * / (3 * (INR n + 1) + 1) as (Hd1).
+    5 / (3 * (INR n + 1) + 1) = 5 * / (3 * (INR n + 1) + 1).
   It holds that
-    5 / (3 * (INR n1 + 1)) = 5 * / (3 * (INR n1 + 1)) as (Hd2).
+    5 / (3 * (INR n1 + 1)) = 5 * / (3 * (INR n1 + 1)).
   It holds that
-    5 / (3 * (INR n + 1) + 1) < 5 / (3 * (INR n1 + 1)) as (Hb1).
+    5 / (3 * (INR n + 1) + 1) < 5 / (3 * (INR n1 + 1)).
   It holds that
-    5 / (3 * (INR n1 + 1)) = (5 / 3) * (1 / (INR n1 + 1)) as (Hb2).
+    5 / (3 * (INR n1 + 1)) = (5 / 3) * (1 / (INR n1 + 1)).
   It holds that
-    (5 / 3) * (1 / (INR n1 + 1)) < (5 / 3) * (3 * ε / 5) as (Hb3).
-  It holds that (5 / 3) * (3 * ε / 5) = ε as (Hb4).
+    (5 / 3) * (1 / (INR n1 + 1)) < (5 / 3) * (3 * ε / 5).
+  It holds that (5 / 3) * (3 * ε / 5) = ε.
   We conclude that (&
     | (6 * (INR n + 1) + 7) / (3 * (INR n + 1) + 1) - 2 |
     = 5 / (3 * (INR n + 1) + 1)
@@ -102,7 +98,7 @@ Proof.
 Qed.
 
 
-(** ** Standard limits from lecture 3 *)
+(** ** Standard limits from lecture 2 *)
 
 
 (** ** Standard limit: 1/n → 0 
@@ -143,19 +139,19 @@ Proof.
   - By constant_seq_converges we conclude that (fun _ : ℕ => 0) ⟶ 0.
   - By harmonic_to_0 we conclude that (fun n : ℕ => 1 / (INR n + 1)) ⟶ 0.
   - Take n ∈ ℕ.
-    It holds that INR n + 1 > 0 as (Hpos).
+    It holds that INR n + 1 > 0.
     It holds that (INR n + 1)^2 > 0.
     We conclude that 0 ≤ 1 / (INR n + 1)^2.
   - Take n ∈ ℕ.
-    By pos_INR it holds that INR n ≥ 0 as (Hn0).
-    It holds that INR n + 1 ≥ 1 as (Hge1).
-    It holds that INR n + 1 > 0 as (Hpos).
-    It holds that (INR n + 1)^2 = (INR n + 1) * (INR n + 1) as (Hsq).
-    It holds that (INR n + 1) ≤ (INR n + 1)^2 as (Hle).
+    By pos_INR it holds that INR n ≥ 0.
+    It holds that INR n + 1 ≥ 1.
+    It holds that INR n + 1 > 0.
+    It holds that (INR n + 1)^2 = (INR n + 1) * (INR n + 1).
+    It holds that (INR n + 1) ≤ (INR n + 1)^2.
     By Rinv_le_contravar it holds that
-      / (INR n + 1)^2 ≤ / (INR n + 1) as (Hinv).
-    It holds that 1 / (INR n + 1)^2 = / (INR n + 1)^2 as (He1).
-    It holds that 1 / (INR n + 1) = / (INR n + 1) as (He2).
+      / (INR n + 1)^2 ≤ / (INR n + 1).
+    It holds that 1 / (INR n + 1)^2 = / (INR n + 1)^2.
+    It holds that 1 / (INR n + 1) = / (INR n + 1).
     We conclude that 1 / (INR n + 1)^2 ≤ 1 / (INR n + 1).
 Qed.
 
@@ -173,9 +169,9 @@ Qed.
 Lemma standard_limit_c_to_n (c : ℝ) :
     -1 < c → c < 1 → (fun n : ℕ => c^n) ⟶ 0.
 Proof.
-  Assume that -1 < c as (Hlo).
-  Assume that c < 1 as (Hhi).
-  It holds that | c | < 1 as (Habs).
+  Assume that -1 < c.
+  Assume that c < 1.
+  It holds that | c | < 1.
   We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, | c^n - 0 | < ε.
   Take ε > 0.
   (** [pow_lt_1_zero] from the standard library gives exactly the

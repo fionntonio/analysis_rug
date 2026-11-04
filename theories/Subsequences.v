@@ -1,6 +1,6 @@
 (** * RUG.Analysis.Subsequences — Monotone convergence and Bolzano-Weierstrass.
 
-  #<a href="../../index.html##lecture04">Lecture 4</a>#.
+  #<a href="../../index.html##lecture03">Lecture 3</a>#.
 
   Formalizes Abbott §2.4–2.5: the monotone convergence theorem,
   subsequences, the Bolzano-Weierstrass theorem, and Cauchy sequences. *)
@@ -8,7 +8,6 @@
 (* begin hide *)
 
 From Stdlib Require Import Reals.Reals.
-From Stdlib Require Import Reals.SeqProp.
 Require Export RUG.Analysis.Sequences.
 From Waterproof Require Import Libs.Analysis.Subsequences.
 From Waterproof Require Import Libs.Analysis.LimsupLiminfBolzano.
@@ -68,7 +67,7 @@ Proof.
   }
 
   By (R_complete A (a 0%nat) Hnotempty HAbdd) it holds that
-    ∃ L ∈ ℝ, L is the _supremum_ of A as (HLsup).
+    ∃ L ∈ ℝ, L is the _supremum_ of A.
   Obtain such an L.
 
   By sup_is_upp_bd it holds that
@@ -125,7 +124,7 @@ Proof.
 
   Take ε > 0.
   Since (ε > 0) it holds that
-    ∃ Nm ∈ ℕ, ∀ n ≥ Nm, | a n - L | < ε as (HNm).
+    ∃ Nm ∈ ℕ, ∀ n ≥ Nm, | a n - L | < ε.
   
   Obtain such an Nm.
   Choose (Nm). { Indeed, Nm ∈ ℕ. }

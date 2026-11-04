@@ -1,6 +1,6 @@
 (** * RUG.Analysis.Continuity — Continuous functions and their consequences.
 
-  #<a href="../../index.html##lecture09">Lecture 9</a>#.
+  #<a href="../../index.html##lecture07">Lecture 7</a># and #<a href="../../index.html##lecture08">Lecture 8</a>#.
 
   Formalizes Abbott §4.3–4.5: continuity at a point, continuity on sets,
   the extreme value theorem, the intermediate value theorem, and uniform
@@ -8,12 +8,7 @@
 
 From Stdlib Require Import Reals.Reals.
 From Stdlib Require Import Reals.Ranalysis5.
-From Stdlib Require Import Reals.Rtopology.
 From Stdlib Require Import Logic.ClassicalDescription.
-
-From Waterproof Require Export Notations.Common.
-From Waterproof Require Export Notations.Reals.
-From Waterproof Require Export Notations.Sets.
 
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
 Require Export RUG.Analysis.Lib.Compactness.
@@ -31,7 +26,7 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 (** ** Continuity at a point *)
 
-(** Theorem 9.1: the squaring function [x ↦ x²] is continuous at every point [c].
+(** Example: the squaring function [x ↦ x²] is continuous at every point [c].
 
     Proof idea: use the ε–δ definition. The factorization
     [|x² - c²| = |x - c| · |x + c|] is key. If [|x - c| < 1] then
@@ -46,16 +41,16 @@ Proof.
   Take ε > 0.
   Choose δ := ε. { Indeed, ε > 0. }
   We need to show that ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |x - c| < ε.
-  Take x ∈ ℝ. Assume that 0 < |x - c| < δ as (Hx).
+  Take x ∈ ℝ. Assume that 0 < |x - c| < δ.
   We conclude that |x - c| < ε.
 Qed.
 
 Lemma sq_continuous (c : ℝ) :
     _limit_ of (fun x => x * x) in c is (c * c).
 Proof.
-  By id_limit it holds that _limit_ of (fun x => x) in c is c as (Hid).
+  By id_limit it holds that _limit_ of (fun x => x) in c is c.
   By lim_product it holds that
-    _limit_ of (fun x => x * x) in c is (c * c) as (Hsq).
+    _limit_ of (fun x => x * x) in c is (c * c).
   We conclude that _limit_ of (fun x => x * x) in c is (c * c).
 Qed.
 
@@ -79,10 +74,10 @@ Proof.
     By HM we conclude that Rabs (h s - h t) ≤ M * Rabs (s - t).
   }
   (* [Rmax M 1] guards against a nonpositive Lipschitz constant, and δ = ε/max(M,1). *)
-  By Rmax_r it holds that 1 ≤ Rmax M 1 as (Hr).
-  It holds that 0 < Rmax M 1 as (HMpos).
-  By Rinv_0_lt_compat it holds that 0 < / Rmax M 1 as (Hinv).
-  By Rinv_r it holds that Rmax M 1 * / Rmax M 1 = 1 as (Hri).
+  By Rmax_r it holds that 1 ≤ Rmax M 1.
+  It holds that 0 < Rmax M 1.
+  By Rinv_0_lt_compat it holds that 0 < / Rmax M 1.
+  By Rinv_r it holds that Rmax M 1 * / Rmax M 1 = 1.
   (* [continuity_pt] is Stdlib's metric-space [limit1_in]; spelled out, the
      condition on the point is [D_x no_cond z w]. *)
   We need to show that ∀ z : ℝ, continuity_pt h z.
@@ -90,8 +85,8 @@ Proof.
   We need to show that ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
     (no_cond w ∧ z ≠ w) ∧ Rabs (w - z) < alp → Rabs (h w - h z) < ε).
   Take ε : ℝ.
-  Assume that ε > 0 as (Heps).
-  It holds that ε / Rmax M 1 > 0 as (Hdpos).
+  Assume that ε > 0.
+  It holds that ε / Rmax M 1 > 0.
   Choose alp := (ε / Rmax M 1).
   We show both statements.
   - We conclude that ε / Rmax M 1 > 0.
@@ -99,15 +94,15 @@ Proof.
       (no_cond w ∧ z ≠ w) ∧ Rabs (w - z) < ε / Rmax M 1 → Rabs (h w - h z) < ε.
     Take w : ℝ.
     Assume that
-      (no_cond w ∧ z ≠ w) ∧ Rabs (w - z) < ε / Rmax M 1 as (Hw).
-    It holds that Rabs (w - z) < ε / Rmax M 1 as (Hd).
-    By HM' it holds that Rabs (h w - h z) ≤ M * Rabs (w - z) as (H1).
-    By Rabs_pos it holds that 0 ≤ Rabs (w - z) as (H2).
-    By Rmax_l it holds that M ≤ Rmax M 1 as (H3).
-    It holds that Rabs (h w - h z) ≤ Rmax M 1 * Rabs (w - z) as (H4).
-    It holds that Rmax M 1 * (ε / Rmax M 1) = ε as (H6).
+      (no_cond w ∧ z ≠ w) ∧ Rabs (w - z) < ε / Rmax M 1.
+    It holds that Rabs (w - z) < ε / Rmax M 1.
+    By HM' it holds that Rabs (h w - h z) ≤ M * Rabs (w - z).
+    By Rabs_pos it holds that 0 ≤ Rabs (w - z).
+    By Rmax_l it holds that M ≤ Rmax M 1.
+    It holds that Rabs (h w - h z) ≤ Rmax M 1 * Rabs (w - z).
+    It holds that Rmax M 1 * (ε / Rmax M 1) = ε.
     It holds that
-      Rmax M 1 * Rabs (w - z) < Rmax M 1 * (ε / Rmax M 1) as (H7).
+      Rmax M 1 * Rabs (w - z) < Rmax M 1 * (ε / Rmax M 1).
     We conclude that Rabs (h w - h z) < ε.
 Qed.
 
@@ -141,11 +136,11 @@ Lemma continuity_imp_seq (f1 : ℝ → ℝ) (c : ℝ) (Hf : continuity_pt f1 c) 
     ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c).
 Proof.
   Take a : (ℕ → ℝ).
-  Assume that a ⟶ c as (Ha).
+  Assume that a ⟶ c.
   By convergence_equivalence it holds that (a ⟶ c ⇔ Un_cv a c) as (H1).
   By H1 it holds that Un_cv a c as (Hcv).
   By (continuity_seq f1 a c Hf Hcv) it holds that
-    Un_cv (fun i => f1 (a i)) (f1 c) as (H2).
+    Un_cv (fun i => f1 (a i)) (f1 c).
   By convergence_equivalence it holds that
     ((fun n => f1 (a n)) ⟶ (f1 c) ⇔ Un_cv (fun n => f1 (a n)) (f1 c)) as (H3).
   By H3 we conclude that (fun n => f1 (a n)) ⟶ (f1 c).
@@ -180,11 +175,11 @@ Proof.
   (* Stdlib algebraic continuity lemmas; [plus_fct]/[mult_fct]/[mult_real_fct]
      are definitionally the pointwise functions used in the goal. *)
   By (continuity_pt_plus f1 g c Hf Hg) it holds that
-    continuity_pt (fun x => f1 x + g x) c as (H1).
+    continuity_pt (fun x => f1 x + g x) c.
   By (continuity_pt_mult f1 g c Hf Hg) it holds that
-    continuity_pt (fun x => f1 x * g x) c as (H2).
+    continuity_pt (fun x => f1 x * g x) c.
   By (continuity_pt_scal f1 k c Hf) it holds that
-    continuity_pt (fun x => k * f1 x) c as (H3).
+    continuity_pt (fun x => k * f1 x) c.
   We conclude that
     (continuity_pt (fun x => f1 x + g x) c ∧
      continuity_pt (fun x => f1 x * g x) c ∧
@@ -250,7 +245,7 @@ Proof.
 
 (** ** Extreme value theorem *)
 
-(** Theorem 9.2 (extreme value theorem): a continuous function on a closed
+(** _Extreme value theorem_ (Abbott Theorem 4.4.2): a continuous function on a closed
     interval [[a,b]] attains its maximum.
 
     Proof idea: the image [f([a,b])] is compact, as the continuous image of the
@@ -265,10 +260,10 @@ Theorem extreme_value_theorem (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
 Proof.
   (* [continuity_ab_maj] is the Stdlib form of the extreme value theorem. *)
   By (continuity_ab_maj f1 a b Hab Hf) it holds that
-    ∃ Mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx) ∧ a ≤ Mx ∧ Mx ≤ b as (Hmax).
+    ∃ Mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx) ∧ a ≤ Mx ∧ Mx ≤ b.
   Obtain such a Mx.
-  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx) as (H1).
-  It holds that a ≤ Mx ∧ Mx ≤ b as (H2).
+  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx).
+  It holds that a ≤ Mx ∧ Mx ≤ b.
   Choose c := Mx.
   We conclude that
     (a ≤ Mx ∧ Mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 x ≤ f1 Mx).
@@ -280,10 +275,10 @@ Theorem extreme_value_theorem_min (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
     ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 c ≤ f1 x.
 Proof.
   By (continuity_ab_min f1 a b Hab Hf) it holds that
-    ∃ mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x) ∧ a ≤ mx ∧ mx ≤ b as (Hmin).
+    ∃ mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x) ∧ a ≤ mx ∧ mx ≤ b.
   Obtain such a mx.
-  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x) as (H1).
-  It holds that a ≤ mx ∧ mx ≤ b as (H2).
+  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x).
+  It holds that a ≤ mx ∧ mx ≤ b.
   Choose c := mx.
   We conclude that
     (a ≤ mx ∧ mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 mx ≤ f1 x).
@@ -291,7 +286,7 @@ Qed.
 
 (** ** Intermediate value theorem *)
 
-(** Theorem 9.3 (intermediate value theorem): if [f] is continuous on [[a,b]]
+(** _Intermediate value theorem_ (Abbott Theorem 4.5.1): if [f] is continuous on [[a,b]]
     and [f(a) < v < f(b)], then there exists [c ∈ (a,b)] with [f(c) = v].
 
     Proof idea: the bisection method constructs nested intervals
@@ -309,9 +304,9 @@ Proof.
   We claim that ∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒
     continuity_pt (fun y => f1 y - v) x as (Hg).
   {
-    Take x : ℝ. Assume that a ≤ x ∧ x ≤ b as (Hx).
+    Take x : ℝ. Assume that a ≤ x ∧ x ≤ b.
     By Hf it holds that continuity_pt f1 x as (Hc).
-    We claim that constant (fct_cte v) as (Hcst).
+    We claim that constant (fct_cte v).
     {
       We need to show that ∀ u : ℝ, ∀ w : ℝ, fct_cte v u = fct_cte v w.
       Take u : ℝ. Take w : ℝ.
@@ -324,10 +319,10 @@ Proof.
   It holds that 0 < f1 b - v as (Hgb).
   (* [IVT_interv] lands in a [sig], which is unpacked with [destruct]. *)
   destruct (IVT_interv (fun y => f1 y - v) a b Hg Hab Hga Hgb) as [z Hz].
-  It holds that a ≤ z ∧ z ≤ b as (Hz1).
+  It holds that a ≤ z ∧ z ≤ b.
   It holds that f1 z - v = 0 as (Hz2).
   (* The endpoints are excluded because [f1 a < v < f1 b]. *)
-  We claim that a < z as (Hlo).
+  We claim that a < z.
   {
     Either a = z or a ≠ z.
     - Case (a = z).
@@ -337,7 +332,7 @@ Proof.
     - Case (a ≠ z).
       We conclude that a < z.
   }
-  We claim that z < b as (Hhi).
+  We claim that z < b.
   {
     Either z = b or z ≠ b.
     - Case (z = b).
@@ -353,7 +348,7 @@ Qed.
 
 (** ** Uniform continuity *)
 
-(** Theorem 9.4 (Heine's theorem): a continuous function on a compact set is
+(** _Uniform continuity on compact sets_ (Abbott Theorem 4.4.7): a continuous function on a compact set is
     uniformly continuous.
 
     Proof idea: for each point [c] of the set, continuity gives a neighborhood
@@ -372,7 +367,7 @@ Proof.
   We claim that ∀ x : ℝ,
     (fun c : ℝ => a ≤ c ∧ c ≤ b) x ⇒ continuity_pt f1 x as (Hcont).
   {
-    Take x : ℝ. Assume that (fun c : ℝ => a ≤ c ∧ c ≤ b) x as (Hx).
+    Take x : ℝ. Assume that (fun c : ℝ => a ≤ c ∧ c ≤ b) x.
     By Hf we conclude that continuity_pt f1 x.
   }
   By (Heine f1 (fun c : ℝ => a ≤ c ∧ c ≤ b) Hcomp Hcont) it holds that
@@ -382,16 +377,16 @@ Proof.
   Take ε > 0.
   It holds that 0 < ε as (Hpos).
   destruct (Hu (mkposreal ε Hpos)) as [dlt Hd].
-  By cond_pos it holds that 0 < pos dlt as (Hdpos).
+  By cond_pos it holds that 0 < pos dlt.
   Choose δ := (pos dlt).
   - Indeed, pos dlt > 0.
   - We need to show that ∀ x ∈ ℝ, ∀ y ∈ ℝ,
       a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
       Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
     Take x ∈ ℝ. Take y ∈ ℝ.
-    Assume that a ≤ x ∧ x ≤ b as (Hx).
-    Assume that a ≤ y ∧ y ≤ b as (Hy).
-    Assume that Rabs (x - y) < pos dlt as (Hxy).
+    Assume that a ≤ x ∧ x ≤ b.
+    Assume that a ≤ y ∧ y ≤ b.
+    Assume that Rabs (x - y) < pos dlt.
     By Hd we conclude that Rabs (f1 x - f1 y) < ε.
 Qed.
 
@@ -430,16 +425,16 @@ Proof.
 Lemma sqrt_diff_le (u v : ℝ) (Hv : 0 ≤ v) (Huv : v ≤ u) :
     sqrt u - sqrt v ≤ sqrt (u - v).
 Proof.
-  It holds that 0 ≤ u as (Hu).
-  It holds that 0 ≤ u - v as (Huv0).
-  By sqrt_pos it holds that 0 ≤ sqrt u as (Hsu).
-  By sqrt_pos it holds that 0 ≤ sqrt v as (Hsv).
-  By sqrt_pos it holds that 0 ≤ sqrt (u - v) as (Hsd).
-  By sqrt_le_1 it holds that sqrt v ≤ sqrt u as (Hmono).
-  By sqrt_sqrt it holds that sqrt u * sqrt u = u as (Eu).
-  By sqrt_sqrt it holds that sqrt v * sqrt v = v as (Ev).
-  By sqrt_sqrt it holds that sqrt (u - v) * sqrt (u - v) = u - v as (Ed).
-  It holds that v ≤ sqrt u * sqrt v as (Hkey).
+  It holds that 0 ≤ u.
+  It holds that 0 ≤ u - v.
+  By sqrt_pos it holds that 0 ≤ sqrt u.
+  By sqrt_pos it holds that 0 ≤ sqrt v.
+  By sqrt_pos it holds that 0 ≤ sqrt (u - v).
+  By sqrt_le_1 it holds that sqrt v ≤ sqrt u.
+  By sqrt_sqrt it holds that sqrt u * sqrt u = u.
+  By sqrt_sqrt it holds that sqrt v * sqrt v = v.
+  By sqrt_sqrt it holds that sqrt (u - v) * sqrt (u - v) = u - v.
+  It holds that v ≤ sqrt u * sqrt v.
   We conclude that sqrt u - sqrt v ≤ sqrt (u - v).
 Qed.
 
@@ -449,17 +444,17 @@ Lemma sqrt_abs_diff (u v : ℝ) (Hu : 0 ≤ u) (Hv : 0 ≤ v) :
 Proof.
   Either (v ≤ u) or (¬ (v ≤ u)).
   - Case (v ≤ u).
-    It holds that v ≤ u as (Hle).
-    By sqrt_diff_le it holds that sqrt u - sqrt v ≤ sqrt (u - v) as (K).
-    By sqrt_le_1 it holds that sqrt v ≤ sqrt u as (Hm).
+    It holds that v ≤ u.
+    By sqrt_diff_le it holds that sqrt u - sqrt v ≤ sqrt (u - v).
+    By sqrt_le_1 it holds that sqrt v ≤ sqrt u.
     It holds that Rabs (sqrt u - sqrt v) = sqrt u - sqrt v as (Ea1).
     It holds that Rabs (u - v) = u - v as (Ea2).
     rewrite Ea1. rewrite Ea2.
     We conclude that sqrt u - sqrt v ≤ sqrt (u - v).
   - Case (¬ (v ≤ u)).
-    It holds that u ≤ v as (Hle).
-    By sqrt_diff_le it holds that sqrt v - sqrt u ≤ sqrt (v - u) as (K).
-    By sqrt_le_1 it holds that sqrt u ≤ sqrt v as (Hm).
+    It holds that u ≤ v.
+    By sqrt_diff_le it holds that sqrt v - sqrt u ≤ sqrt (v - u).
+    By sqrt_le_1 it holds that sqrt u ≤ sqrt v.
     It holds that Rabs (sqrt u - sqrt v) = sqrt v - sqrt u as (Ea1).
     It holds that Rabs (u - v) = v - u as (Ea2).
     rewrite Ea1. rewrite Ea2.
@@ -472,16 +467,16 @@ Lemma sqrt_unif_aux (eps : ℝ) (Heps : eps > 0) :
       Rabs (x - y) < eps * eps → Rabs (sqrt x - sqrt y) < eps.
 Proof.
   Take x : ℝ. Take y : ℝ.
-  Assume that 0 ≤ x as (Hx).
-  Assume that 0 ≤ y as (Hy).
-  Assume that Rabs (x - y) < eps * eps as (Hxy).
+  Assume that 0 ≤ x.
+  Assume that 0 ≤ y.
+  Assume that Rabs (x - y) < eps * eps.
   By sqrt_abs_diff it holds that
-    Rabs (sqrt x - sqrt y) ≤ sqrt (Rabs (x - y)) as (K).
-  By Rabs_pos it holds that 0 ≤ Rabs (x - y) as (Hnn).
-  It holds that 0 ≤ eps * eps as (Hee).
+    Rabs (sqrt x - sqrt y) ≤ sqrt (Rabs (x - y)).
+  By Rabs_pos it holds that 0 ≤ Rabs (x - y).
+  It holds that 0 ≤ eps * eps.
   By sqrt_lt_1 it holds that
-    sqrt (Rabs (x - y)) < sqrt (eps * eps) as (Hs).
-  By sqrt_square it holds that sqrt (eps * eps) = eps as (Heq).
+    sqrt (Rabs (x - y)) < sqrt (eps * eps).
+  By sqrt_square it holds that sqrt (eps * eps) = eps.
   We conclude that Rabs (sqrt x - sqrt y) < eps.
 Qed.
 
@@ -491,14 +486,14 @@ Proof.
   We need to show that ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
     0 ≤ x → 0 ≤ y → Rabs (x - y) < δ → Rabs (sqrt x - sqrt y) < ε.
   Take ε > 0.
-  It holds that ε * ε > 0 as (Hd).
+  It holds that ε * ε > 0.
   Choose δ := ε * ε.
   - Indeed, ε * ε > 0.
   - We need to show that ∀ x ∈ ℝ, ∀ y ∈ ℝ,
       0 ≤ x → 0 ≤ y → Rabs (x - y) < δ → Rabs (sqrt x - sqrt y) < ε.
     Take x ∈ ℝ. Take y ∈ ℝ.
-    Assume that 0 ≤ x as (Hx).
-    Assume that 0 ≤ y as (Hy).
-    Assume that Rabs (x - y) < ε * ε as (Hxy).
+    Assume that 0 ≤ x.
+    Assume that 0 ≤ y.
+    Assume that Rabs (x - y) < ε * ε.
     By sqrt_unif_aux we conclude that Rabs (sqrt x - sqrt y) < ε.
 Qed.

@@ -6,10 +6,10 @@ Waterproof versions of the four peer-review homework assignments of
 
 | Notebook | Assignment | Lecture | Course library |
 |---|---|---|---|
-| [`hw1_infimum.mv`](hw1_infimum.mv) | infimum of a set of quotients | 1 (§1.2–1.4) | `Waterproof.Libs.Analysis.SupAndInf`, [`theories/Reals.v`](../theories/Reals.v) |
-| [`hw2_series_ratio.mv`](hw2_series_ratio.mv) | comparison of series by a limit of ratios | 5 (§2.6–2.7) | [`theories/Series.v`](../theories/Series.v) |
-| [`hw3_limit_point.mv`](hw3_limit_point.mv) | bounded infinite sets have a limit point | 6–7 (§3.2–3.3) | [`theories/Topology.v`](../theories/Topology.v), [`theories/Compactness.v`](../theories/Compactness.v) |
-| [`hw4_uniform_convergence.mv`](hw4_uniform_convergence.mv) | uniform convergence of `n/(nx+1)` | 11–12 (§6.2–6.4) | [`theories/FunctionSequences.v`](../theories/FunctionSequences.v) |
+| [`hw1_infimum.mv`](hw1_infimum.mv) | infimum of a set of quotients | 1 (§1.2–1.4) | [`theories/Reals.v`](../theories/Reals.v) |
+| [`hw2_series_ratio.mv`](hw2_series_ratio.mv) | comparison of series by a limit of ratios | 4 (§2.6–2.7) | [`theories/Series.v`](../theories/Series.v) |
+| [`hw3_limit_point.mv`](hw3_limit_point.mv) | bounded infinite sets have a limit point | 5–6 (§3.2–3.3) | [`theories/Topology.v`](../theories/Topology.v), [`theories/Compactness.v`](../theories/Compactness.v) |
+| [`hw4_uniform_convergence.mv`](hw4_uniform_convergence.mv) | uniform convergence of `n/(nx+1)` | 10 (§6.2) | [`theories/FunctionSequences.v`](../theories/FunctionSequences.v) |
 
 Model solutions are in [`solutions/`](solutions). Each assignment is cut into
 small steps, with a collapsible hint per step; only the parts inside
@@ -17,7 +17,7 @@ small steps, with a collapsible hint per step; only the parts inside
 
 ## Checking a notebook
 
-Homework 2, 3 and 4 use the course library (`RUG.Analysis.*`), so build it once:
+All four homeworks use the course library (`RUG.Analysis.*`), so build it once:
 
 ```sh
 dune build

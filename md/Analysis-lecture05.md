@@ -1,418 +1,397 @@
 ---
 title: "Analysis"
 author: "Marcello Seri, m.seri@rug.nl"
-date: "Lecture 5, Thursday 23 November 2023"
+date: "Lecture 5"
 ---
 
 Topics:
-- Abbott §2.6. The Cauchy criterion
-- Abbott §2.7. Properties of infinite series
+- Abbott §3.2. Open and closed sets
 
-Formalization: [`CauchySequences.v`](docs/rocq/RUG.Analysis.CauchySequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
+Formalization: [`Topology.v`](docs/rocq/RUG.Analysis.Topology.html)
 
----
-
-# Cauchy sequences
-
-## Cauchy sequences
-
-**Definition:** $(a_n)$ **converges** to $a$ if
-$$
-\forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
-n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
-$$
-
-**Note:** the limit must be known in advance!
+Tutorial: [Tutorial 5](#tutorials/tutorial-5)
 
 ---
 
-## Cauchy sequences
+# Open sets
 
-**Definition:** $(a_n)$ is a **Cauchy sequence** if
+## Motivation
+
+**Closed interval** (endpoints included):
 $$
-\forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
-n,m \geq N
-\quad\Rightarrow\quad
-|a_n - a_m| < \epsilon
+[a,b] = \big\{x \in \mathbb{R} \,:\, a \leq x \leq b\big\}
 $$
 
-**Meaning:** the terms get close to **each other**
-
----
-
-## Cauchy sequences
-
-**Theorem:** $(a_n)$ convergent $\;\Rightarrow\; (a_n)$ Cauchy
-
-**Proof:** assume $a = \lim a_n$
-
-For all $\epsilon>0$ there exists $N \in \mathbb{N}$ such that
-$$\begin{aligned}
-n \geq N    & \quad\Rightarrow\quad |a_n - a| < \tfrac{1}{2}\epsilon \\[6mm]
-m, n \geq N & \quad\Rightarrow\quad |a_n - a_m|  = |(a_n - a) - (a_m - a)| \\[3mm]
-&                       \hspace{16mm} \leq |a_n-a| + |a_m-a| \\[3mm]
-&                       \hspace{16mm} < \epsilon
-\end{aligned}$$
-
----
-
-## Cauchy sequences
-
-**Lemma:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ bounded
-
-**Proof:** for $\epsilon=1$ there exists $N \in \mathbb{N}$ such that
-$$\begin{aligned}
-n,m \geq N & \Rightarrow |a_n - a_m| < 1 \\[1mm]
-n \geq N & \Rightarrow |a_n - a_N| < 1 \quad\text{(fix $m = N$)} \\[1mm]
-& \Rightarrow \big||a_n|-|a_N|\big| < 1 \\[1mm]
-& \Rightarrow |a_n|-|a_N|< 1 \\[1mm]
-& \Rightarrow |a_n| < 1 + |a_N|
-\end{aligned}$$
-
-For $M = \max\big\{|a_1|,|a_2|,\dots,|a_{N-1}|, 1+|a_N|\big\}$ we have
+**Open interval** (endpoints not included):
 $$
-|a_n| \leq M \quad\text{for all } n \in \mathbb{N}
+(a,b) = \big\{x \in \mathbb{R} \,:\, a < x < b\big\}
 $$
 
----
-
-## Cauchy sequences
-
-**Theorem:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ convergent
-
-**Proof:**
-
-Lemma $\;\Rightarrow\;$ $(a_n)$ is bounded
-
-Bolzano--Weierstrass $\;\Rightarrow\;$ $(a_n)$ has a convergent subsequence $(a_{n_k})$,
-let $a = \lim a_{n_k}$
+How to define open and closed for *arbitrary* sets?
 
 ---
 
-## Cauchy sequences
+## Open sets
 
-**Proof (ctd):** for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
+**Definition:** $O\subseteq\mathbb{R}$ is **open** if
+
 $$
-n,m \geq N \quad\Rightarrow\quad |a_n-a_m|< \tfrac{1}{2}\epsilon
+\forall\,a \in O \quad\exists\,\epsilon>0 \quad\text{s.t.}\quad V_\epsilon(a) \subseteq O
 $$
 
-Fix an index $n_k \geq N$ such that $|a_{n_k} - a| < \tfrac{1}{2}\epsilon$, then
-$$\begin{aligned}
-n \geq N \quad\Rightarrow\quad |a_n - a| & = |a_n - a_{n_k} + a_{n_k} - a| \\[3mm]
-& \leq |a_n-a_{n_k}| + |a_{n_k}-a| \\[3mm]
-& < \epsilon
-\end{aligned}$$
+Recall: $V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon,a+\epsilon)$
+
+**Note:** the empty set $\varnothing$ is open by definition
 
 ---
 
-# Series
+## Open sets
 
-## Properties of series
+**Example:** the interval $(c,d)$ is open
 
-**Definitions:**
+Take $x\in (c,d)$ arbitrary
 
-- infinite **series**: $\displaystyle \sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots$
-- $n$-th **partial sum**: $s_n = a_1 + a_2 + \dots + a_n$
-- **convergence**: $\displaystyle \sum_{k=1}^\infty a_k = A \;\stackrel{\text{def}}{\Longleftrightarrow}\; \lim s_n = A$
+Take $\epsilon=\min\{|x-c|,|x-d|\}$, then $V_\epsilon(x)\subseteq (c,d)$
 
----
+**Example:** the interval $[c,d)$ is **NOT** open
 
-## Algebraic limit theorem
-
-**Theorem:** if $\sum_{k=1}^\infty a_k = A$ and $\sum_{k=1}^\infty b_k = B$ then
-
-1. $\sum_{k=1}^\infty ca_k = cA$ for all $c\in\mathbb{R}$
-2. $\sum_{k=1}^\infty (a_k + b_k) = A+B$
-
-**Proof:** apply analogous theorem for sequences to partial sums
+For $x=c$ no $\epsilon>0$ works
 
 ---
 
-## Cauchy criterion
+## Open sets
 
-**Theorem:** the following statements are equivalent
+**Example:** $\mathbb{Q}$ is **NOT** open
 
-1. $\sum_{k=1}^\infty a_k$ converges
-2. for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
-   $$
-   n > m \geq N \quad\Rightarrow\quad |a_{m+1} + a_{m+2} + \dots + a_n| < \epsilon
-   $$
+Take $\epsilon>0$ arbitrary
 
-**Proof:** note that $|s_n-s_m| = |a_{m+1} + \dots + a_n|$
+Take $n \in \mathbb{N}$ such that $\displaystyle\frac{1}{n} < \frac{\epsilon}{\sqrt{2}}$
+and set $x = \displaystyle \frac{\sqrt{2}}{n}$
 
-Statement 1 $\;\Leftrightarrow\;$ $(s_n)$ converges $\;\Leftrightarrow\;$ $(s_n)$ Cauchy $\;\Leftrightarrow\;$ Statement 2
+Then $x \in V_\epsilon(0)$ but $x\notin\mathbb{Q}$
 
 ---
 
-## Cauchy criterion
+## Unions and intersections
 
-**Example:** $\displaystyle \sum_{k=1}^\infty\frac{1}{k}$ diverges
+**Theorem:**
 
-For any $m \in \mathbb{N}$ and $n = 2m$ we have
-$$\begin{aligned}
-|a_{m+1} + a_{m+2} + \dots + a_n|
-& = \frac{1}{m+1} + \frac{1}{m+2} + \dots + \frac{1}{2m} \\[4mm]
-& > \frac{m}{2m} \\[4mm]
-& = \frac{1}{2}
-\end{aligned}$$
-Hence, the Cauchy criterion fails
+1. Unions of **arbitrary** collections of open sets are open
+2. Intersections of **finite** collections of open sets are open
 
----
+**Proof (1):** let $O = \bigcup_{i\in I} O_i$ with each $O_i$ open
 
-## Necessary condition for convergence
+$x \in O \;\Rightarrow\; x \in O_i$ for some $i \in I$
 
-**Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
-
-**Proof:** let $\epsilon>0$ be arbitrary
-
-There exists $N\in \mathbb{N}$ such that
-$$\begin{aligned}
-n > m \geq N & \quad\Rightarrow\quad |a_{m+1} + a_{m+2} + \dots + a_n|<\epsilon \\[10mm]
-n = m+1 \text{ and } m \geq N  & \quad\Rightarrow\quad |a_{m+1}| < \epsilon
-\end{aligned}$$
+There exists $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_i \subseteq O$
 
 ---
 
-## Necessary condition for convergence
+## Unions and intersections
 
-**Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
+**Theorem:**
 
-**Warning:** the converse is **NOT** true!
+1. Unions of **arbitrary** collections of open sets are open
+2. Intersections of **finite** collections of open sets are open
+
+**Proof (2):** let $O = O_1 \cap O_2 \cap \dots \cap O_n$ with each $O_i$ open
+
+$x \in O \;\Rightarrow\; x \in O_i$ for all $i=1,\dots,n$
+
+For all $i=1,\dots,n$ there exists $\epsilon_i>0$ such that $V_{\epsilon_i}(x)\subseteq O_i$
+
+For $\epsilon=\min\{\epsilon_1,\dots,\epsilon_n\}$ we have $V_\epsilon(x)\subseteq O_i$ for all $i=1,\dots,n$
+
+---
+
+## Unions and intersections
+
+**Warning:** the intersection of infinitely many open sets **NEED NOT BE** open!
 
 Counter example:
-$$
-\lim \frac{1}{k} = 0
-\qquad\text{but}\qquad
-\sum_{k=1}^\infty \frac{1}{k}
-\quad\text{diverges}
-$$
-
----
-
-## Necessary condition for convergence
-
-**Note:** the previous theorem also gives a **test for divergence**
-
-**Example:** the series
-$$
-\sum_{k=1}^\infty (-1)^{k+1}\cdot\frac{k+1}{2k} = 1 - \frac{3}{4} + \frac{4}{6} - \frac{5}{8} + \frac{6}{10} - \dots
-$$
-diverges since **$\lim a_k$ does not exist**
-
----
-
-## Comparison test
-
-**Theorem:** if $0 \leq a_k \leq b_k$ for all $k\in\mathbb{N}$, then
-
-1. $\sum_{k=1}^\infty b_k$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
-2. $\sum_{k=1}^\infty a_k$ diverges $\;\Rightarrow\;$ $\sum_{k=1}^\infty b_k$ diverges
-
-**Proof:**
 $$\begin{aligned}
-|a_{m+1} + a_{m+2} + \dots + a_n| & = a_{m+1} + a_{m+2} + \dots + a_n \\[2mm]
-& \leq b_{m+1} + b_{m+2} + \dots + b_n \\[2mm]
-& = |b_{m+1} + b_{m+2} + \dots + b_n|
-\end{aligned}$$
-Apply the Cauchy criterion for series
-
----
-
-## Comparison test
-
-**Example:** $\displaystyle \sum_{k=1}^\infty \frac{1}{k!}$ converges
-
-For $k\geq 4$ we have
-$$
-k! \geq k^2 \quad\Rightarrow\quad \frac{1}{k!} \leq \frac{1}{k^2}
-$$
-
-Apply comparison test:
-$$
-\sum_{k=1}^\infty \frac{1}{k^2} \;\text{ converges}
-\quad\Rightarrow\quad
-\sum_{k=1}^\infty \frac{1}{k!} \;\text{ converges}
-$$
-
----
-
-## Alternating series test
-
-**Theorem:** assume
-- $0 \leq a_{k+1} \leq a_k$ for all $k\in\mathbb{N}$
-- $\lim a_k = 0$
-
-then the **alternating series** $\sum_{k=1}^\infty (-1)^{k+1}a_k$ converges
-
-**Proof:** consider the partial sums
-$$
-s_n = a_1 - a_2 + a_3 - \dots + (-1)^{n+1}a_n
-$$
-
----
-
-## Alternating series test
-
-**Proof (ctd):** the partial sums form nested intervals:
-$$
-I_n = [s_{2n}, s_{2n-1}]
-\quad\Rightarrow\quad
-I_1 \supseteq I_2 \supseteq I_3 \supseteq \cdots
-$$
-
-NIP $\;\Rightarrow\;$ there exists $s\in\mathbb{R}$ such that $s \in I_n$ for all $n \in \mathbb{N}$
-
----
-
-## Alternating series test
-
-**Proof (ctd):** let $\epsilon>0$ be arbitrary
-
-Choose $N \in \mathbb{N}$ such that $a_{2N} < \epsilon$, then
-$$\begin{aligned}
-n \geq 2N & \Rightarrow s, s_n \in I_N = [s_{2N}, s_{2N-1}] \\[4mm]
-& \Rightarrow |s-s_n| \leq s_{2N-1}-s_{2N} \\[4mm]
-& \Rightarrow |s-s_n| \leq a_{2N} \\[4mm]
-& \Rightarrow |s-s_n| < \epsilon
+O_n &= \left(-\frac{1}{n},\frac{1}{n}\right) \quad\text{is open for all } n\in\mathbb{N} \\[5mm]
+\bigcap_{n=1}^\infty O_n &= \{0\} \quad\text{is NOT open}
 \end{aligned}$$
 
 ---
 
-## Alternating series test
+# Closed sets
 
-**Example:**
-$\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots$
-converges
+## Isolated points
 
-This follows from the alternating series test:
+**Definition:** $a \in A$ is an **isolated point** of $A\subseteq\mathbb{R}$ if
+
 $$
-a_k = \displaystyle\frac{1}{k}
-\quad\text{satisfies}\quad
-0\leq a_{k+1} \leq a_k
-\quad\text{and}\quad
-\lim a_k = 0
+\exists\,\epsilon>0 \quad V_\epsilon(a)\cap A = \{a\}
+$$
+
+**Example:** $a=1$ is an isolated point of $A = \displaystyle\left\{\frac{1}{n} \,:\, n\in\mathbb{N}\right\}$
+
+For $0 < \epsilon < \tfrac{1}{2}$ we have $V_\epsilon(1) \cap A = \{1\}$
+
+*[Exercise: show that *all* points of $A$ are isolated]*
+
+---
+
+## Limit points
+
+**Definition:** $x \in \mathbb{R}$ is a **limit point** of $A\subseteq\mathbb{R}$ if
+
+$$
+\forall\,\epsilon>0 \quad V_\epsilon(x) \text{ intersects } A \text{ in some point \textbf{other} than } x
+$$
+
+**Note:** limit points of $A$ **may** or **may not** belong to $A$!
+
+---
+
+## Limit points
+
+**Example:** $x=0$ is a limit point of
+$A = \displaystyle\left\{\frac{1}{n} \,:\, n\in\mathbb{N}\right\}$
+
+Take $\epsilon>0$ arbitrary
+
+Take $n\in\mathbb{N}$ such that $\displaystyle\frac{1}{n} < \epsilon$
+
+Then $\displaystyle\frac{1}{n} \in V_\epsilon(0) \cap A$
+
+**Note:** $0 \notin A$!
+
+---
+
+## Limit points
+
+**Theorem:** the following statements are equivalent:
+
+1. $x$ is a limit point of $A$
+2. There exists a sequence $(a_n)$ in $A$ such that
+   $$
+   a_n \neq x \quad\forall\,n\in\mathbb{N}\quad\text{and}\quad x = \lim a_n
+   $$
+
+**Proof (1 $\Rightarrow$ 2):** let $n\in\mathbb{N}$ and set $\epsilon=1/n$
+
+There exists $a_n \in V_\epsilon(x) \cap A$ with $a_n \neq x$
+
+Note that $|a_n-x| < \epsilon = \displaystyle\frac{1}{n}$
+
+---
+
+## Limit points
+
+**Theorem:** the following statements are equivalent:
+
+1. $x$ is a limit point of $A$
+2. There exists a sequence $(a_n)$ in $A$ such that
+   $$
+   a_n \neq x \quad\forall\,n\in\mathbb{N}\quad\text{and}\quad x = \lim a_n
+   $$
+
+**Proof (2 $\Rightarrow$ 1):** for all $\epsilon>0$ there exists $N\in\mathbb{N}$ such that
+$$
+n \geq N \quad\Rightarrow\quad |a_n - x| < \epsilon
+$$
+
+In particular, $a_N \in V_\epsilon(x)$
+
+By assumption $a_N \neq x$ and $a_N \in A$
+
+---
+
+## Limit points
+
+**Example:** $x=0$ and $x=1$ are limit points of $A=(0,1)$
+
+For $x=0$ take $a_n = \displaystyle\frac{1}{2n}$
+
+For $x=1$ take $a_n = \displaystyle\frac{n}{n+1}$
+
+**Exercise:** prove the same result by means of the definition
+
+---
+
+## Closed sets
+
+**Definition:** a set is **closed** if it contains its limit points
+
+**Moral:** you can't leave a closed set by taking limits
+(see next Theorem)
+
+---
+
+## Closed sets
+
+**Theorem:** the following statements are equivalent:
+
+1. $F$ is closed
+2. Every Cauchy sequence in $F$ has its limit in $F$
+
+**Proof (1 $\Rightarrow$ 2):** let $(a_n)$ be a Cauchy sequence in $F$
+
+$x = \lim a_n$ exists; now consider two cases:
+
+- $x \neq a_n$ for all $n \in \mathbb{N} \;\Rightarrow\; x$ is a limit point of $F\;\Rightarrow\; x\in F$
+
+- $x = a_n$ for some $n \in \mathbb{N} \;\Rightarrow\; x \in F$ holds trivially
+
+---
+
+## Closed sets
+
+**Theorem:** the following statements are equivalent:
+
+1. $F$ is closed
+2. Every Cauchy sequence in $F$ has its limit in $F$
+
+**Proof (2 $\Rightarrow$ 1):** let $x$ be a limit point of $F$
+
+$x = \lim a_n$ with $a_n \in F$ and $a_n \neq x$ for all $n\in\mathbb{N}$
+
+$(a_n)$ convergent $\;\Rightarrow\;$ $(a_n)$ Cauchy $\;\Rightarrow\;$ $x\in F$ by assumption
+
+---
+
+## Closed sets
+
+**Example:** $[c,d]$ is closed
+
+Let $x$ be a limit point of $[c,d]$
+
+$x = \lim x_n$ for some sequence $(x_n)\subseteq [c,d]$
+
+$c \leq x_n \leq d$ for all $n\in\mathbb{N}$
+
+Order limit theorem $\;\Rightarrow\; c \leq x \leq d \;\Rightarrow\; x \in [c,d]$
+
+---
+
+## Closure
+
+**Definition:** the **closure** of $A$ is defined as
+$$
+\overline{A} = A \cup \{\text{all limit points of } A\}
+$$
+
+**Theorem:** $\overline{A}$ is closed
+
+**Proof:** show that
+$$
+x \text{ limit point of } \overline{A}
+\quad\Leftrightarrow\quad
+x \text{ limit point of } A
 $$
 
 ---
 
-## Absolute vs. conditional convergence
+## Closure
 
-**Theorem:** $\sum_{k=1}^\infty |a_k|$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
+**Proof ($\Rightarrow$):**
 
-**Proof:** note that
-$$
-0 \leq a_k + |a_k| \leq 2|a_k| \quad\text{for all}\quad k \in \mathbb{N}
-$$
+$\overline{A} = A \cup L \quad\text{with}\quad L = \{\text{limit points of } A\}$
 
-Comparison Test $\;\Rightarrow\;$ $\sum_{k=1}^\infty \big(a_k + |a_k|\big)$ converges
-
-Apply Algebraic Limit Theorem:
-$$
-\sum_{k=1}^\infty a_k = \sum_{k=1}^\infty \big(a_k + |a_k|\big) - \sum_{k=1}^\infty |a_k|
-\quad\text{converges}
-$$
-
----
-
-## Absolute vs. conditional convergence
-
-**Definition:** $\sum_{k=1}^\infty a_k$ is called
-- **absolutely convergent** if $\sum_{k=1}^\infty |a_k|$ converges
-- **conditionally convergent** if it converges but $\sum_{k=1}^\infty |a_k|$ diverges
-
-**Examples:**
-- $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k^2}$ converges absolutely
-- $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k}$ converges conditionally
-
----
-
-# Special series
-
-## Geometric series
-
-**Definition:** a **geometric series** is of the form
-$$
-\sum_{k=0}^\infty ar^k = a + ar + ar^2 + ar^3 + \cdots
-$$
-
-**Note:** the first index is $k=0$
-
----
-
-## Geometric series
-
-Partial sums:
 $$\begin{aligned}
-s_n  & = a + ar + ar^2 + ar^3 + \cdots + ar^{n-1} \\[3mm]
-rs_n & = \quad\;\;\; ar + ar^2 + ar^3 + \cdots + ar^{n-1} + ar^n \\[3mm]
-(1-r)s_n & = a(1-r^n)
+x \text{ limit point of $\overline{A}$} &\Rightarrow \forall\,\epsilon>0 \quad \exists\,y \in V_\epsilon(x)\cap\overline{A} \quad y \neq x \\
+& \quad \textit{(note: either } y \in A \textit{ or } y \in L\textit{)} \\[3mm]
+(1)\quad y \in A &\Rightarrow x \text{ is a limit point of $A$} \\[3mm]
+(2)\quad y \in L &\Rightarrow \forall\,\delta>0 \quad \exists\, z \in V_\delta(y) \cap A \quad z \neq y \\
+& \quad \textit{(note: } V_\delta(y) \subseteq V_\epsilon(x)\setminus\{x\} \textit{ for } \delta \textit{ small enough)} \\[3mm]
+&\Rightarrow x \text{ is a limit point of $A$}
 \end{aligned}$$
 
-For $|r| < 1$ we have:
-$$
-\lim s_n
-=
-\lim \frac{a(1-r^n)}{1-r}
-=
-\frac{a}{1-r}
-$$
+---
+
+## Closure
+
+**Example:** if $A = (0,1)$ then $\overline{A} = [0,1]$
+
+All points of $A$ are limit points
+
+Also $x=0$ and $x=1$ are limit points
+
+If $x < 0$ or $x > 1$ then $x$ is **NOT** a limit point of $A$ (exercise!)
 
 ---
 
-## Geometric series
+## Closure
 
-**Example:** we have $0.999\ldots = 1$
+**Example:** $\overline{\mathbb{Q}} = \mathbb{R}$
 
-This follows from
+Take $x \in \mathbb{R}$ and $\epsilon>0$ arbitrary
+
+$\mathbb{Q}$ is dense in $\mathbb{R}$: there exists $r \in \mathbb{Q}$ such that $x < r < x+\epsilon$
+
+Hence, $r \in V_\epsilon(x)\cap\mathbb{Q}$ and $r\neq x$
+
+So each $x\in\mathbb{R}$ is a limit point of $\mathbb{Q}$
+
+---
+
+# Relation open/closed
+
+## Complements
+
+**Theorem:**
+
+1. $O$ open $\Leftrightarrow O^c$ closed
+2. $F$ closed $\Leftrightarrow F^c$ open
+
+**Proof:** see book
+
+---
+
+## Open and closed are not mutually exclusive
+
+**Warning:** sets are not like doors!
+
+- $(0,1]$ and $\mathbb{Q}$ are neither open nor closed
+- $\mathbb{R}$ and $\varnothing$ are both open and closed
+
+---
+
+## Unions and intersections
+
+**Theorem:**
+
+1. Unions of **finite** collections of closed sets are closed
+2. Intersections of **arbitrary** collections of closed sets are closed
+
+**Proof (1):**
 $$\begin{aligned}
-0.999\dots
-& = \sum_{k=1}^\infty \frac{9}{10^k} \\[2mm]
-& = \frac{1}{10} \sum_{k=0}^\infty 9\left(\frac{1}{10}\right)^k \\[2mm]
-& = \frac{1}{10}\cdot \frac{9}{1-1/10} \;\; = \;\; 1
+F_1,\dots,F_n \text{ closed}
+&\Rightarrow F_1^c,\dots,F_n^c \text{ open} \\[3mm]
+&\Rightarrow F_1^c\cap\dots\cap F_n^c \text{ open} \\[3mm]
+&\Rightarrow (F_1^c\cap\dots\cap F_n^c)^c \text{ closed} \\[3mm]
+&\Rightarrow F_1\cup\dots\cup F_n \text{ closed}
 \end{aligned}$$
 
 ---
 
-## Telescoping series
+## Unions and intersections
 
-**Definition:** **telescoping series** are of the form
-$$
-\sum_{k=1}^\infty a_k = \sum_{k=1}^\infty (b_k - b_{k+1})
-$$
+**Theorem:**
 
-Successive terms cancel each other:
+1. Unions of **finite** collections of closed sets are closed
+2. Intersections of **arbitrary** collections of closed sets are closed
+
+**Proof (2):**
 $$\begin{aligned}
-s_n & = a_1 + a_2 + a_3 + \cdots + a_n \\[2mm]
-& = (b_1 - b_2) + (b_2 - b_3) + (b_3 - b_4) + \cdots + (b_n - b_{n+1}) \\[2mm]
-& = b_1 - b_{n+1}
-\end{aligned}$$
-
-The series converges $\; \Leftrightarrow \; (b_n)$ converges
-
----
-
-## Telescoping series
-
-**Example:**
-$\displaystyle\sum_{k=1}^\infty \frac{1}{k(k+1)} = \frac{1}{2} + \frac{1}{6} + \frac{1}{12} + \frac{1}{20} + \cdots = 1$
-
-Solution:
-$$\begin{aligned}
-s_n & = \sum_{k=1}^n \left(\frac{1}{k} - \frac{1}{k+1}\right) \\[3mm]
-& = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{n} - \frac{1}{n+1}\right) \\[3mm]
-& = 1 - \frac{1}{n+1} \to 1
+F_i \text{ closed for all } i \in I
+&\Rightarrow F_i^c \text{ open for all } i \in I \\[2mm]
+&\Rightarrow \phantom{\big(}\bigcup_{i\in I} F_i^c \text{ open} \\
+&\Rightarrow \big(\bigcup_{i\in I} F_i^c\big)^c \text{ closed} \\
+&\Rightarrow \phantom{\big(}\bigcap_{i\in I} F_i \text{ closed}
 \end{aligned}$$
 
 ---
 
-## Telescoping series
+## Unions and intersections
 
-**Example:**
-$\displaystyle\sum_{k=1}^\infty \frac{1}{k^2+7k+12} = \frac{1}{4}$
+**Warning:** the union of infinitely many closed sets **NEED NOT BE** closed!
 
-Solution:
+Counter example:
 $$\begin{aligned}
-\frac{1}{k^2+7k+12} & = \frac{1}{(k+3)(k+4)} \;\; = \;\; \frac{1}{k+3} - \frac{1}{k+4} \\[6mm]
-s_n & = \left(\frac{1}{4} - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) + \cdots + \left(\frac{1}{n+3} - \frac{1}{n+4}\right) \\[3mm]
-& = \frac{1}{4} - \frac{1}{n+4} \to \frac{1}{4}
+F_n &= \left[-\frac{n}{n+1},\frac{n}{n+1}\right] \quad\text{is closed for all } n\in\mathbb{N} \\[5mm]
+\bigcup_{n=1}^\infty F_n &= (-1,1) \quad\text{is NOT closed}
 \end{aligned}$$

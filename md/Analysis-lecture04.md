@@ -1,20 +1,22 @@
 ---
 title: "Analysis"
 author: "Marcello Seri, m.seri@rug.nl"
-date: "Lecture 4, Friday 22 November 2024"
+date: "Lecture 4"
 ---
 
 Topics:
-- Abbott §2.4. The monotone convergence theorem
-- Abbott §2.5. The Bolzano--Weierstrass theorem
+- Abbott §2.6. The Cauchy criterion
+- Abbott §2.7. Properties of infinite series
 
-Formalization: [`Sequences.v`](docs/rocq/RUG.Analysis.Sequences.html), [`Subsequences.v`](docs/rocq/RUG.Analysis.Subsequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
+Formalization: [`CauchySequences.v`](docs/rocq/RUG.Analysis.CauchySequences.html), [`Series.v`](docs/rocq/RUG.Analysis.Series.html)
+
+Tutorial: [Tutorial 4](#tutorials/tutorial-4)
 
 ---
 
-# Monotone sequences
+# Cauchy sequences
 
-## Sequences and limits
+## Cauchy sequences
 
 **Definition:** $(a_n)$ **converges** to $a$ if
 $$
@@ -22,391 +24,397 @@ $$
 n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
 $$
 
-**Notation:** $a = \lim a_n$ or $a_n \rightarrow a$
-
-![](../fig/lec04-convergent.png)
-*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+**Note:** the limit must be known in advance!
 
 ---
 
-## Monotone sequences
+## Cauchy sequences
 
-**Definition:** $(a_n)$ is called **monotone** if it is either
-
-- increasing: $\quad\; a_n \leq a_{n+1} \quad\forall\,n \in \mathbb{N}$
-
-  or
-
-- decreasing: $\quad a_{n+1} \leq a_n \quad\forall\,n \in \mathbb{N}$
-
-**Examples:**
-- $(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\tfrac{1}{4},\dots)$ is monotone
-- $(b_n) = (1,1,2,2,4,4,8,8,\dots)$ is monotone
-- $(c_n) = (1,0,1,0,\dots)$ is **NOT** monotone
-
----
-
-## Monotone convergence theorem
-
-**Theorem:** $(a_n)$ bounded & monotone $\;\Rightarrow\; (a_n)$ converges
-
-**Proof:** $A = \{a_n \,:\, n \in \mathbb{N}\}$ is bounded
-
-Strategy of proof:
-
-- $a_n$ increasing $\;\Rightarrow\; \lim a_n = \sup A$
-- $a_n$ decreasing $\;\Rightarrow\; \lim a_n = \inf A$ (exercise!)
-
----
-
-## Monotone convergence theorem
-
-**Proof (ctd):** assume that $(a_n)$ increases
-
-Let $s=\sup\{a_n \,:\, n \in \mathbb{N}\}$
-
-Let $\epsilon>0$ be arbitrary, then $s-\epsilon$ is not an upper bound
-
-There exists $N \in \mathbb{N}$ s.t. $s-\epsilon < a_N$
-
-For $n \geq N$ we have
+**Definition:** $(a_n)$ is a **Cauchy sequence** if
 $$
-s-\epsilon < a_N \leq a_n \leq s < s+\epsilon \quad\Rightarrow\quad |a_n-s| < \epsilon
+\forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
+n,m \geq N
+\quad\Rightarrow\quad
+|a_n - a_m| < \epsilon
 $$
 
+**Meaning:** the terms get close to **each other**
+
 ---
 
-## Monotone convergence theorem
+## Cauchy sequences
 
-**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+**Theorem:** $(a_n)$ convergent $\;\Rightarrow\; (a_n)$ Cauchy
 
-Induction proof that $(a_n)$ is increasing:
+**Proof:** assume $a = \lim a_n$
+
+For all $\epsilon>0$ there exists $N \in \mathbb{N}$ such that
 $$\begin{aligned}
-a_1 = 1, \;\; a_2 = \sqrt{2} & \Rightarrow & a_1 < a_2 \\[5mm]
-a_n < a_{n+1} \text{ for some } n	& \Rightarrow & 1 + a_n < 1 + a_{n+1} \\[3mm]
-               					& \Rightarrow & \sqrt{1+a_n} < \sqrt{1+a_{n+1}} \\[3mm]
-              						& \Rightarrow & a_{n+1} < a_{n+2}
+n \geq N    & \quad\Rightarrow\quad |a_n - a| < \tfrac{1}{2}\epsilon \\[6mm]
+m, n \geq N & \quad\Rightarrow\quad |a_n - a_m|  = |(a_n - a) - (a_m - a)| \\[3mm]
+&                       \hspace{16mm} \leq |a_n-a| + |a_m-a| \\[3mm]
+&                       \hspace{16mm} < \epsilon
 \end{aligned}$$
 
 ---
 
-## Monotone convergence theorem
+## Cauchy sequences
 
-**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+**Lemma:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ bounded
 
-Induction proof that $(a_n)$ is bounded:
+**Proof:** for $\epsilon=1$ there exists $N \in \mathbb{N}$ such that
 $$\begin{aligned}
-a_1 = 1 & \Rightarrow & a_1 < 2 \\[5mm]
-a_n < 2 \text{ for some } n	& \Rightarrow & 1 + a_n < 3 \\[3mm]
-         						& \Rightarrow & \sqrt{1+a_n} < \sqrt{3} < 2 \\[3mm]
-        						& \Rightarrow & a_{n+1} < 2
+n,m \geq N & \Rightarrow |a_n - a_m| < 1 \\[1mm]
+n \geq N & \Rightarrow |a_n - a_N| < 1 \quad\text{(fix $m = N$)} \\[1mm]
+& \Rightarrow \big||a_n|-|a_N|\big| < 1 \\[1mm]
+& \Rightarrow |a_n|-|a_N|< 1 \\[1mm]
+& \Rightarrow |a_n| < 1 + |a_N|
+\end{aligned}$$
+
+For $M = \max\big\{|a_1|,|a_2|,\dots,|a_{N-1}|, 1+|a_N|\big\}$ we have
+$$
+|a_n| \leq M \quad\text{for all } n \in \mathbb{N}
+$$
+
+---
+
+## Cauchy sequences
+
+**Theorem:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ convergent
+
+**Proof:**
+
+Lemma $\;\Rightarrow\;$ $(a_n)$ is bounded
+
+Bolzano--Weierstrass $\;\Rightarrow\;$ $(a_n)$ has a convergent subsequence $(a_{n_k})$,
+let $a = \lim a_{n_k}$
+
+---
+
+## Cauchy sequences
+
+**Proof (ctd):** for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
+$$
+n,m \geq N \quad\Rightarrow\quad |a_n-a_m|< \tfrac{1}{2}\epsilon
+$$
+
+Fix an index $n_k \geq N$ such that $|a_{n_k} - a| < \tfrac{1}{2}\epsilon$, then
+$$\begin{aligned}
+n \geq N \quad\Rightarrow\quad |a_n - a| & = |a_n - a_{n_k} + a_{n_k} - a| \\[3mm]
+& \leq |a_n-a_{n_k}| + |a_{n_k}-a| \\[3mm]
+& < \epsilon
 \end{aligned}$$
 
 ---
 
-## Monotone convergence theorem
+# Series
 
-**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+## Properties of series
 
-$(a_n)$ bounded and increasing $\;\Rightarrow\;$ $a = \lim a_n$ exists by MCT
+**Definitions:**
 
-Moreover:
-$$
-\begin{split}
-a_{n+1}^2 = 1 + a_n
- & \quad\Rightarrow\quad \lim a_{n+1}^2 = \lim\,(1+a_n) \\[4mm]
- & \quad\Rightarrow\quad a^2 = 1 + a \\[2mm]
- & \quad\Rightarrow\quad a = \frac{1+\sqrt{5}}{2}
-\end{split}
-$$
+- infinite **series**: $\displaystyle \sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots$
+- $n$-th **partial sum**: $s_n = a_1 + a_2 + \dots + a_n$
+- **convergence**: $\displaystyle \sum_{k=1}^\infty a_k = A \;\stackrel{\text{def}}{\Longleftrightarrow}\; \lim s_n = A$
 
 ---
 
-# Subsequences
+## Algebraic limit theorem
 
-## Subsequences
+**Theorem:** if $\sum_{k=1}^\infty a_k = A$ and $\sum_{k=1}^\infty b_k = B$ then
 
-**Definition:** pick $n_k \in \mathbb{N}$ such that
-$$
-1 \leq n_1 < n_2 < n_3 < \cdots
-$$
-If $(a_n)$ is a sequence then
-$$
-(a_{n_k}) = (a_{n_1}, a_{n_2}, a_{n_3}, \dots)
-$$
-is called a **subsequence** of $(a_n)$
+1. $\sum_{k=1}^\infty ca_k = cA$ for all $c\in\mathbb{R}$
+2. $\sum_{k=1}^\infty (a_k + b_k) = A+B$
 
-**Note:** $n_k \geq k$ for all $k \in \mathbb{N}$
+**Proof:** apply analogous theorem for sequences to partial sums
 
 ---
 
-## Subsequences
+## Cauchy criterion
 
-**Example:** consider
-$$
-(a_n) = (a_1, a_2, a_3, a_4, a_5,\dots)
-$$
+**Theorem:** the following statements are equivalent
 
-Some subsequences are given by:
+1. $\sum_{k=1}^\infty a_k$ converges
+2. for all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
+   $$
+   n > m \geq N \quad\Rightarrow\quad |a_{m+1} + a_{m+2} + \dots + a_n| < \epsilon
+   $$
+
+**Proof:** note that $|s_n-s_m| = |a_{m+1} + \dots + a_n|$
+
+Statement 1 $\;\Leftrightarrow\;$ $(s_n)$ converges $\;\Leftrightarrow\;$ $(s_n)$ Cauchy $\;\Leftrightarrow\;$ Statement 2
+
+---
+
+## Cauchy criterion
+
+**Example:** $\displaystyle \sum_{k=1}^\infty\frac{1}{k}$ diverges
+
+For any $m \in \mathbb{N}$ and $n = 2m$ we have
 $$\begin{aligned}
-n_k = k+4
- & \quad\Rightarrow\quad &
-(a_{n_k}) = (a_5, a_6, a_7,\dots) \\[5mm]
-n_k = 2k
- & \quad\Rightarrow\quad &
-(a_{n_k}) = (a_2, a_4, a_6,\dots) \\[5mm]
-n_k = 10^k & \quad\Rightarrow\quad &
-(a_{n_k}) = (a_{10}, a_{100}, a_{1000},\dots)
+|a_{m+1} + a_{m+2} + \dots + a_n|
+& = \frac{1}{m+1} + \frac{1}{m+2} + \dots + \frac{1}{2m} \\[4mm]
+& > \frac{m}{2m} \\[4mm]
+& = \frac{1}{2}
+\end{aligned}$$
+Hence, the Cauchy criterion fails
+
+---
+
+## Necessary condition for convergence
+
+**Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
+
+**Proof:** let $\epsilon>0$ be arbitrary
+
+There exists $N\in \mathbb{N}$ such that
+$$\begin{aligned}
+n > m \geq N & \quad\Rightarrow\quad |a_{m+1} + a_{m+2} + \dots + a_n|<\epsilon \\[10mm]
+n = m+1 \text{ and } m \geq N  & \quad\Rightarrow\quad |a_{m+1}| < \epsilon
 \end{aligned}$$
 
 ---
 
-## Subsequences
+## Necessary condition for convergence
 
-**Warning:** the indices $n_k$ must be **strictly increasing**!
+**Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
 
-The following examples **DO NOT** qualify as subsequences of $(a_n)$:
-- $(a_3, a_5, a_1, a_7, a_2,\dots)$
-  *[the ordering of the terms is not respected]*
-- $(a_1, a_1, a_2, a_3, a_4,\dots)$
-  *[repetitions are not allowed]*
+**Warning:** the converse is **NOT** true!
 
----
-
-## Subsequences
-
-**Theorem:** $\lim a_n = a \quad\Rightarrow\quad \lim a_{n_k} = a$
-
-**Proof:** let $\epsilon>0$ be arbitrary, then
-
-$$\begin{aligned}
-\exists\, N \in \mathbb{N} \quad \text{s.t.}\quad n \geq N & \Rightarrow & |a_n - a| < \epsilon \\[5mm]
-k \geq N & \Rightarrow & n_k \geq N \qquad\qquad\quad \text{(use $n_k\geq k$)} \\[2mm]
-          & \Rightarrow & |a_{n_k} - a| < \epsilon
-\end{aligned}$$
-
----
-
-## Subsequences
-
-**Example:** $(a_n) = (-1,1,-1,1,\dots)$ diverges
-
-Take two subsequences:
-$$\begin{aligned}
-n_k = 2k   & \quad\Rightarrow\quad & (a_{n_k}) = (1,1,1,\dots) \\[2mm]
-           & \quad\Rightarrow\quad & \lim a_{n_k} = 1 \\[5mm]
-n_k = 2k-1 & \quad\Rightarrow\quad & (a_{n_k}) = (-1,-1,-1,\dots) \\[2mm]
-           & \quad\Rightarrow\quad & \lim a_{n_k} = -1
-\end{aligned}$$
-
-Different subsequences have different limits $\;\Rightarrow\;$ $(a_n)$ diverges
-
----
-
-## Bolzano--Weierstrass theorem
-
-**Theorem:** every bounded sequence has a convergent subsequence
-
-**Proof:** there exists $M>0$ such that $a_n \in [-M, M]$ for all $n$
-
-![](../fig/lec05-bolzano.png)
-*[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
-
-Halving-process gives nested closed intervals
+Counter example:
 $$
+\lim \frac{1}{k} = 0
+\qquad\text{but}\qquad
+\sum_{k=1}^\infty \frac{1}{k}
+\quad\text{diverges}
+$$
+
+---
+
+## Necessary condition for convergence
+
+**Note:** the previous theorem also gives a **test for divergence**
+
+**Example:** the series
+$$
+\sum_{k=1}^\infty (-1)^{k+1}\cdot\frac{k+1}{2k} = 1 - \frac{3}{4} + \frac{4}{6} - \frac{5}{8} + \frac{6}{10} - \dots
+$$
+diverges since **$\lim a_k$ does not exist**
+
+---
+
+## Comparison test
+
+**Theorem:** if $0 \leq a_k \leq b_k$ for all $k\in\mathbb{N}$, then
+
+1. $\sum_{k=1}^\infty b_k$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
+2. $\sum_{k=1}^\infty a_k$ diverges $\;\Rightarrow\;$ $\sum_{k=1}^\infty b_k$ diverges
+
+**Proof:**
+$$\begin{aligned}
+|a_{m+1} + a_{m+2} + \dots + a_n| & = a_{m+1} + a_{m+2} + \dots + a_n \\[2mm]
+& \leq b_{m+1} + b_{m+2} + \dots + b_n \\[2mm]
+& = |b_{m+1} + b_{m+2} + \dots + b_n|
+\end{aligned}$$
+Apply the Cauchy criterion for series
+
+---
+
+## Comparison test
+
+**Example:** $\displaystyle \sum_{k=1}^\infty \frac{1}{k!}$ converges
+
+For $k\geq 4$ we have
+$$
+k! \geq k^2 \quad\Rightarrow\quad \frac{1}{k!} \leq \frac{1}{k^2}
+$$
+
+Apply comparison test:
+$$
+\sum_{k=1}^\infty \frac{1}{k^2} \;\text{ converges}
+\quad\Rightarrow\quad
+\sum_{k=1}^\infty \frac{1}{k!} \;\text{ converges}
+$$
+
+---
+
+## Alternating series test
+
+**Theorem:** assume
+- $0 \leq a_{k+1} \leq a_k$ for all $k\in\mathbb{N}$
+- $\lim a_k = 0$
+
+then the **alternating series** $\sum_{k=1}^\infty (-1)^{k+1}a_k$ converges
+
+**Proof:** consider the partial sums
+$$
+s_n = a_1 - a_2 + a_3 - \dots + (-1)^{n+1}a_n
+$$
+
+---
+
+## Alternating series test
+
+**Proof (ctd):** the partial sums form nested intervals:
+$$
+I_n = [s_{2n}, s_{2n-1}]
+\quad\Rightarrow\quad
 I_1 \supseteq I_2 \supseteq I_3 \supseteq \cdots
 $$
-NIP $\Rightarrow$ there exists $x\in \bigcap_{n=1}^\infty I_n$
+
+NIP $\;\Rightarrow\;$ there exists $s\in\mathbb{R}$ such that $s \in I_n$ for all $n \in \mathbb{N}$
 
 ---
 
-## Bolzano--Weierstrass theorem
+## Alternating series test
 
-**Proof (ctd):** each $I_k$ contains **infinitely many** terms of the seq.
-- pick $n_1 \in \mathbb{N}$ with $a_{n_1} \in I_1$
-- pick $n_2 \in \mathbb{N}$ with $n_2 > n_1$ and $a_{n_2} \in I_2$
-- pick $n_3 \in \mathbb{N}$ with $n_3 > n_2$ and $a_{n_3} \in I_3$
-  $\quad\quad\vdots$
+**Proof (ctd):** let $\epsilon>0$ be arbitrary
 
-Note that
-$$
-\left.
-\begin{matrix*}
-x & \in & I_k \\[2mm]
-a_{n_k} & \in & I_k
-\end{matrix*}
-\right\}
-\quad\Rightarrow\quad
-|a_{n_k} - x| \leq \text{length}(I_k) = \frac{2M}{2^k} \to 0
-$$
-
----
-
-# Introduction to series
-
-## How to add infinitely many numbers?
-
-**Definition:**
-- infinite **series**:
-$$
-\sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots
-$$
-- $n$-th **partial sum**:
-$$
-s_n = a_1 + a_2 + \dots + a_n
-$$
-- if $\lim s_n = s$, then we say the series **converges** to $s$
-
----
-
-## Euler's famous example
-
-**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k^2}$ converges
-
-**Proof:**
+Choose $N \in \mathbb{N}$ such that $a_{2N} < \epsilon$, then
 $$\begin{aligned}
-s_n & = & 1 + \frac{1}{4} + \frac{1}{9} + \dots + \frac{1}{n^2} \\[5mm]
-s_n & < & s_{n+1} \qquad\forall\, n \in \mathbb{N} \\[5mm]
-s_n & < & 2 \qquad\forall\, n \in \mathbb{N} \qquad \text{*(see next slide)*}\\[5mm]
-\text{MCT} & \Rightarrow & \lim s_n \text{ exists}
+n \geq 2N & \Rightarrow s, s_n \in I_N = [s_{2N}, s_{2N-1}] \\[4mm]
+& \Rightarrow |s-s_n| \leq s_{2N-1}-s_{2N} \\[4mm]
+& \Rightarrow |s-s_n| \leq a_{2N} \\[4mm]
+& \Rightarrow |s-s_n| < \epsilon
 \end{aligned}$$
 
 ---
 
-## Euler's famous example
+## Alternating series test
 
-**Proof (ctd):**
+**Example:**
+$\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots$
+converges
+
+This follows from the alternating series test:
+$$
+a_k = \displaystyle\frac{1}{k}
+\quad\text{satisfies}\quad
+0\leq a_{k+1} \leq a_k
+\quad\text{and}\quad
+\lim a_k = 0
+$$
+
+---
+
+## Absolute vs. conditional convergence
+
+**Theorem:** $\sum_{k=1}^\infty |a_k|$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
+
+**Proof:** note that
+$$
+0 \leq a_k + |a_k| \leq 2|a_k| \quad\text{for all}\quad k \in \mathbb{N}
+$$
+
+Comparison Test $\;\Rightarrow\;$ $\sum_{k=1}^\infty \big(a_k + |a_k|\big)$ converges
+
+Apply Algebraic Limit Theorem:
+$$
+\sum_{k=1}^\infty a_k = \sum_{k=1}^\infty \big(a_k + |a_k|\big) - \sum_{k=1}^\infty |a_k|
+\quad\text{converges}
+$$
+
+---
+
+## Absolute vs. conditional convergence
+
+**Definition:** $\sum_{k=1}^\infty a_k$ is called
+- **absolutely convergent** if $\sum_{k=1}^\infty |a_k|$ converges
+- **conditionally convergent** if it converges but $\sum_{k=1}^\infty |a_k|$ diverges
+
+**Examples:**
+- $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k^2}$ converges absolutely
+- $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k}$ converges conditionally
+
+---
+
+# Special series
+
+## Geometric series
+
+**Definition:** a **geometric series** is of the form
+$$
+\sum_{k=0}^\infty ar^k = a + ar + ar^2 + ar^3 + \cdots
+$$
+
+**Note:** the first index is $k=0$
+
+---
+
+## Geometric series
+
+Partial sums:
 $$\begin{aligned}
-s_n
- & = & 1 + \frac{1}{2 \cdot 2} + \frac{1}{3 \cdot 3} + \frac{1}{4 \cdot 4} + \dots + \frac{1}{n\cdot n} \\[4mm]
-  & < & 1 + \frac{1}{2 \cdot 1} + \frac{1}{3 \cdot 2} + \frac{1}{4 \cdot 3} + \dots + \frac{1}{n\cdot (n-1)} \\[4mm]
-  & = & 1 + \left(1-\frac{1}{2}\right) + \left(\frac{1}{2}-\frac{1}{3}\right) + \left(\frac{1}{3}-\frac{1}{4}\right) + \dots + \left(\frac{1}{n-1}-\frac{1}{n}\right) \\[4mm]
-  & = & 1 + 1 - \frac{1}{n} \\[4mm]
-  & < & 2
+s_n  & = a + ar + ar^2 + ar^3 + \cdots + ar^{n-1} \\[3mm]
+rs_n & = \quad\;\;\; ar + ar^2 + ar^3 + \cdots + ar^{n-1} + ar^n \\[3mm]
+(1-r)s_n & = a(1-r^n)
+\end{aligned}$$
+
+For $|r| < 1$ we have:
+$$
+\lim s_n
+=
+\lim \frac{a(1-r^n)}{1-r}
+=
+\frac{a}{1-r}
+$$
+
+---
+
+## Geometric series
+
+**Example:** we have $0.999\ldots = 1$
+
+This follows from
+$$\begin{aligned}
+0.999\dots
+& = \sum_{k=1}^\infty \frac{9}{10^k} \\[2mm]
+& = \frac{1}{10} \sum_{k=0}^\infty 9\left(\frac{1}{10}\right)^k \\[2mm]
+& = \frac{1}{10}\cdot \frac{9}{1-1/10} \;\; = \;\; 1
 \end{aligned}$$
 
 ---
 
-## Euler's famous example
+## Telescoping series
 
-**Remark:** since $s_n < 2$ for all $n$ the order limit theorem implies
+**Definition:** **telescoping series** are of the form
 $$
-\sum_{k=1}^\infty \frac{1}{k^2} = \lim s_n \leq 2
-$$
-
-Euler proved in 1734 that in fact
-$$
-\sum_{k=1}^\infty \frac{1}{k^2} = \frac{\pi^2}{6} = 1.644934\dots
+\sum_{k=1}^\infty a_k = \sum_{k=1}^\infty (b_k - b_{k+1})
 $$
 
----
-
-## More curious examples...
-
+Successive terms cancel each other:
 $$\begin{aligned}
-\sum_{k=1}^\infty \frac{1}{k^4} & = & \frac{\pi^4}{90} \\[4mm]
-\sum_{k=1}^\infty \frac{1}{k^6} & = & \frac{\pi^6}{945} \\[4mm]
-\sum_{k=1}^\infty \frac{1}{k^8} & = & \frac{\pi^8}{9450} \\
- & \vdots &
+s_n & = a_1 + a_2 + a_3 + \cdots + a_n \\[2mm]
+& = (b_1 - b_2) + (b_2 - b_3) + (b_3 - b_4) + \cdots + (b_n - b_{n+1}) \\[2mm]
+& = b_1 - b_{n+1}
 \end{aligned}$$
 
-For odd powers of $k$ the sums are unknown!
+The series converges $\; \Leftrightarrow \; (b_n)$ converges
 
 ---
 
-## The harmonic series
+## Telescoping series
 
-**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k}$ **diverges**
+**Example:**
+$\displaystyle\sum_{k=1}^\infty \frac{1}{k(k+1)} = \frac{1}{2} + \frac{1}{6} + \frac{1}{12} + \frac{1}{20} + \cdots = 1$
 
-**Proof:**
+Solution:
 $$\begin{aligned}
-s_n & = & 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \dots + \frac{1}{n} \\[6mm]
-s_{2^p} & \geq & 1 + \frac{p}{2} \qquad\text{for all $p\in\mathbb{N}$ (see book)}
+s_n & = \sum_{k=1}^n \left(\frac{1}{k} - \frac{1}{k+1}\right) \\[3mm]
+& = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{n} - \frac{1}{n+1}\right) \\[3mm]
+& = 1 - \frac{1}{n+1} \to 1
 \end{aligned}$$
 
-$(s_n)$ is unbounded and therefore divergent
-
 ---
 
-## The integral test for convergence
+## Telescoping series
 
-**Theorem:** assume that $f : [1,\infty) \to \mathbb{R}$ is
-1. positive
-2. continuous
-3. monotonically decreasing
+**Example:**
+$\displaystyle\sum_{k=1}^\infty \frac{1}{k^2+7k+12} = \frac{1}{4}$
 
-Let $a_k=f(k)$ then
-$$
-\sum_{k=1}^\infty a_k \text{ converges}
-\qquad\Leftrightarrow\qquad
-\displaystyle\int_1^\infty f(x) dx < \infty
-$$
-
----
-
-## The integral test for convergence
-
-![](../fig/lec05-integral1.png)
-*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
-
-**Proof:** on the one hand
-$$
-\displaystyle\int_1^{n+1} f(x) dx \leq a_1 + a_2 + \cdots + a_n
-$$
-
----
-
-## The integral test for convergence
-
-![](../fig/lec05-integral2.png)
-*[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
-
-**Proof (ctd):** on the other hand
-$$
-a_1 + a_2 + \cdots + a_n \leq a_1 + \displaystyle\int_1^n f(x) dx
-$$
-
----
-
-## The integral test for convergence
-
-**Proof (ctd):** for all $n \in \mathbb{N}$ we have
-$$
-\int_1^{n+1} f(x) dx
-\;\leq\;
-\underbrace{a_1 + a_2 + \cdots + a_n}_{s_n}
-\;\leq\;
-a_1 + \int_1^n f(x) dx
-$$
-
-Note that $(s_n)$ is increasing since all $a_k > 0$!
-
-If $\int_1^\infty f(x)\,dx < \infty$, then $(s_n)$ also bounded and hence convergent
-
-If $\int_1^\infty f(x)\,dx = \infty$, then $(s_n)$ unbounded and hence divergent
-
----
-
-## The integral test for convergence
-
-**Example:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k^p}$ converges $\;\Leftrightarrow\; p>1$
-
-**Proof:** apply the theorem with $f(x) = \displaystyle\frac{1}{x^p}$
-
----
-
-## The integral test for convergence
-
-**Example:** $\displaystyle\sum_{k=1}^\infty ke^{-k^2}$ converges
-
-**Proof:**
-$$
-\begin{split}
-f(x) = xe^{-x^2}
-\quad\Rightarrow\quad
-\int_1^b f(x)\,dx
-& = \bigg[-\tfrac{1}{2}e^{-x^2}\bigg]_1^b \\[4mm]
-& = \tfrac{1}{2}(e^{-1}-e^{-b^2}) \to \tfrac{1}{2}e^{-1} \\[4mm]
-& \quad\;\,\text{as } b \to \infty
-\end{split}
-$$
+Solution:
+$$\begin{aligned}
+\frac{1}{k^2+7k+12} & = \frac{1}{(k+3)(k+4)} \;\; = \;\; \frac{1}{k+3} - \frac{1}{k+4} \\[6mm]
+s_n & = \left(\frac{1}{4} - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) + \cdots + \left(\frac{1}{n+3} - \frac{1}{n+4}\right) \\[3mm]
+& = \frac{1}{4} - \frac{1}{n+4} \to \frac{1}{4}
+\end{aligned}$$
