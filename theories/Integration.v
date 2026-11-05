@@ -220,7 +220,7 @@ Definition step_approx (g : ℝ → ℝ) (a b ε : ℝ) : Type :=
 Lemma constant_integrable (a b c : ℝ) :
     Riemann_integrable (fct_cte c) a b.
 Proof.
-  exact (RiemannInt_P14 a b c).
+  By (RiemannInt_P14 a b c) we conclude that Riemann_integrable (fct_cte c) a b.
 Qed.
 
 (** The integral of a constant is [∫_a^b c = c · (b - a)]. *)
@@ -228,6 +228,9 @@ Lemma integral_constant (a b c : ℝ)
     (pr : Riemann_integrable (fct_cte c) a b) :
     RiemannInt pr = c * (b - a).
 Proof.
+  (** [By (RiemannInt_P15 pr) we conclude that …] does not finish within
+      minutes on this [RiemannInt] equality, so we give the proof term
+      directly. *)
   exact (RiemannInt_P15 pr).
 Qed.
 
@@ -248,7 +251,7 @@ Theorem continuous_integrable (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
     (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x) :
     Riemann_integrable f1 a b.
 Proof.
-  exact (continuity_implies_RiemannInt Hab Hf).
+  By continuity_implies_RiemannInt we conclude that Riemann_integrable f1 a b.
 Qed.
 
 (** ** Monotone functions are integrable *)
@@ -293,8 +296,8 @@ Lemma sum_integrable (f1 g : ℝ → ℝ) (a b : ℝ)
     (pr2 : Riemann_integrable g a b) :
     Riemann_integrable (fun x => f1 x + g x) a b.
 Proof.
-  (* [RiemannInt_P10] gives [f + l·g]; take [l = 1] and transport along the
-     pointwise equality with [Riemann_integrable_ext]. *)
+  (** [RiemannInt_P10] gives [f + l·g]; take [l = 1] and transport along the
+      pointwise equality with [Riemann_integrable_ext]. *)
   We claim that ∀ x : ℝ,
     Rmin a b ≤ x ∧ x ≤ Rmax a b → f1 x + 1 * g x = f1 x + g x as (Hext).
   {
@@ -302,9 +305,10 @@ Proof.
     Assume that Rmin a b ≤ x ∧ x ≤ Rmax a b.
     We conclude that f1 x + 1 * g x = f1 x + g x.
   }
-  exact (Riemann_integrable_ext
-           (fun x => f1 x + 1 * g x) (fun x => f1 x + g x) Hext
-           (RiemannInt_P10 1 pr1 pr2)).
+  By (RiemannInt_P10 1 pr1 pr2) it holds that
+    Riemann_integrable (fun x => f1 x + 1 * g x) a b as (Hpr).
+  By (Riemann_integrable_ext (fun x => f1 x + 1 * g x) (fun x => f1 x + g x) Hext) we conclude that
+    Riemann_integrable (fun x => f1 x + g x) a b.
 Qed.
 
 (** [∫(f + g) = ∫f + ∫g]. *)
@@ -341,6 +345,10 @@ Proof.
     Assume that a < x ∧ x < b.
     By Hle we conclude that f1 x ≤ g x.
   }
+  (** The Waterproof version of this step,
+      [By (RiemannInt_P19 prf prg Hab Hlt) we conclude that …], does not finish
+      within minutes: the automation is very slow on goals involving
+      [RiemannInt]. So we give the proof term directly. *)
   exact (RiemannInt_P19 prf prg Hab Hlt).
 Qed.
 
@@ -354,8 +362,11 @@ Lemma integral_split (f1 : ℝ → ℝ) (a b c : ℝ)
     ∃ (pr2 : Riemann_integrable f1 c b),
       RiemannInt prf = RiemannInt pr1 + RiemannInt pr2.
 Proof.
-  (* [RiemannInt_P22]/[RiemannInt_P23] restrict the integrability, and
-     [RiemannInt_P26] (Chasles) splits the value. *)
+  (** [RiemannInt_P22]/[RiemannInt_P23] restrict the integrability, and
+      [RiemannInt_P26] (Chasles) splits the value. The last step is an
+      equality of [RiemannInt] terms, on which Waterproof automation does not
+      finish within minutes, so we close it with [symmetry] and the proof
+      term. *)
   It holds that a ≤ c ∧ c ≤ b as (Hacb).
   Choose pr1 := (RiemannInt_P22 prf Hacb).
   Choose pr2 := (RiemannInt_P23 prf Hacb).

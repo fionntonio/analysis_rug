@@ -33,8 +33,11 @@ Lemma integral_bound_sup (f1 : ℝ → ℝ) (a b M : ℝ) (Hab : a ≤ b)
     (HM : ∀ x : ℝ, a ≤ x ∧ x ≤ b → f1 x ≤ M) :
     RiemannInt prf ≤ (b - a) * M.
 Proof.
-  (* Compare with the constant function [M] and evaluate its integral. *)
-  pose (prc := RiemannInt_P14 a b M).
+  (** Compare with the constant function [M] and evaluate its integral. The
+      comparison is an inequality of [RiemannInt] terms, on which Waterproof
+      automation does not finish within minutes (even with the lemma fully
+      applied), so it is done with [apply]/[exact]. *)
+  Define prc := (RiemannInt_P14 a b M).
   apply (Rle_trans (RiemannInt prf) (RiemannInt prc) ((b - a) * M)).
   - exact (integral_monotone f1 (fct_cte M) a b Hab prf prc HM).
   - rewrite (RiemannInt_P15 prc).
@@ -53,6 +56,8 @@ Lemma integral_order (f1 g : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
     (Hle : ∀ x : ℝ, a ≤ x ∧ x ≤ b → f1 x ≤ g x) :
     RiemannInt prf ≤ RiemannInt prg.
 Proof.
+  (** [By integral_monotone we conclude that …] does not finish within
+      minutes on this [RiemannInt] goal, so we give the proof term directly. *)
   exact (integral_monotone f1 g a b Hab prf prg Hle).
 Qed.
 
@@ -66,7 +71,10 @@ Lemma integral_abs_le (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
     ∃ prabs : Riemann_integrable (fun x => Rabs (f1 x)) a b,
       Rabs (RiemannInt prf) ≤ RiemannInt prabs.
 Proof.
-  (* [RiemannInt_P16] gives integrability of [|f|], [RiemannInt_P17] the bound. *)
+  (** [RiemannInt_P16] gives integrability of [|f|], [RiemannInt_P17] the
+      bound. The bound is a [RiemannInt] inequality, on which Waterproof
+      automation does not finish within minutes, so we give the proof term
+      directly. *)
   Choose prabs := (RiemannInt_P16 prf).
   exact (RiemannInt_P17 prf (RiemannInt_P16 prf) Hab).
 Qed.
@@ -91,7 +99,9 @@ Lemma integral_additive (f1 : ℝ → ℝ) (a b c : ℝ)
     (pr3 : Riemann_integrable f1 a c) :
     RiemannInt pr3 = RiemannInt pr1 + RiemannInt pr2.
 Proof.
-  (* Stdlib's Chasles relation. *)
+  (** Stdlib's Chasles relation. Waterproof automation does not finish within
+      minutes on this [RiemannInt] equality, so we use [symmetry] and the
+      proof term. *)
   symmetry.
   exact (RiemannInt_P26 pr1 pr2 pr3).
 Qed.

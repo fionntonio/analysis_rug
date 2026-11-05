@@ -309,8 +309,9 @@ Qed.
 Lemma Cauchy_iff_CauchyCrit (a : ℕ → ℝ) :
     a is _Cauchy_ ↔ Cauchy_crit a.
 Proof.
-  split.
-  - Assume that a is _Cauchy_ as (Hc).
+  We show both directions.
+  - We need to show that a is _Cauchy_ ⇨ Cauchy_crit a.
+    Assume that a is _Cauchy_ as (Hc).
     It holds that ∀ ε > 0, ∃ N ∈ ℕ, ∀ n ≥ N, ∀ m ≥ N, |a n - a m| < ε.
     We need to show that forall eps:R,
       eps > 0 ->
@@ -329,7 +330,8 @@ Proof.
     Assume that (n >= N1)%nat and (m >= N1)%nat.
     By Hc we conclude that Rdist (a n) (a m) < eps.
     
-  - Assume that Cauchy_crit a as (Hcc).
+  - We need to show that Cauchy_crit a ⇨ a is _Cauchy_.
+    Assume that Cauchy_crit a as (Hcc).
     It holds that forall eps:R,
       eps > 0 ->
       exists N1 : nat,

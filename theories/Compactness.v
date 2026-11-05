@@ -720,6 +720,10 @@ Proof.
     It holds that K_point K i = x as (equalx).
     We claim that K (K_point K i) as (IinK).
     {
+      (** Membership of [K_point K i] in [K] is the second projection of the
+          subtype element [i]. Waterproof automation cannot extract it (it
+          fails to verify the goal even with [proj2_sig] as a hint), so we
+          give the proof term directly. *)
       unfold K_point.
       exact (@proj2_sig ℝ (fun y : ℝ => K y) i).
     }
@@ -1239,7 +1243,7 @@ Proof.
         We need to show that In i (i0 :: l) ∧ U i x.
         We show both statements.
         * We need to show that In i (i0 :: l).
-          simpl. right. exact iinl.
+          By (in_cons i0 i l iinl) we conclude that In i (i0 :: l).
         * We need to show that U i x.
           We conclude that U i x.
 
@@ -1253,7 +1257,7 @@ Proof.
         rewrite Nat.add_1_r in xlt.
         rewrite Hexp in xlt.
         We claim that x < a + INR n0 * (δ / 2) + δ / 2 as (xupper).
-        { exact xlt. }
+        { By xlt we conclude that x < a + INR n0 * (δ / 2) + δ / 2. }
         We claim that x - x0 < δ as (H1).
         {
           By δpos it holds that δ / 2 < δ as (halfδ).
@@ -1270,7 +1274,7 @@ Proof.
         We need to show that In i0 (i0 :: l) ∧ U i0 x.
         We show both statements.
         * We need to show that In i0 (i0 :: l).
-          simpl. left. reflexivity.
+          By (in_eq i0 l) we conclude that In i0 (i0 :: l).
         * We need to show that U i0 x.
           We conclude that U i0 x.
 
@@ -1294,7 +1298,7 @@ Proof.
         rewrite Nat.add_1_r in xlt.
         rewrite Hexp in xlt.
         We claim that x < a + INR n0 * (δ / 2) + δ / 2.
-        { exact xlt. }
+        { By xlt we conclude that x < a + INR n0 * (δ / 2) + δ / 2. }
         It holds that
           ∃ x0 : ℝ, K x0 ∧
             (a + INR n0 * (δ / 2) ≤ x0 ∧ x0 < a + INR n0 * (δ / 2) + δ / 2).

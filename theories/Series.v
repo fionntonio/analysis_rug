@@ -208,16 +208,9 @@ Proof.
 
     We claim that partial_sums (sprod a c) ⟶ (c * A) as (Hfin).
     {
-      (** I could not figure out how to formalize this step in Waterproof yet. *)
-      apply eq_seq_conv_to_same_lim with
-        (a := sprod (partial_sums a) c)
-        (b := partial_sums (sprod a c))
-        (l := c * A).
-      {
-        By HComm we conclude that
-          ∀ n ∈ ℕ, sprod (partial_sums a) c n = partial_sums (sprod a c) n.
-      }
-      By HSc we conclude that sprod (partial_sums a) c ⟶ (c * A).
+      By (eq_seq_conv_to_same_lim (sprod (partial_sums a) c)
+          (partial_sums (sprod a c)) (c * A) HComm HSc)
+        we conclude that partial_sums (sprod a c) ⟶ (c * A).
     }
 
     By Hfin we conclude that partial_sums (sprod a c)  ⟶ (c * A).
@@ -240,15 +233,20 @@ Proof.
 
     We claim that partial_sums (ssum a b) ⟶ (A + B).
     {
-      apply eq_seq_conv_to_same_lim with
-        (a:= ssum (partial_sums a) (partial_sums b))
-        (b:= partial_sums (ssum a b))
-        (l:= A + B).
+      We claim that ∀ n ∈ ℕ,
+        ssum (partial_sums a) (partial_sums b) n = partial_sums (ssum a b) n
+        as (Hpt3).
       {
         By Hpt2 we conclude that ∀ n ∈ ℕ,
           ssum (partial_sums a) (partial_sums b) n = partial_sums (ssum a b) n.
       }
-      We conclude that ssum (partial_sums a) (partial_sums b) ⟶ (A + B).
+      We claim that ssum (partial_sums a) (partial_sums b) ⟶ (A + B) as (Hconv).
+      {
+        We conclude that ssum (partial_sums a) (partial_sums b) ⟶ (A + B).
+      }
+      By (eq_seq_conv_to_same_lim (ssum (partial_sums a) (partial_sums b))
+          (partial_sums (ssum a b)) (A + B) Hpt3 Hconv)
+        we conclude that partial_sums (ssum a b) ⟶ (A + B).
     }
     We conclude that (partial_sums (ssum a b)) ⟶ (A + B).
 Qed.
@@ -495,11 +493,13 @@ Proof.
   (* [alternated_series] provides the limit of the partial sums of [tg_alt b]. *)
   We claim that ∃ l : ℝ, Un_cv (partial_sums (fun n ↦ ((-1) ^ n) * b n)) l.
   {
-    (* TODO: raw Rocq — [alternated_series] returns a [{l | Un_cv …}] sig that
-       we repackage as a plain existential; [tg_alt b] is convertible with our
-       summand. Revisit to Waterproof-ify. *)
+    (** [alternated_series] returns a [sig] (a [Type]), not an [∃] (a [Prop]).
+        Waterproof's [Obtain] only unpacks [∃], so the witness is extracted
+        with [destruct]. [tg_alt b] is convertible with our summand. *)
     destruct (alternated_series b Hdec Hcv0) as [l Hl].
-    exists l. exact Hl.
+    Choose l1 := l.
+    By Hl we conclude that
+      Un_cv (partial_sums (fun n ↦ ((-1) ^ n) * b n)) l1.
   }
   Obtain such a l.
   It holds that Un_cv (partial_sums (fun n ↦ ((-1) ^ n) * b n)) l.
@@ -526,7 +526,6 @@ Lemma geometric_series (r : ℝ) (Hr : |r| < 1) :
 Proof.
   (* [GP_infinite] gives [Un_cv (sum_f_R0 (fun n ↦ 1 * r ^ n)) (/ (1 - r))]. *)
   By GP_infinite it holds that Pser (fun _ : ℕ ↦ 1) r (/ (1 - r)) as (Hgp).
-  unfold Pser, infinite_sum in Hgp.
   We claim that partial_sums (fun n ↦ r ^ n) ⟶ (/ (1 - r)).
   {
     We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1,
@@ -633,18 +632,10 @@ Proof.
       By Htel we conclude that
         (constant_sequence (b 0%nat) n - b (n + 1)%nat) = ps n.
     }
-    (* TODO: raw Rocq — [eq_seq_conv_to_same_lim] transports convergence along a
-       pointwise-equal sequence; same idiom as [series_algebraic_limit] above.
-       Would like a pure Waterproof phrasing later. *)
-    apply eq_seq_conv_to_same_lim with
-      (a := fun m ↦ constant_sequence (b 0%nat) m - b (m + 1)%nat)
-      (b := ps)
-      (l := b 0%nat - L).
-    { By Heqseq we conclude that ∀ n ∈ ℕ,
-        constant_sequence(b(0%nat), n) -b((n + 1)%nat) = ps(n). }
-    By Hdiff we conclude that
-      (fun m ↦ constant_sequence (b 0%nat) m - b (m + 1)%nat)
-      ⟶ (b 0%nat - L).
+    By (eq_seq_conv_to_same_lim
+        (fun m ↦ constant_sequence (b 0%nat) m - b (m + 1)%nat) ps
+        (b 0%nat - L) Heqseq Hdiff)
+      we conclude that ps ⟶ (b 0%nat - L).
 Qed.
 
 (** ** The nth-term test for divergence *)
@@ -686,9 +677,9 @@ Proof.
   We claim that / x - / (x + 1) = / x * / (x + 1).
   {
     We claim that / x * ((x + 1) * / (x + 1)) = / x.
-    { rewrite Ex1. We conclude that / x * 1 = / x. }
+    { By Ex1 we conclude that / x * ((x + 1) * / (x + 1)) = / x. }
     We claim that / (x + 1) * (x * / x) = / (x + 1).
-    { rewrite Ex. We conclude that / (x + 1) * 1 = / (x + 1). }
+    { By Ex we conclude that / (x + 1) * (x * / x) = / (x + 1). }
     We conclude that / x - / (x + 1) = / x * / (x + 1).
   }
   By Rinv_mult it holds that / (x * (x + 1)) = / x * / (x + 1).
@@ -734,15 +725,14 @@ Proof.
       We need to show that
         partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (n + 1)
           ≤ 2 - 1 / ((n + 1)%nat + 1).
-      rewrite Nat.add_1_r.
-      By Nat.add_1_r it suffices to show that
-        partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (S(n))
-          ≤ 2 - 1 / (S(n) + 1).
-
+      (** Rocq's [n + 1] does not reduce to [S n], so we relate them
+          explicitly. *)
+      It holds that (n + 1)%nat = S n as (Hsucc).
+      By Hsucc it holds that
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) (Nat.add n 1)
+        = partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n).
       By S_INR it holds that INR (S n) = INR n + 1 as (HI).
-      By HI it suffices to show that
-        partial_sums ｛ k : ℕ | 1 / (k + 1) ^ 2 ｝ (S(n))
-          ≤ 2 - 1 / (n + 1 + 1).
+      By Hsucc it holds that INR (n + 1)%nat = INR n + 1.
 
       It holds that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n)
@@ -760,8 +750,11 @@ Proof.
       By inv_sq_telescope it holds that
         1 / (INR n + 1 + 1) ^ 2 ≤ 1 / (INR n + 1) - 1 / (INR n + 1 + 1).
 
-      We conclude that
+      It holds that
         partial_sums (fun k => 1 / (INR k + 1) ^ 2) (S n) ≤ 2 - 1 / (INR n + 1 + 1).
+      We conclude that
+        partial_sums (fun k => 1 / (INR k + 1) ^ 2) (Nat.add n 1)
+          ≤ 2 - 1 / (INR (n + 1)%nat + 1).
   }
 
   (* Nonnegative terms, so the partial sums are nondecreasing. *)

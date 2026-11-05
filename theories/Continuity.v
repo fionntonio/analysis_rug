@@ -61,7 +61,7 @@ Lemma continuous_composition (g : ℝ → ℝ) (a b : ℝ) (Hab : a < b)
     (Hg : ∀ x ∈ (fun x => a < x < b), continuity_pt g x) :
     ∀ x ∈ (fun x => a < x < b), continuity_pt g x.
 Proof.
-  exact Hg.
+  We conclude that ∀ x ∈ (fun x => a < x < b), continuity_pt g x.
 Qed.
 
 (** A Lipschitz function is continuous. *)
@@ -659,11 +659,14 @@ Proof.
       We conclude that fct_cte v u = fct_cte v w.
     }
     By continuity_pt_const it holds that continuity_pt (fct_cte v) x as (Hk).
-    apply (continuity_pt_minus f1 (fct_cte v) x Hc Hk).
+    By (continuity_pt_minus f1 (fct_cte v) x Hc Hk)
+      we conclude that continuity_pt (fun y => f1 y - v) x.
   }
   It holds that f1 a - v < 0 as (Hga).
   It holds that 0 < f1 b - v as (Hgb).
-  (* [IVT_interv] lands in a [sig], which is unpacked with [destruct]. *)
+  (** [IVT_interv] returns a [sig] (a [Type]), not an [∃] (a [Prop]).
+      Waterproof's [Obtain] only unpacks [∃], so the witness is extracted
+      with [destruct]. *)
   destruct (IVT_interv (fun y => f1 y - v) a b Hg Hab Hga Hgb) as [z Hz].
   It holds that a ≤ z ∧ z ≤ b.
   It holds that f1 z - v = 0 as (Hz2).
@@ -673,7 +676,7 @@ Proof.
     Either a = z or a ≠ z.
     - Case (a = z).
       It holds that a = z as (Heq).
-      rewrite <- Heq in Hz2.
+      It holds that f1 a - v = 0.
       Contradiction.
     - Case (a ≠ z).
       We conclude that a < z.
@@ -683,7 +686,7 @@ Proof.
     Either z = b or z ≠ b.
     - Case (z = b).
       It holds that z = b as (Heq).
-      rewrite Heq in Hz2.
+      It holds that f1 b - v = 0.
       Contradiction.
     - Case (z ≠ b).
       We conclude that z < b.
@@ -722,7 +725,14 @@ Proof.
      packed/unpacked with [mkposreal]/[cond_pos]. *)
   Take ε > 0.
   It holds that 0 < ε as (Hpos).
-  destruct (Hu (mkposreal ε Hpos)) as [dlt Hd].
+  By (Hu (mkposreal ε Hpos)) it holds that
+    ∃ dlt : posreal, ∀ x : ℝ, ∀ y : ℝ,
+      a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
+      Rabs (x - y) < dlt → Rabs (f1 x - f1 y) < ε as (Hdlt).
+  Obtain dlt according to (Hdlt).
+  It holds that ∀ x : ℝ, ∀ y : ℝ,
+    a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
+    Rabs (x - y) < dlt → Rabs (f1 x - f1 y) < ε as (Hd).
   By cond_pos it holds that 0 < pos dlt.
   Choose δ := (pos dlt).
   - Indeed, pos dlt > 0.
@@ -1011,16 +1021,14 @@ Proof.
     By sqrt_le_1 it holds that sqrt v ≤ sqrt u.
     It holds that Rabs (sqrt u - sqrt v) = sqrt u - sqrt v as (Ea1).
     It holds that Rabs (u - v) = u - v as (Ea2).
-    rewrite Ea1. rewrite Ea2.
-    We conclude that sqrt u - sqrt v ≤ sqrt (u - v).
+    We conclude that Rabs (sqrt u - sqrt v) ≤ sqrt (Rabs (u - v)).
   - Case (¬ (v ≤ u)).
     It holds that u ≤ v.
     By sqrt_diff_le it holds that sqrt v - sqrt u ≤ sqrt (v - u).
     By sqrt_le_1 it holds that sqrt u ≤ sqrt v.
     It holds that Rabs (sqrt u - sqrt v) = sqrt v - sqrt u as (Ea1).
     It holds that Rabs (u - v) = v - u as (Ea2).
-    rewrite Ea1. rewrite Ea2.
-    We conclude that sqrt v - sqrt u ≤ sqrt (v - u).
+    We conclude that Rabs (sqrt u - sqrt v) ≤ sqrt (Rabs (u - v)).
 Qed.
 
 (** The ε–δ estimate itself, stated over plain reals: [δ = ε²]. *)

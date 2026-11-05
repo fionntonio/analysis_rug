@@ -478,9 +478,6 @@ Lemma density_of_rationals (lo hi : ℝ) (H : lo < hi) :
       (q > 0)%Z ∧
       lo < IZR p / IZR q < hi.
 Proof.
-  (** TODO: Simplify. As it is now, this proof uses rocq syntax directly,
-      likely we can rewrite it fully in Waterproof as we did in may other
-      places. *)
   It holds that hi - lo > 0.
   By archimedean_2 it holds that ∃ n : ℕ, 1 / (n + 1) < hi - lo.
   Obtain such an n.
@@ -523,10 +520,11 @@ Proof.
   We claim that
     IZR (Z.of_nat (n + 1)%nat) = (n + 1 : ℝ).
   {
-    rewrite <- INR_IZR_INZ.
-    rewrite plus_INR.
-    rewrite INR_1.
-    reflexivity.
+    By INR_IZR_INZ it holds that INR (n + 1)%nat = IZR (Z.of_nat (n + 1)%nat).
+    By plus_INR it holds that INR (n + 1)%nat = INR n + INR 1.
+    By INR_1 it holds that INR 1 = 1.
+    We conclude that (&
+      IZR (Z.of_nat (n + 1)%nat) = INR (n + 1)%nat = INR n + INR 1 = n + 1).
   }
   It holds that IZR q > 0 as (Hq_pos).
   It holds that IZR q ≠ 0 as (Hq_neq).
@@ -536,18 +534,9 @@ Proof.
 
   We claim that lo < IZR p / IZR q as (Hlo_div).
   {
-    apply (Rmult_lt_reg_r (IZR q)).
-    + exact Hq_pos.
-    (* Goal: lo * IZR q < (IZR p / IZR q) * IZR q *)
-    + assert (p / q * q = p) as Hsimpl.
-      { rewrite Rmult_comm with (r1 := p / q) (r2 := q). (* q * (p / q) = p *)
-        rewrite Rmult_div_assoc. (* q * p / q = p *)
-        rewrite Rmult_div_r with (r1 := q) (r2 := p). (* p = p *)
-        * reflexivity. (* proves p = p *)
-        * exact Hq_neq. (* remains to prove Hq_neq from Rmult_div_r *)
-      }
-      rewrite Hsimpl. (* lo * q < p *)
-      exact Hloq.
+    It holds that IZR p / IZR q * IZR q = IZR p.
+    It holds that lo * IZR q < IZR p / IZR q * IZR q.
+    By (Rmult_lt_reg_r (IZR q)) we conclude that lo < IZR p / IZR q.
   }
 
   It holds that hi * (n + 1) > m.
@@ -555,13 +544,9 @@ Proof.
 
   We claim that IZR p / IZR q < hi as (Hhi_div).
   {
-    apply (Rmult_lt_reg_r (IZR q)).
-    + exact Hq_pos.
-    + rewrite Rmult_comm with (r1 := p / q) (r2 := q).
-      rewrite Rmult_div_assoc.
-      rewrite Rmult_div_r with (r1 := q) (r2 := p).
-      * exact Hhiq.
-      * exact Hq_neq.
+    It holds that IZR p / IZR q * IZR q = IZR p.
+    It holds that IZR p / IZR q * IZR q < hi * IZR q.
+    By (Rmult_lt_reg_r (IZR q)) we conclude that IZR p / IZR q < hi.
   }
 
   By Hq_pos, Hlo_div and Hhi_div we conclude that

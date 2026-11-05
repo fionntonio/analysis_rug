@@ -615,11 +615,12 @@ Qed.
     such that for all [x] with [0 < |x - c| < δ] we have [|f(x) - L| < ε].
 
     Proof: this is a direct unfolding of the limit definition. *)
-Lemma limit_epsilon_delta (f : ℝ → ℝ) (c L : ℝ)
-    (Hf : _limit_ of f in c is L) :
-    ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f x - L| < ε.
+Lemma limit_epsilon_delta (f' : ℝ → ℝ) (c L : ℝ)
+    (Hf : _limit_ of f' in c is L) :
+    ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f' x - L| < ε.
 Proof.
   (** This is precisely the definition of [limit_in_point], so the hypothesis
       [Hf] discharges the goal directly. Can you prove it step by step? *)
-  exact Hf.
+  By Hf we conclude that
+    ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f' x - L| < ε.
 Qed.

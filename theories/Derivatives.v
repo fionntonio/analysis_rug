@@ -95,16 +95,25 @@ Proof.
     ∀ x : ℝ, a < x ∧ x < b → derivable_pt (fun y => y) x as (Hid).
   {
     Take x : ℝ. Assume that a < x ∧ x < b.
-    exact (derivable_pt_id x).
+    By derivable_pt_id we conclude that derivable_pt (fun y => y) x.
   }
   We claim that
     ∀ x : ℝ, a ≤ x ∧ x ≤ b → continuity_pt (fun y => y) x as (Hcid).
   {
     Take x : ℝ. Assume that a ≤ x ∧ x ≤ b.
-    exact (derivable_continuous_pt (fun y => y) x (derivable_pt_id x)).
+    By (derivable_continuous_pt (fun y => y) x (derivable_pt_id x))
+      we conclude that continuity_pt (fun y => y) x.
   }
-  destruct (MVT h (fun y => y) a b Hdiff Hid Hab Hcont Hcid) as [c Hc].
-  destruct Hc as [P Heq].
+  By (MVT h (fun y => y) a b Hdiff Hid Hab Hcont Hcid) it holds that
+    ∃ c : ℝ, ∃ P : a < c ∧ c < b,
+      (b - a) * derive_pt h c (Hdiff c P)
+        = (h b - h a) * derive_pt (fun y => y) c (Hid c P) as (Hmvt).
+  Obtain c according to (Hmvt).
+  It holds that
+    ∃ P : a < c ∧ c < b,
+      (b - a) * derive_pt h c (Hdiff c P)
+        = (h b - h a) * derive_pt (fun y => y) c (Hid c P) as (HP).
+  Obtain P according to (HP).
   (* The derivative of the identity is 1, independently of the proof term. *)
   By (pr_nu (fun y => y) c (Hid c P) (derivable_pt_id c)) it holds that
     derive_pt (fun y => y) c (Hid c P)
@@ -125,7 +134,10 @@ Proof.
   We claim that
     ∃ Hc : derivable_pt h c,
       derive_pt h c Hc = (h b - h a) / (b - a).
-  { Choose Hc := (Hdiff c P). exact Hfin. }
+  {
+    Choose Hc := (Hdiff c P).
+    We conclude that derive_pt h c (Hdiff c P) = (h b - h a) / (b - a).
+  }
   It holds that a < c.
   It holds that c < b.
   We conclude that
@@ -165,40 +177,49 @@ Proof.
   Either (a < v) or (¬ (a < v)).
   - Case (a < v).
     It holds that a < v as (Hav).
-    destruct (MVT_cor1 psi a v Hd Hav) as [c Hc].
-    destruct Hc as [Heq Hcin].
+    By (MVT_cor1 psi a v Hd Hav) it holds that
+      ∃ c : ℝ, psi v - psi a = derive_pt psi c (Hd c) * (v - a) ∧
+        (a < c ∧ c < v) as (Hmvt).
+    Obtain c according to (Hmvt).
+    It holds that psi v - psi a = derive_pt psi c (Hd c) * (v - a) as (Heq).
     By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M.
     By Rabs_pos it holds that 0 ≤ Rabs (v - a).
-    rewrite Heq.
     By Rabs_mult it holds that
       Rabs (derive_pt psi c (Hd c) * (v - a))
-        = Rabs (derive_pt psi c (Hd c)) * Rabs (v - a) as (Hm).
-    rewrite Hm.
-    We conclude that
+        = Rabs (derive_pt psi c (Hd c)) * Rabs (v - a).
+    It holds that
+      Rabs (psi v - psi a) = Rabs (derive_pt psi c (Hd c)) * Rabs (v - a).
+    By Rmult_le_compat_r it holds that
       Rabs (derive_pt psi c (Hd c)) * Rabs (v - a) ≤ M * Rabs (v - a).
+    We conclude that Rabs (psi v - psi a) ≤ M * Rabs (v - a).
   - Case (¬ (a < v)).
     Either (v < a) or (¬ (v < a)).
     + Case (v < a).
       It holds that v < a as (Hva).
-      destruct (MVT_cor1 psi v a Hd Hva) as [c Hc].
-      destruct Hc as [Heq Hcin].
+      By (MVT_cor1 psi v a Hd Hva) it holds that
+        ∃ c : ℝ, psi a - psi v = derive_pt psi c (Hd c) * (a - v) ∧
+          (v < c ∧ c < a) as (Hmvt).
+      Obtain c according to (Hmvt).
+      It holds that psi a - psi v = derive_pt psi c (Hd c) * (a - v) as (Heq).
       By HM it holds that Rabs (derive_pt psi c (Hd c)) ≤ M.
-      By Rabs_minus_sym it holds that
-        Rabs (psi v - psi a) = Rabs (psi a - psi v) as (Hsym).
-      By Rabs_minus_sym it holds that
-        Rabs (a - v) = Rabs (v - a) as (Hsym2).
+      By Rabs_minus_sym it holds that Rabs (psi v - psi a) = Rabs (psi a - psi v).
+      By Rabs_minus_sym it holds that Rabs (a - v) = Rabs (v - a).
       By Rabs_pos it holds that 0 ≤ Rabs (v - a).
-      rewrite Hsym. rewrite Heq.
       By Rabs_mult it holds that
         Rabs (derive_pt psi c (Hd c) * (a - v))
-          = Rabs (derive_pt psi c (Hd c)) * Rabs (a - v) as (Hm).
-      rewrite Hm. rewrite Hsym2.
-      We conclude that
+          = Rabs (derive_pt psi c (Hd c)) * Rabs (a - v).
+      It holds that
+        Rabs (psi v - psi a) = Rabs (derive_pt psi c (Hd c)) * Rabs (v - a).
+      By Rmult_le_compat_r it holds that
         Rabs (derive_pt psi c (Hd c)) * Rabs (v - a) ≤ M * Rabs (v - a).
+      We conclude that Rabs (psi v - psi a) ≤ M * Rabs (v - a).
     + Case (¬ (v < a)).
       It holds that a = v as (Heqav).
-      rewrite Heqav.
-      We conclude that Rabs (psi v - psi v) ≤ M * Rabs (v - v).
+      It holds that psi a = psi v.
+      It holds that psi v - psi a = 0.
+      It holds that v - a = 0.
+      By Rabs_R0 it holds that Rabs 0 = 0.
+      We conclude that Rabs (psi v - psi a) ≤ M * Rabs (v - a).
 Qed.
 
 (** ** Derivative of the squaring function *)
@@ -210,8 +231,10 @@ Lemma sq_derivative (x0 : ℝ) :
     derive_pt (fun y => y ^ 2) x0 (derivable_pt_pow 2 x0) = 2 * x0.
 Proof.
   (* Power rule with [n = 2]. *)
-  rewrite derive_pt_pow.
-  We conclude that INR 2 * x0 ^ (2 - 1) = 2 * x0.
+  By derive_pt_pow it holds that
+    derive_pt (fun y => y ^ 2) x0 (derivable_pt_pow 2 x0) = INR 2 * x0 ^ (2 - 1).
+  We conclude that
+    derive_pt (fun y => y ^ 2) x0 (derivable_pt_pow 2 x0) = 2 * x0.
 Qed.
 
 (** ** Rolle's theorem *)
@@ -231,12 +254,18 @@ Lemma rolle_theorem (h : ℝ → ℝ) (a b : ℝ) (Hab : a < b)
     ∃ c : ℝ, a < c ∧ c < b ∧ ∃ Hc : a < c ∧ c < b, derive_pt h c (Hd c Hc) = 0.
 Proof.
   (* This is Stdlib's [Rolle], repackaged. *)
-  destruct (Rolle h a b Hd Hcont Hab Heq) as [c Hc].
-  destruct Hc as [P Hderiv].
+  By (Rolle h a b Hd Hcont Hab Heq) it holds that
+    ∃ c : ℝ, ∃ P : a < c ∧ c < b, derive_pt h c (Hd c P) = 0 as (Hrolle).
+  Obtain c according to (Hrolle).
+  It holds that ∃ P : a < c ∧ c < b, derive_pt h c (Hd c P) = 0 as (HP).
+  Obtain P according to (HP).
   Choose c1 := c.
   We claim that
     ∃ Hc : a < c ∧ c < b, derive_pt h c (Hd c Hc) = 0.
-  { Choose Hc := P. exact Hderiv. }
+  {
+    Choose Hc := P.
+    We conclude that derive_pt h c (Hd c P) = 0.
+  }
   It holds that a < c.
   It holds that c < b.
   We conclude that
@@ -487,14 +516,13 @@ Lemma positive_derivative_strictly_increasing (psi : ℝ → ℝ) (Hd : derivabl
     (Hderiv_pos : ∀ x : ℝ, a < x ∧ x < v → 0 < derive_pt psi x (Hd x)) :
     ∀ x ∈ ℝ, ∀ y ∈ ℝ, a ≤ x → x < y → y ≤ v → psi x < psi y.
 Proof.
-  (* Exactly Stdlib's [derive_increasing_interv]. *)
+  (** This is Stdlib's [derive_increasing_interv]. *)
   Take x ∈ ℝ. Take y ∈ ℝ.
   Assume that a ≤ x.
-  Assume that x < y as (H2).
+  Assume that x < y as (Hxy).
   Assume that y ≤ v.
   It holds that a < v as (Hav).
   It holds that a ≤ x ∧ x ≤ v as (Hx).
   It holds that a ≤ y ∧ y ≤ v as (Hy).
-  By (derive_increasing_interv a v psi Hd Hav Hderiv_pos x y Hx Hy H2)
-    we conclude that psi x < psi y.
+  By derive_increasing_interv we conclude that psi x < psi y.
 Qed.

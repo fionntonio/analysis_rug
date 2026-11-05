@@ -49,16 +49,15 @@ Qed.
 Lemma le_succ_cases (n N1 : ℕ) :
   n ≤ S N1 -> n = S N1 \/ n ≤ N1.
 Proof.
-Assume that n ≤ S N1.
-(** I'd like to do
-   [By (Nat.eq_dec n (S N1)) it holds that n = S N1 ∨ n ≠ S N1].
-   but it is not working, so I do it manually. *)
-destruct (Nat.eq_dec n (S N1)) as [Heq | Hneq].
-- left. We conclude that n = S N1.
-- right.
-  It holds that (n ≤ S N1)%nat.
-  It holds that (n ≤ N1)%nat.
-  We conclude that n ≤ N1.
+  Assume that n ≤ S N1.
+  Either (n = S N1)%nat or (n ≠ S N1)%nat.
+  - Case (n = S N1)%nat.
+    We conclude that n = S N1 ∨ n ≤ N1.
+  - Case (n ≠ S N1)%nat.
+    It holds that (n ≤ S N1)%nat.
+    It holds that (n ≤ N1)%nat.
+    It holds that n ≤ N1.
+    We conclude that n = S N1 ∨ n ≤ N1.
 Qed.
 
 (** This computes the maximum of the absolute values

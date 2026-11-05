@@ -215,26 +215,36 @@ Proof.
   We need to show that complement (fun x => a ≤ x ∧ x ≤ b) is _open_.
   We need to show that (fun x => ¬ (a ≤ x ∧ x ≤ b)) is _open_.
 
-  (** We use some Rocq to let Waterproof recognise the equality of the two
-      sets described by logically equivalent propositions. It is not
-      important to understand: it is essentially De Morgan's law. *)
-  assert (Hcomp :
-    (fun x : ℝ => ¬ (a ≤ x ∧ x ≤ b)) =
-    (fun x : ℝ => x < a ∨ b < x)).
+  (** Two sets described by logically equivalent propositions are equal:
+      this needs functional and propositional extensionality. The
+      equivalence itself is essentially De Morgan's law. *)
+  We claim that
+    (fun x : ℝ => ¬ (a ≤ x ∧ x ≤ b)) = (fun x : ℝ => x < a ∨ b < x)
+    as (Hcomp).
   {
-    apply functional_extensionality; intro x.
-    apply propositional_extensionality.
-    split.
-    - intro Hn.
-      apply not_and_or in Hn.
-      destruct Hn as [Hna | Hnb].
-      + left. exact (Rnot_le_lt _ _ Hna).
-      + right. exact (Rnot_le_lt _ _ Hnb).
-    - intros [Hxa | Hbx] Hinterval.
-      + destruct Hinterval as [Hax Hxb].
-        exact (Rlt_not_le _ _ Hxa Hax).
-      + destruct Hinterval as [Hax Hxb].
-        exact (Rlt_not_le _ _ Hbx Hxb).
+    By (@functional_extensionality ℝ Prop) it suffices to show that
+      ∀ x : ℝ, (¬ (a ≤ x ∧ x ≤ b)) = (x < a ∨ b < x).
+    Take x : ℝ.
+    By propositional_extensionality it suffices to show that
+      (¬ (a ≤ x ∧ x ≤ b)) ⇔ (x < a ∨ b < x).
+    We show both directions.
+    - We need to show that ¬ (a ≤ x ∧ x ≤ b) ⇨ x < a ∨ b < x.
+      Assume that ¬ (a ≤ x ∧ x ≤ b) as (Hn).
+      Either x < a or a ≤ x.
+      + Case x < a.
+        We conclude that x < a ∨ b < x.
+      + Case a ≤ x.
+        It holds that ¬ (x ≤ b).
+        It holds that b < x.
+        We conclude that x < a ∨ b < x.
+    - We need to show that x < a ∨ b < x ⇨ ¬ (a ≤ x ∧ x ≤ b).
+      Assume that x < a ∨ b < x as (Hout).
+      Assume that a ≤ x ∧ x ≤ b.
+      Because (Hout) either (x < a) or (b < x) holds.
+      + Case x < a.
+        Contradiction.
+      + Case b < x.
+        Contradiction.
   }
 
   It holds that (fun x => ¬ (a ≤ x ∧ x ≤ b)) = (fun x => x < a ∨ b < x).
@@ -463,15 +473,20 @@ Qed.
 Lemma complement_of_complement_is_identity (A : ℝ → Prop) :
     complement (complement A) = A.
 Proof.
-  apply functional_extensionality; intro x.
-  apply propositional_extensionality.
-  split.
-  - intro H.
-    apply NNPP.
-    exact H.
-  - intro HA.
-    intro Hnot.
-    exact (Hnot HA).
+  By (@functional_extensionality ℝ Prop) it suffices to show that
+    ∀ x : ℝ, complement (complement A) x = A x.
+  Take x : ℝ.
+  By propositional_extensionality it suffices to show that
+    complement (complement A) x ⇔ A x.
+  We show both directions.
+  - We need to show that complement (complement A) x ⇨ A x.
+    Assume that complement (complement A) x as (Hcc).
+    It holds that ¬ ¬ A x.
+    By NNPP we conclude that A x.
+  - We need to show that A x ⇨ complement (complement A) x.
+    Assume that A x.
+    We need to show that ¬ ¬ A x.
+    We conclude that ¬ ¬ A x.
 Qed.
 
 (** Complementation: [A] is open iff its complement is closed. This is immediate
@@ -660,31 +675,41 @@ Qed.
 Lemma closure_is_closed (A : ℝ → Prop) :
     (closure A) is _closed_.
 Proof.
-  apply (closed_iff_contains_limit_points (closure A)).
-  Take x : ℝ.
-  Assume that (x is a _limit point_ of (closure A)).
-  It holds that (∀ ε > 0, ∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hlp).
-  apply (closure_characterization A x).
-  Take ε > 0.
-  By Hlp it holds that (∃ y ∈ (closure A), 0 < | y - x | < ε).
-  Obtain such a y.
-  It holds that y ∈ (closure A) ∧ 0 < | y - x | < ε.
-  It holds that closure A y.
-  It holds that 0 < | y - x | < ε.
-  It holds that | y - x | < ε.
-  Define δ := ε - | y - x |.
-  It holds that δ > 0.
-  By (closure_characterization A y) it holds that
-    (∀ ε' > 0, ∃ z ∈ A, | z - y | < ε') as (Hcy).
-  By Hcy it holds that (∃ z ∈ A, | z - y | < δ).
-  Obtain such a z.
-  It holds that z ∈ A ∧ | z - y | < δ.
-  It holds that z ∈ A. It holds that | z - y | < δ.
-  By Rabs_triang it holds that
-    |(z - y) + (y - x)| ≤ | z - y | + | y - x |.
-  It holds that | z - x | ≤ | z - y | + | y - x |.
-  It holds that | z - x | < ε.
-  Choose z0 := z.
-  - Indeed, z ∈ A.
-  - We conclude that | z0 - x | < ε.
+  We claim that
+    ∀ x : ℝ, x is a _limit point_ of (closure A) → closure A x as (Hlimpts).
+  {
+    Take x : ℝ.
+    Assume that (x is a _limit point_ of (closure A)).
+    It holds that (∀ ε > 0, ∃ y ∈ (closure A), 0 < | y - x | < ε) as (Hlp).
+    We claim that ∀ ε > 0, ∃ y ∈ A, | y - x | < ε as (Happrox).
+    {
+      Take ε > 0.
+      By Hlp it holds that (∃ y ∈ (closure A), 0 < | y - x | < ε).
+      Obtain such a y.
+      It holds that y ∈ (closure A) ∧ 0 < | y - x | < ε.
+      It holds that closure A y.
+      It holds that 0 < | y - x | < ε.
+      It holds that | y - x | < ε.
+      Define δ := ε - | y - x |.
+      It holds that δ > 0.
+      By (closure_characterization A y) it holds that
+        (∀ ε' > 0, ∃ z ∈ A, | z - y | < ε') as (Hcy).
+      By Hcy it holds that (∃ z ∈ A, | z - y | < δ).
+      Obtain such a z.
+      It holds that z ∈ A ∧ | z - y | < δ.
+      It holds that z ∈ A. It holds that | z - y | < δ.
+      By Rabs_triang it holds that
+        |(z - y) + (y - x)| ≤ | z - y | + | y - x |.
+      It holds that | z - x | ≤ | z - y | + | y - x |.
+      It holds that | z - x | < ε.
+      Choose z0 := z.
+      - Indeed, z ∈ A.
+      - We conclude that | z0 - x | < ε.
+    }
+    By (closure_characterization A x) we conclude that closure A x.
+  }
+  By (closed_iff_contains_limit_points (closure A)) it holds that
+    (closure A) is _closed_ ⇔
+    (∀ x : ℝ, x is a _limit point_ of (closure A) → closure A x) as (Hiff).
+  By Hiff we conclude that (closure A) is _closed_.
 Qed.

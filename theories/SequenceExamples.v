@@ -132,18 +132,25 @@ Lemma standard_limit_1_over_n_squared :
     (fun n : ℕ => 1 / (INR n + 1)^2) ⟶ 0.
 Proof.
   (** Squeeze [0 ≤ 1/(n+1)^2 ≤ 1/(n+1)] between the constant [0]
-      sequence and the harmonic sequence, both of which converge to [0]. *)
-  apply (squeeze_theorem
-    (fun _ : ℕ => 0)
-    (fun n : ℕ => 1 / (INR n + 1)^2)
-    (fun n : ℕ => 1 / (INR n + 1)) 0).
-  - By constant_seq_converges we conclude that (fun _ : ℕ => 0) ⟶ 0.
-  - By harmonic_to_0 we conclude that (fun n : ℕ => 1 / (INR n + 1)) ⟶ 0.
-  - Take n ∈ ℕ.
+    sequence and the harmonic sequence, both of which converge to [0]. *)
+  We claim that (fun _ : ℕ => 0) ⟶ 0 as (Hlow).
+  {
+    By constant_seq_converges we conclude that (fun _ : ℕ => 0) ⟶ 0.
+  }
+  We claim that (fun n : ℕ => 1 / (INR n + 1)) ⟶ 0 as (Hup).
+  {
+    By harmonic_to_0 we conclude that (fun n : ℕ => 1 / (INR n + 1)) ⟶ 0.
+  }
+  We claim that ∀ n ∈ ℕ, 0 ≤ 1 / (INR n + 1)^2 as (Hge).
+  {
+    Take n ∈ ℕ.
     It holds that INR n + 1 > 0.
     It holds that (INR n + 1)^2 > 0.
     We conclude that 0 ≤ 1 / (INR n + 1)^2.
-  - Take n ∈ ℕ.
+  }
+  We claim that ∀ n ∈ ℕ, 1 / (INR n + 1)^2 ≤ 1 / (INR n + 1) as (Hle).
+  {
+    Take n ∈ ℕ.
     By pos_INR it holds that INR n ≥ 0.
     It holds that INR n + 1 ≥ 1.
     It holds that INR n + 1 > 0.
@@ -154,6 +161,10 @@ Proof.
     It holds that 1 / (INR n + 1)^2 = / (INR n + 1)^2.
     It holds that 1 / (INR n + 1) = / (INR n + 1).
     We conclude that 1 / (INR n + 1)^2 ≤ 1 / (INR n + 1).
+  }
+  By (squeeze_theorem (fun _ : ℕ => 0) (fun n : ℕ => 1 / (INR n + 1)^2)
+      (fun n : ℕ => 1 / (INR n + 1)) 0 Hlow Hup Hge Hle)
+    we conclude that (fun n : ℕ => 1 / (INR n + 1)^2) ⟶ 0.
 Qed.
 
 
