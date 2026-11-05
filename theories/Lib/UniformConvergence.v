@@ -3,7 +3,7 @@
   The plan is to move this to the Waterproof library eventually.
 *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 
 From Waterproof Require Import Tactics.
 From Waterproof Require Import Automation.

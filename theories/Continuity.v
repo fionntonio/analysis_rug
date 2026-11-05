@@ -6,7 +6,7 @@
   the extreme value theorem, the intermediate value theorem, and uniform
   continuity. Uses [Analysis.Compactness] for compact domain results. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Reals.Ranalysis5.
 From Stdlib Require Import Logic.ClassicalDescription.
 
@@ -123,9 +123,9 @@ Proof.
       and the lemmas between Stdlib's [compact] and closed and
       bounded sets. *)
   By (compact_is_closed X HX) it holds that X is _closed_ as (HX_closed).
-  By (compact_is_bounded X HX) it holds that bounded X as (HX_bounded).
+  By (compact_is_bounded X HX) it holds that Rtopology.bounded X as (HX_bounded).
   By (sequential_Heine_Borel X) it holds that
-    sequentially_compact X ⇔ (X is _closed_ ∧ bounded X) as (HHB_X).
+    sequentially_compact X ⇔ (X is _closed_ ∧ Rtopology.bounded X) as (HHB_X).
   By HHB_X it holds that sequentially_compact X as (HX_seq).
   We claim that sequentially_compact (fun y => ∃ x ∈ X, y = phi x)
     as (HY_seq).
@@ -219,15 +219,15 @@ Proof.
   By (sequential_Heine_Borel (fun y => ∃ x ∈ X, y = phi x)) it holds that
     sequentially_compact (fun y => ∃ x ∈ X, y = phi x) ⇔
     ((fun y => ∃ x ∈ X, y = phi x) is _closed_ ∧
-     bounded (fun y => ∃ x ∈ X, y = phi x))
+     Rtopology.bounded (fun y => ∃ x ∈ X, y = phi x))
     as (HHB_Y).
   By HHB_Y it holds that
     (fun y => ∃ x ∈ X, y = phi x) is _closed_ ∧
-    bounded (fun y => ∃ x ∈ X, y = phi x)
+    Rtopology.bounded (fun y => ∃ x ∈ X, y = phi x)
     as (HY_cb).
   By HY_cb it holds that (fun y => ∃ x ∈ X, y = phi x) is _closed_
     as (HY_closed).
-  By HY_cb it holds that bounded (fun y => ∃ x ∈ X, y = phi x) as (HY_bounded).
+  By HY_cb it holds that Rtopology.bounded (fun y => ∃ x ∈ X, y = phi x) as (HY_bounded).
   By (closed_and_bounded_is_compact (fun y => ∃ x ∈ X, y = phi x)
       HY_closed HY_bounded) we conclude that
     (fun y => ∃ x ∈ X, y = phi x) is _compact_.
@@ -248,90 +248,90 @@ Qed.
     [|f(xₙ) - f(c)|] bounded below. *)
 (** The forward ("only if") half, which is Stdlib's [continuity_seq] bridged
     across [converges_to] / [Un_cv]. *)
-Lemma continuity_imp_seq (f1 : ℝ → ℝ) (c : ℝ) (Hf : continuity_pt f1 c) :
-    ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c).
+Lemma continuity_imp_seq (f : ℝ → ℝ) (c : ℝ) (Hf : continuity_pt f c) :
+    ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c).
 Proof.
   Take a : (ℕ → ℝ).
   Assume that a ⟶ c.
   By convergence_equivalence it holds that (a ⟶ c ⇔ Un_cv a c) as (H1).
   By H1 it holds that Un_cv a c as (Hcv).
-  By (continuity_seq f1 a c Hf Hcv) it holds that
-    Un_cv (fun i => f1 (a i)) (f1 c).
+  By (continuity_seq f a c Hf Hcv) it holds that
+    Un_cv (fun i => f (a i)) (f c).
   By convergence_equivalence it holds that
-    ((fun n => f1 (a n)) ⟶ (f1 c) ⇔ Un_cv (fun n => f1 (a n)) (f1 c)) as (H3).
-  By H3 we conclude that (fun n => f1 (a n)) ⟶ (f1 c).
+    ((fun n => f (a n)) ⟶ (f c) ⇔ Un_cv (fun n => f (a n)) (f c)) as (H3).
+  By H3 we conclude that (fun n => f (a n)) ⟶ (f c).
 Qed.
 
-Lemma continuity_sequential_characterization (f1 : ℝ → ℝ) (c : ℝ) :
-    continuity_pt f1 c ⇔
-    (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)).
+Lemma continuity_sequential_characterization (f : ℝ → ℝ) (c : ℝ) :
+    continuity_pt f c ⇔
+    (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c)).
 Proof.
   We show both directions.
   - We need to show that
-      continuity_pt f1 c ⇨
-      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)).
-    Assume that continuity_pt f1 c as (Hf).
-    By (continuity_imp_seq f1 c Hf) we conclude that
-      ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c).
+      continuity_pt f c ⇨
+      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c)).
+    Assume that continuity_pt f c as (Hf).
+    By (continuity_imp_seq f c Hf) we conclude that
+      ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c).
   - We need to show that
-      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)) ⇨
-      continuity_pt f1 c.
-    Assume that ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)
+      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c)) ⇨
+      continuity_pt f c.
+    Assume that ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c)
       as (Hseq).
     We need to show that ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
-      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε).
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f w - f c) < ε).
     Take ε : ℝ.
     Assume that ε > 0.
     We argue by contradiction.
     Assume that ¬ (∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
-      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε))
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f w - f c) < ε))
       as (Hno_delta).
-    (** For every [n] there is a point within [1/(n+1)] of [c] where [f1] is
-        [ε]-far from [f1 c]. *)
+    (** For every [n] there is a point within [1/(n+1)] of [c] where [f] is
+        [ε]-far from [f c]. *)
     We claim that
       ∀ n : ℕ, ∃ y : ℝ,
-        Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε
+        Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f y - f c) ≥ ε
       as (Hsteps).
     {
       Take n : ℕ.
       We argue by contradiction.
       Assume that
-        ¬ (∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε)
+        ¬ (∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f y - f c) ≥ ε)
         as (Hno_y).
       It suffices to show that ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
-        (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε).
+        (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f w - f c) < ε).
       Choose alp := 1 / (INR n + 1).
       We show both statements.
       - We conclude that alp > 0.
       - We need to show that ∀ w : ℝ,
           (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < 1 / (INR n + 1) →
-          Rabs (f1 w - f1 c) < ε.
+          Rabs (f w - f c) < ε.
         Take w : ℝ.
         Assume that (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < 1 / (INR n + 1).
         It holds that Rabs (w - c) < 1 / (INR n + 1) as (Hw).
         We argue by contradiction.
-        Assume that ¬ (Rabs (f1 w - f1 c) < ε) as (Hfar).
-        It holds that Rabs (f1 w - f1 c) ≥ ε as (Hfar').
+        Assume that ¬ (Rabs (f w - f c) < ε) as (Hfar).
+        It holds that Rabs (f w - f c) ≥ ε as (Hfar').
         We claim that
-          ∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε
+          ∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f y - f c) ≥ ε
           as (Hy).
         {
           Choose y := w.
           We conclude that
-            Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε.
+            Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f y - f c) ≥ ε.
         }
         Contradiction.
     }
     By (countable_choice
-        (fun n y => Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε)
+        (fun n y => Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f y - f c) ≥ ε)
         Hsteps)
       it holds that
       ∃ a : ℕ → ℝ, ∀ n : ℕ,
-        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f (a n) - f c) ≥ ε
       as (Ha_ex).
     Obtain a according to (Ha_ex).
     It holds that
-      ∀ n : ℕ, Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+      ∀ n : ℕ, Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f (a n) - f c) ≥ ε
       as (Ha).
     We claim that a ⟶ c as (Hconv).
     {
@@ -350,20 +350,20 @@ Proof.
       By H_inv_bound it holds that 1 / (INR n + 1) < ε0.
       Use n0 := n in (Ha).
       It holds that
-        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f (a n) - f c) ≥ ε
         as (Ha_n).
       By Ha_n it holds that |a n - c| < 1 / (INR n + 1).
       We conclude that (& |a n - c| < 1 / (INR n + 1) < ε0).
     }
-    By (Hseq a Hconv) it holds that (fun n => f1 (a n)) ⟶ (f1 c) as (Hfa).
+    By (Hseq a Hconv) it holds that (fun n => f (a n)) ⟶ (f c) as (Hfa).
     By Hfa it holds that
-      ∃ N1 ∈ ℕ, ∀ n ≥ N1, |f1 (a n) - f1 c| < ε as (HN).
+      ∃ N1 ∈ ℕ, ∀ n ≥ N1, |f (a n) - f c| < ε as (HN).
     Obtain such an N1.
-    It holds that |f1 (a N1) - f1 c| < ε as (Hclose).
+    It holds that |f (a N1) - f c| < ε as (Hclose).
     Use n := N1 in (Ha).
     It holds that
-      Rabs (a N1 - c) < 1 / (INR N1 + 1) ∧ Rabs (f1 (a N1) - f1 c) ≥ ε.
-    It holds that Rabs (f1 (a N1) - f1 c) ≥ ε.
+      Rabs (a N1 - c) < 1 / (INR N1 + 1) ∧ Rabs (f (a N1) - f c) ≥ ε.
+    It holds that Rabs (f (a N1) - f c) ≥ ε.
     Contradiction.
 Qed.
 
@@ -374,26 +374,24 @@ Qed.
     Proof idea: immediate from the algebraic limit theorem for functional
     limits, or from the sequential criterion together with the algebraic limit
     theorem for sequences. *)
-(** [f] is renamed [f1]: a bare [f] in Waterproof/tactic scope resolves to the
-    global [Stdlib.Reals.Rtopology.f] (a [family]) rather than the local binder. *)
-Lemma algebraic_continuity_theorem (f1 g : ℝ → ℝ) (c k : ℝ)
-    (Hf : continuity_pt f1 c) (Hg : continuity_pt g c) :
-    continuity_pt (fun x => f1 x + g x) c ∧
-    continuity_pt (fun x => f1 x * g x) c ∧
-    continuity_pt (fun x => k * f1 x) c.
+Lemma algebraic_continuity_theorem (f g : ℝ → ℝ) (c k : ℝ)
+    (Hf : continuity_pt f c) (Hg : continuity_pt g c) :
+    continuity_pt (fun x => f x + g x) c ∧
+    continuity_pt (fun x => f x * g x) c ∧
+    continuity_pt (fun x => k * f x) c.
 Proof.
   (* Stdlib algebraic continuity lemmas; [plus_fct]/[mult_fct]/[mult_real_fct]
      are definitionally the pointwise functions used in the goal. *)
-  By (continuity_pt_plus f1 g c Hf Hg) it holds that
-    continuity_pt (fun x => f1 x + g x) c.
-  By (continuity_pt_mult f1 g c Hf Hg) it holds that
-    continuity_pt (fun x => f1 x * g x) c.
-  By (continuity_pt_scal f1 k c Hf) it holds that
-    continuity_pt (fun x => k * f1 x) c.
+  By (continuity_pt_plus f g c Hf Hg) it holds that
+    continuity_pt (fun x => f x + g x) c.
+  By (continuity_pt_mult f g c Hf Hg) it holds that
+    continuity_pt (fun x => f x * g x) c.
+  By (continuity_pt_scal f k c Hf) it holds that
+    continuity_pt (fun x => k * f x) c.
   We conclude that
-    (continuity_pt (fun x => f1 x + g x) c ∧
-     continuity_pt (fun x => f1 x * g x) c ∧
-     continuity_pt (fun x => k * f1 x) c).
+    (continuity_pt (fun x => f x + g x) c ∧
+     continuity_pt (fun x => f x * g x) c ∧
+     continuity_pt (fun x => k * f x) c).
 Qed.
 
 (** ** Pathologies: the Dirichlet and Thomae functions *)
@@ -598,36 +596,34 @@ Qed.
     compact set [[a,b]]. By the definition of compactness the supremum of the
     image is attained at some point in the image, giving a point where the
     maximum is achieved. *)
-(* [f] is renamed to [f1] throughout: a bare [f] in a Waterproof statement
-   resolves to [Stdlib.Reals.Rtopology.f], a [family]. *)
-Theorem extreme_value_theorem (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
-    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x) :
-    ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 x ≤ f1 c.
+Theorem extreme_value_theorem (f : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
+    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f x) :
+    ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f x ≤ f c.
 Proof.
   (* [continuity_ab_maj] is the Stdlib form of the extreme value theorem. *)
-  By (continuity_ab_maj f1 a b Hab Hf) it holds that
-    ∃ Mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx) ∧ a ≤ Mx ∧ Mx ≤ b.
+  By (Rtopology.continuity_ab_maj f a b Hab Hf) it holds that
+    ∃ Mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f x ≤ f Mx) ∧ a ≤ Mx ∧ Mx ≤ b.
   Obtain such a Mx.
-  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 x ≤ f1 Mx).
+  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f x ≤ f Mx).
   It holds that a ≤ Mx ∧ Mx ≤ b.
   Choose c := Mx.
   We conclude that
-    (a ≤ Mx ∧ Mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 x ≤ f1 Mx).
+    (a ≤ Mx ∧ Mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f x ≤ f Mx).
 Qed.
 
 (** A continuous function on a closed interval attains its minimum. *)
-Theorem extreme_value_theorem_min (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
-    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x) :
-    ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 c ≤ f1 x.
+Theorem extreme_value_theorem_min (f : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
+    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f x) :
+    ∃ c, a ≤ c ∧ c ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f c ≤ f x.
 Proof.
-  By (continuity_ab_min f1 a b Hab Hf) it holds that
-    ∃ mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x) ∧ a ≤ mx ∧ mx ≤ b.
+  By (Rtopology.continuity_ab_min f a b Hab Hf) it holds that
+    ∃ mx : ℝ, (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f mx ≤ f x) ∧ a ≤ mx ∧ mx ≤ b.
   Obtain such a mx.
-  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f1 mx ≤ f1 x).
+  It holds that (∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒ f mx ≤ f x).
   It holds that a ≤ mx ∧ mx ≤ b.
   Choose c := mx.
   We conclude that
-    (a ≤ mx ∧ mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f1 mx ≤ f1 x).
+    (a ≤ mx ∧ mx ≤ b ∧ ∀ x, a ≤ x ∧ x ≤ b → f mx ≤ f x).
 Qed.
 
 (** ** Intermediate value theorem *)
@@ -640,18 +636,18 @@ Qed.
     property yields a point [c] in all intervals. Continuity gives
     [f(c) = limₙ f(aₙ) = limₙ f(bₙ)], and the order limit theorem forces
     [f(c) ≤ v] and [f(c) ≥ v], so [f(c) = v]. *)
-Theorem intermediate_value_theorem (f1 : ℝ → ℝ) (a b v : ℝ)
+Theorem intermediate_value_theorem (f : ℝ → ℝ) (a b v : ℝ)
     (Hab : a < b)
-    (Hf  : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x)
-    (Hfa : f1 a < v) (Hfb : v < f1 b) :
-    ∃ c, a < c ∧ c < b ∧ f1 c = v.
+    (Hf  : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f x)
+    (Hfa : f a < v) (Hfb : v < f b) :
+    ∃ c, a < c ∧ c < b ∧ f c = v.
 Proof.
-  (* Apply the Stdlib bisection form [IVT_interv] to [x ↦ f1 x - v]. *)
+  (* Apply the Stdlib bisection form [IVT_interv] to [x ↦ f x - v]. *)
   We claim that ∀ x : ℝ, a ≤ x ∧ x ≤ b ⇒
-    continuity_pt (fun y => f1 y - v) x as (Hg).
+    continuity_pt (fun y => f y - v) x as (Hg).
   {
     Take x : ℝ. Assume that a ≤ x ∧ x ≤ b.
-    By Hf it holds that continuity_pt f1 x as (Hc).
+    By Hf it holds that continuity_pt f x as (Hc).
     We claim that constant (fct_cte v).
     {
       We need to show that ∀ u : ℝ, ∀ w : ℝ, fct_cte v u = fct_cte v w.
@@ -659,24 +655,24 @@ Proof.
       We conclude that fct_cte v u = fct_cte v w.
     }
     By continuity_pt_const it holds that continuity_pt (fct_cte v) x as (Hk).
-    By (continuity_pt_minus f1 (fct_cte v) x Hc Hk)
-      we conclude that continuity_pt (fun y => f1 y - v) x.
+    By (continuity_pt_minus f (fct_cte v) x Hc Hk)
+      we conclude that continuity_pt (fun y => f y - v) x.
   }
-  It holds that f1 a - v < 0 as (Hga).
-  It holds that 0 < f1 b - v as (Hgb).
+  It holds that f a - v < 0 as (Hga).
+  It holds that 0 < f b - v as (Hgb).
   (** [IVT_interv] returns a [sig] (a [Type]), not an [∃] (a [Prop]).
       Waterproof's [Obtain] only unpacks [∃], so the witness is extracted
       with [destruct]. *)
-  destruct (IVT_interv (fun y => f1 y - v) a b Hg Hab Hga Hgb) as [z Hz].
+  destruct (IVT_interv (fun y => f y - v) a b Hg Hab Hga Hgb) as [z Hz].
   It holds that a ≤ z ∧ z ≤ b.
-  It holds that f1 z - v = 0 as (Hz2).
-  (* The endpoints are excluded because [f1 a < v < f1 b]. *)
+  It holds that f z - v = 0 as (Hz2).
+  (* The endpoints are excluded because [f a < v < f b]. *)
   We claim that a < z.
   {
     Either a = z or a ≠ z.
     - Case (a = z).
       It holds that a = z as (Heq).
-      It holds that f1 a - v = 0.
+      It holds that f a - v = 0.
       Contradiction.
     - Case (a ≠ z).
       We conclude that a < z.
@@ -686,13 +682,13 @@ Proof.
     Either z = b or z ≠ b.
     - Case (z = b).
       It holds that z = b as (Heq).
-      It holds that f1 b - v = 0.
+      It holds that f b - v = 0.
       Contradiction.
     - Case (z ≠ b).
       We conclude that z < b.
   }
   Choose c := z.
-  We conclude that (a < z ∧ z < b ∧ f1 z = v).
+  We conclude that (a < z ∧ z < b ∧ f z = v).
 Qed.
 
 (** ** Uniform continuity *)
@@ -704,23 +700,23 @@ Qed.
     on which [f] varies by less than [ε/2]. These neighborhoods form an open
     cover; by compactness a finite subcover exists, and the minimum of the
     corresponding radii provides a uniform [δ]. *)
-Theorem continuous_on_compact_uniformly_continuous (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
-    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x) :
+Theorem continuous_on_compact_uniformly_continuous (f : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
+    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f x) :
     ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
       a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
-      Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+      Rabs (x - y) < δ → Rabs (f x - f y) < ε.
 Proof.
   (* This is Stdlib's [Heine] on the compact set [[a,b]] ([compact_P3]). *)
-  By compact_P3 it holds that
-    compact (fun c : ℝ => a ≤ c ∧ c ≤ b) as (Hcomp).
+  By Rtopology.compact_P3 it holds that
+    Rtopology.compact (fun c : ℝ => a ≤ c ∧ c ≤ b) as (Hcomp).
   We claim that ∀ x : ℝ,
-    (fun c : ℝ => a ≤ c ∧ c ≤ b) x ⇒ continuity_pt f1 x as (Hcont).
+    (fun c : ℝ => a ≤ c ∧ c ≤ b) x ⇒ continuity_pt f x as (Hcont).
   {
     Take x : ℝ. Assume that (fun c : ℝ => a ≤ c ∧ c ≤ b) x.
-    By Hf we conclude that continuity_pt f1 x.
+    By Hf we conclude that continuity_pt f x.
   }
-  By (Heine f1 (fun c : ℝ => a ≤ c ∧ c ≤ b) Hcomp Hcont) it holds that
-    uniform_continuity f1 (fun c : ℝ => a ≤ c ∧ c ≤ b) as (Hu).
+  By (Rtopology.Heine f (fun c : ℝ => a ≤ c ∧ c ≤ b) Hcomp Hcont) it holds that
+    Rtopology.uniform_continuity f (fun c : ℝ => a ≤ c ∧ c ≤ b) as (Hu).
   (* [uniform_continuity] quantifies over [posreal]s, so ε and δ have to be
      packed/unpacked with [mkposreal]/[cond_pos]. *)
   Take ε > 0.
@@ -728,22 +724,22 @@ Proof.
   By (Hu (mkposreal ε Hpos)) it holds that
     ∃ dlt : posreal, ∀ x : ℝ, ∀ y : ℝ,
       a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
-      Rabs (x - y) < dlt → Rabs (f1 x - f1 y) < ε as (Hdlt).
+      Rabs (x - y) < dlt → Rabs (f x - f y) < ε as (Hdlt).
   Obtain dlt according to (Hdlt).
   It holds that ∀ x : ℝ, ∀ y : ℝ,
     a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
-    Rabs (x - y) < dlt → Rabs (f1 x - f1 y) < ε as (Hd).
+    Rabs (x - y) < dlt → Rabs (f x - f y) < ε as (Hd).
   By cond_pos it holds that 0 < pos dlt.
   Choose δ := (pos dlt).
   - Indeed, pos dlt > 0.
   - We need to show that ∀ x ∈ ℝ, ∀ y ∈ ℝ,
       a ≤ x ∧ x ≤ b → a ≤ y ∧ y ≤ b →
-      Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+      Rabs (x - y) < δ → Rabs (f x - f y) < ε.
     Take x ∈ ℝ. Take y ∈ ℝ.
     Assume that a ≤ x ∧ x ≤ b.
     Assume that a ≤ y ∧ y ≤ b.
     Assume that Rabs (x - y) < pos dlt.
-    By Hd we conclude that Rabs (f1 x - f1 y) < ε.
+    By Hd we conclude that Rabs (f x - f y) < ε.
 Qed.
 
 (** [f] is *uniformly continuous* on a set [A] if a single [δ] works for all
@@ -759,45 +755,45 @@ Definition uniformly_continuous_on (f : ℝ → ℝ) (A : ℝ → Prop) : Prop :
 
     Proof idea: negate the ε–δ definition and, for the "only if" direction, take
     [δ = 1/n] to build the offending sequences. *)
-Lemma non_uniform_continuity_sequential_criterion (f1 : ℝ → ℝ)
+Lemma non_uniform_continuity_sequential_criterion (f : ℝ → ℝ)
     (A : ℝ → Prop) :
-    ¬ uniformly_continuous_on f1 A ⇔
+    ¬ uniformly_continuous_on f A ⇔
     (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
       ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
       (fun n => x n - y n) ⟶ 0 ∧
-      (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)).
+      (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)).
 Proof.
   We show both directions.
   - We need to show that
-      ¬ uniformly_continuous_on f1 A ⇨
+      ¬ uniformly_continuous_on f A ⇨
       (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)).
-    Assume that ¬ uniformly_continuous_on f1 A as (Hnot_uc).
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)).
+    Assume that ¬ uniformly_continuous_on f A as (Hnot_uc).
     We argue by contradiction.
     Assume that
       ¬ (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0))
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0))
       as (Hno_seq).
-    It suffices to show that uniformly_continuous_on f1 A.
+    It suffices to show that uniformly_continuous_on f A.
     We need to show that
       ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
-        A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+        A x → A y → Rabs (x - y) < δ → Rabs (f x - f y) < ε.
     Take ε > 0.
     We argue by contradiction.
     Assume that
       ¬ (∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
-        A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε)
+        A x → A y → Rabs (x - y) < δ → Rabs (f x - f y) < ε)
       as (Hno_delta).
     (** For every [n] there is a pair of points of [A] within [1/(n+1)] of
         each other whose images are [ε]-far apart. *)
     We claim that
       ∀ n : ℕ, ∃ p : ℝ, ∃ q : ℝ,
         A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
-        Rabs (f1 p - f1 q) ≥ ε
+        Rabs (f p - f q) ≥ ε
       as (Hsteps).
     {
       Take n : ℕ.
@@ -805,35 +801,35 @@ Proof.
       Assume that
         ¬ (∃ p : ℝ, ∃ q : ℝ,
           A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
-          Rabs (f1 p - f1 q) ≥ ε)
+          Rabs (f p - f q) ≥ ε)
         as (Hno_pair).
       It suffices to show that
         ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
-          A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+          A x → A y → Rabs (x - y) < δ → Rabs (f x - f y) < ε.
       Choose δ := 1 / (INR n + 1).
       - Indeed, δ > 0.
       - We need to show that
           ∀ x ∈ ℝ, ∀ y ∈ ℝ,
             A x → A y → Rabs (x - y) < 1 / (INR n + 1) →
-            Rabs (f1 x - f1 y) < ε.
+            Rabs (f x - f y) < ε.
         Take x ∈ ℝ. Take y ∈ ℝ.
         Assume that A x as (Hx).
         Assume that A y as (Hy).
         Assume that Rabs (x - y) < 1 / (INR n + 1) as (Hxy).
         We argue by contradiction.
-        Assume that ¬ (Rabs (f1 x - f1 y) < ε) as (Hfar).
-        It holds that Rabs (f1 x - f1 y) ≥ ε as (Hfar').
+        Assume that ¬ (Rabs (f x - f y) < ε) as (Hfar).
+        It holds that Rabs (f x - f y) ≥ ε as (Hfar').
         We claim that
           ∃ p : ℝ, ∃ q : ℝ,
             A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
-            Rabs (f1 p - f1 q) ≥ ε
+            Rabs (f p - f q) ≥ ε
           as (Hpair).
         {
           Choose p := x.
           Choose q := y.
           We conclude that
             A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
-            Rabs (f1 p - f1 q) ≥ ε.
+            Rabs (f p - f q) ≥ ε.
         }
         Contradiction.
     }
@@ -842,41 +838,41 @@ Proof.
     By (countable_choice
         (fun n p => ∃ q : ℝ,
           A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
-          Rabs (f1 p - f1 q) ≥ ε)
+          Rabs (f p - f q) ≥ ε)
         Hsteps)
       it holds that
       ∃ x : ℕ → ℝ, ∀ n : ℕ, ∃ q : ℝ,
         A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 q) ≥ ε
+        Rabs (f (x n) - f q) ≥ ε
       as (Hx_ex).
     Obtain x according to (Hx_ex).
     It holds that
       ∀ n : ℕ, ∃ q : ℝ,
         A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 q) ≥ ε
+        Rabs (f (x n) - f q) ≥ ε
       as (Hx).
     By (countable_choice
         (fun n q =>
           A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
-          Rabs (f1 (x n) - f1 q) ≥ ε)
+          Rabs (f (x n) - f q) ≥ ε)
         Hx)
       it holds that
       ∃ y : ℕ → ℝ, ∀ n : ℕ,
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε
+        Rabs (f (x n) - f (y n)) ≥ ε
       as (Hy_ex).
     Obtain y according to (Hy_ex).
     It holds that
       ∀ n : ℕ,
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε
+        Rabs (f (x n) - f (y n)) ≥ ε
       as (Hxy).
     We claim that ∀ n : ℕ, A (x n) as (HxA).
     {
       Take n : ℕ.
       By Hxy it holds that
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+        Rabs (f (x n) - f (y n)) ≥ ε.
       We conclude that A (x n).
     }
     We claim that ∀ n : ℕ, A (y n) as (HyA).
@@ -884,16 +880,16 @@ Proof.
       Take n : ℕ.
       By Hxy it holds that
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+        Rabs (f (x n) - f (y n)) ≥ ε.
       We conclude that A (y n).
     }
-    We claim that ∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε as (Hfar).
+    We claim that ∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε as (Hfar).
     {
       Take n : ℕ.
       By Hxy it holds that
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
-      We conclude that Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+        Rabs (f (x n) - f (y n)) ≥ ε.
+      We conclude that Rabs (f (x n) - f (y n)) ≥ ε.
     }
     We claim that (fun n => x n - y n) ⟶ 0 as (Hconv).
     {
@@ -913,7 +909,7 @@ Proof.
       By H_inv_bound it holds that 1 / (INR n + 1) < ε0.
       By Hxy it holds that
         A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
-        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+        Rabs (f (x n) - f (y n)) ≥ ε.
       It holds that Rabs (x n - y n) < 1 / (INR n + 1) as (Hxy_n).
       It holds that x n - y n - 0 = x n - y n.
       We conclude that (& |x n - y n - 0| = |x n - y n| < 1 / (INR n + 1) < ε0).
@@ -922,7 +918,7 @@ Proof.
       ∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)
       as (Hwitness).
     {
       Choose x0 := x.
@@ -931,47 +927,47 @@ Proof.
       We conclude that
         ε0 > 0 ∧ (∀ n : ℕ, A (x0 n)) ∧ (∀ n : ℕ, A (y0 n)) ∧
         (fun n => x0 n - y0 n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x0 n) - f1 (y0 n)) ≥ ε0).
+        (∀ n : ℕ, Rabs (f (x0 n) - f (y0 n)) ≥ ε0).
     }
     Contradiction.
   - We need to show that
       (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)) ⇨
-      ¬ uniformly_continuous_on f1 A.
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)) ⇨
+      ¬ uniformly_continuous_on f A.
     Assume that
       ∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)
       as (Hseqs).
     Obtain x according to (Hseqs).
     It holds that
       ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)
       as (Hseqs').
     Obtain y according to (Hseqs').
     It holds that
       ∃ ε0 : ℝ,
         ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
         (fun n => x n - y n) ⟶ 0 ∧
-        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+        (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)
       as (Hseqs'').
     Obtain ε0 according to (Hseqs'').
     It holds that ε0 > 0 as (Hε0).
     It holds that ∀ n : ℕ, A (x n) as (HxA).
     It holds that ∀ n : ℕ, A (y n) as (HyA).
     It holds that (fun n => x n - y n) ⟶ 0 as (Hconv).
-    It holds that ∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0 as (Hfar).
+    It holds that ∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0 as (Hfar).
     We argue by contradiction.
-    Assume that ¬ ¬ uniformly_continuous_on f1 A.
-    It holds that uniformly_continuous_on f1 A as (Huc).
+    Assume that ¬ ¬ uniformly_continuous_on f A.
+    It holds that uniformly_continuous_on f A as (Huc).
     By Huc it holds that
       ∃ δ > 0, ∀ x0 ∈ ℝ, ∀ y0 ∈ ℝ,
-        A x0 → A y0 → Rabs (x0 - y0) < δ → Rabs (f1 x0 - f1 y0) < ε0
+        A x0 → A y0 → Rabs (x0 - y0) < δ → Rabs (f x0 - f y0) < ε0
       as (Hδ).
     Obtain such a δ.
     By Hconv it holds that
@@ -982,8 +978,8 @@ Proof.
     It holds that Rabs (x N1 - y N1) < δ as (Hclose).
     By HxA it holds that A (x N1).
     By HyA it holds that A (y N1).
-    By Hδ it holds that Rabs (f1 (x N1) - f1 (y N1)) < ε0.
-    By Hfar it holds that Rabs (f1 (x N1) - f1 (y N1)) ≥ ε0.
+    By Hδ it holds that Rabs (f (x N1) - f (y N1)) < ε0.
+    By Hfar it holds that Rabs (f (x N1) - f (y N1)) ≥ ε0.
     Contradiction.
 Qed.
 

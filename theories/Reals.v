@@ -10,7 +10,7 @@
 
 (* Re-exports the core Waterproof infrastructure so that files importing
   [Analysis.Reals] do not need to separately import Waterproof. *)
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Logic.Classical_Prop.
 
 From Waterproof Require Export Tactics.

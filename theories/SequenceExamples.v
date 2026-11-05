@@ -12,7 +12,7 @@
   Note: In Rocq, natural numbers start from 0, but our sequences correspond
   to Abbott's sequences starting from n=1. We use (n+1) or (INR n + 1) consistently. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 
 Require Export RUG.Analysis.Sequences.
 

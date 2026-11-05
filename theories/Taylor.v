@@ -5,7 +5,7 @@
   Formalizes Abbott §6.6 and §8.6: Taylor polynomials, the Lagrange
   remainder formula, and Taylor series for exp, sin, cos. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Arith.Factorial.
 From Stdlib Require Import Logic.ClassicalChoice.
 Require Export RUG.Analysis.Derivatives.
@@ -457,13 +457,13 @@ Qed.
     [G'(s) = (K·(n+1) - f⁽ⁿ⁺¹⁾(s)/n!)·(x - s)ⁿ], so Rolle's theorem gives a [c]
     with [K = f⁽ⁿ⁺¹⁾(c)/(n+1)!]. *)
 Theorem taylor_theorem_lagrange
-    (f' : ℝ → ℝ) (df : ℕ → ℝ → ℝ) (a x : ℝ) (n : ℕ)
+    (f : ℝ → ℝ) (df : ℕ → ℝ → ℝ) (a x : ℝ) (n : ℕ)
     (Hxa : x ≠ a)
-    (H0 : df 0%nat = f')
+    (H0 : df 0%nat = f)
     (Hstep : ∀ k ∈ ℕ, ∀ y ∈ ℝ,
         ∃ Hd : derivable_pt (df k) y, derive_pt (df k) y Hd = df (S k) y) :
     ∃ c : ℝ, Rmin a x < c ∧ c < Rmax a x ∧
-      f' x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
+      f x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
             + df (S n) c / INR (fact (S n)) * (x - a) ^ (S n).
 Proof.
   We claim that ∀ k : ℕ, ∀ y : ℝ, derivable_pt_lim (df k) y (df (S k) y) as (Hlim).
@@ -567,7 +567,7 @@ Proof.
     We conclude that df k a / INR (fact k) * (x - a) ^ k = / INR (fact k) * df k a * (x - a) ^ k. }
   By (sum_eq _ _ n Hterm) it holds that
     sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n = P as (HP).
-  By H0 it holds that f' x = df 0%nat x as (Hf).
+  By H0 it holds that f x = df 0%nat x as (Hf).
   It holds that df 0%nat x = P + K * (x - a) ^ (S n).
   By HKc it holds that
     df 0%nat x = P + df (S n) c / INR (fact (S n)) * (x - a) ^ (S n).
@@ -575,13 +575,13 @@ Proof.
     df 0%nat x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
       + df (S n) c / INR (fact (S n)) * (x - a) ^ (S n).
   By Hf it holds that
-    f' x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
+    f x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
       + df (S n) c / INR (fact (S n)) * (x - a) ^ (S n).
   It holds that Rmin a x < c.
   It holds that c < Rmax a x.
   Choose c0 := c.
   We conclude that Rmin a x < c0 ∧ c0 < Rmax a x ∧
-      f' x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
+      f x = sum_f_R0 (fun k => df k a / INR (fact k) * (x - a) ^ k) n
             + df (S n) c0 / INR (fact (S n)) * (x - a) ^ (S n).
 Qed.
 

@@ -5,7 +5,7 @@
   Formalizes Abbott §3.2–3.3: open and closed subsets of ℝ, limit points,
   closures, and the relationship between open/closed sets. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Logic.Classical_Pred_Type.
 From Stdlib Require Import Logic.Classical_Prop.
 From Stdlib Require Import Logic.FunctionalExtensionality.

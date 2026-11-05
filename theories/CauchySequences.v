@@ -10,7 +10,7 @@
   developed in [Analysis.Subsequences] (lecture 3) and reused here. These results
   are in turn used by [Analysis.Series] for the Cauchy criterion of series. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Waterproof Require Import Libs.Analysis.Subsequences.
 From Waterproof Require Import Libs.Analysis.LimsupLiminfBolzano.
 Require Export RUG.Analysis.Subsequences.

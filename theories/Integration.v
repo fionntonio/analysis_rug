@@ -9,7 +9,7 @@
   additivity over intervals), and the interchange of limit and integral for
   uniformly convergent sequences of functions (Abbott 7.2.5). *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Logic.ClassicalDescription.
 From Stdlib Require Import Logic.ConstructiveEpsilon.
 Require Export RUG.Analysis.Continuity.
@@ -243,15 +243,14 @@ Qed.
     continuous (Heine), so for [ε > 0] a fine enough uniform partition makes each
     oscillation small, giving [U(f, P) - L(f, P) < ε]; apply the Darboux
     criterion. *)
-(* [f] renamed to [f1] (a bare [f] resolves to [Stdlib.Reals.Rtopology.f]), and
-   [a ≤ b] added: without it the hypothesis is vacuous for [b < a] while the
+(* [a ≤ b] added: without it the hypothesis is vacuous for [b < a] while the
    conclusion still asks for integrability on [[b, a]], so the original
    statement was not provable. *)
-Theorem continuous_integrable (f1 : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
-    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f1 x) :
-    Riemann_integrable f1 a b.
+Theorem continuous_integrable (f : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
+    (Hf : ∀ x, a ≤ x ∧ x ≤ b → continuity_pt f x) :
+    Riemann_integrable f a b.
 Proof.
-  By continuity_implies_RiemannInt we conclude that Riemann_integrable f1 a b.
+  By continuity_implies_RiemannInt we conclude that Riemann_integrable f a b.
 Qed.
 
 (** ** Monotone functions are integrable *)
@@ -291,24 +290,24 @@ Proof.
 (** ** Linearity of the integral *)
 
 (** The sum of two integrable functions is integrable. *)
-Lemma sum_integrable (f1 g : ℝ → ℝ) (a b : ℝ)
-    (pr1 : Riemann_integrable f1 a b)
+Lemma sum_integrable (f g : ℝ → ℝ) (a b : ℝ)
+    (pr1 : Riemann_integrable f a b)
     (pr2 : Riemann_integrable g a b) :
-    Riemann_integrable (fun x => f1 x + g x) a b.
+    Riemann_integrable (fun x => f x + g x) a b.
 Proof.
   (** [RiemannInt_P10] gives [f + l·g]; take [l = 1] and transport along the
       pointwise equality with [Riemann_integrable_ext]. *)
   We claim that ∀ x : ℝ,
-    Rmin a b ≤ x ∧ x ≤ Rmax a b → f1 x + 1 * g x = f1 x + g x as (Hext).
+    Rmin a b ≤ x ∧ x ≤ Rmax a b → f x + 1 * g x = f x + g x as (Hext).
   {
     Take x : ℝ.
     Assume that Rmin a b ≤ x ∧ x ≤ Rmax a b.
-    We conclude that f1 x + 1 * g x = f1 x + g x.
+    We conclude that f x + 1 * g x = f x + g x.
   }
   By (RiemannInt_P10 1 pr1 pr2) it holds that
-    Riemann_integrable (fun x => f1 x + 1 * g x) a b as (Hpr).
-  By (Riemann_integrable_ext (fun x => f1 x + 1 * g x) (fun x => f1 x + g x) Hext) we conclude that
-    Riemann_integrable (fun x => f1 x + g x) a b.
+    Riemann_integrable (fun x => f x + 1 * g x) a b as (Hpr).
+  By (Riemann_integrable_ext (fun x => f x + 1 * g x) (fun x => f x + g x) Hext) we conclude that
+    Riemann_integrable (fun x => f x + g x) a b.
 Qed.
 
 (** [∫(f + g) = ∫f + ∫g]. *)
@@ -333,17 +332,17 @@ Proof.
 (** _Monotonicity_ (order property): if [f ≤ g] on [(a, b)] then [∫f ≤ ∫g]. *)
 (* [a ≤ b] added for the same reason as in [continuous_integrable]: for [b < a]
    the integrals swap sign, so the inequality does not hold as stated. *)
-Lemma integral_monotone (f1 g : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
-    (prf : Riemann_integrable f1 a b)
+Lemma integral_monotone (f g : ℝ → ℝ) (a b : ℝ) (Hab : a ≤ b)
+    (prf : Riemann_integrable f a b)
     (prg : Riemann_integrable g a b)
-    (Hle : ∀ x, a ≤ x ∧ x ≤ b → f1 x ≤ g x) :
+    (Hle : ∀ x, a ≤ x ∧ x ≤ b → f x ≤ g x) :
     RiemannInt prf ≤ RiemannInt prg.
 Proof.
-  We claim that ∀ x : ℝ, a < x ∧ x < b → f1 x ≤ g x as (Hlt).
+  We claim that ∀ x : ℝ, a < x ∧ x < b → f x ≤ g x as (Hlt).
   {
     Take x : ℝ.
     Assume that a < x ∧ x < b.
-    By Hle we conclude that f1 x ≤ g x.
+    By Hle we conclude that f x ≤ g x.
   }
   (** The Waterproof version of this step,
       [By (RiemannInt_P19 prf prg Hab Hlt) we conclude that …], does not finish
@@ -355,11 +354,11 @@ Qed.
 (** ** Additivity over sub-intervals *)
 
 (** [∫_a^b f = ∫_a^c f + ∫_c^b f] for [a ≤ c ≤ b]. *)
-Lemma integral_split (f1 : ℝ → ℝ) (a b c : ℝ)
+Lemma integral_split (f : ℝ → ℝ) (a b c : ℝ)
     (Hac : a ≤ c) (Hcb : c ≤ b)
-    (prf : Riemann_integrable f1 a b) :
-    ∃ (pr1 : Riemann_integrable f1 a c),
-    ∃ (pr2 : Riemann_integrable f1 c b),
+    (prf : Riemann_integrable f a b) :
+    ∃ (pr1 : Riemann_integrable f a c),
+    ∃ (pr2 : Riemann_integrable f c b),
       RiemannInt prf = RiemannInt pr1 + RiemannInt pr2.
 Proof.
   (** [RiemannInt_P22]/[RiemannInt_P23] restrict the integrability, and

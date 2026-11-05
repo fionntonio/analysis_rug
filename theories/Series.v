@@ -11,7 +11,7 @@
   [Analysis.Subsequences]) and reused here. *)
 
 (* begin hide *)
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Waterproof Require Import Libs.Analysis.Series.
 Require Export RUG.Analysis.CauchySequences.
 

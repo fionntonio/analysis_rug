@@ -3,7 +3,10 @@
   The plan is to move this to the Waterproof library eventually.
 *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
+(** This file wraps the Stdlib compactness results, so it imports [Rtopology]
+    explicitly. The import is not re-exported to the files that use this one. *)
+From Stdlib Require Import Reals.Rtopology.
 From Stdlib Require Import Lists.List.
 
 From Waterproof Require Import Tactics.

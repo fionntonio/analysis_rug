@@ -3,7 +3,7 @@
   Auxiliary facts about classical logic.
 *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Logic.ClassicalDescription.
 
 From Waterproof Require Import Tactics.

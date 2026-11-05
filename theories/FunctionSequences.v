@@ -7,7 +7,7 @@
   continuity and differentiation for uniformly convergent sequences.
   Term-by-term integration is in [Analysis.Integration]. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Logic.ClassicalDescription.
 Require Export RUG.Analysis.Continuity.
 Require Import RUG.Analysis.CauchySequences.

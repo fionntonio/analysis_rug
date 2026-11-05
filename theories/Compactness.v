@@ -5,7 +5,7 @@
   Formalizes Abbott §3.3: the Heine-Borel theorem (compact ↔ closed and bounded),
   properties of compact sets, and the nested compact sets property. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Stdlib Require Import Lists.List.
 From Stdlib Require Import Logic.Classical_Prop.
 

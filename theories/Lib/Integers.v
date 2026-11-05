@@ -3,7 +3,7 @@
   Auxiliary facts about the integers used in the analysis files.
 *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 
 From Waterproof Require Import Tactics.
 From Waterproof Require Import Automation.

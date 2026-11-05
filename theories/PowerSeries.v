@@ -5,7 +5,7 @@
   Formalizes Abbott §6.5: radius of convergence, Abel's theorem,
   term-by-term differentiation and integration of power series. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 From Waterproof Require Import Libs.Analysis.Series.
 From Stdlib Require Import Logic.ClassicalUniqueChoice.
 Require Export RUG.Analysis.FunctionSequences.

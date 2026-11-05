@@ -7,7 +7,7 @@
 
 (* begin hide *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 
 From Waterproof Require Export Libs.Analysis.Sequences.
 Require Export RUG.Analysis.Reals.

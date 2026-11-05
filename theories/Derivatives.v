@@ -7,7 +7,7 @@
   the mean value theorem, and Darboux's intermediate value theorem for
   derivatives. *)
 
-From Stdlib Require Import Reals.Reals.
+Require Import RUG.Analysis.Lib.StdlibReals.
 Require Export RUG.Analysis.Continuity.
 
 Waterproof Enable Automation RealsAndIntegers.
