@@ -45,17 +45,17 @@ While the homework itself is not graded, **active and collaborative participatio
 
 The **Waterproof proof-writing workshop on 13 November 2026** is the introductory lecture for the peer-review sessions: we discuss expectations for peer-review feedback, help you set up Waterproof, and practise writing proofs with it. It has no homework deadline and does not award bonus points. **In the four subsequent lab sessions we expect you are already familiar with all this, in case this is not the case and you had not attended the workshop, you will not get the points**.
 
-The four subsequent labs are the **homework peer-review and formalization sessions**. Bring your prepared solution by the start of the corresponding session (**09:00 on 20 November, 4 December, 8 January and 22 January** -- these are the four homework deadlines). You will be asked to upload the peer-review feedback and formalization during the session as described below.
+The four subsequent labs are the **homework peer-review and formalization sessions**. At these, you are expected to bring your prepared solution by the start of the corresponding session (**09:00 on 20 November, 4 December, 8 January and 22 January** -- these are the four homework deadlines) and then there will be an exchange for the peer-review. At the beginning of the class you will upload your solution to the corresponding Brightspace Homework page, at the end you will be asked to upload there the peer-review feedback you gave during the session and your formalization (as described below).
 
-You don't need to sign the homework but you need to write your student code on the homework sheets, so that we can find it easily at the end of the session. 
+You don't need to sign the homework but you need to write your student code on the homework sheets, so that it will be possible to find it at the end of the session.
 
-At the beginning of the session you will register your participation and we will randomly assign the peer-review pair. This will happen in the first 15 min of class, while we present the solution of the homework: if you arrive later than that, you will have lost the points.
+At the beginning of the session you will register your participation by uploading your solutions to the corresponding Brightspace Homework page and we will randomly assign the peer-review pair. This will happen in the first 15 min of class, while we present the solution of the homework: if you arrive later than that, you will have lost the points.
 
-In the pair, you are expected to exchange your homework solutions, study them and provide feedback to each other (see below). The homework should include your student code, the person that gives the feedback, by the end of the lab, is expected to add their student code, scan the homework with the feedback (before returning it to the owner) and upload it on their Group page in Brightspace. **Failure to do so, will mean that you don't receive the points.**
+In the pair, you are expected to exchange your homework solutions, study them and provide feedback to each other (see below). The homework should include your student code and the student code of the person that gives the feedback. In the last 10 minutes of the lab, you are expected to scan the homework with your feedback (before returning it to the owner) and upload it on their corresponding Brightspace Homework page. **Failure to do so, will mean that you don't receive the points.**
 
 In the second half of the lab, you will work on the formalization of your solution (or a new one if you think is more fit) in the Waterproof proof assistant (see below). This is a constrained natural-language proof assistant that can give you automatically (and deterministically) feedback on the proof and could be a useful tool to check some of you other coursework for Analysis for correctness or completeness. **The introductory Waterproof proof-writing workshop is dedicated to learning Waterproof and resolving setup issues.**
 
-At the end of the session you will upload your formalization on the Group page in Brightspace. **Failure to do so, will mean that you don't receive the points.**
+At the end of the session you will upload your formalization on the corresponding Brightspace Homework page. **Failure to do so, will mean that you don't receive the points.**
 
 After the sessions, we will revise the homework solutions, the feedback and the attempt at formalization. If this shows meaningful feedback (see below), a serious attempt at solving the homework (even if incorrect or incomplete) and a serious attempt at formalization, then you will be awarded the 0.25 points for the session.
 
@@ -95,7 +95,7 @@ What is most important is that Waterproof uses controlled natural language. From
 
 This year we start an experimentation with Waterproof. We spent a substantial amount of time to formalize all the lectures in Waterproof and the homework exercises will be provided with a Waterproof template that you can use to write your proof. You can then get instant feedback on its correctness. If you want to try it out, please follow the instructions on Brightspace or on [the course repository](https://github.com/mseri/analysis_rug).
 
-It would be extremely beneficial for us, if you would upload both your handwritten solutions and (if you used it) the Waterproof solutions on your Brightspace group folder. We will use anonymized data to make an educational research on how Waterproof affects the learning.
+It would be extremely beneficial for us, if you would upload both your handwritten solutions and (if you used it) the Waterproof solutions on the corresponding Brightspace Homework page. We will use anonymized data to make an educational research on how Waterproof affects the learning.
 
 ## Computation of the final grade
 
@@ -214,7 +214,7 @@ Tutorial $N$ belongs to lecture $N$. The exercises (from **Abbott, 2nd edition**
 
 # Homework assignments
 
-These assignments are prepared for the four homework peer-review and formalization labs. Participation is optional, but the requirements in the assessment section must be met to earn the bonus points. **Each prepared solution is due at the start of its lab**, on the dates below. You must bring it for the peer review, and at the end of the session upload the feedback you gave and your formalization during the session as described above. Further submission instructions will be provided via Brightspace.
+These assignments are prepared for the four homework peer-review and formalization labs. Participation is optional, but the requirements in the assessment section must be met to earn the bonus points. **Each prepared solution is due at the start of its lab**, on the dates below. You must bring it for the peer review and upload it to the corresponding Brightspace Homework page at the start of the session; at the end of the session you upload there the feedback you gave and your formalization as described above. Further submission instructions will be provided via Brightspace.
 
 ## Assignment 1 (due 20 November 2026, 09:00; lab 09:00–11:00)
 
