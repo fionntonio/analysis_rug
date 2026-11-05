@@ -65,6 +65,50 @@
       font: 0.8rem sans-serif;
     }
 
+    #print-btn {
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      padding: 4px 8px;
+      color: inherit;
+      font: 0.8rem sans-serif;
+      cursor: pointer;
+    }
+    #print-btn:hover { background: rgba(255,255,255,0.12); }
+    #print-content { display: none; }
+
+    @page { size: A4 portrait; margin: 14mm; }
+    @media print {
+      html, body { height: auto; background: #fff; color: #000; }
+      #app, #nav-panel, #overlay { display: none !important; }
+      #print-content { display: block; font-size: 11pt; line-height: 1.4; }
+      #print-content .doc-wrap { max-width: none; margin: 0; padding: 0; }
+      #print-content .slide-card {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        transform: none;
+        border: 1px solid #aaa;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 6mm;
+        margin: 0 0 6mm;
+        break-inside: avoid;
+        break-after: page;
+      }
+      #print-content .slide-card:last-child { break-after: auto; }
+      #print-content .slide-content { transform: none; }
+      #print-content .handout-number { font: 9pt sans-serif; color: #555; margin-bottom: 3mm; }
+      #print-content .tutorial-card { padding: 0; box-shadow: none; background: none; }
+      #print-content h1, #print-content h2, #print-content h3 { break-after: avoid; }
+      #print-content p, #print-content li { orphans: 3; widows: 3; }
+      #print-content img { max-height: 65mm; break-inside: avoid; }
+      #print-content pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      #print-content .katex-display { overflow: visible; }
+    }
+
     /* ── Content area ───────────────────────────────────────────── */
     #content { flex: 1; min-height: 0; overflow: auto; }
     #content.slides-mode { overflow: hidden; }
@@ -493,6 +537,7 @@
     </button>
     <span id="topbar-title">Analysis — Lecture Notes</span>
     <a id="share-link" hidden title="Copy this link for a lecture-specific preview">Share link</a>
+    <button id="print-btn" hidden type="button">Print page</button>
   </header>
 
   <div id="content">
@@ -513,6 +558,9 @@
     <button class="nav-btn" id="fullscreen-btn" aria-label="Enter fullscreen" aria-keyshortcuts="f" title="Enter fullscreen (F)">Fullscreen ⛶</button>
   </div>
 </div>
+
+<!-- Separate, unscaled content for printing; never replaces the current slide. -->
+<div id="print-content" aria-hidden="true"></div>
 
 <!-- ── Scripts ───────────────────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js" crossorigin="anonymous"></script>
@@ -558,6 +606,41 @@
   const app = document.getElementById('app');
   const fullscreenBtn = document.getElementById('fullscreen-btn');
   const exitFullscreenBtn = document.getElementById('exit-fullscreen-btn');
+
+  // ── Printing ─────────────────────────────────────────────────────
+  const printBtn = document.getElementById('print-btn');
+  const printContent = document.getElementById('print-content');
+
+  function preparePrint() {
+    if (printBtn.hidden) return;
+    if (mode === 'slides') {
+      printContent.innerHTML = slides.map(function (html, i) {
+        return '<section class="slide-card"><div class="handout-number">Slide '
+          + (i + 1) + ' / ' + slides.length + '</div><div class="slide-content">'
+          + html + '</div></section>';
+      }).join('');
+    } else {
+      printContent.replaceChildren(contentEl.querySelector('.doc-wrap').cloneNode(true));
+    }
+    // Keep document anchors unique in the interactive page.
+    printContent.querySelectorAll('[id]').forEach(function (el) { el.removeAttribute('id'); });
+  }
+
+  window.addEventListener('beforeprint', preparePrint);
+  printBtn.addEventListener('click', async function () {
+    printBtn.disabled = true;
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      preparePrint();
+      await Promise.all(Array.from(printContent.querySelectorAll('img'), function (img) {
+        return img.decode().catch(function () {});
+      }));
+      if (document.fonts) await document.fonts.ready;
+      window.print();
+    } finally {
+      printBtn.disabled = false;
+    }
+  });
 
   // ── Fullscreen presentation ───────────────────────────────────────
   fullscreenBtn.disabled = !document.fullscreenEnabled;
@@ -885,6 +968,8 @@
   // ── Load file ─────────────────────────────────────────────────────
   async function loadFile(file, fileMode) {
     mode = fileMode;
+    printBtn.hidden = true;
+    printContent.replaceChildren();
     if (fileMode !== 'slides' && document.fullscreenElement === app) {
       await document.exitFullscreen();
     }
@@ -960,6 +1045,9 @@
 
         showSlide(0);
       }
+      printBtn.textContent = fileMode === 'slides' ? 'Print handout' : 'Print page';
+      printBtn.hidden = false;
+      preparePrint();
     } catch (err) {
       contentEl.innerHTML =
         '<div class="slide-wrap"><div class="err">Could not load content: ' + err.message + '</div></div>';
