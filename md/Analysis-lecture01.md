@@ -9,7 +9,7 @@ Topics:
 - Abbott §1.3. Axiom of completeness
 - Abbott §1.4. Consequences of completeness
 
-Formalization: [`Reals.v`](docs/rocq/RUG.Analysis.Reals.html)
+Formalization: [`Reals.v`](docs/rocq/RUG.Analysis.Reals.html), [`Lib/Rationals.v`](docs/rocq/RUG.Analysis.Lib.Rationals.html)
 
 Tutorial: [Tutorial 1](#tutorials/tutorial-1)
 
