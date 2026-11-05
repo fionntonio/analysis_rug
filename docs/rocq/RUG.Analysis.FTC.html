@@ -22,7 +22,7 @@
 </div>
 
 <div class="doc">
-<a id="lab33"></a><h1 class="section">RUG.Analysis.FTC — The fundamental theorem of calculus.</h1>
+<a id="lab34"></a><h1 class="section">RUG.Analysis.FTC — The fundamental theorem of calculus.</h1>
 
 
 <div class="paragraph"> </div>
@@ -38,7 +38,7 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Reals.Reals</span>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="RUG.Analysis.Lib.StdlibReals.html#"><span class="id" title="library">RUG.Analysis.Lib.StdlibReals</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="RUG.Analysis.Integration.html#"><span class="id" title="library">RUG.Analysis.Integration</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="RUG.Analysis.Derivatives.html#"><span class="id" title="library">RUG.Analysis.Derivatives</span></a>.<br/>
 
@@ -58,7 +58,7 @@
 </div>
 
 <div class="doc">
-<a id="lab34"></a><h2 class="section">Bound by the supremum</h2>
+<a id="lab35"></a><h2 class="section">Bound by the supremum</h2>
 
 <div class="paragraph"> </div>
 
@@ -72,14 +72,23 @@
     sums. 
 </div>
 <div class="code">
-<span class="id" title="keyword">Lemma</span> <a id="integral_bound_sup" class="idref" href="#integral_bound_sup"><span class="id" title="lemma">integral_bound_sup</span></a> (<a id="f1:1" class="idref" href="#f1:1"><span class="id" title="binder">f1</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:2" class="idref" href="#a:2"><span class="id" title="binder">a</span></a> <a id="b:3" class="idref" href="#b:3"><span class="id" title="binder">b</span></a> <a id="M:4" class="idref" href="#M:4"><span class="id" title="binder">M</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:5" class="idref" href="#Hab:5"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:6" class="idref" href="#prf:6"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:1"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="HM:9" class="idref" href="#HM:9"><span class="id" title="binder">HM</span></a> : <span class="id" title="notation">∀</span> <a id="x:7" class="idref" href="#x:7"><span class="id" title="binder"><span id="x:8" class="id">x</span></span></a> <a id="x:8" class="idref" href="#x:8"><span class="id" title="binder">:</span></a> <a id="x:8" class="idref" href="#x:8"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">∧</span> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a> <span class="id" title="notation">→</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:1"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#M:4"><span class="id" title="variable">M</span></a>) :<br/>
+<span class="id" title="keyword">Lemma</span> <a id="integral_bound_sup" class="idref" href="#integral_bound_sup"><span class="id" title="lemma">integral_bound_sup</span></a> (<a id="f:1" class="idref" href="#f:1"><span class="id" title="binder">f</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:2" class="idref" href="#a:2"><span class="id" title="binder">a</span></a> <a id="b:3" class="idref" href="#b:3"><span class="id" title="binder">b</span></a> <a id="M:4" class="idref" href="#M:4"><span class="id" title="binder">M</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:5" class="idref" href="#Hab:5"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:6" class="idref" href="#prf:6"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:1"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="HM:9" class="idref" href="#HM:9"><span class="id" title="binder">HM</span></a> : <span class="id" title="notation">∀</span> <a id="x:7" class="idref" href="#x:7"><span class="id" title="binder"><span id="x:8" class="id">x</span></span></a> <a id="x:8" class="idref" href="#x:8"><span class="id" title="binder">:</span></a> <a id="x:8" class="idref" href="#x:8"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">∧</span> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a> <span class="id" title="notation">→</span> <a class="idref" href="RUG.Analysis.FTC.html#f:1"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:7"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#M:4"><span class="id" title="variable">M</span></a>) :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#prf:6"><span class="id" title="variable">prf</span></a> <span class="id" title="notation">≤</span> <span class="id" title="notation">(</span><a class="idref" href="RUG.Analysis.FTC.html#b:3"><span class="id" title="variable">b</span></a> <span class="id" title="notation">-</span> <a class="idref" href="RUG.Analysis.FTC.html#a:2"><span class="id" title="variable">a</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <a class="idref" href="RUG.Analysis.FTC.html#M:4"><span class="id" title="variable">M</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">pose</span> (<span class="id" title="var">prc</span> := <span class="id" title="lemma">RiemannInt_P14</span> <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">M</span>).<br/>
+</div>
+
+<div class="doc">
+Compare with the constant function <span class="inlinecode"><span class="id" title="var">M</span></span> and evaluate its integral. The
+      comparison is an inequality of <span class="inlinecode"><span class="id" title="var">RiemannInt</span></span> terms, on which Waterproof
+      automation does not finish within minutes (even with the lemma fully
+      applied), so it is done with <span class="inlinecode"><span class="id" title="tactic">apply</span></span>/<span class="inlinecode"><span class="id" title="tactic">exact</span></span>. 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" title="var">Define</span> <span class="id" title="var">prc</span> := (<span class="id" title="lemma">RiemannInt_P14</span> <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">M</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<span class="id" title="lemma">Rle_trans</span> <span class="id" title="notation">(</span><span class="id" title="definition">RiemannInt</span> <span class="id" title="var">prf</span><span class="id" title="notation">)</span> <span class="id" title="notation">(</span><span class="id" title="definition">RiemannInt</span> <span class="id" title="var">prc</span><span class="id" title="notation">)</span> <span class="id" title="notation">(</span><span class="id" title="notation">(</span><span class="id" title="var">b</span> <span class="id" title="notation">-</span> <span class="id" title="var">a</span><span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">M</span><span class="id" title="notation">)</span>).<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">exact</span> (<a class="idref" href="RUG.Analysis.Integration.html#integral_monotone"><span class="id" title="lemma">integral_monotone</span></a> <span class="id" title="var">f1</span> (<span class="id" title="definition">fct_cte</span> <span class="id" title="var">M</span>) <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">Hab</span> <span class="id" title="var">prf</span> <span class="id" title="var">prc</span> <span class="id" title="var">HM</span>).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">exact</span> (<a class="idref" href="RUG.Analysis.Integration.html#integral_monotone"><span class="id" title="lemma">integral_monotone</span></a> <span class="id" title="var">f</span> (<span class="id" title="definition">fct_cte</span> <span class="id" title="var">M</span>) <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">Hab</span> <span class="id" title="var">prf</span> <span class="id" title="var">prc</span> <span class="id" title="var">HM</span>).<br/>
 &nbsp;&nbsp;- <span class="id" title="tactic">rewrite</span> (<span class="id" title="lemma">RiemannInt_P15</span> <span class="id" title="var">prc</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">M</span> <span class="id" title="notation">×</span> <span class="id" title="notation">(</span><span class="id" title="var">b</span> <span class="id" title="notation">-</span> <span class="id" title="var">a</span><span class="id" title="notation">)</span> <span class="id" title="notation">≤</span> <span class="id" title="notation">(</span><span class="id" title="var">b</span> <span class="id" title="notation">-</span> <span class="id" title="var">a</span><span class="id" title="notation">)</span> <span class="id" title="notation">×</span> <span class="id" title="var">M</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -88,7 +97,7 @@
 </div>
 
 <div class="doc">
-<a id="lab35"></a><h2 class="section">Order property and absolute value</h2>
+<a id="lab36"></a><h2 class="section">Order property and absolute value</h2>
 
 <div class="paragraph"> </div>
 
@@ -97,13 +106,20 @@
     of Lecture 15.) 
 </div>
 <div class="code">
-<span class="id" title="keyword">Lemma</span> <a id="integral_order" class="idref" href="#integral_order"><span class="id" title="lemma">integral_order</span></a> (<a id="f1:10" class="idref" href="#f1:10"><span class="id" title="binder">f1</span></a> <a id="g:11" class="idref" href="#g:11"><span class="id" title="binder">g</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:12" class="idref" href="#a:12"><span class="id" title="binder">a</span></a> <a id="b:13" class="idref" href="#b:13"><span class="id" title="binder">b</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:14" class="idref" href="#Hab:14"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:15" class="idref" href="#prf:15"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:10"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a>)<br/>
+<span class="id" title="keyword">Lemma</span> <a id="integral_order" class="idref" href="#integral_order"><span class="id" title="lemma">integral_order</span></a> (<a id="f:10" class="idref" href="#f:10"><span class="id" title="binder">f</span></a> <a id="g:11" class="idref" href="#g:11"><span class="id" title="binder">g</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:12" class="idref" href="#a:12"><span class="id" title="binder">a</span></a> <a id="b:13" class="idref" href="#b:13"><span class="id" title="binder">b</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:14" class="idref" href="#Hab:14"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:15" class="idref" href="#prf:15"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:10"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<a id="prg:16" class="idref" href="#prg:16"><span class="id" title="binder">prg</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#g:11"><span class="id" title="variable">g</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="Hle:19" class="idref" href="#Hle:19"><span class="id" title="binder">Hle</span></a> : <span class="id" title="notation">∀</span> <a id="x:17" class="idref" href="#x:17"><span class="id" title="binder"><span id="x:18" class="id">x</span></span></a> <a id="x:18" class="idref" href="#x:18"><span class="id" title="binder">:</span></a> <a id="x:18" class="idref" href="#x:18"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">∧</span> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a> <span class="id" title="notation">→</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:10"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#g:11"><span class="id" title="variable">g</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="Hle:19" class="idref" href="#Hle:19"><span class="id" title="binder">Hle</span></a> : <span class="id" title="notation">∀</span> <a id="x:17" class="idref" href="#x:17"><span class="id" title="binder"><span id="x:18" class="id">x</span></span></a> <a id="x:18" class="idref" href="#x:18"><span class="id" title="binder">:</span></a> <a id="x:18" class="idref" href="#x:18"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <a class="idref" href="RUG.Analysis.FTC.html#a:12"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">∧</span> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:13"><span class="id" title="variable">b</span></a> <span class="id" title="notation">→</span> <a class="idref" href="RUG.Analysis.FTC.html#f:10"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#g:11"><span class="id" title="variable">g</span></a> <a class="idref" href="RUG.Analysis.FTC.html#x:17"><span class="id" title="variable">x</span></a>) :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#prf:15"><span class="id" title="variable">prf</span></a> <span class="id" title="notation">≤</span> <span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#prg:16"><span class="id" title="variable">prg</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">exact</span> (<a class="idref" href="RUG.Analysis.Integration.html#integral_monotone"><span class="id" title="lemma">integral_monotone</span></a> <span class="id" title="var">f1</span> <span class="id" title="var">g</span> <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">Hab</span> <span class="id" title="var">prf</span> <span class="id" title="var">prg</span> <span class="id" title="var">Hle</span>).<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">By</span></span> <span class="inlinecode"><span class="id" title="var">integral_monotone</span></span> <span class="inlinecode"><span class="id" title="var">we</span></span> <span class="inlinecode"><span class="id" title="var">conclude</span></span> <span class="inlinecode"><span class="id" title="var">that</span></span> <span class="inlinecode">…</span> does not finish within
+      minutes on this <span class="inlinecode"><span class="id" title="var">RiemannInt</span></span> goal, so we give the proof term directly. 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" title="tactic">exact</span> (<a class="idref" href="RUG.Analysis.Integration.html#integral_monotone"><span class="id" title="lemma">integral_monotone</span></a> <span class="id" title="var">f</span> <span class="id" title="var">g</span> <span class="id" title="var">a</span> <span class="id" title="var">b</span> <span class="id" title="var">Hab</span> <span class="id" title="var">prf</span> <span class="id" title="var">prg</span> <span class="id" title="var">Hle</span>).<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
@@ -119,11 +135,20 @@
     <span class="inlinecode">-∫|<span class="id" title="var">f</span>|</span> <span class="inlinecode">≤</span> <span class="inlinecode">∫<span class="id" title="var">f</span></span> <span class="inlinecode">≤</span> <span class="inlinecode">∫|<span class="id" title="var">f</span>|</span>, i.e. <span class="inlinecode">|∫<span class="id" title="var">f</span>|</span> <span class="inlinecode">≤</span> <span class="inlinecode">∫|<span class="id" title="var">f</span>|</span>. 
 </div>
 <div class="code">
-<span class="id" title="keyword">Lemma</span> <a id="integral_abs_le" class="idref" href="#integral_abs_le"><span class="id" title="lemma">integral_abs_le</span></a> (<a id="f1:20" class="idref" href="#f1:20"><span class="id" title="binder">f1</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:21" class="idref" href="#a:21"><span class="id" title="binder">a</span></a> <a id="b:22" class="idref" href="#b:22"><span class="id" title="binder">b</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:23" class="idref" href="#Hab:23"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:21"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:22"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:24" class="idref" href="#prf:24"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:20"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:21"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:22"><span class="id" title="variable">b</span></a>) :<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∃</span> <a id="prabs:26" class="idref" href="#prabs:26"><span class="id" title="binder"><span id="prabs:28" class="id">prabs</span></span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">:</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">Riemann_integrable</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">(</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">fun</span></a> <a id="x:25" class="idref" href="#x:25"><span class="id" title="binder"><span id="x:27" class="id"><span id="prabs:28" class="id">x</span></span></span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">⇒</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">Rabs</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">(</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">f1</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">x</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">))</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">a</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">b</span></a><span class="id" title="notation">,</span><br/>
+<span class="id" title="keyword">Lemma</span> <a id="integral_abs_le" class="idref" href="#integral_abs_le"><span class="id" title="lemma">integral_abs_le</span></a> (<a id="f:20" class="idref" href="#f:20"><span class="id" title="binder">f</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:21" class="idref" href="#a:21"><span class="id" title="binder">a</span></a> <a id="b:22" class="idref" href="#b:22"><span class="id" title="binder">b</span></a> : <span class="id" title="notation">ℝ</span>) (<a id="Hab:23" class="idref" href="#Hab:23"><span class="id" title="binder">Hab</span></a> : <a class="idref" href="RUG.Analysis.FTC.html#a:21"><span class="id" title="variable">a</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FTC.html#b:22"><span class="id" title="variable">b</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="prf:24" class="idref" href="#prf:24"><span class="id" title="binder">prf</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:20"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:21"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:22"><span class="id" title="variable">b</span></a>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∃</span> <a id="prabs:26" class="idref" href="#prabs:26"><span class="id" title="binder"><span id="prabs:28" class="id">prabs</span></span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">:</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">Riemann_integrable</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">(</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">fun</span></a> <a id="x:25" class="idref" href="#x:25"><span class="id" title="binder"><span id="x:27" class="id"><span id="prabs:28" class="id">x</span></span></span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">⇒</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">Rabs</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">(</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">f</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">x</span></a><a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">))</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">a</span></a> <a id="prabs:28" class="idref" href="#prabs:28"><span class="id" title="binder">b</span></a><span class="id" title="notation">,</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="definition">Rabs</span> <span class="id" title="notation">(</span><span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#prf:24"><span class="id" title="variable">prf</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">≤</span> <span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#prabs:26"><span class="id" title="variable">prabs</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><span class="id" title="var">RiemannInt_P16</span></span> gives integrability of <span class="inlinecode">|<span class="id" title="var">f</span>|</span>, <span class="inlinecode"><span class="id" title="var">RiemannInt_P17</span></span> the
+      bound. The bound is a <span class="inlinecode"><span class="id" title="var">RiemannInt</span></span> inequality, on which Waterproof
+      automation does not finish within minutes, so we give the proof term
+      directly. 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="var">Choose</span> <span class="id" title="var">prabs</span> := (<span class="id" title="lemma">RiemannInt_P16</span> <span class="id" title="var">prf</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">exact</span> (<span class="id" title="lemma">RiemannInt_P17</span> <span class="id" title="var">prf</span> (<span class="id" title="lemma">RiemannInt_P16</span> <span class="id" title="var">prf</span>) <span class="id" title="var">Hab</span>).<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -132,7 +157,7 @@
 </div>
 
 <div class="doc">
-<a id="lab36"></a><h2 class="section">The oriented integral</h2>
+<a id="lab37"></a><h2 class="section">The oriented integral</h2>
 
 <div class="paragraph"> </div>
 
@@ -149,7 +174,7 @@
 </div>
 
 <div class="doc">
-<a id="lab37"></a><h2 class="section">Additivity (Chasles property)</h2>
+<a id="lab38"></a><h2 class="section">Additivity (Chasles property)</h2>
 
 <div class="paragraph"> </div>
 
@@ -158,12 +183,20 @@
     <span class="inlinecode"><span class="id" title="var">a</span></span>, <span class="inlinecode"><span class="id" title="var">b</span></span>, <span class="inlinecode"><span class="id" title="var">c</span></span>. 
 </div>
 <div class="code">
-<span class="id" title="keyword">Lemma</span> <a id="integral_additive" class="idref" href="#integral_additive"><span class="id" title="lemma">integral_additive</span></a> (<a id="f1:33" class="idref" href="#f1:33"><span class="id" title="binder">f1</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:34" class="idref" href="#a:34"><span class="id" title="binder">a</span></a> <a id="b:35" class="idref" href="#b:35"><span class="id" title="binder">b</span></a> <a id="c:36" class="idref" href="#c:36"><span class="id" title="binder">c</span></a> : <span class="id" title="notation">ℝ</span>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr1:37" class="idref" href="#pr1:37"><span class="id" title="binder">pr1</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:33"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:34"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:35"><span class="id" title="variable">b</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr2:38" class="idref" href="#pr2:38"><span class="id" title="binder">pr2</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:33"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:35"><span class="id" title="variable">b</span></a> <a class="idref" href="RUG.Analysis.FTC.html#c:36"><span class="id" title="variable">c</span></a>)<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr3:39" class="idref" href="#pr3:39"><span class="id" title="binder">pr3</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f1:33"><span class="id" title="variable">f1</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:34"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#c:36"><span class="id" title="variable">c</span></a>) :<br/>
+<span class="id" title="keyword">Lemma</span> <a id="integral_additive" class="idref" href="#integral_additive"><span class="id" title="lemma">integral_additive</span></a> (<a id="f:33" class="idref" href="#f:33"><span class="id" title="binder">f</span></a> : <span class="id" title="notation">ℝ</span> <span class="id" title="notation">→</span> <span class="id" title="notation">ℝ</span>) (<a id="a:34" class="idref" href="#a:34"><span class="id" title="binder">a</span></a> <a id="b:35" class="idref" href="#b:35"><span class="id" title="binder">b</span></a> <a id="c:36" class="idref" href="#c:36"><span class="id" title="binder">c</span></a> : <span class="id" title="notation">ℝ</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr1:37" class="idref" href="#pr1:37"><span class="id" title="binder">pr1</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:33"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:34"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:35"><span class="id" title="variable">b</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr2:38" class="idref" href="#pr2:38"><span class="id" title="binder">pr2</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:33"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#b:35"><span class="id" title="variable">b</span></a> <a class="idref" href="RUG.Analysis.FTC.html#c:36"><span class="id" title="variable">c</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr3:39" class="idref" href="#pr3:39"><span class="id" title="binder">pr3</span></a> : <span class="id" title="definition">Riemann_integrable</span> <a class="idref" href="RUG.Analysis.FTC.html#f:33"><span class="id" title="variable">f</span></a> <a class="idref" href="RUG.Analysis.FTC.html#a:34"><span class="id" title="variable">a</span></a> <a class="idref" href="RUG.Analysis.FTC.html#c:36"><span class="id" title="variable">c</span></a>) :<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#pr3:39"><span class="id" title="variable">pr3</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#pr1:37"><span class="id" title="variable">pr1</span></a> <span class="id" title="notation">+</span> <span class="id" title="definition">RiemannInt</span> <a class="idref" href="RUG.Analysis.FTC.html#pr2:38"><span class="id" title="variable">pr2</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
+</div>
+
+<div class="doc">
+Stdlib's Chasles relation. Waterproof automation does not finish within
+      minutes on this <span class="inlinecode"><span class="id" title="var">RiemannInt</span></span> equality, so we use <span class="inlinecode"><span class="id" title="tactic">symmetry</span></span> and the
+      proof term. 
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" title="tactic">symmetry</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="tactic">exact</span> (<span class="id" title="lemma">RiemannInt_P26</span> <span class="id" title="var">pr1</span> <span class="id" title="var">pr2</span> <span class="id" title="var">pr3</span>).<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
@@ -190,7 +223,7 @@
 </div>
 
 <div class="doc">
-<a id="lab38"></a><h2 class="section">Fundamental theorem of calculus, Part 1 (antiderivative formula)</h2>
+<a id="lab39"></a><h2 class="section">Fundamental theorem of calculus, Part 1 (antiderivative formula)</h2>
 
 <div class="paragraph"> </div>
 
@@ -217,7 +250,7 @@
 </div>
 
 <div class="doc">
-<a id="lab39"></a><h2 class="section">Fundamental theorem of calculus, Part 2 (derivative of the integral)</h2>
+<a id="lab40"></a><h2 class="section">Fundamental theorem of calculus, Part 2 (derivative of the integral)</h2>
 
 <div class="paragraph"> </div>
 
@@ -258,7 +291,7 @@
 </div>
 
 <div class="doc">
-<a id="lab40"></a><h2 class="section">Integration by parts</h2>
+<a id="lab41"></a><h2 class="section">Integration by parts</h2>
 
 <div class="paragraph"> </div>
 
@@ -286,7 +319,7 @@
 </div>
 
 <div class="doc">
-<a id="lab41"></a><h2 class="section">Application: ∫₀¹ x dx = 1/2</h2>
+<a id="lab42"></a><h2 class="section">Application: ∫₀¹ x dx = 1/2</h2>
 
 
 <div class="paragraph"> </div>

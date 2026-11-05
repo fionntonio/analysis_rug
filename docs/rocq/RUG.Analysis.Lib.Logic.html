@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RUG.Analysis.Lib.Logic</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RUG.Analysis.Lib.Logic</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+<a id="lab158"></a><h1 class="section">RUG.Analysis.Lib.Logic</h1>
+
+
+<div class="paragraph"> </div>
+
+  Auxiliary facts about classical logic.
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="RUG.Analysis.Lib.StdlibReals.html#"><span class="id" title="library">RUG.Analysis.Lib.StdlibReals</span></a>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Logic.ClassicalDescription</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Tactics</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Automation</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Notations.Common</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Notations.Reals</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Notations.Sets</span>.<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Waterproof</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Chains</span>.<br/>
+
+<br/>
+<span class="id" title="var">Waterproof</span> <span class="id" title="var">Enable</span> <span class="id" title="var">Automation</span> <span class="id" title="var">RealsAndIntegers</span>.<br/>
+<span class="id" title="var">Waterproof</span> <span class="id" title="var">Enable</span> <span class="id" title="var">Automation</span> <span class="id" title="var">Intuition</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">R_scope</span>.<br/>
+<span class="id" title="keyword">Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">subset_scope</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Set</span> <span class="id" title="var">Default</span> <span class="id" title="keyword">Goal</span> <span class="id" title="var">Selector</span> "!".<br/>
+<span class="id" title="keyword">Set</span> <span class="id" title="var">Bullet</span> <span class="id" title="var">Behavior</span> "Waterproof Relaxed Subproofs".<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Evaluation of a classical <span class="inlinecode"><span class="id" title="keyword">if</span></span> on a true condition.
+
+<div class="paragraph"> </div>
+
+    Proof idea: case analysis on the decision (<span class="inlinecode"><span class="id" title="var">sumbool_ind</span></span>); the <span class="inlinecode"><span class="id" title="tactic">right</span></span>
+    branch contradicts <span class="inlinecode"><span class="id" title="var">P</span></span>. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="if_informative_true" class="idref" href="#if_informative_true"><span class="id" title="lemma">if_informative_true</span></a> (<a id="P:1" class="idref" href="#P:1"><span class="id" title="binder">P</span></a> : <span class="id" title="keyword">Prop</span>) (<a id="x:2" class="idref" href="#x:2"><span class="id" title="binder">x</span></a> <a id="y:3" class="idref" href="#y:3"><span class="id" title="binder">y</span></a> : <span class="id" title="notation">ℝ</span>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RUG.Analysis.Lib.Logic.html#P:1"><span class="id" title="variable">P</span></a> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <span class="id" title="lemma">excluded_middle_informative</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#P:1"><span class="id" title="variable">P</span></a> <span class="id" title="keyword">then</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#x:2"><span class="id" title="variable">x</span></a> <span class="id" title="keyword">else</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#y:3"><span class="id" title="variable">y</span></a><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RUG.Analysis.Lib.Logic.html#x:2"><span class="id" title="variable">x</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">x</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hleft</span>).<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">x</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span>.<br/>
+&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">y</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hright</span>).<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HP</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
+&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;<span class="id" title="var">By</span> (@<a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Specif.html#sumbool_ind"><span class="id" title="definition">sumbool_ind</span></a> <span class="id" title="var">P</span> (<span class="id" title="notation">¬</span> <span class="id" title="var">P</span>) (<span class="id" title="keyword">fun</span> <a id="s:4" class="idref" href="#s:4"><span class="id" title="binder">s</span></a> : <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Specif.html#sumbool"><span class="id" title="inductive">sumbool</span></a> <span class="id" title="var">P</span> (<span class="id" title="notation">¬</span> <span class="id" title="var">P</span>) ⇒ <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#s:4"><span class="id" title="variable">s</span></a> <span class="id" title="keyword">then</span> <span class="id" title="var">x</span> <span class="id" title="keyword">else</span> <span class="id" title="var">y</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Hleft</span> <span class="id" title="var">Hright</span> (<span class="id" title="lemma">excluded_middle_informative</span> <span class="id" title="var">P</span>))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <span class="id" title="lemma">excluded_middle_informative</span> <span class="id" title="var">P</span> <span class="id" title="keyword">then</span> <span class="id" title="var">x</span> <span class="id" title="keyword">else</span> <span class="id" title="var">y</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">x</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Evaluation of a classical <span class="inlinecode"><span class="id" title="keyword">if</span></span> on a false condition.
+
+<div class="paragraph"> </div>
+
+    Proof idea: case analysis on the decision (<span class="inlinecode"><span class="id" title="var">sumbool_ind</span></span>); the <span class="inlinecode"><span class="id" title="tactic">left</span></span>
+    branch contradicts <span class="inlinecode">¬</span> <span class="inlinecode"><span class="id" title="var">P</span></span>. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="if_informative_false" class="idref" href="#if_informative_false"><span class="id" title="lemma">if_informative_false</span></a> (<a id="P:5" class="idref" href="#P:5"><span class="id" title="binder">P</span></a> : <span class="id" title="keyword">Prop</span>) (<a id="x:6" class="idref" href="#x:6"><span class="id" title="binder">x</span></a> <a id="y:7" class="idref" href="#y:7"><span class="id" title="binder">y</span></a> : <span class="id" title="notation">ℝ</span>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">¬</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#P:5"><span class="id" title="variable">P</span></a> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <span class="id" title="lemma">excluded_middle_informative</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#P:5"><span class="id" title="variable">P</span></a> <span class="id" title="keyword">then</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#x:6"><span class="id" title="variable">x</span></a> <span class="id" title="keyword">else</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#y:7"><span class="id" title="variable">y</span></a><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RUG.Analysis.Lib.Logic.html#y:7"><span class="id" title="variable">y</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">x</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">y</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hleft</span>).<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HnP</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
+&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <span class="id" title="var">y</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">y</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hright</span>).<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">y</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">y</span>.<br/>
+&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;<span class="id" title="var">By</span> (@<a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Specif.html#sumbool_ind"><span class="id" title="definition">sumbool_ind</span></a> <span class="id" title="var">P</span> (<span class="id" title="notation">¬</span> <span class="id" title="var">P</span>) (<span class="id" title="keyword">fun</span> <a id="s:8" class="idref" href="#s:8"><span class="id" title="binder">s</span></a> : <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Specif.html#sumbool"><span class="id" title="inductive">sumbool</span></a> <span class="id" title="var">P</span> (<span class="id" title="notation">¬</span> <span class="id" title="var">P</span>) ⇒ <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <a class="idref" href="RUG.Analysis.Lib.Logic.html#s:8"><span class="id" title="variable">s</span></a> <span class="id" title="keyword">then</span> <span class="id" title="var">x</span> <span class="id" title="keyword">else</span> <span class="id" title="var">y</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">y</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Hleft</span> <span class="id" title="var">Hright</span> (<span class="id" title="lemma">excluded_middle_informative</span> <span class="id" title="var">P</span>))<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">we</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="notation">¬</span> <span class="id" title="var">P</span> <span class="id" title="notation">→</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><span class="id" title="keyword">if</span> <span class="id" title="lemma">excluded_middle_informative</span> <span class="id" title="var">P</span> <span class="id" title="keyword">then</span> <span class="id" title="var">x</span> <span class="id" title="keyword">else</span> <span class="id" title="var">y</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="var">y</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://rocq-prover.org/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

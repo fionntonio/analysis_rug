@@ -22,7 +22,7 @@
 </div>
 
 <div class="doc">
-<a id="lab107"></a><h1 class="section">RUG.Analysis.Sequences — Convergence of sequences.</h1>
+<a id="lab111"></a><h1 class="section">RUG.Analysis.Sequences — Convergence of sequences.</h1>
 
 
 <div class="paragraph"> </div>
@@ -42,7 +42,7 @@
 </div>
 
 <div class="doc">
-<a id="lab108"></a><h2 class="section">Some helpful lemmas</h2>
+<a id="lab112"></a><h2 class="section">Some helpful lemmas</h2>
 
 
 <div class="paragraph"> </div>
@@ -84,21 +84,15 @@ This lemma provides a trivial property for natural number,
 <span class="id" title="keyword">Lemma</span> <a id="le_succ_cases" class="idref" href="#le_succ_cases"><span class="id" title="lemma">le_succ_cases</span></a> (<a id="n:4" class="idref" href="#n:4"><span class="id" title="binder">n</span></a> <a id="N1:5" class="idref" href="#N1:5"><span class="id" title="binder">N1</span></a> : <span class="id" title="notation">ℕ</span>) :<br/>
 &nbsp;&nbsp;<a class="idref" href="RUG.Analysis.Sequences.html#n:4"><span class="id" title="variable">n</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <a class="idref" href="RUG.Analysis.Sequences.html#N1:5"><span class="id" title="variable">N1</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RUG.Analysis.Sequences.html#n:4"><span class="id" title="variable">n</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <a class="idref" href="RUG.Analysis.Sequences.html#N1:5"><span class="id" title="variable">N1</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">∨</span></a> <a class="idref" href="RUG.Analysis.Sequences.html#n:4"><span class="id" title="variable">n</span></a> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.Sequences.html#N1:5"><span class="id" title="variable">N1</span></a>.<br/>
 <span class="id" title="keyword">Proof</span>.<br/>
-<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>.<br/>
-</div>
-
-<div class="doc">
-I'd like to do
-   <span class="inlinecode"><span class="id" title="var">By</span></span> <span class="inlinecode">(<span class="id" title="var">Nat.eq_dec</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">(<span class="id" title="var">S</span></span> <span class="inlinecode"><span class="id" title="var">N1</span>))</span> <span class="inlinecode"><span class="id" title="var">it</span></span> <span class="inlinecode"><span class="id" title="var">holds</span></span> <span class="inlinecode"><span class="id" title="var">that</span></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">S</span></span> <span class="inlinecode"><span class="id" title="var">N1</span></span> <span class="inlinecode">∨</span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">≠</span> <span class="inlinecode"><span class="id" title="var">S</span></span> <span class="inlinecode"><span class="id" title="var">N1</span></span>.
-   but it is not working, so I do it manually. 
-</div>
-<div class="code">
-<span class="id" title="tactic">destruct</span> (<span class="id" title="lemma">Nat.eq_dec</span> <span class="id" title="var">n</span> (<a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)) <span class="id" title="keyword">as</span> [<span class="id" title="var">Heq</span> | <span class="id" title="var">Hneq</span>].<br/>
-- <span class="id" title="tactic">left</span>. <span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>.<br/>
-- <span class="id" title="tactic">right</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">Either</span> (<span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span> <span class="id" title="var">or</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≠</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">Case</span> (<span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span> <span class="id" title="notation">∨</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">Case</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≠</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">conclude</span> <span class="id" title="var">that</span> <span class="id" title="var">n</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="var">N1</span> <span class="id" title="notation">∨</span> <span class="id" title="var">n</span> <span class="id" title="notation">≤</span> <span class="id" title="var">N1</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
@@ -182,7 +176,7 @@ This computes the maximum of the absolute values
 </div>
 
 <div class="doc">
-<a id="lab109"></a><h2 class="section">Convergence of a sequence</h2>
+<a id="lab113"></a><h2 class="section">Convergence of a sequence</h2>
 
 
 <div class="paragraph"> </div>
@@ -196,7 +190,7 @@ This computes the maximum of the absolute values
     In Waterproof, <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode">⟶</span> <span class="inlinecode"><span class="id" title="var">a</span></span> is equivalent to <span class="inlinecode"><span class="id" title="var">Un_cv</span></span> <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode"><span class="id" title="var">a</span></span>. 
 <div class="paragraph"> </div>
 
-<a id="lab110"></a><h2 class="section">Constant and harmonic sequences</h2>
+<a id="lab114"></a><h2 class="section">Constant and harmonic sequences</h2>
 
 <div class="paragraph"> </div>
 
@@ -289,7 +283,7 @@ This is in Waterproof already, we could prove it with
 </div>
 
 <div class="doc">
-<a id="lab111"></a><h2 class="section">Bounded sequences</h2>
+<a id="lab115"></a><h2 class="section">Bounded sequences</h2>
 
 <div class="paragraph"> </div>
 
@@ -351,7 +345,7 @@ Theorem: Every convergent sequence is bounded.
 </div>
 
 <div class="doc">
-<a id="lab112"></a><h2 class="section">Algebraic limit theorem</h2>
+<a id="lab116"></a><h2 class="section">Algebraic limit theorem</h2>
 
 <div class="paragraph"> </div>
 
@@ -634,7 +628,7 @@ Some algebraic operation need to be aided a bit,
 </div>
 
 <div class="doc">
-<a id="lab113"></a><h2 class="section">Order limit theorem</h2>
+<a id="lab117"></a><h2 class="section">Order limit theorem</h2>
 
 <div class="paragraph"> </div>
 
@@ -747,7 +741,7 @@ Some algebraic operation need to be aided a bit,
 </div>
 
 <div class="doc">
-<a id="lab114"></a><h2 class="section">Squeeze theorem</h2>
+<a id="lab118"></a><h2 class="section">Squeeze theorem</h2>
 
 <div class="paragraph"> </div>
 
@@ -905,7 +899,7 @@ We eliminate the inverses by cross-multiplication: after multiplying by
 </div>
 
 <div class="doc">
-<a id="lab115"></a><h2 class="section">Uniqueness of limits</h2>
+<a id="lab119"></a><h2 class="section">Uniqueness of limits</h2>
 
 <div class="paragraph"> </div>
 
@@ -956,91 +950,6 @@ We eliminate the inverses by cross-multiplication: after multiplying by
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">|</span> <span class="id" title="var">L1</span> <span class="id" title="notation">-</span> <span class="id" title="var">L2</span> <span class="id" title="notation">|</span> <span class="id" title="notation">≤</span> <span class="id" title="notation">|</span> <span class="id" title="var">L1</span> <span class="id" title="notation">-</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">|</span> <span class="id" title="notation">+</span> <span class="id" title="notation">|</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">-</span> <span class="id" title="var">L2</span> <span class="id" title="notation">|</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">|</span> <span class="id" title="var">L1</span> <span class="id" title="notation">-</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">|</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <span class="id" title="notation">|</span> <span class="id" title="var">a</span> <span class="id" title="var">n</span> <span class="id" title="notation">-</span> <span class="id" title="var">L1</span> <span class="id" title="notation">|</span>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">|</span> <span class="id" title="var">L1</span> <span class="id" title="notation">-</span> <span class="id" title="var">L2</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> <span class="id" title="notation">|</span> <span class="id" title="var">L1</span> <span class="id" title="notation">-</span> <span class="id" title="var">L2</span> <span class="id" title="notation">|</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
-<span class="id" title="keyword">Qed</span>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-<a id="lab116"></a><h2 class="section">A divergent sequence</h2>
-
-<div class="paragraph"> </div>
-
- <i>Divergent sequences</i> example: the alternating sequence <span class="inlinecode">(-1)ⁿ</span> does not converge.
-
-<div class="paragraph"> </div>
-
-    Proof idea: suppose <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode">→</span> <span class="inlinecode"><span class="id" title="var">L</span></span>. Taking <span class="inlinecode"><span class="id" title="var">ε</span></span> <span class="inlinecode">=</span> <span class="inlinecode">1</span>, there is an <span class="inlinecode"><span class="id" title="var">N</span></span> beyond which
-    <span class="inlinecode">|<span class="id" title="var">a</span>ₙ</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span>|</span> <span class="inlinecode">&lt;</span> <span class="inlinecode">1</span>. But for even <span class="inlinecode"><span class="id" title="var">n</span></span> we have <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode">=</span> <span class="inlinecode">1</span> and for odd <span class="inlinecode"><span class="id" title="var">n</span></span> we have
-    <span class="inlinecode"><span class="id" title="var">a</span>ₙ</span> <span class="inlinecode">=</span> <span class="inlinecode">-1</span>, so both <span class="inlinecode">|1</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span>|</span> <span class="inlinecode">&lt;</span> <span class="inlinecode">1</span> and <span class="inlinecode">|-1</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span>|</span> <span class="inlinecode">&lt;</span> <span class="inlinecode">1</span> would hold. By the
-    triangle inequality <span class="inlinecode">2</span> <span class="inlinecode">=</span> <span class="inlinecode">|1</span> <span class="inlinecode">-</span> <span class="inlinecode">(-1)|</span> <span class="inlinecode">≤</span> <span class="inlinecode">|1</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span>|</span> <span class="inlinecode">+</span> <span class="inlinecode">|<span class="id" title="var">L</span></span> <span class="inlinecode">-</span> <span class="inlinecode">(-1)|</span> <span class="inlinecode">&lt;</span> <span class="inlinecode">2</span>, a
-    contradiction. 
-</div>
-<div class="code">
-<span class="id" title="keyword">Lemma</span> <a id="pm_1_diverges" class="idref" href="#pm_1_diverges"><span class="id" title="lemma">pm_1_diverges</span></a> : <span class="id" title="notation">¬</span> <span class="id" title="notation">(</span><span class="id" title="notation">∃</span> <a id="L:377" class="idref" href="#L:377"><span class="id" title="binder"><span id="L:378" class="id"><span id="L:379" class="id"><span id="L:380" class="id">L</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:381" class="idref" href="#n:381"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="notation">(</span>-1<span class="id" title="notation">)</span> <span class="id" title="notation">^</span> <a class="idref" href="RUG.Analysis.Sequences.html#n:381"><span class="id" title="variable">n</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.Sequences.html#L:377"><span class="id" title="variable">L</span></a><span class="id" title="notation">)</span>.<br/>
-<span class="id" title="keyword">Proof</span>.<br/>
-</div>
-
-<div class="doc">
-Due to ¬ we are already in a contradiction-like setting 
-</div>
-<div class="code">
-&nbsp;&nbsp;<span class="id" title="var">Assume</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="L:382" class="idref" href="#L:382"><span class="id" title="binder"><span id="L:383" class="id"><span id="L:384" class="id"><span id="L:385" class="id">L</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="notation">fun</span> <a id="n:386" class="idref" href="#n:386"><span class="id" title="binder">n</span></a> <span class="id" title="notation">↦</span> <span class="id" title="notation">(</span>-1<span class="id" title="notation">)^</span><a class="idref" href="RUG.Analysis.Sequences.html#n:386"><span class="id" title="variable">n</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.Sequences.html#L:382"><span class="id" title="variable">L</span></a> <span class="id" title="keyword">as</span> (<span class="id" title="var">H</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">L</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (1 <span class="id" title="notation">&gt;</span> 0).<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">H</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="N1:387" class="idref" href="#N1:387"><span class="id" title="binder"><span id="N1:388" class="id"><span id="N1:389" class="id"><span id="N1:390" class="id">N1</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℕ</span><span class="id" title="notation">,</span> <span class="id" title="notation">∀</span> <a id="n:391" class="idref" href="#n:391"><span class="id" title="binder"><span id="n:392" class="id"><span id="n:393" class="id"><span id="n:394" class="id">n</span></span></span></span></a> <span class="id" title="notation">≥</span> <a class="idref" href="RUG.Analysis.Sequences.html#N1:387"><span class="id" title="variable">N1</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">|</span> <span class="id" title="notation">(</span>-1<span class="id" title="notation">)^</span><a class="idref" href="RUG.Analysis.Sequences.html#n:391"><span class="id" title="variable">n</span></a> <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> 1 <span class="id" title="keyword">as</span> (<span class="id" title="var">HN</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">N1</span>.<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Even case: <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">=</span> <span class="inlinecode">2*<span class="id" title="var">N1</span></span> 
-</div>
-<div class="code">
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span>)%<span class="id" title="var">nat</span> <span class="id" title="notation">≥</span> <span class="id" title="var">N1</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">HN</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">|</span> <span class="id" title="notation">(</span>-1<span class="id" title="notation">)^(</span>2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span><span class="id" title="notation">)</span> <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">pow_1_even</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">(</span>-1<span class="id" title="notation">)^(</span>2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span><span class="id" title="notation">)</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> 1).<br/>
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">|</span> 1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-
-<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">Rabs_def2</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 1 <span class="id" title="notation">∧</span> -1 <span class="id" title="notation">&lt;</span> 1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span>).<br/>
-&nbsp;&nbsp;- <span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-&nbsp;&nbsp;- <span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (-1 <span class="id" title="notation">&lt;</span> 1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span>).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Odd case: <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode">=</span> <span class="inlinecode">2*<span class="id" title="var">N1</span>+1</span> 
-</div>
-<div class="code">
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="notation">(</span>2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span><span class="id" title="notation">)</span>%<span class="id" title="var">nat</span> <span class="id" title="notation">≥</span> <span class="id" title="var">N1</span>).<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">HN</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">|</span> <span class="id" title="notation">(</span>-1<span class="id" title="notation">)^(</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a><span class="id" title="notation">(</span>2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span><span class="id" title="notation">)</span>%<span class="id" title="var">nat</span><span class="id" title="notation">)</span> <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-</div>
-
-<div class="doc">
-Without the following line it gets very slow 
-</div>
-<div class="code">
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">pow_1_odd</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">(</span>-1<span class="id" title="notation">)^(</span><a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Datatypes.html#S"><span class="id" title="constructor">S</span></a> <span class="id" title="notation">(</span>2 <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Peano.html#ea2ff3d561159081cea6fb2e8113cc54"><span class="id" title="notation">×</span></a> <span class="id" title="var">N1</span><span class="id" title="notation">)</span>%<span class="id" title="var">nat</span><span class="id" title="notation">)</span> <a class="idref" href="http://rocq-prover.org/doc/V9.1.1/stdlib//Corelib.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> - 1).<br/>
-&nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (<span class="id" title="notation">|</span> -1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-
-<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="lemma">Rabs_def2</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (-1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 1 <span class="id" title="notation">∧</span> -1 <span class="id" title="notation">&lt;</span> -1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span>).<br/>
-&nbsp;&nbsp;- <span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (-1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 1).<br/>
-&nbsp;&nbsp;- <span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> (-1 <span class="id" title="notation">&lt;</span> -1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span>).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Contradiction: <span class="inlinecode">1</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode">1</span>  <span class="inlinecode">⇨</span>  <span class="inlinecode"><span class="id" title="var">L</span></span> <span class="inlinecode">&gt;</span> <span class="inlinecode">0</span> and <span class="inlinecode">-1</span> <span class="inlinecode">&lt;</span> <span class="inlinecode">-1</span> <span class="inlinecode">-</span> <span class="inlinecode"><span class="id" title="var">L</span></span>  <span class="inlinecode">⇨</span>  <span class="inlinecode"><span class="id" title="var">L</span></span> <span class="inlinecode">&lt;</span> <span class="inlinecode">0</span> 
-</div>
-<div class="code">
-&nbsp;&nbsp;<span class="id" title="var">Since</span> <span class="id" title="notation">(</span>1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 1<span class="id" title="notation">)</span> <span class="id" title="notation">∧</span> <span class="id" title="notation">(</span>-1 <span class="id" title="notation">&lt;</span> -1 <span class="id" title="notation">-</span> <span class="id" title="var">L</span><span class="id" title="notation">)</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span><br/>
-&nbsp;&nbsp;&nbsp;&nbsp;(0 <span class="id" title="notation">&lt;</span> <span class="id" title="var">L</span> <span class="id" title="notation">∧</span> <span class="id" title="var">L</span> <span class="id" title="notation">&lt;</span> 0).<br/>
 &nbsp;&nbsp;<span class="id" title="var">Contradiction</span>.<br/>
 <span class="id" title="keyword">Qed</span>.<br/>
 </div>

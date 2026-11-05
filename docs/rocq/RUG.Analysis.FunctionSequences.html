@@ -22,7 +22,7 @@
 </div>
 
 <div class="doc">
-<a id="lab42"></a><h1 class="section">RUG.Analysis.FunctionSequences — Sequences of functions.</h1>
+<a id="lab43"></a><h1 class="section">RUG.Analysis.FunctionSequences — Sequences of functions.</h1>
 
 
 <div class="paragraph"> </div>
@@ -39,7 +39,7 @@
 <div class="code">
 
 <br/>
-<span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Reals.Reals</span>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="RUG.Analysis.Lib.StdlibReals.html#"><span class="id" title="library">RUG.Analysis.Lib.StdlibReals</span></a>.<br/>
 <span class="id" title="keyword">From</span> <span class="id" title="var">Stdlib</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <span class="id" title="library">Logic.ClassicalDescription</span>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="RUG.Analysis.Continuity.html#"><span class="id" title="library">RUG.Analysis.Continuity</span></a>.<br/>
 <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#"><span class="id" title="library">RUG.Analysis.CauchySequences</span></a>.<br/>
@@ -62,7 +62,7 @@
 </div>
 
 <div class="doc">
-<a id="lab43"></a><h2 class="section">Pointwise convergence</h2>
+<a id="lab44"></a><h2 class="section">Pointwise convergence</h2>
 
 <div class="paragraph"> </div>
 
@@ -142,7 +142,7 @@ Then we divide by <span class="inlinecode"><span class="id" title="var">n</span>
 Pointwise limit of continuous functions need not be continuous.  (illustrated by fₙ(x) = xⁿ on <span class="inlinecode">0,1</span>; limit is the step function) 
 <div class="paragraph"> </div>
 
-<a id="lab44"></a><h2 class="section">Uniform convergence</h2>
+<a id="lab45"></a><h2 class="section">Uniform convergence</h2>
 
 <div class="paragraph"> </div>
 
@@ -172,7 +172,7 @@ This is proved in <span class="inlinecode"><span class="id" title="var">Analysis
 </div>
 
 <div class="doc">
-<a id="lab45"></a><h2 class="section">Cauchy criterion for uniform convergence</h2>
+<a id="lab46"></a><h2 class="section">Cauchy criterion for uniform convergence</h2>
 
 <div class="paragraph"> </div>
 
@@ -223,7 +223,7 @@ For each <span class="inlinecode"><span class="id" title="var">x</span></span> <
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="notation">∀</span> <a id="x:164" class="idref" href="#x:164"><span class="id" title="binder"><span id="x:165" class="id"><span id="x:166" class="id"><span id="x:167" class="id">x</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="var">A</span><span class="id" title="notation">,</span> <span class="id" title="notation">∃</span> <a id="L:168" class="idref" href="#L:168"><span class="id" title="binder"><span id="L:169" class="id"><span id="L:170" class="id"><span id="L:171" class="id">L</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:172" class="idref" href="#n:172"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:172"><span class="id" title="variable">n</span></a> <a class="idref" href="RUG.Analysis.FunctionSequences.html#x:164"><span class="id" title="variable">x</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#L:168"><span class="id" title="variable">L</span></a> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hpt</span>).<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">Take</span> <span class="id" title="var">x</span> ∈ <span class="id" title="var">A</span>.<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.Subsequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:173" class="idref" href="#n:173"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:173"><span class="id" title="variable">n</span></a> <span class="id" title="var">x</span><span class="id" title="notation">)</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:173" class="idref" href="#n:173"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:173"><span class="id" title="variable">n</span></a> <span class="id" title="var">x</span><span class="id" title="notation">)</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">need</span> <span class="id" title="var">to</span> <span class="id" title="var">show</span> <span class="id" title="var">that</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∀</span> <a id="6cf3c489742392ab5aaa2c0ab7cf2f82" class="idref" href="#6cf3c489742392ab5aaa2c0ab7cf2f82"><span class="id" title="binder"><span id="b55b1e4bbf5bc565172eb47e1ad8c1d3" class="id"><span id="041023fb7a6c3c0a6c5add22584f637f" class="id"><span id="67983f0d5458a856fdf9ae4687ed2f05" class="id">ε</span></span></span></span></a> <span class="id" title="notation">&gt;</span> 0<span class="id" title="notation">,</span> <span class="id" title="notation">∃</span> <a id="N1:178" class="idref" href="#N1:178"><span class="id" title="binder"><span id="N1:179" class="id"><span id="N1:180" class="id"><span id="N1:181" class="id">N1</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℕ</span><span class="id" title="notation">,</span> <span class="id" title="notation">∀</span> <a id="n:182" class="idref" href="#n:182"><span class="id" title="binder"><span id="n:183" class="id"><span id="n:184" class="id"><span id="n:185" class="id">n</span></span></span></span></a> <span class="id" title="notation">≥</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#N1:178"><span class="id" title="variable">N1</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">∀</span> <a id="m:186" class="idref" href="#m:186"><span class="id" title="binder"><span id="m:187" class="id"><span id="m:188" class="id"><span id="m:189" class="id">m</span></span></span></span></a> <span class="id" title="notation">≥</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#N1:178"><span class="id" title="variable">N1</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">|</span> <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:182"><span class="id" title="variable">n</span></a> <span class="id" title="var">x</span> <span class="id" title="notation">-</span> <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#m:186"><span class="id" title="variable">m</span></a> <span class="id" title="var">x</span> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#6cf3c489742392ab5aaa2c0ab7cf2f82"><span class="id" title="variable">ε</span></a>.<br/>
@@ -348,7 +348,7 @@ We compare <span class="inlinecode"><span class="id" title="var">f</span>ₙ(<sp
 </div>
 
 <div class="doc">
-<a id="lab46"></a><h2 class="section">Uniform limit of continuous functions is continuous</h2>
+<a id="lab47"></a><h2 class="section">Uniform limit of continuous functions is continuous</h2>
 
 <div class="paragraph"> </div>
 
@@ -424,7 +424,7 @@ Step 3: the <span class="inlinecode"><span class="id" title="var">ε</span>/3</s
 </div>
 
 <div class="doc">
-<a id="lab47"></a><h2 class="section">Weierstrass M-test</h2>
+<a id="lab48"></a><h2 class="section">Weierstrass M-test</h2>
 
 <div class="paragraph"> </div>
 
@@ -496,7 +496,7 @@ The partial sums of <span class="inlinecode">∑</span> <span class="inlinecode"
 <div class="code">
 &nbsp;&nbsp;<span class="id" title="var">By</span> <span class="id" title="var">HM</span> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="L:411" class="idref" href="#L:411"><span class="id" title="binder"><span id="L:412" class="id"><span id="L:413" class="id"><span id="L:414" class="id">L</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℝ</span><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:415" class="idref" href="#n:415"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="definition">sum_f_R0</span> <span class="id" title="var">M</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:415"><span class="id" title="variable">n</span></a><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#L:411"><span class="id" title="variable">L</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">L</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#convergent_is_cauchy"><span class="id" title="lemma">convergent_is_cauchy</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.Subsequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:416" class="idref" href="#n:416"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="definition">sum_f_R0</span> <span class="id" title="var">M</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:416"><span class="id" title="variable">n</span></a><span class="id" title="notation">)</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HMc</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#convergent_is_cauchy"><span class="id" title="lemma">convergent_is_cauchy</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:416" class="idref" href="#n:416"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="definition">sum_f_R0</span> <span class="id" title="var">M</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:416"><span class="id" title="variable">n</span></a><span class="id" title="notation">)</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">HMc</span>).<br/>
 </div>
 
 <div class="doc">
@@ -558,7 +558,7 @@ We verify the uniform Cauchy criterion for the partial sums.
 </div>
 
 <div class="doc">
-<a id="lab48"></a><h2 class="section">Uniform convergence of <span class="inlinecode"><span class="id" title="var">x</span>/<span class="id" title="var">n</span></span> on a bounded interval</h2>
+<a id="lab49"></a><h2 class="section">Uniform convergence of <span class="inlinecode"><span class="id" title="var">x</span>/<span class="id" title="var">n</span></span> on a bounded interval</h2>
 
 <div class="paragraph"> </div>
 
@@ -611,7 +611,7 @@ The bound <span class="inlinecode">|<span class="id" title="var">x</span>|</span
 </div>
 
 <div class="doc">
-<a id="lab49"></a><h2 class="section">A pointwise-only example</h2>
+<a id="lab50"></a><h2 class="section">A pointwise-only example</h2>
 
 <div class="paragraph"> </div>
 
@@ -641,7 +641,7 @@ The bound <span class="inlinecode">|<span class="id" title="var">x</span>|</span
 </div>
 
 <div class="doc">
-<a id="lab50"></a><h2 class="section">Uniform convergence of the geometric series on <span class="inlinecode">[−<span class="id" title="var">r</span>,</span> <span class="inlinecode"><span class="id" title="var">r</span>]</span></h2>
+<a id="lab51"></a><h2 class="section">Uniform convergence of the geometric series on <span class="inlinecode">[−<span class="id" title="var">r</span>,</span> <span class="inlinecode"><span class="id" title="var">r</span>]</span></h2>
 
 <div class="paragraph"> </div>
 
@@ -704,7 +704,7 @@ On <span class="inlinecode">[-<span class="id" title="var">r</span>,</span> <spa
 </div>
 
 <div class="doc">
-<a id="lab51"></a><h2 class="section">The supremum characterization of uniform convergence</h2>
+<a id="lab52"></a><h2 class="section">The supremum characterization of uniform convergence</h2>
 
 <div class="paragraph"> </div>
 
@@ -907,7 +907,7 @@ For <span class="inlinecode"><span class="id" title="var">n</span></span> <span 
 </div>
 
 <div class="doc">
-<a id="lab52"></a><h2 class="section">The example <span class="inlinecode"><span class="id" title="var">f</span>ₙ(<span class="id" title="var">x</span>)</span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span></h2>
+<a id="lab53"></a><h2 class="section">The example <span class="inlinecode"><span class="id" title="var">f</span>ₙ(<span class="id" title="var">x</span>)</span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">x</span>ⁿ</span></h2>
 
 <div class="paragraph"> </div>
 
@@ -1018,7 +1018,7 @@ On the other hand <span class="inlinecode"><span class="id" title="var">g</span>
 </div>
 
 <div class="doc">
-<a id="lab53"></a><h2 class="section">The triangle (tent) sequence</h2>
+<a id="lab54"></a><h2 class="section">The triangle (tent) sequence</h2>
 
 <div class="paragraph"> </div>
 
@@ -1142,7 +1142,7 @@ From <span class="inlinecode"><span class="id" title="var">n</span></span> <span
 </div>
 
 <div class="doc">
-<a id="lab54"></a><h2 class="section">Uniform convergence of <span class="inlinecode">√(<span class="id" title="var">x</span>²</span> <span class="inlinecode">+</span> <span class="inlinecode">1/<span class="id" title="var">n</span>)</span></h2>
+<a id="lab55"></a><h2 class="section">Uniform convergence of <span class="inlinecode">√(<span class="id" title="var">x</span>²</span> <span class="inlinecode">+</span> <span class="inlinecode">1/<span class="id" title="var">n</span>)</span></h2>
 
 <div class="paragraph"> </div>
 
@@ -1238,7 +1238,7 @@ Finally <span class="inlinecode">√(1/<span class="id" title="var">n</span>)</s
 </div>
 
 <div class="doc">
-<a id="lab55"></a><h2 class="section">Uniform convergence and differentiation</h2>
+<a id="lab56"></a><h2 class="section">Uniform convergence and differentiation</h2>
 
 <div class="paragraph"> </div>
 
@@ -1445,7 +1445,7 @@ Step 3: <span class="inlinecode">(<span class="id" title="var">f</span>ₙ)</spa
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="var">a</span> <span class="id" title="notation">≤</span> <span class="id" title="var">x0</span> <span class="id" title="notation">∧</span> <span class="id" title="var">x0</span> <span class="id" title="notation">≤</span> <span class="id" title="var">b</span> <span class="id" title="notation">∧</span> <span class="id" title="notation">∃</span> <a id="L:1169" class="idref" href="#L:1169"><span class="id" title="binder"><span id="L:1170" class="id">L</span></span></a> <a id="L:1170" class="idref" href="#L:1170"><span class="id" title="binder">:</span></a> <a id="L:1170" class="idref" href="#L:1170"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:1171" class="idref" href="#n:1171"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:1171"><span class="id" title="variable">n</span></a> <span class="id" title="var">x0</span><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#L:1169"><span class="id" title="variable">L</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">It</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <span class="id" title="notation">∃</span> <a id="L:1172" class="idref" href="#L:1172"><span class="id" title="binder"><span id="L:1173" class="id">L</span></span></a> <a id="L:1173" class="idref" href="#L:1173"><span class="id" title="binder">:</span></a> <a id="L:1173" class="idref" href="#L:1173"><span class="id" title="binder">ℝ</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:1174" class="idref" href="#n:1174"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:1174"><span class="id" title="variable">n</span></a> <span class="id" title="var">x0</span><span class="id" title="notation">)</span> <span class="id" title="notation">⟶</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#L:1172"><span class="id" title="variable">L</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" title="var">Obtain</span> <span class="id" title="var">such</span> <span class="id" title="var">an</span> <span class="id" title="var">L</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#convergent_is_cauchy"><span class="id" title="lemma">convergent_is_cauchy</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.Subsequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:1175" class="idref" href="#n:1175"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:1175"><span class="id" title="variable">n</span></a> <span class="id" title="var">x0</span><span class="id" title="notation">)</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hc0</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="var">By</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#convergent_is_cauchy"><span class="id" title="lemma">convergent_is_cauchy</span></a> <span class="id" title="var">it</span> <span class="id" title="var">holds</span> <span class="id" title="var">that</span> <a class="idref" href="RUG.Analysis.CauchySequences.html#is_cauchy"><span class="id" title="definition">is_cauchy</span></a> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="n:1175" class="idref" href="#n:1175"><span class="id" title="binder">n</span></a> ⇒ <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:1175"><span class="id" title="variable">n</span></a> <span class="id" title="var">x0</span><span class="id" title="notation">)</span> <span class="id" title="keyword">as</span> (<span class="id" title="var">Hc0</span>).<br/>
 &nbsp;&nbsp;<span class="id" title="var">We</span> <span class="id" title="var">claim</span> <span class="id" title="var">that</span> <span class="id" title="notation">∀</span> <a id="12c6260de44d03e7c03214a2b2f22d7e" class="idref" href="#12c6260de44d03e7c03214a2b2f22d7e"><span class="id" title="binder"><span id="cb67d5815820dc02fc8dbf6870cd3b09" class="id"><span id="763279ac98959d974e491c1689ee3a02" class="id"><span id="faf953300ba17c060b71f8991e5aafeb" class="id">ε</span></span></span></span></a> <span class="id" title="notation">&gt;</span> 0<span class="id" title="notation">,</span> <span class="id" title="notation">∃</span> <a id="N1:1180" class="idref" href="#N1:1180"><span class="id" title="binder"><span id="N1:1181" class="id"><span id="N1:1182" class="id"><span id="N1:1183" class="id">N1</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">ℕ</span><span class="id" title="notation">,</span> <span class="id" title="notation">∀</span> <a id="n:1184" class="idref" href="#n:1184"><span class="id" title="binder"><span id="n:1185" class="id"><span id="n:1186" class="id"><span id="n:1187" class="id">n</span></span></span></span></a> <span class="id" title="notation">≥</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#N1:1180"><span class="id" title="variable">N1</span></a><span class="id" title="notation">,</span> <span class="id" title="notation">∀</span> <a id="m:1188" class="idref" href="#m:1188"><span class="id" title="binder"><span id="m:1189" class="id"><span id="m:1190" class="id"><span id="m:1191" class="id">m</span></span></span></span></a> <span class="id" title="notation">≥</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#N1:1180"><span class="id" title="variable">N1</span></a><span class="id" title="notation">,</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="notation">∀</span> <a id="x:1194" class="idref" href="#x:1194"><span class="id" title="binder"><span id="x:1195" class="id"><span id="x:1196" class="id"><span id="x:1197" class="id">x</span></span></span></span></a> <span class="id" title="notation">∈</span> <span class="id" title="notation">(</span><span class="id" title="keyword">fun</span> <a id="x:1192" class="idref" href="#x:1192"><span class="id" title="binder"><span id="x:1193" class="id"><span id="x:1198" class="id">x</span></span></span></a> ⇒ <span class="id" title="var">a</span> <span class="id" title="notation">≤</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#x:1192"><span class="id" title="variable">x</span></a> <span class="id" title="notation">∧</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#x:1192"><span class="id" title="variable">x</span></a> <span class="id" title="notation">≤</span> <span class="id" title="var">b</span><span class="id" title="notation">)</span><span class="id" title="notation">,</span> <span class="id" title="notation">|</span> <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#n:1184"><span class="id" title="variable">n</span></a> <a class="idref" href="RUG.Analysis.FunctionSequences.html#x:1194"><span class="id" title="variable">x</span></a> <span class="id" title="notation">-</span> <span class="id" title="var">fn</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#m:1188"><span class="id" title="variable">m</span></a> <a class="idref" href="RUG.Analysis.FunctionSequences.html#x:1194"><span class="id" title="variable">x</span></a> <span class="id" title="notation">|</span> <span class="id" title="notation">&lt;</span> <a class="idref" href="RUG.Analysis.FunctionSequences.html#12c6260de44d03e7c03214a2b2f22d7e"><span class="id" title="variable">ε</span></a>.<br/>
 &nbsp;&nbsp;{<br/>
@@ -1577,7 +1577,7 @@ Step 4: <span class="inlinecode"><span class="id" title="var">g'</span></span> <
 </div>
 
 <div class="doc">
-<a id="lab56"></a><h2 class="section">Series of functions</h2>
+<a id="lab57"></a><h2 class="section">Series of functions</h2>
 
 <div class="paragraph"> </div>
 
