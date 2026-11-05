@@ -90,13 +90,105 @@ Lemma tail_comparison (a b : ℕ → ℝ) (Nn : ℕ) (L : ℝ)
     (HL : partial_sums b ⟶ L) :
     ∃ l1 ∈ ℝ, partial_sums a ⟶ l1.
 Proof.
-```
-<input-area>
-```coq
+We claim that (∀ n : ℕ, (n > Nn)%nat →
+  partial_sums a n - partial_sums a Nn ≤
+  partial_sums b n - partial_sums b Nn) as (tail_mon).
+{
+  Take n : ℕ.
+  Assume that (n > Nn)%nat as (Hn).
+  By (tech2 a Nn n Hn) it holds that
+    (partial_sums a n =
+      partial_sums a Nn +
+        partial_sums (fun i : ℕ => a (Nat.add (S Nn) i))
+          (Nat.sub n (S Nn))) as (Ha_split).
+  By (tech2 b Nn n Hn) it holds that
+    (partial_sums b n =
+      partial_sums b Nn +
+        partial_sums (fun i : ℕ => b (Nat.add (S Nn) i))
+          (Nat.sub n (S Nn))) as (Hb_split).
 
-```
-</input-area>
-```coq
+  We claim that
+    (∀ i : ℕ, (i ≤ Nat.sub n (S Nn))%nat →
+      a (Nat.add (S Nn) i) ≤ b (Nat.add (S Nn) i)) as (Htail).
+  {
+    Take i : ℕ.
+    Assume that (i ≤ Nat.sub n (S Nn))%nat.
+    It holds that (Nat.add (S Nn) i > Nn)%nat.
+    By (Hab (Nat.add (S Nn) i)) we conclude that
+      (a (Nat.add (S Nn) i) ≤ b (Nat.add (S Nn) i)).
+  }
+  By (sum_Rle
+    (fun i : ℕ => a (Nat.add (S Nn) i))
+    (fun i : ℕ => b (Nat.add (S Nn) i))
+    (Nat.sub n (S Nn)) Htail) it holds that
+    (partial_sums (fun i : ℕ => a (Nat.add (S Nn) i))
+       (Nat.sub n (S Nn)) ≤
+     partial_sums (fun i : ℕ => b (Nat.add (S Nn) i))
+       (Nat.sub n (S Nn))) as (Htails).
+
+  rewrite Ha_split.
+  rewrite Hb_split.
+  We conclude that
+    (partial_sums a Nn +
+       partial_sums (fun i : ℕ => a (Nat.add (S Nn) i))
+         (Nat.sub n (S Nn)) - partial_sums a Nn ≤
+     partial_sums b Nn +
+       partial_sums (fun i : ℕ => b (Nat.add (S Nn) i))
+         (Nat.sub n (S Nn)) - partial_sums b Nn).
+} 
+By (partial_sums_pos_incr b) and Hb0 it holds that
+  Un_growing (partial_sums b) as (Hb_growing).
+By (partial_sums_pos_incr a) and Ha it holds that
+  Un_growing (partial_sums a) as (Ha_growing).
+By (convergence_equivalence(partial_sums b)(L)) it holds that (partial_sums b ⟶ L ⇔ Un_cv(partial_sums b, L)) . 
+It holds that (Un_cv(partial_sums b, L)) as (Hb_converges).  
+By (growing_ineq) and Hb_growing it holds that
+  (Un_cv (partial_sums b) L →
+    ∀ n : ℕ, partial_sums b n ≤ L) as (Hgrow_bound).
+
+By (Hgrow_bound) and Hb_converges it holds that
+  (∀ n : ℕ, partial_sums b n ≤ L) as (Hb_le). 
+We claim that (∀ n : ℕ, partial_sums a n ≤ L + partial_sums a Nn - partial_sums b Nn ) as (abound). 
+{Take n : ℕ.  
+
+ 
+Either (n ≤ Nn)%nat or (n > Nn)%nat.
+- Case (n ≤ Nn)%nat.
+  By (growing_prop (partial_sums a) Nn n) it holds that
+    (partial_sums a Nn ≥ partial_sums a n) as (Hmono). 
+  It holds that (partial_sums a Nn <= partial_sums a Nn + partial_sums b Nn - partial_sums b Nn). 
+  It holds that (partial_sums b Nn <= L). 
+  By (Hmono) we conclude that ( partial_sums a n ≤ L + partial_sums a Nn - partial_sums b Nn).
+
+- Case (n > Nn)%nat. 
+ By (tail_mon) it holds that (partial_sums a n - partial_sums a Nn ≤ partial_sums b n - partial_sums b Nn). 
+ It holds that (partial_sums b n <= L). 
+ We conclude that (partial_sums a n ≤ L + partial_sums a Nn - partial_sums b Nn).
+}
+We claim that bound (EUn (partial_sums a)).
+{
+  We need to show that ∃ m : ℝ, ∀ x : ℝ, EUn (partial_sums a) x ⇒ x ≤ m.
+  Choose m := partial_sums a Nn + L - partial_sums b Nn.
+  Take x : ℝ.
+  Assume that EUn (partial_sums a) x as (Hx).
+  It holds that ∃ i : ℕ, x = partial_sums a i as (Hi).
+  Obtain i according to (Hi).
+  By (abound) it holds that (partial_sums a i ≤ L + partial_sums a Nn - partial_sums b Nn).
+  We conclude that (x <= m). 
+
+  
+  }
+
+  By Un_cv_crit it holds that ∃ l : ℝ, Un_cv (partial_sums a) l as (Hl).
+Obtain l according to (Hl).
+By convergence_equivalence it holds that
+  (partial_sums a ⟶ l ⇔ Un_cv (partial_sums a) l) as (Ha_iff).
+By Ha_iff it holds that partial_sums a ⟶ l as (Hal).
+Choose l1 := l.
+{ Indeed, l1 ∈ ℝ. }
+We conclude that partial_sums a ⟶ l1.
+
+
 Qed.
 ```
 
@@ -125,13 +217,38 @@ Lemma ratio_bounds (a b : ℕ → ℝ) (c : ℝ) (Hc : c > 0)
     ∃ Nn ∈ ℕ, ∀ n : ℕ, (n ≥ Nn)%nat →
       a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n.
 Proof.
-```
-<input-area>
-```coq
+By (Hlim) it holds that (∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n / b n - c| < ε) as (Hlimdef). 
+Use ε := c/2 in (Hlimdef). 
+  { Indeed, c / 2 > 0. } 
+It holds that (∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n / b n - c| < c/2) as (cbound). 
+Obtain N1 according to (cbound). 
+Choose N2 := N1. 
+{ Indeed, N2 ∈ ℕ. } 
+We need to show that ∀ n : ℕ, (n ≥ N2)%nat →
+      a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n. 
+Take n : ℕ. 
+Assume that ((n ≥ N2)%nat) as (nlarge). 
+It holds that (|a n / b n - c| < c/2). 
+By Rabs_def2 it holds that a n / b n - c < c / 2 ∧ - (c / 2) < a n / b n - c as (rabdef). 
+By (rabdef) it holds that (a n / b n - c < c / 2). 
+It holds that (a n / b n < c / 2 + c). 
+It holds that (a n / b n  < 3/2 *c). 
+It holds that (b n > 0). 
+It holds that ((a n / b n) * b n < (3/2 *c)* b n). 
+By Rinv_r it holds that b n * / b n = 1 as (Hbinv).
+It holds that (a n / b n) * b n = a n as (Hprod). 
+It holds that (a(n) ≤ 3 * c / 2 * b(n)). 
+By (rabdef) it holds that - (c / 2) < a n / b n - c.
+It holds that (c / 2 < a n / b n). 
+It holds that (b n *(c / 2) < a n).
+It holds that (b n * (c / 2) *2 < 2 * a n). 
+It holds that (b n *c < 2 * a n). 
+It holds that ( /c > 0). 
+It holds that (b n * c * /c < 2 * a n * /c). 
+By Rinv_r it holds that (c * /c = 1). 
+It holds that (b n < 2 * a n * /c). 
+We conclude that a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n. 
 
-```
-</input-area>
-```coq
 Qed.
 ```
 
@@ -149,13 +266,13 @@ half you need.
 Lemma scaled_series_converges (b : ℕ → ℝ) (K L : ℝ) (HL : partial_sums b ⟶ L) :
     partial_sums (sprod b K) ⟶ (K * L).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+By (series_algebraic_limit b b L L HL HL) it holds that
+  (∀ c ∈ ℝ, partial_sums (sprod b c) ⟶ (c * L)) ∧
+    partial_sums (ssum b b) ⟶ (L + L) as (Halg). 
+Because (Halg) both (∀ c ∈ ℝ, partial_sums (sprod b c) ⟶ (c * L)) as (Hscal)
+  and (partial_sums (ssum b b) ⟶ (L + L)) as (Hsum).
+It holds that K ∈ ℝ as (HK).
+By (Hscal K HK) we conclude that partial_sums (sprod b K) ⟶ (K * L).
 Qed.
 ```
 
@@ -177,13 +294,70 @@ Theorem series_ratio_comparison (a b : ℕ → ℝ) (c : ℝ) (Hc : c > 0)
     (Hlim : (fun n : ℕ => a n / b n) ⟶ c) :
     (∃ l1 ∈ ℝ, partial_sums a ⟶ l1) ⇔ (∃ l1 ∈ ℝ, partial_sums b ⟶ l1).
 Proof.
-```
-<input-area>
-```coq
+By (ratio_bounds a b c Hc Hbpos Hlim) it holds that
+  ∃ Nn ∈ ℕ, ∀ n : ℕ, (n ≥ Nn)%nat →
+    a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n as (Hbounds).
+Obtain Nn according to (Hbounds).
+We claim that ∀ n : ℕ, 0 ≤ b n as (Hb0).
+{ Take n : ℕ. It holds that b n > 0. We conclude that 0 ≤ b n. }
+We show both directions. 
+++ We need to show that ((∃ l1 ∈ ℝ, partial_sums a ⟶ l1) ⇨ (∃ l1 
+    ∈ ℝ, partial_sums b ⟶ l1)) . 
+   Assume that (∃ l1 ∈ ℝ, partial_sums a ⟶ l1) as (aconv). 
+   Obtain l1 according to (aconv). 
+   It holds that partial_sums a ⟶ l1 as (lima).
+   By (scaled_series_converges(a)(2/c, l1)(lima)) it holds that (partial_sums (sprod a (2/c)) ⟶ (2/c * l1)) as (scalcon). 
+   It holds that 2/c > 0 as (H2c).
+   We claim that ∀ n : ℕ, 0 ≤ sprod a (2/c) n as (Hpos).
+   {
+     Take n : ℕ.
+     We need to show that 0 ≤ (2/c) * a n.
+     It holds that 0 ≤ a n.
+     We conclude that 0 ≤ (2/c) * a n.
+   }
+   We claim that ∀ n : ℕ, (n > Nn)%nat → b n ≤ sprod a (2/c) n as (Hle).
+   {
+     Take n : ℕ.
+     Assume that (n > Nn)%nat.
+     It holds that (n ≥ Nn)%nat.
+     By Hbounds it holds that a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n as (Hn).
+     Because (Hn) both (a n ≤ (3*c/2) * b n) as (Hn1) and
+       (b n ≤ (2/c) * a n) as (Hn2).
+     We conclude that b n ≤ (2/c) * a n.
+   }
+   By (tail_comparison b (sprod a (2/c)) Nn ((2/c) * l1) Hb0 Hpos Hle scalcon)
+     we conclude that ∃ l1 ∈ ℝ, partial_sums b ⟶ l1.
+++ We need to show that (∃ l1 
+    ∈ ℝ, partial_sums b ⟶ l1) ⇨ (∃ l1 ∈ ℝ, partial_sums a ⟶ l1).
+   Assume that ∃ l1 ∈ ℝ, partial_sums b ⟶ l1 as (Hbcv).
+   Obtain l1 according to (Hbcv).
+   It holds that partial_sums b ⟶ l1 as (Hbcv').
+   (* Compare a with (3c/2)·b. *)
+   By (scaled_series_converges b (3*c/2) l1 Hbcv') it holds that
+     partial_sums (sprod b (3*c/2)) ⟶ ((3*c/2) * l1) as (Hscal).
+   We claim that ∀ n : ℕ, 0 ≤ sprod b (3*c/2) n as (Hpos).
+   {
+     Take n : ℕ.
+     We need to show that 0 ≤ (3*c/2) * b n.
+     It holds that b n > 0.
+     We conclude that 0 ≤ (3*c/2) * b n.
+   }
+   We claim that ∀ n : ℕ, (n > Nn)%nat → a n ≤ sprod b (3*c/2) n as (Hle).
+   {
+     Take n : ℕ.
+     Assume that (n > Nn)%nat.
+     It holds that (n ≥ Nn)%nat.
+     By Hbounds it holds that a n ≤ (3*c/2) * b n ∧ b n ≤ (2/c) * a n as (Hn).
+     Because (Hn) both (a n ≤ (3*c/2) * b n) as (Hn1) and
+       (b n ≤ (2/c) * a n) as (Hn2).
+     We conclude that a n ≤ (3*c/2) * b n.
+   }
+   By (tail_comparison a (sprod b (3*c/2)) Nn ((3*c/2) * l1) Ha0 Hpos Hle Hscal)
+     we conclude that ∃ l1 ∈ ℝ, partial_sums a ⟶ l1.
 
-```
-</input-area>
-```coq
+
+
+
 Qed.
 ```
 
@@ -207,26 +381,25 @@ For the third fact, first derive `x ≤ 1` from the hypothesis.
 ```coq
 Lemma frac_nonneg (x : ℝ) (Hx : 0 ≤ x) : 0 ≤ x / (1 + x).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that 0 < 1 + x. 
+It holds that 0 < / (1 + x). 
+It holds that ( 0 * /(1 + x) <= x */(1 +x)).
+It holds that (0 * / (1 + x) = 0). 
+It holds that (x * / (1+ x) = x /(1 +x)). 
+We conclude that  0 ≤ x / (1 + x).
 Qed.
 ```
 
 ```coq
 Lemma frac_le (x : ℝ) (Hx : 0 ≤ x) : x / (1 + x) ≤ x.
 Proof.
-```
-<input-area>
-```coq
+It holds that (1 + x >= 1). 
+It holds that (1 + x)*/(1 + x) >= 1 */(1 + x). 
+It holds that (1 + x)*/(1 + x) = 1. 
+It holds that 1 >= 1/(1 + x). 
+It holds that x */(1 + x) <= x *1. 
+We conclude that x / (1 + x) ≤ x.
 
-```
-</input-area>
-```coq
 Qed.
 ```
 
@@ -234,13 +407,14 @@ Qed.
 Lemma frac_ge (x : ℝ) (Hx : 0 ≤ x) (Hhalf : x / (1 + x) ≤ 1/2) :
     x ≤ 2 * (x / (1 + x)).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that (  x / (1 + x) *(1 + x) <= 1/2 *(1+x)). 
+It holds that ((1+x ) */(1+x) = 1). 
+It holds that x <= 1/2*(1+x). 
+It holds that 1/2*x <= 1/2. 
+It holds that x <= 1. 
+It holds that 1 + x <= 2. 
+It holds that 1 <= 2 / (1+ x). 
+We conclude that  x ≤ 2 * (x / (1 + x)).
 Qed.
 ```
 
@@ -261,13 +435,78 @@ Theorem series_a_over_one_plus_a (a : ℕ → ℝ) (Ha : ∀ n : ℕ, 0 ≤ a n)
     (∃ l1 ∈ ℝ, partial_sums a ⟶ l1) ⇔
     (∃ l1 ∈ ℝ, partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1).
 Proof.
-```
-<input-area>
-```coq
+We claim that (∀ n : ℕ, 0 < 1 + a n). 
+{Take n : ℕ. 
+ It holds that 0 <= a n. 
+ We conclude that 0 < 1 + a n. 
+ }
+We  show both directions.
+++ We need to show that ((∃ l1 ∈ ℝ, partial_sums a ⟶ l1) ⇨
+    (∃ l1 ∈ ℝ, partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1)). 
+    Assume that ∃ l1 ∈ ℝ, partial_sums a ⟶ l1 as (acon).
+    We claim that ( ∀ n ∈ ℕ, a n / (1 + a n) <= a n) as (afrac). 
+    {Take n ∈ ℕ. 
+     It holds that 0 <= a n as (apos). 
+     By (frac_le (a n) apos) we conclude that a n / (1 + a n) ≤ a n.
+     
+    }
+    We claim that (∀ n ∈ ℕ, 0 <= a n / (1 + a n) ) as (fracpos).
+    {Take n ∈ ℕ. 
+     It holds that 0 <= a n as (apos).
+     By (frac_nonneg (a n) apos) we conclude that 0 ≤ a n / (1 + a n).
+    }
+   By (series_comparison_test((fun n : ℕ => a n / (1 + a n)), a, fracpos, afrac, acon)) we conclude that  
+  (∃ l1 ∈ ℝ, partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1).
 
-```
-</input-area>
-```coq
+++ We need to show that
+     (∃ l1 ∈ ℝ, partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1) ⇒
+       (∃ l1 ∈ ℝ, partial_sums a ⟶ l1).
+   Assume that ∃ l1 ∈ ℝ, partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1
+     as (Hcv).
+   Obtain l1 according to (Hcv).
+   It holds that partial_sums (fun n : ℕ => a n / (1 + a n)) ⟶ l1 as (Hcv').
+   (* The terms tend to 0, so eventually they are below 1/2. *)
+   By (series_convergent_terms_zero (fun n : ℕ => a n / (1 + a n)) l1 Hcv')
+     it holds that (fun n : ℕ => a n / (1 + a n)) ⟶ 0 as (Hzero).
+   It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n / (1 + a n) - 0| < ε
+     as (Hzero').
+   Use ε := 1/2 in (Hzero').
+   { Indeed, 1/2 > 0. }
+   It holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n / (1 + a n) - 0| < 1/2 as (HN1).
+   Obtain N1 according to (HN1).
+   (* Hence a n ≤ 2 · a n / (1 + a n) for n > N1: compare with Part 1. *)
+   By (scaled_series_converges (fun n : ℕ => a n / (1 + a n)) 2 l1 Hcv') it holds
+     that partial_sums (sprod (fun n : ℕ => a n / (1 + a n)) 2) ⟶ (2 * l1)
+     as (Hscal).
+   We claim that ∀ n : ℕ, 0 ≤ sprod (fun n : ℕ => a n / (1 + a n)) 2 n as (Hpos).
+   {
+     Take n : ℕ.
+     We need to show that 0 ≤ 2 * (a n / (1 + a n)).
+     It holds that 0 ≤ a n as (Han).
+     By (frac_nonneg (a n) Han) it holds that 0 ≤ a n / (1 + a n).
+     We conclude that 0 ≤ 2 * (a n / (1 + a n)).
+   }
+   We claim that ∀ n : ℕ, (n > N1)%nat →
+     a n ≤ sprod (fun n : ℕ => a n / (1 + a n)) 2 n as (Hle).
+   {
+     Take n : ℕ.
+     Assume that (n > N1)%nat.
+     We need to show that a n ≤ 2 * (a n / (1 + a n)).
+     It holds that (n ≥ N1)%nat.
+     It holds that |a n / (1 + a n) - 0| < 1/2 as (Hsmall).
+     By Rabs_def2 it holds that a n / (1 + a n) - 0 < 1/2 ∧
+       - (1/2) < a n / (1 + a n) - 0 as (Hsmall2).
+     Because (Hsmall2) both (a n / (1 + a n) - 0 < 1/2) as (Hs1)
+       and (- (1/2) < a n / (1 + a n) - 0) as (Hs2).
+     It holds that a n / (1 + a n) ≤ 1/2 as (Hhalf).
+     It holds that 0 ≤ a n as (Han).
+     By (frac_ge (a n) Han Hhalf) we conclude that a n ≤ 2 * (a n / (1 + a n)).
+   }
+   By (tail_comparison a (sprod (fun n : ℕ => a n / (1 + a n)) 2) N1 (2 * l1)
+         Ha Hpos Hle Hscal)
+     we conclude that ∃ l1 ∈ ℝ, partial_sums a ⟶ l1.
+
+
 Qed.
 ```
 
@@ -280,12 +519,6 @@ explain them when asked.
 Inductive answer : Type := Yes : answer.
 
 Definition own_work : answer. exact
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+Yes.
 Qed.
 ```
