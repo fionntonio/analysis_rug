@@ -1,35 +1,4 @@
-# Homework 4 -- Uniform convergence
 
-Consider the sequence of functions $f_n : (0,\infty) \to \mathbb{R}$ given by
-$$
-f_n(x) = \frac{n}{nx + 1}.
-$$
-Prove that the sequence $(f_n)$ converges uniformly on every set of the form
-$[a,\infty)$ with $a > 0$, but that the convergence is *not* uniform on
-$(0,\infty)$.
-
-**Course material.**
-
-- Lectures 11 and 12: [uniform convergence](../index.html#lecture11),
-  [interchanging limits](../index.html#lecture12) (Abbott §6.2–6.4).
-- Formalisation: [`theories/FunctionSequences.v`](../theories/FunctionSequences.v),
-  in particular the definitions `converges_pointwise` / `converges_uniformly` and
-  the examples `x_over_n_uniform`, `x_pow_n_not_uniform`.
-
-Notes:
-
-- The exercise below is cut into four steps. Steps 1, 2 and 4 are pure
-  computations with real numbers; only step 3 is about uniform convergence.
-- Recall that `a / b` is `a * / b` for Waterproof, and that the automation needs
-  help with inverses: the fact `b * / b = 1` (from `Rinv_r`, valid when
-  `b ≠ 0`) is usually all it is missing.
-
-<hint title="Import libraries (click to open/close)">
-
-Run `dune build` once before opening this file, so that the `RUG.Analysis.*`
-modules of the course library are available.
-
-```coq
 Require Import Stdlib.Reals.Reals.
 Require Import Waterproof.Tactics.
 Require Import Waterproof.Notations.Common.
@@ -48,14 +17,10 @@ Open Scope subset_scope.
 
 Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
-```
-</hint>
 
-We define the sequence $(f_n)$ and the candidate limit function $g(x) = 1/x$.
-```coq
 Definition fn_seq : ℕ → ℝ → ℝ := fun n x => INR n / (INR n * x + 1).
 Definition f_lim : ℝ → ℝ := fun x => 1 / x.
-```
+(*
 
 ## Part 1: the exact value of the error
 
@@ -73,19 +38,21 @@ State the two facts `(nR*x + 1) * / (nR*x + 1) = 1` and `x * / x = 1` with
 </hint>
 
 ```coq
+*)
 Lemma diff_value (nR x : ℝ) (Hx : 0 < x) (Hn : 1 ≤ nR) :
   nR / (nR*x + 1) - 1/x = - (/ (nR*x + 1) * / x).
 Proof.
-```
-<input-area>
-```coq
+It holds that (nR*x + 1) * / (nR*x + 1) = 1. 
+It holds that x * / x = 1.
+It holds that (nR / (nR*x + 1) * (nR*x + 1) * x - 1/ x * (nR*x + 1) * x = 
+ nR *1 * x - (nR *x + 1)) .  
+It holds that nR *1 * x - (nR *x + 1) = -1. 
+It holds that (- (/ (nR*x + 1) * / x) * (nR*x + 1) * x = -1) . 
+We conclude that nR / (nR*x + 1) - 1/x = - (/ (nR*x + 1) * / x).
 
-```
-</input-area>
-```coq
 Qed.
-```
 
+(*
 ## Part 2: a bound that does not depend on the point
 
 Show that on $[a, \infty)$ the error is at most $\frac{1}{na^2}$:
@@ -104,19 +71,25 @@ separately first.
 </hint>
 
 ```coq
+*)
 Lemma diff_bound (nR x a : ℝ) (Ha : 0 < a) (Hx : a ≤ x) (Hn : 1 ≤ nR) :
   | nR / (nR*x + 1) - 1/x | ≤ 1 / (nR * (a*a)).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+By diff_value it holds that nR / (nR*x + 1) - 1/x = - (/ (nR*x + 1) * / x). 
+It holds that | nR / (nR*x + 1) - 1/x | = | (/ (nR*x + 1) * / x) |.  
+It holds that /x > 0. 
+It holds that /(nR*x +1) > 0 .
+It holds that | (/ (nR*x + 1) * / x) | = (/ (nR*x + 1) * / x). 
+It holds that /x <= /a . 
+It holds that (/ (nR*x + 1) * / x) <= (/ (nR*a + 1) * / a). 
+It holds that (/ (nR*a + 1) * / a) = (/((nR*a + 1) * a)). 
+It holds that ((nR*a + 1) * a = nR*(a*a) + a). 
+It holds that nR*(a*a) + a >= nR*(a*a). 
+It holds that (/((nR*a + 1) * a) <= /(nR*(a*a))).
+We conclude that (| nR / (nR*x + 1) - 1/x | ≤ 1 / (nR * (a*a))).
 Qed.
-```
 
+(*
 Also prove the following auxiliary fact, which turns "$m$ is large" into
 "$1/m$ is small".
 
@@ -126,18 +99,15 @@ A chain does it: `We conclude that (& 1 / m = / m < / / ε = ε).`
 </hint>
 
 ```coq
+*)
 Lemma small_inv (m ε : ℝ) (Hε : ε > 0) (Hm : m > / ε) : 1 / m < ε.
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that /m < //ε. 
+It holds that //ε = ε.
+We conclude that 1 / m < ε.
 Qed.
-```
 
+(*
 ## Part 3: uniform convergence on $[a,\infty)$
 
 Now prove uniform convergence on $[a,\infty)$ for every $a > 0$. Note how the
@@ -161,19 +131,43 @@ Choose `N1 := S n1` (this also guarantees `1 ≤ INR n` for `n ≥ N1`, which
 </hint>
 
 ```coq
+*)
 Lemma fn_uniform_on_ray (a : ℝ) (Ha : a > 0) :
   fn_seq _converges uniformly on_ [a, ∞) to f_lim.
 Proof.
-```
-<input-area>
-```coq
+We need to show that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat →
+  ∀ x ∈ [a, ∞), | fn_seq n x - f_lim x | < ε. 
+Take ε > 0. 
+By the Archimedean property it holds that (∃ n1 ∈ ℕ, n1 > / (ε * (a*a))) . 
+Obtain such a n1. 
+Choose N1 := S n1. { Indeed, N1 ∈ ℕ. }
+We need to show that ∀ n : ℕ, (n ≥ N1)%nat →
+  ∀ x ∈ [a, ∞), | fn_seq n x - f_lim x | < ε. 
+Take n : ℕ. 
+It holds that (a*a > 0) . 
+Assume that (n ≥ N1)%nat.
+Take x ∈ [a, ∞ ).
+It holds that a ≤ x as (Hax).
+By le_INR it holds that INR (S n1) ≤ INR n as (HnS).
+It holds that n >= n1.
+It holds that n1 >= 0.
+It holds that S n1 >= 1.
+It holds that 1 ≤ INR n as (Hn1').
+By diff_bound((INR n), x, a, Ha, Hax, Hn1') it holds that 
+(| INR n / (INR n * x + 1) - 1/x | ≤ 1 / (INR n * (a*a)))  
+ as (Hb). 
+ It holds that (1 / (INR n * (a*a)) = 1 /n *(/(a*a))).
+It holds that (n > / (ε*(a*a))).
+By small_inv it holds that (1 /n  < ε*(a*a)).
+It holds that (1 /n *(/(a*a)) < ε*(a*a)*(/(a*a))). 
+It holds that ((a*a)*(/(a*a)) = 1).
+It holds that (1 /n *(/(a*a)) < ε) as (epsbound).  
+It holds that (|fn_seq(n, x) - f_lim(x)| = |INR n / (INR n * x + 1) - 1/x|).
+By (Hb) and (epsbound) we conclude that |fn_seq(n, x) - f_lim(x)| < ε.
 
-```
-</input-area>
-```coq
 Qed.
-```
 
+(*
 ## Part 4: the convergence is not uniform on $(0,\infty)$
 
 The point $x = 1/n$ shows that no single threshold works for all of
@@ -186,17 +180,17 @@ $$
 First the computation at that point.
 
 ```coq
+*)
 Lemma gap_at_inv (m : ℝ) (Hm : 1 ≤ m) :
   | m / (m * / m + 1) - 1 / / m | ≥ 1/2.
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that 1 / / m = m. 
+It holds that m */m = 1. 
+It holds that  m / (m * / m + 1) - 1 / / m = m /(1 + 1) - m. 
+It holds that m /(1 + 1) - m = - m/2 . 
+We conclude that | m / (m * / m + 1) - 1 / / m | ≥ 1/2.
 Qed.
+(*
 ```
 
 And then the negative result. Take $\varepsilon = 1/2$ and evaluate the uniform
@@ -213,33 +207,35 @@ instance you want. Conclude with `Contradiction.`
 </hint>
 
 ```coq
+*)
 Lemma fn_not_uniform : ¬ (fn_seq _converges uniformly on_ (0, ∞) to f_lim).
 Proof.
-```
-<input-area>
-```coq
+Assume that fn_seq _converges uniformly on_ (0, ∞) to f_lim. 
+It holds that ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat →
+  ∀ x ∈ (0, ∞), | fn_seq n x - f_lim x | < ε as (H).
+Use ε := 1/2 in (H). { Indeed, 1 / 2 > 0. }
+It holds that (∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat →
+  ∀ x ∈ (0, ∞), | fn_seq n x - f_lim x | < 1/2) as (half). 
+Obtain such a Nn.
+It holds that (∀ n : ℕ, (n ≥ Nn)%nat →
+  ∀ x ∈ (0, ∞), | fn_seq n x - f_lim x | < 1/2) as (conv). 
+It holds that (S Nn ≥ Nn)%nat as (HSN).
+By (conv) it holds that
+  (∀ x ∈ (0, ∞), | fn_seq (S Nn) x - f_lim x | < 1/2)  
+  as (convN). 
+It holds that (S Nn = Nn + 1)%nat . 
+By le_INR it holds that (Nn >= 0).
+It holds that (Nn + 1 >= 1).
+It holds that (1 <= S Nn) as (Nnbig).
+Use x := /(S (Nn)) in (convN). 
+{ Indeed,  / S(Nn) ∈ (0, ∞ ). } 
+It holds that 
+ |fn_seq(S(Nn), /(S (Nn))) - f_lim(/(S (Nn))) | < 1 / 2.
+By (gap_at_inv( (INR (S Nn)), Nnbig)) it holds that
+  (| INR (S Nn) / (INR (S Nn) * / INR (S Nn) + 1)
+     - 1 / / INR (S Nn) | ≥ 1/2). 
+  
+Contradiction.
 
-```
-</input-area>
-```coq
 Qed.
-```
 
-## Declaration of own work
-
-Please declare that the work above is your own work by writing `Yes.` below.
-In particular, this means the proofs are typed by yourself and you could
-explain them when asked.
-```coq
-Inductive answer : Type := Yes : answer.
-
-Definition own_work : answer. exact
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
-Qed.
-```

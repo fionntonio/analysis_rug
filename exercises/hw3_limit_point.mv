@@ -1,42 +1,4 @@
-# Homework 3 -- Bounded infinite sets have a limit point
 
-Using the concept of open covers (and explicitly avoiding the
-Bolzano–Weierstrass theorem), prove that every bounded infinite set has a limit
-point.
-
-**Course material.**
-
-- Lecture 6: [open and closed sets](../index.html#lecture06) (Abbott §3.2),
-  Lecture 7: [compactness](../index.html#lecture07) (Abbott §3.3).
-- Formalisation: [`theories/Topology.v`](../theories/Topology.v) (the definitions
-  of `is_open` and of a limit point) and
-  [`theories/Compactness.v`](../theories/Compactness.v) (`open_cover`,
-  `has_finite_subcover`, `compact_iff_finite_subcover`).
-
-**The idea of the proof.** Let $A$ be bounded, say $A \subseteq [-M, M]$, and
-suppose $A$ has *no* limit point. Then every $c \in [-M,M]$ has a radius
-$r_c > 0$ such that the ball $(c - r_c, c + r_c)$ meets $A$ at most in $c$
-itself. These balls form an open cover of $[-M,M]$, so by Heine–Borel finitely
-many of them already cover $[-M,M]$ — and each of them contains at most one
-point of $A$. Hence $A$ is finite, a contradiction.
-
-Notes:
-
-- You may use the Heine–Borel theorem (Lecture 7): it appears below as the
-  hypothesis `HHB` of the main theorem, in the "every open cover of $[-M,M]$ has
-  a finite subcover" form. You may **not** use Bolzano–Weierstrass.
-- The cover is indexed by *pairs* (centre, radius): choosing one radius per
-  centre would require the axiom of choice, and carrying the radius in the index
-  avoids it. The "at most one point of $A$" condition is built into the set
-  `iso_ball A p` below, so that it is empty for a bad choice of radius (and the
-  empty set is open).
-
-<hint title="Import libraries (click to open/close)">
-
-Run `dune build` once before opening this file, so that the `RUG.Analysis.*`
-modules of the course library are available.
-
-```coq
 Require Import Stdlib.Reals.Reals.
 Require Import Stdlib.Lists.List.
 Require Import Stdlib.Logic.Classical_Pred_Type.
@@ -58,17 +20,12 @@ Open Scope subset_scope.
 
 Set Default Goal Selector "!".
 Set Bullet Behavior "Waterproof Relaxed Subproofs".
-```
-</hint>
 
-We call a set *infinite* if no finite list of reals exhausts it.
-```coq
+
+
 Definition is_infinite (A : subset ℝ) : Prop :=
   ∀ l : list ℝ, ∃ a ∈ A, ¬ In a l.
-```
 
-The sets of the cover, indexed by pairs (centre, radius).
-```coq
 Definition ball_index : Type := (ℝ * ℝ)%type.
 
 Definition idx (c r : ℝ) : ball_index := pair c r.
@@ -76,8 +33,8 @@ Definition idx (c r : ℝ) : ball_index := pair c r.
 Definition iso_ball (A : subset ℝ) (p : ball_index) : subset ℝ :=
   fun x => (0 < snd p ∧ (∀ y ∈ A, | y - fst p | < snd p → y = fst p))
            ∧ | x - fst p | < snd p.
-```
 
+(***
 ## Part 1: points that are not limit points
 
 Show that if $c$ is not a limit point of $A$, then some ball around $c$ meets
@@ -93,20 +50,36 @@ gives you an `ε > 0` such that no `y ∈ A` satisfies `0 < |y - c| < ε`. For
 </hint>
 
 ```coq
+*)
+
 Lemma not_limit_point_char (A : subset ℝ) (c : ℝ) :
     ¬ (c is a _limit point_ of A) →
     ∃ r > 0, ∀ y ∈ A, | y - c | < r → y = c.
 Proof.
-```
-<input-area>
-```coq
+Assume that  ¬ (c is a _limit point_ of A) as (nonlim). 
+We argue by contradiction. 
+Assume that ¬ (∃ r > 0, ∀ y ∈ A, | y - c | < r → y = c) as (H). 
+It holds that (∀ r > 0, ∃ y ∈ A, ¬(|y - c| < r ⇨ y = c)). 
+It holds that (∀ r > 0, ∃ y ∈ A, (|y - c| < r) ∧ ¬( y = c)) as (Hcontra).
+We claim that c is a _limit point_ of A as (Hlp).
+{
+  We need to show that ∀ ε > 0, ∃ y ∈ A, 0 < | y - c | < ε.
+  Take ε > 0.
+  Use r:= ε in (Hcontra). { Indeed, ε > 0. } 
+  It holds that ∃ y ∈ A, |y - c| < ε ∧ y ≠ c. 
+  Obtain such a y. 
+  Choose y0 := y. { Indeed, y0 ∈ A. }
+  We need to show that 0 < |y0 - c| < ε. 
+  It holds that (y0 ≠ c) as(Hneq). 
+  By (Hneq) it holds that (0 < |y0 - c|) .
+  We conclude that ( 0 < |y - c| < ε).
+  
+  }
+Contradiction.
 
-```
-</input-area>
-```coq
 Qed.
-```
 
+(*
 ## Part 2: the sets of the cover are open
 
 Show that each `iso_ball A p` is open. (If the radius `snd p` is not a good
@@ -122,21 +95,42 @@ use it. Compare with `open_interval_is_open` in `theories/Topology.v`.
 </hint>
 
 ```coq
+*)
 Lemma iso_ball_open (A : subset ℝ) (p : ball_index) : (iso_ball A p) is _open_.
 Proof.
-```
-<input-area>
-```coq
+We need to show that ∀ y ∈ (iso_ball A p),
+  ∃ r > 0, ∀ x ∈ (open_ball y r), x ∈ (iso_ball A p).
+Take y ∈ (iso_ball A p). 
+It holds that (0 < snd p ∧ (∀ z ∈ A, | z - fst p | < snd p → z = fst p))
+  ∧ | y - fst p | < snd p as (Hy).
+  Because (Hy) both
+  (0 < snd p ∧ (∀ z ∈ A, | z - fst p | < snd p → z = fst p)) as (Hgood)
+  and (| y - fst p | < snd p) as (Hyd).
+Choose r := snd p - | y - fst p |.
+- Indeed, snd p - | y - fst p | > 0.
+- We need to show that ∀ x ∈ (open_ball y r), x ∈ (iso_ball A p).
+  Take x ∈ (open_ball y r).
+  It holds that | x - y | < r as (Hxy).
+  (* Triangle inequality: |x - fst p| ≤ |x - y| + |y - fst p| < snd p. *)
+  It holds that (x - y) + (y - fst p) = x - fst p as (Hid).
+  By Rabs_triang it holds that
+    | (x - y) + (y - fst p) | ≤ | x - y | + | y - fst p | as (Htri).
+  By Hid it holds that | (x - y) + (y - fst p) | = | x - fst p | as (Habs).
+  It holds that | x - fst p | < snd p as (Hxd).
+  We need to show that
+    (0 < snd p ∧ (∀ z ∈ A, | z - fst p | < snd p → z = fst p))
+      ∧ | x - fst p | < snd p.
+  We conclude that
+    (0 < snd p ∧ (∀ z ∈ A, | z - fst p | < snd p → z = fst p))
+      ∧ | x - fst p | < snd p.
 
-```
-</input-area>
-```coq
 Qed.
-```
 
+(*
 The following technical fact about lists is given to you (`In` and `map` are
 from the standard library of Rocq).
 ```coq
+*)
 Lemma not_in_map_fst (l : list ball_index) (a : ℝ) (p : ball_index)
     (Hnot : ¬ In a (map fst l)) (Hin : In p l) : a ≠ fst p.
 Proof.
@@ -146,6 +140,7 @@ apply Hnot.
 apply in_map.
 exact Hin.
 Qed.
+(*
 ```
 
 ## Main result
@@ -168,6 +163,7 @@ Finally apply `Hinf` to the list of centres `map fst l`: it gives a point
 </hint>
 
 ```coq
+*)
 Theorem bounded_infinite_has_limit_point (A : subset ℝ) (M : ℝ)
     (HM : ∀ a ∈ A, -M ≤ a ∧ a ≤ M)
     (Hinf : is_infinite A)
@@ -175,31 +171,69 @@ Theorem bounded_infinite_has_limit_point (A : subset ℝ) (M : ℝ)
              open_cover U [-M, M] → has_finite_subcover U [-M, M]) :
     ∃ x : ℝ, x is a _limit point_ of A.
 Proof.
-```
-<input-area>
-```coq
+We argue by contradiction. 
+Assume that ¬ (∃ x, x is a _limit point_ of A). 
+It holds that (∀ x, ¬(x is a _limit point_ of A)) as (Hcont). 
+We claim that (open_cover (iso_ball A) [-M, M]) as (ballcover). 
+{We need to show that (∀ i : ball_index, (iso_ball A i) is _open_) ∧
+    (∀ x : ℝ, [-M, M] x → ∃ i : ball_index, iso_ball A i x).
+ We show both statements. 
+ - We need to show that ∀ i, iso_ball(A, i) is _open_.
+   Take i : ball_index. 
+   By iso_ball_open(A, i) we conclude that iso_ball(A, i) is _open_. 
 
-```
-</input-area>
-```coq
+ - We need to show that ∀ x, [- M, M] x ⇨ ∃ i, iso_ball(A, i, x). 
+  Take x : ℝ. 
+  Assume that [- M, M] x.
+  It holds that ¬ (x is a _limit point_ of A) as (Hx).
+    By (not_limit_point_char A x Hx) it holds that
+      ∃ r > 0, ∀ y ∈ A, | y - x | < r → y = x as (Hr).
+    Obtain r according to (Hr).
+    It holds that r > 0 as (Hrpos).
+    It holds that ∀ y ∈ A, | y - x | < r → y = x as (Hiso). 
+  Choose i := idx x r.
+    We need to show that
+      (0 < r ∧ (∀ y ∈ A, | y - x | < r → y = x)) ∧ | x - x | < r. 
+  It holds that | x - x | < r.
+  We conclude that (0 < r ∧ (∀ y ∈ A, | y - x | < r → y = x)) ∧ | x - x | < r.
+}
+
+By (HHB ball_index (iso_ball A) ballcover) it holds that
+  has_finite_subcover (iso_ball A) [-M, M] as (fincover).
+
+It holds that ∃ l : list ball_index,
+  ∀ x : ℝ, [-M, M] x → ∃ i : ball_index, 
+   In i l ∧ iso_ball A i x as (ballcover1).
+ Obtain such a l. 
+ It holds that ∀ x : ℝ, [-M, M] x → ∃ i :
+   ball_index, In i l ∧ iso_ball A i x as (listed).
+ It holds that ∀ l0 : list ℝ, ∃ a ∈ A, ¬ In a l0 as (Hinf').
+Use l0 := (map fst l) in (Hinf').
+It holds that ∃ a ∈ A, ¬ In a (map fst l) as (Ha).
+Obtain a according to (Ha).
+It holds that a ∈ A as (HaA).
+It holds that ¬ In a (map fst l) as (Hnot).
+
+
+By HM it holds that -M ≤ a ∧ a ≤ M as (HaM).
+It holds that [-M, M] a as (HaI).
+By (listed a HaI) it holds that ∃ i : ball_index, In i l ∧ iso_ball A i a as (Hi).
+Obtain i according to (Hi).
+It holds that In i l ∧ iso_ball A i a as (Hi2).
+Because (Hi2) both (In i l) as (Hil) and (iso_ball A i a) as (Hia).
+It holds that (0 < snd i ∧ (∀ y ∈ A, | y - fst i | < snd i → y = fst i))
+  ∧ | a - fst i | < snd i as (Hia2).
+Because (Hia2) both
+  (0 < snd i ∧ (∀ y ∈ A, | y - fst i | < snd i → y = fst i)) as (Hgood)
+  and (| a - fst i | < snd i) as (Had).
+Because (Hgood) both (0 < snd i) as (Hpos)
+  and (∀ y ∈ A, | y - fst i | < snd i → y = fst i) as (Hiso).
+By (Hiso a HaA Had) it holds that a = fst i as (Heq).
+By (not_in_map_fst l a i Hnot Hil) it holds that a ≠ fst i as (Hneq).
+Contradiction.
+
+
 Qed.
-```
 
-## Declaration of own work
 
-Please declare that the work above is your own work by writing `Yes.` below.
-In particular, this means the proofs are typed by yourself and you could
-explain them when asked.
-```coq
-Inductive answer : Type := Yes : answer.
 
-Definition own_work : answer. exact
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
-Qed.
-```
