@@ -1669,7 +1669,81 @@ Theorem closed_subset_of_compact_is_compact
     (Hinc : ∀ x : ℝ, F x → K x) :
     sequentially_compact(F).
 Proof.
-  Admitted.
+  We need to show that
+    ∀ a : ℕ → ℝ, (∀ n : ℕ, a n ∈ F) →
+      ∃ phi : ℕ → ℕ, ∃ x : ℝ,
+        (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ F x ∧
+        (fun k => a (phi k)) ⟶ x.
+  Take a : ℕ → ℝ.
+  Assume that ∀ n : ℕ, a n ∈ F as (ainF).
+  We claim that ∀ n : ℕ, a n ∈ K as (ainK).
+  {
+    Take n : ℕ.
+    By ainF it holds that F (a n).
+    By Hinc we conclude that a n ∈ K.
+  }
+  By HK and ainK it holds that
+    ∃ phi : ℕ → ℕ, ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K x ∧
+      (fun k => a (phi k)) ⟶ x
+    as (Hsubseq).
+  Obtain phi according to (Hsubseq).
+  It holds that
+    ∃ x : ℝ,
+      (∀ n : ℕ, (phi n < phi (S n))%nat) ∧ K x ∧
+      (fun k => a (phi k)) ⟶ x
+    as (Hsubseq').
+  Obtain x according to (Hsubseq').
+  It holds that ∀ n : ℕ, (phi n < phi (S n))%nat as (Hphi).
+  It holds that (fun k => a (phi k)) ⟶ x as (Hconv).
+  By (closed_iff_contains_limit_points F) it holds that
+    (F is _closed_ ⇔ ∀ y : ℝ, (y is a _limit point_ of F) → F y) as (Hiff).
+  Because (Hiff) both
+    (F is _closed_ → ∀ y : ℝ, (y is a _limit point_ of F) → F y) as (Hto)
+    and ((∀ y : ℝ, (y is a _limit point_ of F) → F y) → F is _closed_).
+  By (Hto HF) it holds that
+    ∀ y : ℝ, (y is a _limit point_ of F) → F y as (HF_lp).
+  We claim that F x as (x_in_F).
+  {
+    We argue by contradiction.
+    Assume that ¬ F x as (Hx_notin).
+    By HF_lp it suffices to show that x is a _limit point_ of F.
+    We need to show that ∀ ε > 0, ∃ y ∈ F, 0 < |y - x| < ε.
+    Take ε > 0.
+    By Hconv it holds that
+      ∃ N1 ∈ ℕ, ∀ n : ℕ, (n ≥ N1)%nat → |a (phi n) - x| < ε
+      as (Hconv').
+    Obtain N1 according to (Hconv').
+    It holds that
+      ∀ n : ℕ, (n ≥ N1)%nat → |a (phi n) - x| < ε as (Htail).
+    Use n := N1 in (Htail).
+    It holds that (N1 ≥ N1)%nat ⇨ |a(phi(N1)) - x| < ε.
+    It holds that |a (phi N1) - x| < ε as (Hclose).
+    By ainF it holds that a (phi N1) ∈ F as (Hin).
+    We claim that a (phi N1) ≠ x as (Hne).
+    {
+      We argue by contradiction.
+      Assume that ¬ (a (phi N1) ≠ x).
+      It holds that a (phi N1) = x as (Heq).
+      By Heq and Hin it holds that F x.
+      Contradiction.
+    }
+    Choose y := a (phi N1). { Indeed, y ∈ F. }
+    We need to show that 0 < |a (phi N1) - x| < ε.
+    By Hne it holds that |a (phi N1) - x| > 0 as (Hpos).
+    We conclude that 0 < |a (phi N1) - x| < ε.
+  }
+  Choose phi0 := phi.
+  Choose x0 := x.
+  We need to show that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ F x0 ∧
+    (fun k => a (phi0 k)) ⟶ x0.
+  By Hphi and x_in_F it holds that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ F x0 as (Hphi_x0).
+  By Hphi_x0 and Hconv we conclude that
+    (∀ n : ℕ, (phi0 n < phi0 (S n))%nat) ∧ F x0 ∧
+    (fun k => a (phi0 k)) ⟶ x0.
+Qed.
 
 (** ** Bounded infinite sets have a limit point *)
 

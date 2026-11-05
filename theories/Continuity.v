@@ -11,7 +11,9 @@ From Stdlib Require Import Reals.Ranalysis5.
 From Stdlib Require Import Logic.ClassicalDescription.
 
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
+From Waterproof Require Import Libs.Analysis.OpenAndClosed.
 Require Export RUG.Analysis.Lib.Compactness.
+Require Export RUG.Analysis.Lib.Logic.
 Require Export RUG.Analysis.Compactness.
 Require Export RUG.Analysis.Limits.
 
@@ -106,16 +108,130 @@ Proof.
     We conclude that Rabs (h w - h z) < ε.
 Qed.
 
-(** Continuous image of a compact set is compact. *)
+(** Continuous image of a compact set is compact.
+
+    Proof idea: by Heine–Borel, compact sets are exactly the sequentially
+    compact ones. Given [yₙ = φ(xₙ)] with [xₙ ∈ X], a subsequence
+    [x_{ψ(k)} → x ∈ X], and continuity of [φ] at [x] gives
+    [y_{ψ(k)} → φ(x)], which lies in the image. *)
 Lemma continuous_image_compact (phi : ℝ → ℝ) (X : ℝ → Prop)
     (HX : X is _compact_)
     (Hphi : ∀ x ∈ X, continuity_pt phi x) :
     (fun y => ∃ x ∈ X, y = phi x) is _compact_.
 Proof.
-  (* Stdlib's [continuity_compact] needs continuity of [phi] on all of ℝ and
-     concludes about [image_dir]; bridging it to the Waterproof [is _compact_]
-     (sequential) notion and to this image set is the missing step. *)
-  Admitted.
+  (** We pass through sequential compactness, using [sequential_Heine_Borel]
+      and the lemmas between Stdlib's [compact] and closed and
+      bounded sets. *)
+  By (compact_is_closed X HX) it holds that X is _closed_ as (HX_closed).
+  By (compact_is_bounded X HX) it holds that bounded X as (HX_bounded).
+  By (sequential_Heine_Borel X) it holds that
+    sequentially_compact X ⇔ (X is _closed_ ∧ bounded X) as (HHB_X).
+  By HHB_X it holds that sequentially_compact X as (HX_seq).
+  We claim that sequentially_compact (fun y => ∃ x ∈ X, y = phi x)
+    as (HY_seq).
+  {
+    We need to show that
+      ∀ b : ℕ → ℝ, (∀ n : ℕ, b n ∈ (fun y => ∃ x ∈ X, y = phi x)) →
+        ∃ psi : ℕ → ℕ, ∃ y : ℝ,
+          (∀ n : ℕ, (psi n < psi (S n))%nat) ∧
+          (fun y => ∃ x ∈ X, y = phi x) y ∧
+          (fun k => b (psi k)) ⟶ y.
+    Take b : ℕ → ℝ.
+    Assume that ∀ n : ℕ, b n ∈ (fun y => ∃ x ∈ X, y = phi x) as (HbY).
+    We claim that ∀ n : ℕ, ∃ x : ℝ, X x ∧ b n = phi x as (Hpre).
+    {
+      Take n : ℕ.
+      By HbY it holds that ∃ x ∈ X, b n = phi x as (Hbn).
+      Obtain x according to (Hbn).
+      Choose x0 := x.
+      We conclude that X x0 ∧ b n = phi x0.
+    }
+    By (countable_choice (fun n x => X x ∧ b n = phi x) Hpre) it holds that
+      ∃ a : ℕ → ℝ, ∀ n : ℕ, X (a n) ∧ b n = phi (a n) as (Ha_ex).
+    Obtain a according to (Ha_ex).
+    It holds that ∀ n : ℕ, X (a n) ∧ b n = phi (a n) as (Ha).
+    We claim that ∀ n : ℕ, a n ∈ X as (HaX).
+    {
+      Take n : ℕ.
+      By Ha it holds that X (a n) ∧ b n = phi (a n).
+      We conclude that a n ∈ X.
+    }
+    By (HX_seq a HaX) it holds that
+      ∃ psi : ℕ → ℕ, ∃ x : ℝ,
+        (∀ n : ℕ, (psi n < psi (S n))%nat) ∧ X x ∧
+        (fun k => a (psi k)) ⟶ x
+      as (Hsub).
+    Obtain psi according to (Hsub).
+    It holds that
+      ∃ x : ℝ,
+        (∀ n : ℕ, (psi n < psi (S n))%nat) ∧ X x ∧
+        (fun k => a (psi k)) ⟶ x
+      as (Hsub').
+    Obtain x according to (Hsub').
+    It holds that ∀ n : ℕ, (psi n < psi (S n))%nat as (Hpsi).
+    It holds that X x as (HxX).
+    It holds that (fun k => a (psi k)) ⟶ x as (Hconv).
+    By Hphi it holds that continuity_pt phi x as (Hcont).
+    By convergence_equivalence it holds that
+      ((fun k => a (psi k)) ⟶ x ⇔ Un_cv (fun k => a (psi k)) x) as (Hequiv).
+    By Hequiv it holds that Un_cv (fun k => a (psi k)) x as (Hcv).
+    By (continuity_seq phi (fun k => a (psi k)) x Hcont Hcv) it holds that
+      Un_cv (fun n => phi (a (psi n))) (phi x) as (Hcv_phi).
+    By convergence_equivalence it holds that
+      ((fun n => phi (a (psi n))) ⟶ (phi x) ⇔
+       Un_cv (fun n => phi (a (psi n))) (phi x)) as (Hequiv_phi).
+    By Hequiv_phi it holds that
+      (fun n => phi (a (psi n))) ⟶ (phi x) as (Hphi_conv).
+    We claim that (fun k => b (psi k)) ⟶ phi x as (Hb_conv).
+    {
+      We need to show that
+        ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |b (psi n) - phi x| < ε.
+      Take ε > 0.
+      By Hphi_conv it holds that
+        ∃ N1 ∈ ℕ, ∀ n ≥ N1, |phi (a (psi n)) - phi x| < ε as (HN).
+      Obtain such an N1.
+      Choose N2 := N1. { Indeed, N2 ∈ ℕ. }
+      We need to show that ∀ n ≥ N2, |b (psi n) - phi x| < ε.
+      Take n ≥ N2.
+      It holds that |phi (a (psi n)) - phi x| < ε as (Hn).
+      By Ha it holds that X (a (psi n)) ∧ b (psi n) = phi (a (psi n)).
+      It holds that b (psi n) = phi (a (psi n)) as (Heq).
+      We conclude that
+        (& |b (psi n) - phi x| = |phi (a (psi n)) - phi x| < ε).
+    }
+    Choose psi0 := psi.
+    Choose y := phi x.
+    We claim that (fun y => ∃ x ∈ X, y = phi x) (phi x) as (HyY).
+    {
+      We need to show that ∃ x0 ∈ X, phi x = phi x0.
+      Choose x0 := x.
+      - Indeed, x0 ∈ X.
+      - We conclude that phi x = phi x0.
+    }
+    By Hpsi and HyY it holds that
+      (∀ n : ℕ, (psi0 n < psi0 (S n))%nat) ∧
+      (fun y => ∃ x ∈ X, y = phi x) y as (Hpsi_y).
+    By Hpsi_y and Hb_conv we conclude that
+      (∀ n : ℕ, (psi0 n < psi0 (S n))%nat) ∧
+      (fun y => ∃ x ∈ X, y = phi x) y ∧
+      (fun k => b (psi0 k)) ⟶ y.
+  }
+  By (sequential_Heine_Borel (fun y => ∃ x ∈ X, y = phi x)) it holds that
+    sequentially_compact (fun y => ∃ x ∈ X, y = phi x) ⇔
+    ((fun y => ∃ x ∈ X, y = phi x) is _closed_ ∧
+     bounded (fun y => ∃ x ∈ X, y = phi x))
+    as (HHB_Y).
+  By HHB_Y it holds that
+    (fun y => ∃ x ∈ X, y = phi x) is _closed_ ∧
+    bounded (fun y => ∃ x ∈ X, y = phi x)
+    as (HY_cb).
+  By HY_cb it holds that (fun y => ∃ x ∈ X, y = phi x) is _closed_
+    as (HY_closed).
+  By HY_cb it holds that bounded (fun y => ∃ x ∈ X, y = phi x) as (HY_bounded).
+  By (closed_and_bounded_is_compact (fun y => ∃ x ∈ X, y = phi x)
+      HY_closed HY_bounded) we conclude that
+    (fun y => ∃ x ∈ X, y = phi x) is _compact_.
+Qed.
 
 (** ** Sequential characterization of continuity *)
 
@@ -146,16 +262,110 @@ Proof.
   By H3 we conclude that (fun n => f1 (a n)) ⟶ (f1 c).
 Qed.
 
-Lemma continuity_sequential_characterization (f : ℝ → ℝ) (c : ℝ) :
-    continuity_pt f c ⇔
-    (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f (a n)) ⟶ (f c)).
+Lemma continuity_sequential_characterization (f1 : ℝ → ℝ) (c : ℝ) :
+    continuity_pt f1 c ⇔
+    (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)).
 Proof.
-  (* The forward direction is [continuity_imp_seq] above. The backward direction
-     builds, from a failure of continuity, a sequence picking for each [n] a
-     point witnessing the failure at [δ = 1/n]; this needs countable choice,
-     which is not available here (cf. [sequential_limit_characterization] in
-     [Analysis.Limits]). Left admitted. *)
-  Admitted.
+  We show both directions.
+  - We need to show that
+      continuity_pt f1 c ⇨
+      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)).
+    Assume that continuity_pt f1 c as (Hf).
+    By (continuity_imp_seq f1 c Hf) we conclude that
+      ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c).
+  - We need to show that
+      (∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)) ⇨
+      continuity_pt f1 c.
+    Assume that ∀ a : ℕ → ℝ, a ⟶ c → (fun n => f1 (a n)) ⟶ (f1 c)
+      as (Hseq).
+    We need to show that ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε).
+    Take ε : ℝ.
+    Assume that ε > 0.
+    We argue by contradiction.
+    Assume that ¬ (∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε))
+      as (Hno_delta).
+    (** For every [n] there is a point within [1/(n+1)] of [c] where [f1] is
+        [ε]-far from [f1 c]. *)
+    We claim that
+      ∀ n : ℕ, ∃ y : ℝ,
+        Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε
+      as (Hsteps).
+    {
+      Take n : ℕ.
+      We argue by contradiction.
+      Assume that
+        ¬ (∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε)
+        as (Hno_y).
+      It suffices to show that ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+        (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (f1 w - f1 c) < ε).
+      Choose alp := 1 / (INR n + 1).
+      We show both statements.
+      - We conclude that alp > 0.
+      - We need to show that ∀ w : ℝ,
+          (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < 1 / (INR n + 1) →
+          Rabs (f1 w - f1 c) < ε.
+        Take w : ℝ.
+        Assume that (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < 1 / (INR n + 1).
+        It holds that Rabs (w - c) < 1 / (INR n + 1) as (Hw).
+        We argue by contradiction.
+        Assume that ¬ (Rabs (f1 w - f1 c) < ε) as (Hfar).
+        It holds that Rabs (f1 w - f1 c) ≥ ε as (Hfar').
+        We claim that
+          ∃ y : ℝ, Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε
+          as (Hy).
+        {
+          Choose y := w.
+          We conclude that
+            Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε.
+        }
+        Contradiction.
+    }
+    By (countable_choice
+        (fun n y => Rabs (y - c) < 1 / (INR n + 1) ∧ Rabs (f1 y - f1 c) ≥ ε)
+        Hsteps)
+      it holds that
+      ∃ a : ℕ → ℝ, ∀ n : ℕ,
+        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+      as (Ha_ex).
+    Obtain a according to (Ha_ex).
+    It holds that
+      ∀ n : ℕ, Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+      as (Ha).
+    We claim that a ⟶ c as (Hconv).
+    {
+      We need to show that ∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n - c| < ε0.
+      Take ε0 > 0.
+      By the Archimedean property it holds that
+        ∃ n1 ∈ ℕ, n1 > / ε0 as (Arch_N).
+      Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
+      We need to show that ∀ n ≥ N1, |a n - c| < ε0.
+      By Arch_N it holds that INR N1 > / ε0 as (H_arch_bound).
+      Take n ≥ N1.
+      It holds that n >= N1 as (Order_N).
+      By Order_N it holds that INR n >= INR N1 as (H_real_order).
+      By H_real_order and H_arch_bound it holds that
+        INR n + 1 > / ε0 as (H_inv_bound).
+      By H_inv_bound it holds that 1 / (INR n + 1) < ε0.
+      Use n0 := n in (Ha).
+      It holds that
+        Rabs (a n - c) < 1 / (INR n + 1) ∧ Rabs (f1 (a n) - f1 c) ≥ ε
+        as (Ha_n).
+      By Ha_n it holds that |a n - c| < 1 / (INR n + 1).
+      We conclude that (& |a n - c| < 1 / (INR n + 1) < ε0).
+    }
+    By (Hseq a Hconv) it holds that (fun n => f1 (a n)) ⟶ (f1 c) as (Hfa).
+    By Hfa it holds that
+      ∃ N1 ∈ ℕ, ∀ n ≥ N1, |f1 (a n) - f1 c| < ε as (HN).
+    Obtain such an N1.
+    It holds that |f1 (a N1) - f1 c| < ε as (Hclose).
+    Use n := N1 in (Ha).
+    It holds that
+      Rabs (a N1 - c) < 1 / (INR N1 + 1) ∧ Rabs (f1 (a N1) - f1 c) ≥ ε.
+    It holds that Rabs (f1 (a N1) - f1 c) ≥ ε.
+    Contradiction.
+Qed.
 
 (** *Algebraic continuity theorem*: sums, products, scalar multiples and (where
     the denominator is nonzero) quotients of functions continuous at [c] are
@@ -188,10 +398,6 @@ Qed.
 
 (** ** Pathologies: the Dirichlet and Thomae functions *)
 
-(** A real number is *rational* if it can be written [p/q] with [q ≠ 0]. *)
-Definition is_rational (x : ℝ) : Prop :=
-    ∃ p : Z, ∃ q : Z, (q <> 0)%Z ∧ x = IZR p / IZR q.
-
 (** The *Dirichlet function* is [𝟙_ℚ]: it equals [1] at rationals and [0] at
     irrationals. (Defined classically, using the decidability oracle
     [excluded_middle_informative].) *)
@@ -206,9 +412,78 @@ Definition dirichlet_function (x : ℝ) : ℝ :=
 Lemma dirichlet_nowhere_continuous :
     ∀ c : ℝ, ¬ continuity_pt dirichlet_function c.
 Proof.
-  (* Needs density of ℚ and of the irrationals in ℝ, neither of which is
-     available in the Stdlib [Reals] development in usable form. *)
-  Admitted.
+  Take c : ℝ.
+  Assume that continuity_pt dirichlet_function c as (Hcont).
+  By Hcont it holds that
+    ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp →
+      Rabs (dirichlet_function w - dirichlet_function c) < ε)
+    as (Hcont').
+  It holds that 1 / 2 > 0.
+  By Hcont' it holds that
+    ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp →
+      Rabs (dirichlet_function w - dirichlet_function c) < 1 / 2)
+    as (Halp).
+  Obtain alp according to (Halp).
+  It holds that alp > 0 as (Halp_pos).
+  It holds that
+    ∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp →
+      Rabs (dirichlet_function w - dirichlet_function c) < 1 / 2
+    as (Hnear).
+  By classic it holds that is_rational c ∨ ¬ is_rational c.
+  Either is_rational c or ¬ is_rational c.
+  - Case is_rational c.
+    It holds that is_rational c as (Hc_rat).
+    By (if_informative_true (is_rational c) 1 0 Hc_rat) it holds that
+      dirichlet_function c = 1 as (Hdc).
+    By (irrational_near c alp Halp_pos) it holds that
+      ∃ x : ℝ, ¬ is_rational x ∧ 0 < Rabs (x - c) < alp as (Hx).
+    Obtain x according to (Hx).
+    It holds that ¬ is_rational x as (Hx_irr).
+    It holds that 0 < Rabs (x - c) < alp as (Hx_close).
+    By (if_informative_false (is_rational x) 1 0 Hx_irr) it holds that
+      dirichlet_function x = 0 as (Hdx).
+    It holds that c ≠ x.
+    We claim that no_cond x as (Hnc).
+    {
+      We need to show that True.
+      We conclude that True.
+    }
+    By Hnear it holds that
+      Rabs (dirichlet_function x - dirichlet_function c) < 1 / 2.
+    It holds that dirichlet_function x - dirichlet_function c = -1.
+    It holds that Rabs (dirichlet_function x - dirichlet_function c) = 1.
+    Contradiction.
+  - Case ¬ is_rational c.
+    It holds that ¬ is_rational c as (Hc_irr).
+    By (if_informative_false (is_rational c) 1 0 Hc_irr) it holds that
+      dirichlet_function c = 0 as (Hdc).
+    By (rational_near c alp Halp_pos) it holds that
+      ∃ x : ℝ, is_rational x ∧ Rabs (x - c) < alp as (Hx).
+    Obtain x according to (Hx).
+    It holds that is_rational x as (Hx_rat).
+    It holds that Rabs (x - c) < alp as (Hx_close).
+    By (if_informative_true (is_rational x) 1 0 Hx_rat) it holds that
+      dirichlet_function x = 1 as (Hdx).
+    We claim that c ≠ x as (Hne).
+    {
+      Assume that c = x as (Heq).
+      By Heq and Hx_rat it holds that is_rational c.
+      Contradiction.
+    }
+    We claim that no_cond x as (Hnc).
+    {
+      We need to show that True.
+      We conclude that True.
+    }
+    By Hnear it holds that
+      Rabs (dirichlet_function x - dirichlet_function c) < 1 / 2.
+    It holds that dirichlet_function x - dirichlet_function c = 1.
+    It holds that Rabs (dirichlet_function x - dirichlet_function c) = 1.
+    Contradiction.
+Qed.
 
 (** *Thomae's function* [t] (the "popcorn function") vanishes at every
     irrational, satisfies [t(0) = 1], and equals [1/q] at a rational [p/q] in
@@ -218,7 +493,10 @@ Proof.
 
     Proof idea: fix an irrational [c] and [ε > 0]. Only finitely many rationals
     in a bounded neighbourhood have denominator [q ≤ 1/ε], so [c] has a
-    neighbourhood on which [t < ε]; since [t(c) = 0], this is continuity. *)
+    neighbourhood on which [t < ε]; since [t(c) = 0], this is continuity.
+    The finiteness argument is encoded in the hypothesis [Hsmall]; with it,
+    [|t(x) - t(c)| = t(x) < ε] near [c] for rational [x], and [= 0] for
+    irrational [x]. *)
 Lemma thomae_continuous_at_irrationals (t : ℝ → ℝ)
     (Hirr : ∀ x : ℝ, ¬ is_rational x → t x = 0)
     (Hpos : ∀ x : ℝ, is_rational x → t x > 0)
@@ -226,9 +504,45 @@ Lemma thomae_continuous_at_irrationals (t : ℝ → ℝ)
         Rabs (x - M) < δ → is_rational x → t x < ε ∨ t x = t M) :
     ∀ c : ℝ, ¬ is_rational c → continuity_pt t c.
 Proof.
-  (* Requires the finiteness of the set of rationals with bounded denominator
-     in a bounded interval; not available from the Stdlib [Reals]. *)
-  Admitted.
+  Take c : ℝ.
+  Assume that ¬ is_rational c as (Hc).
+  By Hirr it holds that t c = 0 as (Htc).
+  We need to show that ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+    (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (t w - t c) < ε).
+  Take ε : ℝ.
+  Assume that ε > 0.
+  By Hsmall it holds that
+    ∃ δ > 0, ∀ x : ℝ, Rabs (x - c) < δ → is_rational x → t x < ε ∨ t x = t c
+    as (Hδ).
+  Obtain such a δ.
+  Choose alp := δ.
+  We show both statements.
+  - We conclude that alp > 0.
+  - We need to show that ∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < δ → Rabs (t w - t c) < ε.
+    Take w : ℝ.
+    Assume that (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < δ.
+    It holds that Rabs (w - c) < δ as (Hw).
+    By classic it holds that is_rational w ∨ ¬ is_rational w.
+    Either is_rational w or ¬ is_rational w.
+    + Case is_rational w.
+      By Hpos it holds that t w > 0.
+      By Hδ it holds that t w < ε ∨ t w = t c.
+      Either t w < ε or t w = t c.
+      * Case t w < ε.
+        It holds that t w - t c = t w.
+        It holds that Rabs (t w - t c) = t w.
+        We conclude that Rabs (t w - t c) < ε.
+      * Case t w = t c.
+        It holds that t w - t c = 0.
+        It holds that Rabs (t w - t c) = 0.
+        We conclude that Rabs (t w - t c) < ε.
+    + Case ¬ is_rational w.
+      By Hirr it holds that t w = 0.
+      It holds that t w - t c = 0.
+      It holds that Rabs (t w - t c) = 0.
+      We conclude that Rabs (t w - t c) < ε.
+Qed.
 
 (** Thomae's function is discontinuous at every rational point.
 
@@ -239,9 +553,41 @@ Lemma thomae_discontinuous_at_rationals (t : ℝ → ℝ)
     (Hpos : ∀ x : ℝ, is_rational x → t x > 0) :
     ∀ c : ℝ, is_rational c → ¬ continuity_pt t c.
 Proof.
-  (* Requires density of the irrationals, same blocker as
-     [dirichlet_nowhere_continuous]. *)
-  Admitted.
+  Take c : ℝ.
+  Assume that is_rational c as (Hc).
+  Assume that continuity_pt t c as (Hcont).
+  By Hpos it holds that t c > 0 as (Htc).
+  By Hcont it holds that
+    ∀ ε : ℝ, ε > 0 → ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (t w - t c) < ε)
+    as (Hcont').
+  By Hcont' it holds that
+    ∃ alp : ℝ, alp > 0 ∧ (∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (t w - t c) < t c)
+    as (Halp).
+  Obtain alp according to (Halp).
+  It holds that alp > 0 as (Halp_pos).
+  It holds that
+    ∀ w : ℝ,
+      (no_cond w ∧ c ≠ w) ∧ Rabs (w - c) < alp → Rabs (t w - t c) < t c
+    as (Hnear).
+  By (irrational_near c alp Halp_pos) it holds that
+    ∃ x : ℝ, ¬ is_rational x ∧ 0 < Rabs (x - c) < alp as (Hx).
+  Obtain x according to (Hx).
+  It holds that ¬ is_rational x as (Hx_irr).
+  It holds that 0 < Rabs (x - c) < alp as (Hx_close).
+  By Hirr it holds that t x = 0 as (Htx).
+  It holds that c ≠ x.
+  We claim that no_cond x as (Hnc).
+  {
+    We need to show that True.
+    We conclude that True.
+  }
+  By Hnear it holds that Rabs (t x - t c) < t c.
+  It holds that t x - t c = - t c.
+  It holds that Rabs (t x - t c) = t c.
+  Contradiction.
+Qed.
 
 (** ** Extreme value theorem *)
 
@@ -403,17 +749,233 @@ Definition uniformly_continuous_on (f : ℝ → ℝ) (A : ℝ → Prop) : Prop :
 
     Proof idea: negate the ε–δ definition and, for the "only if" direction, take
     [δ = 1/n] to build the offending sequences. *)
-Lemma non_uniform_continuity_sequential_criterion (f : ℝ → ℝ) (A : ℝ → Prop) :
-    ¬ uniformly_continuous_on f A ⇔
+Lemma non_uniform_continuity_sequential_criterion (f1 : ℝ → ℝ)
+    (A : ℝ → Prop) :
+    ¬ uniformly_continuous_on f1 A ⇔
     (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
       ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
       (fun n => x n - y n) ⟶ 0 ∧
-      (∀ n : ℕ, Rabs (f (x n) - f (y n)) ≥ ε0)).
+      (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)).
 Proof.
-  (* The "only if" direction builds the two sequences by picking, for each [n],
-     a pair witnessing the failure at [δ = 1/n]: countable choice, unavailable
-     here (cf. [continuity_sequential_characterization]). *)
-  Admitted.
+  We show both directions.
+  - We need to show that
+      ¬ uniformly_continuous_on f1 A ⇨
+      (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)).
+    Assume that ¬ uniformly_continuous_on f1 A as (Hnot_uc).
+    We argue by contradiction.
+    Assume that
+      ¬ (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0))
+      as (Hno_seq).
+    It suffices to show that uniformly_continuous_on f1 A.
+    We need to show that
+      ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
+        A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+    Take ε > 0.
+    We argue by contradiction.
+    Assume that
+      ¬ (∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
+        A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε)
+      as (Hno_delta).
+    (** For every [n] there is a pair of points of [A] within [1/(n+1)] of
+        each other whose images are [ε]-far apart. *)
+    We claim that
+      ∀ n : ℕ, ∃ p : ℝ, ∃ q : ℝ,
+        A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
+        Rabs (f1 p - f1 q) ≥ ε
+      as (Hsteps).
+    {
+      Take n : ℕ.
+      We argue by contradiction.
+      Assume that
+        ¬ (∃ p : ℝ, ∃ q : ℝ,
+          A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
+          Rabs (f1 p - f1 q) ≥ ε)
+        as (Hno_pair).
+      It suffices to show that
+        ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
+          A x → A y → Rabs (x - y) < δ → Rabs (f1 x - f1 y) < ε.
+      Choose δ := 1 / (INR n + 1).
+      - Indeed, δ > 0.
+      - We need to show that
+          ∀ x ∈ ℝ, ∀ y ∈ ℝ,
+            A x → A y → Rabs (x - y) < 1 / (INR n + 1) →
+            Rabs (f1 x - f1 y) < ε.
+        Take x ∈ ℝ. Take y ∈ ℝ.
+        Assume that A x as (Hx).
+        Assume that A y as (Hy).
+        Assume that Rabs (x - y) < 1 / (INR n + 1) as (Hxy).
+        We argue by contradiction.
+        Assume that ¬ (Rabs (f1 x - f1 y) < ε) as (Hfar).
+        It holds that Rabs (f1 x - f1 y) ≥ ε as (Hfar').
+        We claim that
+          ∃ p : ℝ, ∃ q : ℝ,
+            A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
+            Rabs (f1 p - f1 q) ≥ ε
+          as (Hpair).
+        {
+          Choose p := x.
+          Choose q := y.
+          We conclude that
+            A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
+            Rabs (f1 p - f1 q) ≥ ε.
+        }
+        Contradiction.
+    }
+    (** Countable choice is applied twice: first to the left points, then to
+        the matching right points. *)
+    By (countable_choice
+        (fun n p => ∃ q : ℝ,
+          A p ∧ A q ∧ Rabs (p - q) < 1 / (INR n + 1) ∧
+          Rabs (f1 p - f1 q) ≥ ε)
+        Hsteps)
+      it holds that
+      ∃ x : ℕ → ℝ, ∀ n : ℕ, ∃ q : ℝ,
+        A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 q) ≥ ε
+      as (Hx_ex).
+    Obtain x according to (Hx_ex).
+    It holds that
+      ∀ n : ℕ, ∃ q : ℝ,
+        A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 q) ≥ ε
+      as (Hx).
+    By (countable_choice
+        (fun n q =>
+          A (x n) ∧ A q ∧ Rabs (x n - q) < 1 / (INR n + 1) ∧
+          Rabs (f1 (x n) - f1 q) ≥ ε)
+        Hx)
+      it holds that
+      ∃ y : ℕ → ℝ, ∀ n : ℕ,
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε
+      as (Hy_ex).
+    Obtain y according to (Hy_ex).
+    It holds that
+      ∀ n : ℕ,
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε
+      as (Hxy).
+    We claim that ∀ n : ℕ, A (x n) as (HxA).
+    {
+      Take n : ℕ.
+      By Hxy it holds that
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+      We conclude that A (x n).
+    }
+    We claim that ∀ n : ℕ, A (y n) as (HyA).
+    {
+      Take n : ℕ.
+      By Hxy it holds that
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+      We conclude that A (y n).
+    }
+    We claim that ∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε as (Hfar).
+    {
+      Take n : ℕ.
+      By Hxy it holds that
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+      We conclude that Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+    }
+    We claim that (fun n => x n - y n) ⟶ 0 as (Hconv).
+    {
+      We need to show that
+        ∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |x n - y n - 0| < ε0.
+      Take ε0 > 0.
+      By the Archimedean property it holds that
+        ∃ n1 ∈ ℕ, n1 > / ε0 as (Arch_N).
+      Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
+      We need to show that ∀ n ≥ N1, |x n - y n - 0| < ε0.
+      By Arch_N it holds that INR N1 > / ε0 as (H_arch_bound).
+      Take n ≥ N1.
+      It holds that n >= N1 as (Order_N).
+      By Order_N it holds that INR n >= INR N1 as (H_real_order).
+      By H_real_order and H_arch_bound it holds that
+        INR n + 1 > / ε0 as (H_inv_bound).
+      By H_inv_bound it holds that 1 / (INR n + 1) < ε0.
+      By Hxy it holds that
+        A (x n) ∧ A (y n) ∧ Rabs (x n - y n) < 1 / (INR n + 1) ∧
+        Rabs (f1 (x n) - f1 (y n)) ≥ ε.
+      It holds that Rabs (x n - y n) < 1 / (INR n + 1) as (Hxy_n).
+      It holds that x n - y n - 0 = x n - y n.
+      We conclude that (& |x n - y n - 0| = |x n - y n| < 1 / (INR n + 1) < ε0).
+    }
+    We claim that
+      ∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+      as (Hwitness).
+    {
+      Choose x0 := x.
+      Choose y0 := y.
+      Choose ε0 := ε.
+      We conclude that
+        ε0 > 0 ∧ (∀ n : ℕ, A (x0 n)) ∧ (∀ n : ℕ, A (y0 n)) ∧
+        (fun n => x0 n - y0 n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x0 n) - f1 (y0 n)) ≥ ε0).
+    }
+    Contradiction.
+  - We need to show that
+      (∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)) ⇨
+      ¬ uniformly_continuous_on f1 A.
+    Assume that
+      ∃ x : ℕ → ℝ, ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+      as (Hseqs).
+    Obtain x according to (Hseqs).
+    It holds that
+      ∃ y : ℕ → ℝ, ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+      as (Hseqs').
+    Obtain y according to (Hseqs').
+    It holds that
+      ∃ ε0 : ℝ,
+        ε0 > 0 ∧ (∀ n : ℕ, A (x n)) ∧ (∀ n : ℕ, A (y n)) ∧
+        (fun n => x n - y n) ⟶ 0 ∧
+        (∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0)
+      as (Hseqs'').
+    Obtain ε0 according to (Hseqs'').
+    It holds that ε0 > 0 as (Hε0).
+    It holds that ∀ n : ℕ, A (x n) as (HxA).
+    It holds that ∀ n : ℕ, A (y n) as (HyA).
+    It holds that (fun n => x n - y n) ⟶ 0 as (Hconv).
+    It holds that ∀ n : ℕ, Rabs (f1 (x n) - f1 (y n)) ≥ ε0 as (Hfar).
+    We argue by contradiction.
+    Assume that ¬ ¬ uniformly_continuous_on f1 A.
+    It holds that uniformly_continuous_on f1 A as (Huc).
+    By Huc it holds that
+      ∃ δ > 0, ∀ x0 ∈ ℝ, ∀ y0 ∈ ℝ,
+        A x0 → A y0 → Rabs (x0 - y0) < δ → Rabs (f1 x0 - f1 y0) < ε0
+      as (Hδ).
+    Obtain such a δ.
+    By Hconv it holds that
+      ∃ N1 ∈ ℕ, ∀ n ≥ N1, |x n - y n - 0| < δ as (HN).
+    Obtain such an N1.
+    It holds that |x N1 - y N1 - 0| < δ as (HN1).
+    It holds that x N1 - y N1 - 0 = x N1 - y N1.
+    It holds that Rabs (x N1 - y N1) < δ as (Hclose).
+    By HxA it holds that A (x N1).
+    By HyA it holds that A (y N1).
+    By Hδ it holds that Rabs (f1 (x N1) - f1 (y N1)) < ε0.
+    By Hfar it holds that Rabs (f1 (x N1) - f1 (y N1)) ≥ ε0.
+    Contradiction.
+Qed.
 
 (** Exercise: [x ↦ √x] is uniformly continuous on [[0, ∞)].
 

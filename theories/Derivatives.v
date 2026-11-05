@@ -470,6 +470,8 @@ Theorem nowhere_differentiable_function :
       (∀ x : ℝ, continuity_pt f x) ∧
       (∀ x : ℝ, ¬ (∃ l : ℝ, derivable_pt_lim f x l)).
 Proof.
+  (** Proving this in Wateproof remains challenging and time-consuming,
+      so we decided to postpone it to a future update. *)
   Admitted.
 
 (** ** Positive derivative implies strictly increasing *)
@@ -493,5 +495,6 @@ Proof.
   It holds that a < v as (Hav).
   It holds that a ≤ x ∧ x ≤ v as (Hx).
   It holds that a ≤ y ∧ y ≤ v as (Hy).
-  exact (derive_increasing_interv a v psi Hd Hav Hderiv_pos x y Hx Hy H2).
+  By (derive_increasing_interv a v psi Hd Hav Hderiv_pos x y Hx Hy H2)
+    we conclude that psi x < psi y.
 Qed.

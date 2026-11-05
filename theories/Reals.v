@@ -11,6 +11,7 @@
 (* Re-exports the core Waterproof infrastructure so that files importing
   [Analysis.Reals] do not need to separately import Waterproof. *)
 From Stdlib Require Import Reals.Reals.
+From Stdlib Require Import Logic.Classical_Prop.
 
 From Waterproof Require Export Tactics.
 From Waterproof Require Export Notations.Common.
@@ -20,6 +21,8 @@ From Waterproof Require Export Chains.
 From Waterproof Require Export Automation.
 From Waterproof Require Export Libs.Analysis.SupAndInf.
 From Waterproof Require Export Libs.Reals.ArchimedN.
+Require Export RUG.Analysis.Lib.Integers.
+Require Export RUG.Analysis.Lib.Rationals.
 
 Waterproof Enable Automation RealsAndIntegers.
 Waterproof Enable Automation Intuition.
@@ -375,6 +378,17 @@ Proof.
     We conclude that (1 - t) ^ (k + 1)%nat ≥ 1 - INR (k + 1)%nat * t.
 Qed.
 
+(** ** Real powers *)
+
+(** Real powers are positive: [0 < xʸ].
+
+    Proof idea: [Rpower x y = exp (y ln x)] and [exp] is positive. *)
+Lemma Rpower_pos (x y : ℝ) : 0 < Rpower x y.
+Proof.
+  By exp_pos it holds that 0 < exp (y * ln x).
+  We conclude that 0 < Rpower x y.
+Qed.
+
 (** ** Absolute value *)
 
 (** [|x| = max{x, -x}]. *)
@@ -552,4 +566,206 @@ Proof.
 
   By Hq_pos, Hlo_div and Hhi_div we conclude that
     (q > 0)%Z ∧ lo < IZR p / IZR q < hi.
+Qed.
+
+(** The integer [n + 1], viewed as a real, is [INR n + 1].
+
+    Proof idea: [INR_IZR_INZ] and [S_INR]. *)
+Lemma IZR_succ_nat (n : ℕ) : IZR (Z.of_nat (S n)) = INR n + 1.
+Proof.
+  By INR_IZR_INZ it holds that INR (S n) = IZR (Z.of_nat (S n)).
+  By S_INR it holds that INR (S n) = INR n + 1.
+  We conclude that IZR (Z.of_nat (S n)) = INR n + 1.
+Qed.
+
+(** _Density of the rationals_: every neighbourhood of [c] contains a
+    rational point.
+
+    Proof idea: pick [n] with [1/(n+1) < δ] and let [z] be the integer given by
+    [archimed] for [c(n+1)], so [0 < z - c(n+1) ≤ 1]. Then [z/(n+1)] is
+    rational and within [1/(n+1)] of [c]. *)
+Lemma rational_near (c : ℝ) :
+    ∀ δ > 0, ∃ x : ℝ, is_rational x ∧ Rabs (x - c) < δ.
+Proof.
+  Take δ > 0.
+  By the Archimedean property it holds that
+    ∃ n1 ∈ ℕ, n1 > / δ as (Arch_N).
+  Obtain such an n1.
+  It holds that INR n1 + 1 > / δ as (Hn1).
+  It holds that 1 / (INR n1 + 1) < δ as (Hsmall).
+  It holds that INR n1 + 1 > 0 as (Hpos).
+  By (archimed (c * (INR n1 + 1))) it holds that
+    IZR (up (c * (INR n1 + 1))) > c * (INR n1 + 1) ∧
+    IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1) ≤ 1 as (Harch).
+  Choose x := IZR (up (c * (INR n1 + 1))) / (INR n1 + 1).
+  We show both statements.
+  - We need to show that
+      ∃ p : Z, ∃ q : Z, (q <> 0)%Z ∧
+        IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) = IZR p / IZR q.
+    Choose p := up (c * (INR n1 + 1)).
+    Choose q := Z.of_nat (S n1).
+    It holds that (Z.of_nat (S n1) <> 0)%Z as (Hq).
+    By IZR_succ_nat it holds that IZR (Z.of_nat (S n1)) = INR n1 + 1.
+    It holds that
+      IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) = IZR p / IZR q as (Heq).
+    We conclude that
+      (q <> 0)%Z ∧
+      IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) = IZR p / IZR q.
+  - We need to show that
+      Rabs (IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) - c) < δ.
+    It holds that
+      IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) - c
+      = (IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1)) / (INR n1 + 1)
+      as (Hdiff).
+    It holds that
+      (& 0 < IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1) ≤ 1) as (Hbounds).
+    It holds that / (INR n1 + 1) > 0 as (Hinv_pos).
+    By Rmult_le_compat_r it holds that
+      (IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1)) * / (INR n1 + 1)
+      ≤ 1 * / (INR n1 + 1).
+    It holds that
+      (IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1)) / (INR n1 + 1)
+      ≤ 1 / (INR n1 + 1).
+    It holds that
+      (IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1)) / (INR n1 + 1) > 0.
+    It holds that
+      Rabs (IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) - c)
+      = (IZR (up (c * (INR n1 + 1))) - c * (INR n1 + 1)) / (INR n1 + 1).
+    We conclude that
+      Rabs (IZR (up (c * (INR n1 + 1))) / (INR n1 + 1) - c) < δ.
+Qed.
+
+(** ** Irrationality of √2 and density of the irrationals *)
+
+(** [√2] is irrational.
+
+    Proof idea: from [√2 = p/q] we get [p² = 2q²] in [ℤ], which is impossible
+    by [no_square_double]. *)
+Lemma sqrt2_irrational : ¬ is_rational (sqrt 2).
+Proof.
+  We argue by contradiction.
+  Assume that ¬ ¬ is_rational (sqrt 2).
+  It holds that is_rational (sqrt 2) as (Hrat).
+  By Hrat it holds that
+    ∃ p : Z, ∃ q : Z, (q <> 0)%Z ∧ sqrt 2 = IZR p / IZR q as (Hpq).
+  Obtain p according to (Hpq).
+  It holds that ∃ q : Z, (q <> 0)%Z ∧ sqrt 2 = IZR p / IZR q as (Hq).
+  Obtain q according to (Hq).
+  It holds that (q <> 0)%Z as (Hq0).
+  It holds that sqrt 2 = IZR p / IZR q as (Hsqrt).
+  By (eq_IZR_contrapositive q 0%Z Hq0) it holds that IZR q ≠ 0 as (HIq).
+  It holds that sqrt 2 * IZR q = IZR p as (Hmul).
+  By (sqrt_sqrt 2) it holds that sqrt 2 * sqrt 2 = 2 as (Hsq).
+  It holds that IZR p * IZR p = 2 * (IZR q * IZR q) as (Hreal).
+  By mult_IZR it holds that IZR (p * p)%Z = IZR p * IZR p.
+  By mult_IZR it holds that IZR (q * q)%Z = IZR q * IZR q.
+  By mult_IZR it holds that IZR (2 * (q * q))%Z = 2 * IZR (q * q)%Z.
+  It holds that IZR (p * p)%Z = IZR (2 * (q * q))%Z as (HIZR).
+  By (eq_IZR (p * p)%Z (2 * (q * q))%Z HIZR) it holds that
+    (p * p = 2 * (q * q))%Z as (HZ).
+  It holds that (Z.abs q <= Z.of_nat (Z.abs_nat q))%Z as (Hbound).
+  By no_square_double it holds that
+    ∀ p0 : Z, ∀ q0 : Z,
+      (Z.abs q0 <= Z.of_nat (Z.abs_nat q))%Z → (q0 ≠ 0)%Z →
+      (p0 * p0 ≠ 2 * (q0 * q0))%Z
+    as (Hdesc).
+  By (Hdesc p q Hbound Hq0) it holds that (p * p ≠ 2 * (q * q))%Z.
+  Contradiction.
+Qed.
+
+(** A rational times [n + 1] is rational.
+
+    Proof idea: [(p/q)(n+1) = (p(n+1))/q]. *)
+Lemma rational_mul_succ (x : ℝ) (n : ℕ) :
+    is_rational x → is_rational (x * (INR n + 1)).
+Proof.
+  Assume that is_rational x as (Hx).
+  By Hx it holds that
+    ∃ p1 : Z, ∃ q1 : Z, (q1 <> 0)%Z ∧ x = IZR p1 / IZR q1 as (Hx1).
+  Obtain p1 according to (Hx1).
+  It holds that ∃ q1 : Z, (q1 <> 0)%Z ∧ x = IZR p1 / IZR q1 as (Hx2).
+  Obtain q1 according to (Hx2).
+  It holds that (q1 <> 0)%Z as (Hq1).
+  It holds that x = IZR p1 / IZR q1 as (Hxe).
+  By (eq_IZR_contrapositive q1 0%Z Hq1) it holds that IZR q1 ≠ 0.
+  We need to show that
+    ∃ p : Z, ∃ q : Z, (q <> 0)%Z ∧ x * (INR n + 1) = IZR p / IZR q.
+  Choose p := (p1 * Z.of_nat (S n))%Z.
+  Choose q := q1.
+  By mult_IZR it holds that
+    IZR (p1 * Z.of_nat (S n))%Z = IZR p1 * IZR (Z.of_nat (S n)).
+  By IZR_succ_nat it holds that IZR (Z.of_nat (S n)) = INR n + 1.
+  It holds that
+    IZR p1 / IZR q1 * (INR n + 1) = IZR p1 * (INR n + 1) / IZR q1.
+  It holds that x * (INR n + 1) = IZR p / IZR q as (Heq).
+  We conclude that (q <> 0)%Z ∧ x * (INR n + 1) = IZR p / IZR q.
+Qed.
+
+(** _Density of the irrationals_: every neighbourhood of [c] contains an
+    irrational point different from [c].
+
+    Proof idea: pick [n] with [2/(n+1) < δ]. If [c] is rational, take
+    [c + √2/(n+1)], which is irrational as otherwise [√2] would be rational.
+    If [c] is irrational, take [c + 1/(n+1)], which is irrational as
+    otherwise [c] would be rational. *)
+Lemma irrational_near (c : ℝ) :
+    ∀ δ > 0, ∃ x : ℝ, ¬ is_rational x ∧ 0 < Rabs (x - c) < δ.
+Proof.
+  Take δ > 0.
+  By the Archimedean property it holds that
+    ∃ n1 ∈ ℕ, n1 > / (δ / 2) as (Arch_N).
+  Obtain such an n1.
+  It holds that δ / 2 > 0.
+  It holds that INR n1 + 1 > / (δ / 2) as (Hn1).
+  It holds that 1 / (INR n1 + 1) < δ / 2 as (Hhalf).
+  It holds that 2 / (INR n1 + 1) = 2 * (1 / (INR n1 + 1)).
+  It holds that 2 / (INR n1 + 1) < δ as (Hsmall).
+  It holds that INR n1 + 1 > 0 as (Hpos).
+  By (sqrt_lt_R0 2) it holds that sqrt 2 > 0 as (Hsqrt_pos).
+  By (sqrt_square 2) it holds that sqrt (2 * 2) = 2 as (Hsqrt4).
+  By (sqrt_lt_1_alt 2 (2 * 2)) it holds that sqrt 2 < sqrt (2 * 2).
+  It holds that sqrt 2 < 2 as (Hsqrt_lt).
+  By classic it holds that is_rational c ∨ ¬ is_rational c.
+  Either is_rational c or ¬ is_rational c.
+  - Case is_rational c.
+    Choose x := c + sqrt 2 / (INR n1 + 1).
+    We show both statements.
+    + We need to show that ¬ is_rational (c + sqrt 2 / (INR n1 + 1)).
+      Assume that is_rational (c + sqrt 2 / (INR n1 + 1)) as (Hx).
+      By (rational_sub (c + sqrt 2 / (INR n1 + 1)) c Hx H) it holds that
+        is_rational (c + sqrt 2 / (INR n1 + 1) - c) as (Hd).
+      By (rational_mul_succ (c + sqrt 2 / (INR n1 + 1) - c) n1 Hd)
+        it holds that
+        is_rational ((c + sqrt 2 / (INR n1 + 1) - c) * (INR n1 + 1))
+        as (Hm).
+      It holds that
+        (c + sqrt 2 / (INR n1 + 1) - c) * (INR n1 + 1) = sqrt 2 as (Heq).
+      By Heq and Hm it holds that is_rational (sqrt 2).
+      By sqrt2_irrational it holds that ¬ is_rational (sqrt 2).
+      Contradiction.
+    + We need to show that 0 < Rabs (c + sqrt 2 / (INR n1 + 1) - c) < δ.
+      It holds that c + sqrt 2 / (INR n1 + 1) - c = sqrt 2 / (INR n1 + 1).
+      By Rdiv_lt_0_compat it holds that sqrt 2 / (INR n1 + 1) > 0.
+      It holds that sqrt 2 / (INR n1 + 1) < 2 / (INR n1 + 1).
+      It holds that
+        Rabs (c + sqrt 2 / (INR n1 + 1) - c) = sqrt 2 / (INR n1 + 1).
+      We conclude that 0 < Rabs (c + sqrt 2 / (INR n1 + 1) - c) < δ.
+  - Case ¬ is_rational c.
+    Choose x := c + 1 / (INR n1 + 1).
+    We show both statements.
+    + We need to show that ¬ is_rational (c + 1 / (INR n1 + 1)).
+      Assume that is_rational (c + 1 / (INR n1 + 1)) as (Hx).
+      By (rational_sub (c + 1 / (INR n1 + 1)) (1 / (INR n1 + 1)) Hx
+          (rational_inv_succ n1)) it holds that
+        is_rational (c + 1 / (INR n1 + 1) - 1 / (INR n1 + 1)) as (Hd).
+      It holds that c + 1 / (INR n1 + 1) - 1 / (INR n1 + 1) = c as (Heq).
+      By Heq and Hd it holds that is_rational c.
+      Contradiction.
+    + We need to show that 0 < Rabs (c + 1 / (INR n1 + 1) - c) < δ.
+      It holds that c + 1 / (INR n1 + 1) - c = 1 / (INR n1 + 1).
+      It holds that 1 / (INR n1 + 1) > 0.
+      It holds that 1 / (INR n1 + 1) < 2 / (INR n1 + 1).
+      It holds that
+        Rabs (c + 1 / (INR n1 + 1) - c) = 1 / (INR n1 + 1).
+      We conclude that 0 < Rabs (c + 1 / (INR n1 + 1) - c) < δ.
 Qed.

@@ -6,8 +6,9 @@
   Formalizes examples from Abbott §2.2–2.3.
 
   Note: The rational-limit example and the standard limits 1/n, 1/n^2 and c^n
-  are fully proved. The nth-root limits and n!/n^n are still admitted: they
-  require logarithm/l'Hôpital-style machinery not yet developed here.
+  are fully proved. The nth-root limits and n!/n^n are still admitted; their
+  docstrings sketch elementary proofs via Bernoulli-type inequalities and the
+  squeeze theorem.
   Note: In Rocq, natural numbers start from 0, but our sequences correspond
   to Abbott's sequences starting from n=1. We use (n+1) or (INR n + 1) consistently. *)
 
@@ -186,48 +187,48 @@ Proof.
   We conclude that | c^n - 0 | < ε.
 Qed.
 
+(** ** Standard limit: nth root of c → 1 for c > 0 *)
 
-(** ** Standard limit: nth root of c → 1 for c > 0
+(** For [c > 0], [c^(1/n) → 1]. In Rocq the sequence is
+    [Rpower c (1/(n+1))], matching Abbott's indexing from [n = 1].
 
-  Claim: $\displaystyle\lim_{n\to\infty} \sqrt[n]{c} = 1$ for any c > 0 (where n starts from 1 in Abbott).
-
-  In Rocq, we use (n+1) to match Abbott's indexing. Note that Rpower is used for real exponentiation.
-
-  Proof sketch: If c = 1, trivial. If c > 1, let c = 1+h with h > 0.
-  By Bernoulli, (1+h)^n ≥ 1 + n·h, so √[n+1]{c} = (1+h)^(1/(n+1)) ≤ (1 + n·h)^(1/(n+1)).
-  Taking logs and using l'Hôpital's rule shows the limit is 1.
-  For 0 < c < 1, use 1/c > 1 and √[n+1]{c} = 1/√[n+1]{1/c}. *)
+    Proof idea: for [c ≥ 1] set [xₙ = c^(1/(n+1)) - 1 ≥ 0], so that
+    [(1 + xₙ)^(n+1) = c]. Bernoulli's inequality [(1 + x)^m ≥ 1 + m x] for
+    [x ≥ 0] gives [c ≥ 1 + (n+1) xₙ], hence [0 ≤ xₙ ≤ (c - 1)/(n+1)], and the
+    squeeze theorem with [1/(n+1) → 0] gives [xₙ → 0]. For [0 < c < 1] apply
+    this to [1/c > 1] and use [c^(1/(n+1)) = 1 / (1/c)^(1/(n+1))] together
+    with the limit of a quotient. *)
 Lemma standard_limit_nth_root_of_c (c : ℝ) :
     c > 0 → (fun n : ℕ => Rpower c (1 / (INR n + 1))) ⟶ 1.
 Proof.
   Admitted.
 
+(** ** Standard limit: nth root of n → 1 *)
 
-(** ** Standard limit: nth root of n → 1
+(** [n^(1/n) → 1]. In Rocq the sequence is [Rpower (n+1) (1/(n+1))],
+    matching Abbott's indexing from [n = 1].
 
-  Claim: $\displaystyle\lim_{n\to\infty} \sqrt[n]{n} = 1$ (where n starts from 1 in Abbott).
-
-  In Rocq, we use (n+1) to match Abbott's indexing. Note that Rpower is used for real exponentiation.
-
-  Proof sketch: For n ≥ 1, we have 1 < √[n+1]{n+1}. Consider ln(√[n+1]{n+1}) = ln(n+1)/(n+1) → 0,
-  so √[n+1]{n+1} = e^(ln(n+1)/(n+1)) → e^0 = 1. *)
-Lemma standard_limit_nth_root_of_n : 
+    Proof idea: set [yₙ = (n+1)^(1/(n+1)) - 1 ≥ 0], so that
+    [(1 + yₙ)^(n+1) = n+1]. Keeping only the quadratic term of the binomial
+    expansion, [(1 + y)^m ≥ m(m-1)/2 · y²] for [y ≥ 0], gives
+    [n+1 ≥ (n+1)n/2 · yₙ²], hence [0 ≤ yₙ ≤ √(2/n)] for [n ≥ 1]. Since
+    [√(2/n) → 0], the squeeze theorem gives [yₙ → 0]. *)
+Lemma standard_limit_nth_root_of_n :
     (fun n : ℕ => Rpower (INR n + 1) (1 / (INR n + 1))) ⟶ 1.
 Proof.
   Admitted.
 
+(** ** Standard limit: n! / nⁿ → 0 *)
 
-(** ** Standard limit: n! / n^n → 0
+(** [n!/nⁿ → 0]. In Rocq the sequence is [(n+1)!/(n+1)^(n+1)], with [fact]
+    from [Stdlib.Arith.Factorial], matching Abbott's indexing from [n = 1].
 
-  Claim: $\displaystyle\lim_{n\to\infty} \frac{n!}{n^n} = 0$ (where n starts from 1 in Abbott).
-
-  In Rocq, we use (n+1) to match Abbott's indexing. We use Stdlib.Arith.Factorial.fact
-  which computes factorial of natural numbers.
-
-  Proof sketch: Note that n! / n^n = ∏_{k=1}^n (k/n) ≤ (1/√n)^(n/2) by pairing
-  terms k and n-k: (k/n)·((n-k)/n) = k(n-k)/n^2 ≤ 1/4 for k = n/2.
-  So n! / n^n ≤ (1/4)^(n/2) → 0. *)
-Lemma standard_limit_n_factorial_over_n_to_n : 
+    Proof idea: each of the factors [2, …, n+1] of [(n+1)!] is at most
+    [n+1], so [(n+1)! ≤ (n+1)ⁿ]; formally, by induction,
+    [(n+2)! = (n+2)·(n+1)! ≤ (n+2)·(n+1)ⁿ ≤ (n+2)^(n+1)]. Hence
+    [0 < (n+1)!/(n+1)^(n+1) ≤ 1/(n+1)], and the squeeze theorem with
+    [1/(n+1) → 0] gives the claim. *)
+Lemma standard_limit_n_factorial_over_n_to_n :
     (fun n : ℕ => INR (Stdlib.Arith.Factorial.fact (S n)) / (INR (S n))^(S n)) ⟶ 0.
 Proof.
   Admitted.

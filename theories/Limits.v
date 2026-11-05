@@ -11,6 +11,7 @@
 From Stdlib Require Import Reals.Reals.
 From Waterproof Require Import Libs.Analysis.ContinuityDomainR.
 Require Export RUG.Analysis.Sequences.
+Require Import RUG.Analysis.Lib.Compactness.
 
 Waterproof Enable Automation RealsAndIntegers.
 Waterproof Enable Automation Intuition.
@@ -437,17 +438,125 @@ Proof.
 Qed.
 
 (** [lim_{x→c} f(x) = L] iff for every sequence [(xₙ) → c] with [xₙ ≠ c],
-    [f(xₙ) → L]. The forward direction is [functional_limit_imp_seq]; the
-    backward direction requires building a witness sequence by choosing a
-    counterexample point for each [δ = 1/n], which needs a form of the axiom of
-    (dependent) choice not available in the pure Waterproof fragment, so it is
-    left admitted here. *)
-Lemma sequential_limit_characterization (f : ℝ → ℝ) (c L : ℝ) :
-    (_limit_ of f in c is L) ⇔
+    [f(xₙ) → L].
+
+    Proof idea: (⇒) is [functional_limit_imp_seq]. (⇐) if the limit were not
+    [L], there would be [ε > 0] such that for every [n] some [aₙ] satisfies
+    [0 < |aₙ - c| < 1/(n+1)] and [|f(aₙ) - L| ≥ ε]. Countable choice turns
+    these into a sequence [aₙ → c] with [aₙ ≠ c], so [f(aₙ) → L], which
+    contradicts [|f(aₙ) - L| ≥ ε]. *)
+Lemma sequential_limit_characterization (f' : ℝ → ℝ) (c L : ℝ) :
+    (_limit_ of f' in c is L) ⇔
     (∀ a : ℕ → ℝ,
-      (∀ n ∈ ℕ, a n ≠ c) → a ⟶ c → (fun n => f (a n)) ⟶ L).
+      (∀ n ∈ ℕ, a n ≠ c) → a ⟶ c → (fun n => f' (a n)) ⟶ L).
 Proof.
-  Admitted.
+  We show both directions.
+  - We need to show that
+      (_limit_ of f' in c is L) ⇨
+      (∀ a : ℕ → ℝ,
+        (∀ n ∈ ℕ, a n ≠ c) → a ⟶ c → (fun n => f' (a n)) ⟶ L).
+    Assume that _limit_ of f' in c is L as (Hf).
+    Take a : ℕ → ℝ.
+    Assume that ∀ n ∈ ℕ, a n ≠ c as (Hne).
+    Assume that a ⟶ c as (Ha).
+    By (functional_limit_imp_seq f' c L a Hf Hne Ha) we conclude that
+      (fun n => f' (a n)) ⟶ L.
+  - We need to show that
+      (∀ a : ℕ → ℝ,
+        (∀ n ∈ ℕ, a n ≠ c) → a ⟶ c → (fun n => f' (a n)) ⟶ L) ⇨
+      (_limit_ of f' in c is L).
+    Assume that
+      ∀ a : ℕ → ℝ,
+        (∀ n ∈ ℕ, a n ≠ c) → a ⟶ c → (fun n => f' (a n)) ⟶ L
+      as (Hseq).
+    We need to show that
+      ∀ ε > 0, ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f' x - L| < ε.
+    Take ε > 0.
+    We argue by contradiction.
+    Assume that ¬ (∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f' x - L| < ε)
+      as (Hno_delta).
+    (** For every [n] there is a point within [1/(n+1)] of [c] where [f'] is
+        [ε]-far from [L]. *)
+    We claim that
+      ∀ n : ℕ, ∃ y : ℝ,
+        0 < |y - c| < 1 / (INR n + 1) ∧ |f' y - L| ≥ ε
+      as (Hsteps).
+    {
+      Take n : ℕ.
+      We argue by contradiction.
+      Assume that
+        ¬ (∃ y : ℝ, 0 < |y - c| < 1 / (INR n + 1) ∧ |f' y - L| ≥ ε)
+        as (Hno_y).
+      It suffices to show that
+        ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f' x - L| < ε.
+      Choose δ := 1 / (INR n + 1).
+      - Indeed, δ > 0.
+      - We need to show that
+          ∀ x ∈ ℝ, 0 < |x - c| < 1 / (INR n + 1) ⇒ |f' x - L| < ε.
+        Take x ∈ ℝ.
+        Assume that 0 < |x - c| < 1 / (INR n + 1) as (Hx).
+        We argue by contradiction.
+        Assume that ¬ (|f' x - L| < ε) as (Hfar).
+        It holds that |f' x - L| ≥ ε as (Hfar').
+        We claim that
+          ∃ y : ℝ, 0 < |y - c| < 1 / (INR n + 1) ∧ |f' y - L| ≥ ε
+          as (Hy).
+        {
+          Choose y := x.
+          We conclude that 0 < |y - c| < 1 / (INR n + 1) ∧ |f' y - L| ≥ ε.
+        }
+        Contradiction.
+    }
+    By (countable_choice
+        (fun n y => 0 < |y - c| < 1 / (INR n + 1) ∧ |f' y - L| ≥ ε) Hsteps)
+      it holds that
+      ∃ a : ℕ → ℝ, ∀ n : ℕ,
+        0 < |a n - c| < 1 / (INR n + 1) ∧ |f' (a n) - L| ≥ ε
+      as (Ha_ex).
+    Obtain a according to (Ha_ex).
+    It holds that
+      ∀ n : ℕ, 0 < |a n - c| < 1 / (INR n + 1) ∧ |f' (a n) - L| ≥ ε
+      as (Ha).
+    We claim that ∀ n ∈ ℕ, a n ≠ c as (Hne).
+    {
+      Take n ∈ ℕ.
+      Use n0 := n in (Ha).
+      It holds that 0 < |a n - c| < 1 / (INR n + 1) ∧ |f' (a n) - L| ≥ ε.
+      It holds that |a n - c| > 0.
+      We conclude that a n ≠ c.
+    }
+    We claim that a ⟶ c as (Hconv).
+    {
+      We need to show that ∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a n - c| < ε0.
+      Take ε0 > 0.
+      By the Archimedean property it holds that
+        ∃ n1 ∈ ℕ, n1 > / ε0 as (Arch_N).
+      Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
+      We need to show that ∀ n ≥ N1, |a n - c| < ε0.
+      By Arch_N it holds that INR N1 > / ε0 as (H_arch_bound).
+      Take n ≥ N1.
+      It holds that n >= N1 as (Order_N).
+      By Order_N it holds that INR n >= INR N1 as (H_real_order).
+      By H_real_order and H_arch_bound it holds that
+        INR n + 1 > / ε0 as (H_inv_bound).
+      By H_inv_bound it holds that 1 / (INR n + 1) < ε0.
+      Use n0 := n in (Ha).
+      It holds that
+        0 < |a n - c| < 1 / (INR n + 1) ∧ |f' (a n) - L| ≥ ε as (Ha_n).
+      By Ha_n it holds that |a n - c| < 1 / (INR n + 1).
+      We conclude that (& |a n - c| < 1 / (INR n + 1) < ε0).
+    }
+    By (Hseq a Hne Hconv) it holds that (fun n => f' (a n)) ⟶ L as (Hfa).
+    By Hfa it holds that
+      ∃ N1 ∈ ℕ, ∀ n ≥ N1, |f' (a n) - L| < ε as (HN).
+    Obtain such an N1.
+    It holds that |f' (a N1) - L| < ε as (Hclose).
+    Use n := N1 in (Ha).
+    It holds that
+      0 < |a N1 - c| < 1 / (INR N1 + 1) ∧ |f' (a N1) - L| ≥ ε.
+    It holds that |f' (a N1) - L| ≥ ε.
+    Contradiction.
+Qed.
 
 (** ** Divergence criterion *)
 
