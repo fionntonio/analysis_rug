@@ -60,21 +60,15 @@ Set Bullet Behavior "Waterproof Relaxed Subproofs".
 
 ## Part 1: comparison from a certain index onwards
 
-Show that if $0 \le a_n$, $0 \le b_n$, and $a_n \le b_n$ for all $n > N$, then
+If $0 \le a_n$, $0 \le b_n$, and $a_n \le b_n$ for all $n > N$, then
 convergence of $\sum b_n$ implies convergence of $\sum a_n$.
 
-**Waterproof remark.** If you use induction, note that in the induction step the
-goal is stated for `(n + 1)%nat`, not `S n`. In a base case write `0%nat`, because a plain `0` is read as a real
-number. To move between `⟶` and `Un_cv` with `convergence_equivalence`, state
-the `⇔` first: the automation does not split an equivalence on its own.
-
-<hint title="💡 Hint (click to open/close)">
-The partial sums of $\sum a_n$ are non-decreasing (`partial_sums_pos_incr`), so
-by the monotone convergence theorem (`Un_cv_crit`) it is enough to bound them,
-e.g. by `partial_sums a Nn + L`. One way is induction on `n`; useful lemmas are
-`growing_prop`, `cond_pos_sum` and `growing_ineq`. The proof of
-`series_comparison_test` in `theories/Series.v` is a good model.
-</hint>
+This variant of `series_comparison_test` is given to you, since its proof is
+long and is not the point of the assignment. You will use it in Parts 3 and 4.
+You do not need to read the proof, but it is a good example of an induction in
+Waterproof: in the induction step the goal is stated for `(n + 1)%nat`, not
+`S n`, and in the base case one writes `0%nat`, because a plain `0` is read as
+a real number.
 
 ```coq
 Lemma tail_comparison (a b : ℕ → ℝ) (Nn : ℕ) (L : ℝ)
@@ -84,13 +78,79 @@ Lemma tail_comparison (a b : ℕ → ℝ) (Nn : ℕ) (L : ℝ)
     (HL : partial_sums b ⟶ L) :
     ∃ l1 ∈ ℝ, partial_sums a ⟶ l1.
 Proof.
-```
-<input-area>
-```coq
+(* Step 1: the partial sums of a are non-decreasing. *)
+We claim that ∀ n ∈ ℕ, a n ≥ 0 as (Ha').
+{ Take n ∈ ℕ. It holds that 0 ≤ a n. We conclude that a n ≥ 0. }
+By partial_sums_pos_incr it holds that Un_growing (partial_sums a) as (Hgrow).
 
-```
-</input-area>
-```coq
+(* Step 2: compare the partial sums: up to index Nn we use monotonicity,
+   after Nn we use a n ≤ b n. *)
+We claim that ∀ n : ℕ, partial_sums a n ≤ partial_sums a Nn + partial_sums b n
+  as (Hcomp).
+{
+  We use induction on n.
+  + We first show the base case
+      (partial_sums a 0 ≤ partial_sums a Nn + partial_sums b 0).
+    By (growing_prop (partial_sums a) Nn O) it holds that
+      partial_sums a Nn ≥ partial_sums a 0 as (H0).
+    It holds that partial_sums b 0%nat = b 0%nat as (Hb00).
+    It holds that 0 ≤ b 0%nat as (Hb0pos).
+    We conclude that partial_sums a 0 ≤ partial_sums a Nn + partial_sums b 0%nat.
+  + We now show the induction step.
+    Take n : ℕ.
+    Assume that partial_sums a n ≤ partial_sums a Nn + partial_sums b n as (IH).
+    We need to show that
+      partial_sums a (n + 1)%nat ≤ partial_sums a Nn + partial_sums b (n + 1)%nat.
+    It holds that (n + 1 = S n)%nat as (Hn1).
+    By Hn1 it holds that partial_sums a (n + 1)%nat = partial_sums a (S n) as (Ea).
+    By Hn1 it holds that partial_sums b (n + 1)%nat = partial_sums b (S n) as (Eb).
+    It holds that partial_sums a (S n) = partial_sums a n + a (S n) as (Hsa).
+    It holds that partial_sums b (S n) = partial_sums b n + b (S n) as (Hsb).
+    Either (S n ≤ Nn)%nat or (S n > Nn)%nat.
+    - Case (S n ≤ Nn)%nat.
+      By (growing_prop (partial_sums a) Nn (S n)) it holds that
+        partial_sums a Nn ≥ partial_sums a (S n) as (Hmon).
+      By (cond_pos_sum b (S n)) it holds that 0 ≤ partial_sums b (S n) as (Hpos).
+      We conclude that
+        partial_sums a (n + 1)%nat ≤ partial_sums a Nn + partial_sums b (n + 1)%nat.
+    - Case (S n > Nn)%nat.
+      By Hab it holds that a (S n) ≤ b (S n) as (Hk).
+      We conclude that
+        partial_sums a (n + 1)%nat ≤ partial_sums a Nn + partial_sums b (n + 1)%nat.
+}
+
+(* Step 3: the partial sums of b are bounded by their limit L. *)
+We claim that ∀ n ∈ ℕ, b n ≥ 0 as (Hb').
+{ Take n ∈ ℕ. It holds that 0 ≤ b n. We conclude that b n ≥ 0. }
+By partial_sums_pos_incr it holds that Un_growing (partial_sums b) as (Hgrowb).
+By convergence_equivalence it holds that
+  (partial_sums b ⟶ L ⇔ Un_cv (partial_sums b) L) as (Hb_iff).
+By Hb_iff it holds that Un_cv (partial_sums b) L as (HbL).
+By growing_ineq it holds that ∀ n : ℕ, partial_sums b n ≤ L as (Hb_le).
+
+(* Step 4: hence the partial sums of a are bounded ... *)
+We claim that bound (EUn (partial_sums a)).
+{
+  We need to show that ∃ m : ℝ, ∀ x : ℝ, EUn (partial_sums a) x ⇒ x ≤ m.
+  Choose m := partial_sums a Nn + L.
+  Take x : ℝ.
+  Assume that EUn (partial_sums a) x as (Hx).
+  It holds that ∃ i : ℕ, x = partial_sums a i as (Hi).
+  Obtain i according to (Hi).
+  By Hcomp it holds that partial_sums a i ≤ partial_sums a Nn + partial_sums b i.
+  By Hb_le it holds that partial_sums b i ≤ L.
+  We conclude that x ≤ m.
+}
+
+(* Step 5: ... and the monotone convergence theorem concludes. *)
+By Un_cv_crit it holds that ∃ l : ℝ, Un_cv (partial_sums a) l as (Hl).
+Obtain l according to (Hl).
+By convergence_equivalence it holds that
+  (partial_sums a ⟶ l ⇔ Un_cv (partial_sums a) l) as (Ha_iff).
+By Ha_iff it holds that partial_sums a ⟶ l as (Hal).
+Choose l1 := l.
+{ Indeed, l1 ∈ ℝ. }
+We conclude that partial_sums a ⟶ l1.
 Qed.
 ```
 
@@ -136,24 +196,21 @@ Qed.
 
 Since the bounds of Part 2 involve a constant factor, we also need that
 rescaling a series does not affect convergence. Here `sprod b K` is the sequence
-$n \mapsto K \cdot b_n$ (see `theories/Series.v`).
-
-<hint title="💡 Hint (click to open/close)">
-This is the first half of `series_algebraic_limit`, with both sequences equal
-to `b`.
-</hint>
+$n \mapsto K \cdot b_n$ (see `theories/Series.v`). This is the first half of
+`series_algebraic_limit` from the lectures, with both sequences equal to `b`,
+so it is given to you.
 
 ```coq
 Lemma scaled_series_converges (b : ℕ → ℝ) (K L : ℝ) (HL : partial_sums b ⟶ L) :
     partial_sums (sprod b K) ⟶ (K * L).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+By (series_algebraic_limit b b L L HL HL) it holds that
+  (∀ c ∈ ℝ, partial_sums (sprod b c) ⟶ (c * L)) ∧
+    partial_sums (ssum b b) ⟶ (L + L) as (Halg).
+Because (Halg) both (∀ c ∈ ℝ, partial_sums (sprod b c) ⟶ (c * L)) as (Hscal)
+  and (partial_sums (ssum b b) ⟶ (L + L)) as (Hsum).
+It holds that K ∈ ℝ as (HK).
+By (Hscal K HK) we conclude that partial_sums (sprod b K) ⟶ (K * L).
 Qed.
 ```
 
@@ -195,6 +252,11 @@ $$
 \frac{x}{1+x} \le \frac12 \;\Rightarrow\; x \le 2\cdot\frac{x}{1+x}.
 $$
 
+**These three lemmas are optional.** They are admitted, so you can use them in
+the proof of the equivalence below straight away. Prove them in your own time,
+after finishing the rest: replace `Admitted.` by your proof and end it with
+`Qed.`.
+
 **Waterproof remark.** As in Part 2, the automation needs `(1 + x) * / (1 + x) = 1`
 (`Rinv_r`) before it can handle `x / (1 + x)`. It also does not cancel a
 common factor in an inequality on its own: for that use
@@ -213,12 +275,9 @@ Proof.
 ```
 <input-area>
 ```coq
-
+Admitted.
 ```
 </input-area>
-```coq
-Qed.
-```
 
 ```coq
 Lemma frac_le (x : ℝ) (Hx : 0 ≤ x) : x / (1 + x) ≤ x.
@@ -226,12 +285,9 @@ Proof.
 ```
 <input-area>
 ```coq
-
+Admitted.
 ```
 </input-area>
-```coq
-Qed.
-```
 
 ```coq
 Lemma frac_ge (x : ℝ) (Hx : 0 ≤ x) (Hhalf : x / (1 + x) ≤ 1/2) :
@@ -240,12 +296,9 @@ Proof.
 ```
 <input-area>
 ```coq
-
+Admitted.
 ```
 </input-area>
-```coq
-Qed.
-```
 
 Now prove the equivalence.
 

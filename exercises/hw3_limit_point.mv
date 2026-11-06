@@ -111,6 +111,10 @@ Show that each `iso_ball A p` is open. (If the radius `snd p` is not a good
 radius for the centre `fst p`, the set is empty, and the argument below still
 works.)
 
+**This part is optional.** The lemma is admitted, so you can use it in the main
+result straight away. Come back to it once you have finished the rest: replace
+`Admitted.` by your proof and end it with `Qed.`.
+
 **Waterproof remark.** If you state an identity such as
 `(x - y) + (y - fst p) = x - fst p` as `(Hid)`, then `By Hid it holds that ...`
 can rewrite with it inside `| ... |`.
@@ -126,12 +130,9 @@ Proof.
 ```
 <input-area>
 ```coq
-
+Admitted.
 ```
 </input-area>
-```coq
-Qed.
-```
 
 The following technical fact about lists is given to you (`In` and `map` are
 from the standard library of Rocq).
