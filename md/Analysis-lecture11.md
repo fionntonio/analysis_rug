@@ -51,9 +51,11 @@ $$\begin{aligned}
 n,m \geq N_1
  & \;\;\Rightarrow\;\;
 |f_n'(x)-f_m'(x)| < \frac{\epsilon}{2(b-a)}\qquad\forall\,x\in [a,b]  \\[5mm]
-n,m \geq N_2
+\pause n,m \geq N_2
  & \;\;\Rightarrow\;\; \big|f_n(x_0)-f_m(x_0)\big| < \frac{\epsilon}{2}
 \end{aligned}$$
+
+\pause
 
 **Claim:**
 $$
@@ -70,10 +72,10 @@ $$
 $$\begin{aligned}
 g(x)
 & = g(x) - g(x_0) + g(x_0) \\[3mm]
-& = g'(c)(x-x_0) + g(x_0) \qquad\text{$c$ between $x$ and $x_0$} \\[6mm]
-|g(x)| & \leq |g'(c)|\cdot|x-x_0| + |g(x_0)| \\[3mm]
-& \leq |g'(c)|\cdot(b-a) + |g(x_0)| \\[6mm]
-|f_n(x) - f_m(x)| & \leq |f_n'(c)-f_m'(c)|\cdot(b-a) + |f_n(x_0) - f_m(x_0)|
+\pause & = g'(c)(x-x_0) + g(x_0) \qquad\text{$c$ between $x$ and $x_0$} \\[6mm]
+\pause |g(x)| & \leq |g'(c)|\cdot|x-x_0| + |g(x_0)| \\[3mm]
+\pause & \leq |g'(c)|\cdot(b-a) + |g(x_0)| \\[6mm]
+\pause |f_n(x) - f_m(x)| & \leq |f_n'(c)-f_m'(c)|\cdot(b-a) + |f_n(x_0) - f_m(x_0)|
 \end{aligned}$$
 ---
 
@@ -112,9 +114,9 @@ $$
 **Proof (ctd):** show there exists $n\in\mathbb{N}$ and $\delta>0$ s.t.
 $$\begin{aligned}
 \left|\frac{f(x)-f(c)}{x-c}-\frac{f_n(x)-f_n(c)}{x-c}\right| & \leq \epsilon / 3 \\[5mm]
-\left|\frac{f_n(x)-f_n(c)}{x-c}-f_n'(c)\right| & < \epsilon / 3 \quad\text{for}\quad 0 < |x-c| < \delta \\[5mm]
-\left|f_n'(c)-g(c)\right| & < \epsilon / 3 \\[5mm]
-\Longrightarrow\quad\left|\frac{f(x)-f(c)}{x-c}-g(c)\right| & < \epsilon \qquad \text{by triangle inequality}
+\pause \left|\frac{f_n(x)-f_n(c)}{x-c}-f_n'(c)\right| & < \epsilon / 3 \quad\text{for}\quad 0 < |x-c| < \delta \\[5mm]
+\pause \left|f_n'(c)-g(c)\right| & < \epsilon / 3 \\[5mm]
+\pause \Longrightarrow\quad\left|\frac{f(x)-f(c)}{x-c}-g(c)\right| & < \epsilon \qquad \text{by triangle inequality}
 \end{aligned}$$
 ---
 
@@ -125,10 +127,14 @@ $$
 \left|\frac{(f_m(x)-f_n(x)) - (f_m(c)-f_n(c))}{x-c}\right| = |f_m'(\alpha) - f_n'(\alpha)|
 $$
 
+\pause
+
 There exists $N_1\in\mathbb{N}$ s.t.
 $$
 n,m \geq N_1 \;\;\Rightarrow\;\; |f_m'(x) - f_n'(x)| < \frac{\epsilon}{3}\qquad\forall\,x \in [a,b]
 $$
+
+\pause
 
 Order Limit Theorem with $m\to\infty$ gives
 $$
@@ -143,6 +149,8 @@ $$
 $$
 n \geq N_2 \quad\Rightarrow\quad |f_n'(c)-g(c)| < \frac{\epsilon}{3}
 $$
+
+\pause
 
 Now fix $n = \max\{N_1,N_2\}$ and pick $\delta>0$ s.t.
 $$
@@ -174,6 +182,8 @@ $$
 n > m \geq N \quad\Rightarrow\quad |f_{m+1}(x) + \dots + f_n(x)| < \epsilon \quad\text{for all } x\in A
 $$
 
+\pause
+
 **Proof:** follows from
 $$
 |s_m(x) - s_n(x)| = |f_{m+1}(x) + \dots + f_n(x)|
@@ -188,6 +198,8 @@ $$
 2. $\sum_{n=1}^\infty C_n$ converges
 
 Then $\sum_{n=1}^\infty f_n$ converges uniformly on $A$
+
+\pause
 
 **Proof:** for all $x \in A$ we have
 $$
@@ -205,6 +217,8 @@ Cauchy criterion for $\sum_{n=1}^\infty C_n \;\Rightarrow\;$ Cauchy criterion fo
 2. $f_n$ is continuous on $A$ for all $n$
 
 Then $f$ is continuous on $A$
+
+\pause
 
 **Proof:**
 
@@ -236,11 +250,17 @@ $$
 **Example:** $f(x)=\displaystyle\sum_{n=0}^\infty \frac{\sin(2^n x)}{3^n}$ is
 differentiable on every $[-c,c]$
 
+\pause
+
 - $f_n(x) = \sin(2^n x) / 3^n$ is differentiable for all $n \in \mathbb{N}$
+
+  \pause
 
 - $|f_n'(x)| \leq (\tfrac{2}{3})^n \quad\forall\,x\in[-c,c]$
 
   Weierstrass $\;\Rightarrow\; \sum_{n=1}^\infty f_n'(x)$ converges uniformly on $[-c,c]$
+
+  \pause
 
 - $\sum_{n=1}^\infty f_n(x)$ converges at $x=0$
 
@@ -282,12 +302,14 @@ $$
 \sum_{n=0}^\infty \big|a_n x^n\big| \text{ converges for } |x| < |c|
 $$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 \sum_{n=0}^\infty a_n c^n \;\text{ converges}
 & \Rightarrow  \lim a_n c^n = 0 \\[2mm]
-& \Rightarrow  \big(a_n c^n\big) \text{ is bounded} \\[4mm]
-& \Rightarrow  \exists\,M>0 \quad\text{s.t.}\quad \big|a_n c^n\big| \leq M \quad\forall\,n\in\mathbb{N}
+\pause & \Rightarrow  \big(a_n c^n\big) \text{ is bounded} \\[4mm]
+\pause & \Rightarrow  \exists\,M>0 \quad\text{s.t.}\quad \big|a_n c^n\big| \leq M \quad\forall\,n\in\mathbb{N}
 \end{aligned}$$
 ---
 
@@ -298,13 +320,17 @@ $$
 \big|a_n x^n\big|
 =
 \left|a_n\left(c\cdot\frac{x}{c}\right)^n\right|
-=
+\pause =
 \big|a_n c^n\big| \cdot \left|\frac{x}{c}\right|^n
-\leq
+\pause \leq
 M\cdot \left|\frac{x}{c}\right|^n \qquad \forall\,n\in\mathbb{N}
 $$
 
+\pause
+
 Note: $|x| < |c| \;\Rightarrow\; \left|\displaystyle\frac{x}{c}\right|<1$
+
+\pause
 
 Apply comparison test:
 $$
@@ -330,6 +356,8 @@ Methods for **computing** $R$ from the $a_n$'s
 
 **Root test:** if $L = \lim \sqrt[n]{|a_n|}$ exists, then $R = 1/L$
 
+\pause
+
 **Ratio test:** if $L = \lim \left|\displaystyle\frac{a_{n+1}}{a_n}\right|$ exists, then $R = 1/L$
 
 *[interpret $L = 0$ as $R = \infty$]*
@@ -339,12 +367,14 @@ Methods for **computing** $R$ from the $a_n$'s
 
 **Proof:** $\lim \sqrt[n]{|a_n x^n|} = L|x| \qquad\forall\,x\in\mathbb{R}$ fixed
 
+\pause
+
 For all $\epsilon>0$ there exists $N\in\mathbb{N}$ s.t.
 $$\begin{aligned}
 n \geq N
 & \Rightarrow  \left|\sqrt[n]{|a_nx^n|} - L|x|\right| < \epsilon \\[5mm]
-& \Rightarrow  L|x|-\epsilon < \sqrt[n]{|a_nx^n|} < L|x| + \epsilon \\[7mm]
-& \Rightarrow  (L|x|-\epsilon)^n < |a_n x^n| < (L|x|+\epsilon)^n
+\pause & \Rightarrow  L|x|-\epsilon < \sqrt[n]{|a_nx^n|} < L|x| + \epsilon \\[7mm]
+\pause & \Rightarrow  (L|x|-\epsilon)^n < |a_n x^n| < (L|x|+\epsilon)^n
 \end{aligned}$$
 ---
 
@@ -379,6 +409,6 @@ a_n = \frac{1}{n^2}
 | Example | Radius | at $x=-R$ | at $x=R$ |
 |---|---|---|---|
 | $\displaystyle\sum_{n=1}^\infty x^n$ | $R=1$ | **divergent** | **divergent** |
-| $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | convergent | **divergent** |
-| $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | **divergent** | convergent |
-| $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | convergent | convergent |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | convergent | **divergent** |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | **divergent** | convergent |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | convergent | convergent |

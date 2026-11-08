@@ -33,6 +33,8 @@ $$
 \lim f_n(x) = f(x)
 $$
 
+\pause
+
 Thus: for each **fixed** $x \in A$ we have
 $$
 \forall\,\epsilon>0 \quad
@@ -63,7 +65,7 @@ $$
 $$\begin{aligned}
 x = 0 \text{ or } 1 & : \text{take } N_{\epsilon, x} = 1 \\[4mm]
 n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = 0 < \epsilon \\[8mm]
-0 < x < 1 & : \text{take } N_{\epsilon, x} > \frac{\log\epsilon}{\log x} \\[4mm]
+\pause 0 < x < 1 & : \text{take } N_{\epsilon, x} > \frac{\log\epsilon}{\log x} \\[4mm]
 n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = |x^n-0| = x^n < \epsilon
 \end{aligned}$$
 
@@ -167,11 +169,13 @@ $$
 \lim \left(\sup_{x\in A} |f_n(x)-f(x)|\right) = 0
 $$
 
+\pause
+
 **Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
 $$\begin{aligned}
 n \geq N_\epsilon
 & \Rightarrow |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A \\[5mm]
-& \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| \leq \epsilon
+\pause & \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| \leq \epsilon
 \end{aligned}$$
 
 *[Note: $\sup_{x\in A} |f_n(x)-f(x)| \to 0$ implies that $|f_n-f|$ is bounded on $A$ for all $n$ sufficiently large]*
@@ -185,11 +189,13 @@ $$
 $$
 then $f_n \to f$ uniformly on $A$
 
+\pause
+
 **Proof:** for any $\epsilon>0$ there exists $N_\epsilon\in\mathbb{N}$ such that
 $$\begin{aligned}
 n \geq N_\epsilon
 & \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| < \epsilon \\[5mm]
-& \Rightarrow |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A
+\pause & \Rightarrow |f_n(x)-f(x)| < \epsilon \quad\forall\, x \in A
 \end{aligned}$$
 ---
 
@@ -245,6 +251,8 @@ $$
 
 Calculus methods $\;\Rightarrow\; f_n(x)$ has a maximum at $x_n = \displaystyle\frac{n}{n+1}$ so
 
+\pause
+
 $$
 \sup_{x\in [0,1]} |f_n(x)-0| = f_n(x_n) = \frac{1}{n+1}\left(\frac{n}{n+1}\right)^n < \frac{1}{n+1} \to 0
 $$
@@ -262,9 +270,9 @@ $$
 **Example (ctd):**
 $$\begin{aligned}
 x = 0     & \Rightarrow f_n(x) = 0 \\[5mm]
-x \neq  0 & \Rightarrow f_n(x) = \frac{x^2}{1+nx^2} = \frac{1}{\displaystyle\frac{1}{x^2} + n} <
+\pause x \neq  0 & \Rightarrow f_n(x) = \frac{x^2}{1+nx^2} = \frac{1}{\displaystyle\frac{1}{x^2} + n} <
 \frac{1}{n} \\[5mm]
-& \Rightarrow \sup_{x\in\mathbb{R}} |f_n(x)| \leq \frac{1}{n} \to 0
+\pause & \Rightarrow \sup_{x\in\mathbb{R}} |f_n(x)| \leq \frac{1}{n} \to 0
 \end{aligned}$$
 ---
 
@@ -301,14 +309,18 @@ Then $f$ is continuous at $c$
 
 - $N\in\mathbb{N}$ s.t. $|f_N(x)-f(x)| < \tfrac{1}{3}\epsilon$ for all $x\in A$
 
+  \pause
+
 - $\delta>0$ s.t. $|x-c| < \delta \;\;\Rightarrow\;\; |f_N(x)-f_N(c)| < \tfrac{1}{3}\epsilon$
+
+\pause
 
 If $|x-c|<\delta$ then
 $$\begin{aligned}
 |f(x) - f(c)|
-& = |f(x) - f_N(x) + f_N(x) - f_N(c) + f_N(c) - f(c)| \\[2mm]
-& \leq |f(x) - f_N(x)| + |f_N(x) - f_N(c)| + |f_N(c) - f(c)| \\[2mm]
-& < \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon \\[2mm]
+& \pause = |f(x) - f_N(x) + f_N(x) - f_N(c) + f_N(c) - f(c)| \\[2mm]
+\pause & \leq |f(x) - f_N(x)| + |f_N(x) - f_N(c)| + |f_N(c) - f(c)| \\[2mm]
+\pause & < \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon + \tfrac{1}{3}\epsilon \\[2mm]
 & = \epsilon
 \end{aligned}$$
 ---

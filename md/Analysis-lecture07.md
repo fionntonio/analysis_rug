@@ -58,14 +58,18 @@ $$
 
 **Example:** $\displaystyle\lim_{x\to 2} \frac{x^2+x-6}{5x-10} = 1$
 
+\pause
+
 Let $\epsilon>0$ be arbitrary.
+
+\pause
 
 If $0 < |x-2| < \delta$, then
 $$\begin{aligned}
 \bigg|\frac{x^2+x-6}{5x-10} - 1\bigg|
 & = \bigg|\frac{(x+3)(x-2)}{5(x-2)} - 1\bigg| \\[2mm]
-& = \bigg|\frac{x+3}{5} - 1\bigg| \\[2mm]
-& = \frac{|x-2|}{5} < \frac{\delta}{5} = \epsilon
+\pause & = \bigg|\frac{x+3}{5} - 1\bigg| \\[2mm]
+\pause & = \frac{|x-2|}{5} < \frac{\delta}{5} = \epsilon
 \end{aligned}$$
 by choosing $\delta = 5\epsilon$
 
@@ -75,10 +79,12 @@ by choosing $\delta = 5\epsilon$
 
 **Example:** $\displaystyle\lim_{x\to c} \sqrt{x} = \sqrt{c}$ when $c > 0$
 
+\pause
+
 $$\begin{aligned}
 \left|\sqrt{x}-\sqrt{c}\right| & = \left|\frac{x-c}{\sqrt{x}+\sqrt{c}}\right| \\[4mm]
-& = \frac{|x-c|}{\sqrt{x}+\sqrt{c}} \\[4mm]
-& \leq \frac{|x-c|}{\sqrt{c}}
+\pause & = \frac{|x-c|}{\sqrt{x}+\sqrt{c}} \\[4mm]
+\pause & \leq \frac{|x-c|}{\sqrt{c}}
 \end{aligned}$$
 
 With $\epsilon>0$ and $\delta = \sqrt{c}\cdot\epsilon$ the definition is satisfied
@@ -122,11 +128,19 @@ $$
 f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}
 $$
 
+\pause
+
 Take $x_n = 1/n$ and $y_n = \sqrt{2}/n$ then
+
+  \pause
 
 - $\lim x_n = \lim y_n = 0$
 
+  \pause
+
 - $\lim f(x_n) = 1$
+
+  \pause
 
 - $\lim f(y_n) = 0$
 
@@ -165,6 +179,8 @@ $$
 |f(x)-f(c)| < \epsilon
 $$
 
+\pause
+
 **Notes:**
 
 - $f(c)$ needs to be defined, but $c$ **need not** be a limit point of $A$
@@ -177,16 +193,20 @@ $$
 
 **Example:** if $c\in A$ is **isolated** then $f : A \to \mathbb{R}$ is continuous at $c$
 
+\pause
+
 Let $\epsilon > 0$ be arbitrary
 
 Take $\delta>0$ such that $V_\delta(c)\cap A = \{c\}$, then
 
+\pause
+
 $$\begin{aligned}
 |x-c| < \delta \text{ and } x\in A
 & \Rightarrow x \in V_\delta(c)\cap A \\[3mm]
-& \Rightarrow x = c \\[3mm]
-& \Rightarrow f(x) = f(c) \\[3mm]
-& \Rightarrow |f(x)-f(c)| = 0 < \epsilon
+\pause & \Rightarrow x = c \\[3mm]
+\pause & \Rightarrow f(x) = f(c) \\[3mm]
+\pause & \Rightarrow |f(x)-f(c)| = 0 < \epsilon
 \end{aligned}$$
 
 ---
@@ -195,15 +215,21 @@ $$\begin{aligned}
 
 **Example:** $f(x) = x^2$ is continuous at every point $c\in\mathbb{R}$
 
+\pause
+
 For $|x-c|<1$ we have $|x| < |c|+1$ and
+
+\pause
 
 $$\begin{aligned}
 |f(x)-f(c)|
 & = |x^2-c^2| \\[3mm]
-& = |x+c|\,|x-c| \\[3mm]
-& \leq (|x| + |c|)\,|x-c| \\[3mm]
-& \leq (2|c|+1)|x-c|
+\pause & = |x+c|\,|x-c| \\[3mm]
+\pause & \leq (|x| + |c|)\,|x-c| \\[3mm]
+\pause & \leq (2|c|+1)|x-c|
 \end{aligned}$$
+
+\pause
 
 For a given $\epsilon>0$ take $\delta = \min\left\{1, \displaystyle\frac{\epsilon}{2|c|+1}\right\}$
 
@@ -233,6 +259,8 @@ The following statements are equivalent:
 1. $f$ is continuous at $c$
 
 2. $(x_n) \subseteq A$ and $\lim x_n = c \;\Rightarrow\; \lim f(x_n) = f(c)$
+
+\pause
 
 If $c$ is a limit point of $A$ then 1 and 2 are also equivalent with
 
@@ -264,8 +292,12 @@ f(x) = \begin{cases} \sin(1/x) & \text{if } x \neq 0 \\ a & \text{if } x = 0 \en
 $$
 continuous at $x=0$
 
+\pause
+
 - if $a \neq 0$, then with $x_n = 1/(n\pi)$ we have
   $\lim x_n = 0$ but $\lim f(x_n) = 0 \neq a = f(0)$
+
+  \pause
 
 - if $a = 0$, then with $x_n = 1/(2n\pi + \pi/2)$ we have
   $\lim x_n = 0$ but $\lim f(x_n) = 1 \neq a = f(0)$
@@ -362,10 +394,14 @@ But $\lim t(x_n) = 0 \neq t(c) > 0$
 
 Let $\epsilon > 0$ and pick $k \in \mathbb{N}$ with $\displaystyle\frac{1}{k} < \epsilon$
 
+\pause
+
 $(c-1,c+1)$ contains **finitely** many $r \in \mathbb{Q}$ with denominator $\leq k$
 
+\pause
+
 Pick $0 < \delta < 1$ such that $(c-\delta, c+\delta)$ contains no rationals with denominator $\leq k$, then
-$$
+\pause $$
 |x - c| < \delta
 \quad\Rightarrow\quad
 |t(x) - t(c)| = |t(x)| = t(x) < \frac{1}{k} < \epsilon

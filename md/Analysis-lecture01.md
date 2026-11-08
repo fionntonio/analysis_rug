@@ -59,6 +59,8 @@ $$
 \exists\, b \in \mathbb{R} \qquad\text{such that}\qquad a \leq b \qquad\forall\, a \in A
 $$
 
+\pause
+
 **Example:**
 $A = \displaystyle \bigg\{\frac{1}{n} \,:\, n \in \mathbb{N}\bigg\} = \bigg\{1,\frac{1}{2},\frac{1}{3},\dots\bigg\}$
 
@@ -87,6 +89,8 @@ Any number $b \geq 1$ is an **upper bound** for $A$
 
 **Claim:** $\sup A = 1$
 
+\pause
+
 **Proof:**
 - clearly, $1/n \leq 1$ for all $n \in \mathbb{N}$, so $1$ is an upper bound for $A$
 - if $b$ is any upper bound for $A$, then $a \leq b$ for all $a \in A$
@@ -102,6 +106,8 @@ s = \sup A
 \quad\Leftrightarrow\quad
 \forall\,\epsilon>0 \quad \exists \, a\in A\quad \text{s.t.} \quad s-\epsilon < a
 $$
+
+\pause
 
 **Proof ($\Rightarrow$):** let $\epsilon>0$ be arbitrary
 
@@ -148,6 +154,8 @@ $$
 $$
 \exists\,\ell \in \mathbb{R} \qquad\text{such that}\qquad \ell \leq a \qquad\forall\, a \in A
 $$
+
+\pause
 
 **Example:**
 $A = \displaystyle \bigg\{\frac{1}{n} \,:\, n \in \mathbb{N}\bigg\}$
@@ -230,6 +238,8 @@ has a least upper bound
 1. $\forall\,x \in \mathbb{R} \quad\exists\,n \in \mathbb{N}\quad\text{s.t.}\quad n > x$
 2. $\forall\,y>0 \quad\exists\,n \in \mathbb{N} \quad\text{s.t.}\quad 1/n < y$
 
+\pause
+
 **Proof (1):** if (1) is **NOT** true, then $\mathbb{N}$ is bounded above
 
 AoC $\;\Rightarrow\;\alpha = \sup \mathbb{N}$ exists
@@ -248,6 +258,8 @@ $n+1 \in \mathbb{N} \;\Rightarrow\; \alpha$ is **NOT** an upper bound for $\math
 1. $\forall\,x \in \mathbb{R} \quad\exists\,n \in \mathbb{N}\quad\text{s.t.}\quad n > x$
 2. $\forall\,y>0 \quad\exists\,n \in \mathbb{N} \quad\text{s.t.}\quad 1/n < y$
 
+\pause
+
 **Proof (2):** let $y>0$ be arbitrary and set $x = 1/y$
 
 By (1) there exists $n \in \mathbb{N}$ such that $n > x$
@@ -259,6 +271,8 @@ Therefore $1/n < 1/x = y$
 ## The Archimedean property
 
 **Claim:** $\inf\{1,\frac{1}{2},\frac{1}{3},\frac{1}{4},\dots\}=0$
+
+\pause
 
 **Proof:**
 - Note that $0$ is a lower bound
@@ -277,6 +291,8 @@ $$
 \bigcap_{n=1}^\infty [a_n, b_n] \neq \varnothing
 $$
 
+\pause
+
 **Proof:** we have to show that
 $$
 \exists\,x \in \mathbb{R} \quad\text{ such that}\quad x\in [a_n,b_n] \;\;\forall\,n \in \mathbb{N}
@@ -291,6 +307,8 @@ $$
 ![](../fig/lec02-nip.png)
 
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+\pause
 
 **Every** $b_n$ is an upper bound for $A$
 
@@ -321,12 +339,16 @@ $$
 
 **Example (ctd):** for $I_n = (0,1/n)$ we have that $\bigcap_{n=1}^\infty I_n = \varnothing$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 x \leq 0 & \Rightarrow x \notin I_n \text{ for all } n \in \mathbb{N} \\[5mm]
-x > 0 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad \frac{1}{k} < x \qquad\text{(by AP)} \\[2mm]
+\pause x > 0 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad \frac{1}{k} < x \qquad\text{(by AP)} \\[2mm]
 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad x \notin I_k
 \end{aligned}$$
+
+\pause
 
 In both cases $x \notin \bigcap_{n=1}^\infty I_n$
 
@@ -339,10 +361,14 @@ $$
 \forall\,a, b \in \mathbb{R}\quad\text{with}\quad a < b\quad\exists\, r \in \mathbb{Q} \quad\text{s.t.}\quad a < r < b
 $$
 
+\pause
+
 **Proof:** by AP there exists $n \in \mathbb{N}$ s.t.
 $$
 \frac{1}{n} < b-a \quad\Rightarrow\quad 1 < nb - na
 $$
+
+\pause
 
 Hence, there exists $m \in \mathbb{Z}$ s.t.
 $$
@@ -377,10 +403,12 @@ $$
 
 **Lemma:** $|x| = \max\{x, -x\}$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 x \geq 0 & \Rightarrow -x \leq 0 \Rightarrow -x \leq x \Rightarrow \max\{-x,x\} = x = |x| \\[5mm]
-x < 0 & \Rightarrow -x > 0 \Rightarrow -x > x \Rightarrow \max\{-x,x\}=-x = |x|
+\pause x < 0 & \Rightarrow -x > 0 \Rightarrow -x > x \Rightarrow \max\{-x,x\}=-x = |x|
 \end{aligned}$$
 
 ---
@@ -389,15 +417,17 @@ x < 0 & \Rightarrow -x > 0 \Rightarrow -x > x \Rightarrow \max\{-x,x\}=-x = |x|
 
 **Product rule:** $|xy| = |x|\,|y|$
 
+\pause
+
 **Proof:**
 
 | | | | | |
 |---|---|---|---|---|
 | $x = 0$ or $y = 0$ | | | obvious | |
-| $x > 0$ and $y > 0$ | $\Rightarrow$ | $xy > 0$ | $\Rightarrow$ | $|xy| = xy = |x|\,|y|$ |
-| $x > 0$ and $y < 0$ | $\Rightarrow$ | $xy < 0$ | $\Rightarrow$ | $|xy| = x(-y) = |x|\,|y|$ |
-| $x < 0$ and $y > 0$ | | similar | | |
-| $x < 0$ and $y < 0$ | $\Rightarrow$ | $xy > 0$ | $\Rightarrow$ | $|xy| = (-x)(-y) = |x|\,|y|$ |
+| \pause $x > 0$ and $y > 0$ | $\Rightarrow$ | $xy > 0$ | $\Rightarrow$ | $|xy| = xy = |x|\,|y|$ |
+| \pause $x > 0$ and $y < 0$ | $\Rightarrow$ | $xy < 0$ | $\Rightarrow$ | $|xy| = x(-y) = |x|\,|y|$ |
+| \pause $x < 0$ and $y > 0$ | | similar | | |
+| \pause $x < 0$ and $y < 0$ | $\Rightarrow$ | $xy > 0$ | $\Rightarrow$ | $|xy| = (-x)(-y) = |x|\,|y|$ |
 
 ---
 
@@ -431,11 +461,13 @@ $$
 \qquad\text{(\textbf{important!})}
 $$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 x+y & \leq  |x| + y \;\;\leq\;\; |x| + |y| \\[5mm]
-{-x}-y & \leq |x| - y \;\;\leq\;\; |x| + |y| \\[5mm]
-|x+y| & = \max\{x+y, -x-y\} \;\;\leq\;\; |x| + |y|
+\pause {-x}-y & \leq |x| - y \;\;\leq\;\; |x| + |y| \\[5mm]
+\pause |x+y| & = \max\{x+y, -x-y\} \;\;\leq\;\; |x| + |y|
 \end{aligned}$$
 
 ---
@@ -448,10 +480,12 @@ $$
 \qquad\text{(\textbf{important!})}
 $$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 |x| = |x-y+y| & \leq |x-y| + |y| \\[4mm]
-|x| - |y| & \leq |x-y| \\[4mm]
-|y| - |x| & \leq |y-x| \;\; = \;\; |x-y| \qquad \text{(swap $x$ and $y$)} \\[4mm]
-\big| |x| - |y|\big| & = \max\big\{|x| - |y|, |y| - |x|\big\} \;\;\leq\;\; |x-y|
+\pause |x| - |y| & \leq |x-y| \\[4mm]
+\pause |y| - |x| & \leq |y-x| \;\; = \;\; |x-y| \qquad \text{(swap $x$ and $y$)} \\[4mm]
+\pause \big| |x| - |y|\big| & = \max\big\{|x| - |y|, |y| - |x|\big\} \;\;\leq\;\; |x-y|
 \end{aligned}$$

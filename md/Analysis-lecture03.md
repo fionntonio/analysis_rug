@@ -41,6 +41,8 @@ $$
 
 - decreasing: $\quad a_{n+1} \leq a_n \quad\forall\,n \in \mathbb{N}$
 
+\pause
+
 **Examples:**
 - $(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\tfrac{1}{4},\dots)$ is monotone
 - $(b_n) = (1,1,2,2,4,4,8,8,\dots)$ is monotone
@@ -51,6 +53,8 @@ $$
 ## Monotone convergence theorem
 
 **Theorem:** $(a_n)$ bounded & monotone $\;\Rightarrow\; (a_n)$ converges
+
+\pause
 
 **Proof:** $A = \{a_n \,:\, n \in \mathbb{N}\}$ is bounded
 
@@ -67,9 +71,15 @@ Strategy of proof:
 
 Let $s=\sup\{a_n \,:\, n \in \mathbb{N}\}$
 
+\pause
+
 Let $\epsilon>0$ be arbitrary, then $s-\epsilon$ is not an upper bound
 
+\pause
+
 There exists $N \in \mathbb{N}$ s.t. $s-\epsilon < a_N$
+
+\pause
 
 For $n \geq N$ we have
 $$
@@ -84,10 +94,10 @@ $$
 
 Induction proof that $(a_n)$ is increasing:
 $$\begin{aligned}
-a_1 = 1, \;\; a_2 = \sqrt{2} & \Rightarrow a_1 < a_2 \\[5mm]
-a_n < a_{n+1} \text{ for some } n & \Rightarrow 1 + a_n < 1 + a_{n+1} \\[3mm]
-& \Rightarrow \sqrt{1+a_n} < \sqrt{1+a_{n+1}} \\[3mm]
-& \Rightarrow a_{n+1} < a_{n+2}
+\pause a_1 = 1, \;\; a_2 = \sqrt{2} & \Rightarrow a_1 < a_2 \\[5mm]
+\pause a_n < a_{n+1} \text{ for some } n & \Rightarrow 1 + a_n < 1 + a_{n+1} \\[3mm]
+\pause & \Rightarrow \sqrt{1+a_n} < \sqrt{1+a_{n+1}} \\[3mm]
+\pause & \Rightarrow a_{n+1} < a_{n+2}
 \end{aligned}$$
 
 ---
@@ -98,10 +108,10 @@ a_n < a_{n+1} \text{ for some } n & \Rightarrow 1 + a_n < 1 + a_{n+1} \\[3mm]
 
 Induction proof that $(a_n)$ is bounded:
 $$\begin{aligned}
-a_1 = 1 & \Rightarrow a_1 < 2 \\[5mm]
-a_n < 2 \text{ for some } n & \Rightarrow 1 + a_n < 3 \\[3mm]
-& \Rightarrow \sqrt{1+a_n} < \sqrt{3} < 2 \\[3mm]
-& \Rightarrow a_{n+1} < 2
+\pause a_1 = 1 & \Rightarrow a_1 < 2 \\[5mm]
+\pause a_n < 2 \text{ for some } n & \Rightarrow 1 + a_n < 3 \\[3mm]
+\pause & \Rightarrow \sqrt{1+a_n} < \sqrt{3} < 2 \\[3mm]
+\pause & \Rightarrow a_{n+1} < 2
 \end{aligned}$$
 
 ---
@@ -111,6 +121,8 @@ a_n < 2 \text{ for some } n & \Rightarrow 1 + a_n < 3 \\[3mm]
 **Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
 
 $(a_n)$ bounded and increasing $\;\Rightarrow\;$ $a = \lim a_n$ exists by MCT
+
+\pause
 
 Moreover:
 $$
@@ -149,15 +161,17 @@ $$
 (a_n) = (a_1, a_2, a_3, a_4, a_5,\dots)
 $$
 
+\pause
+
 Some subsequences are given by:
 $$\begin{aligned}
 n_k = k+4
  & \quad\Rightarrow\quad &
 (a_{n_k}) = (a_5, a_6, a_7,\dots) \\[5mm]
-n_k = 2k
+\pause n_k = 2k
  & \quad\Rightarrow\quad &
 (a_{n_k}) = (a_2, a_4, a_6,\dots) \\[5mm]
-n_k = 10^k & \quad\Rightarrow\quad &
+\pause n_k = 10^k & \quad\Rightarrow\quad &
 (a_{n_k}) = (a_{10}, a_{100}, a_{1000},\dots)
 \end{aligned}$$
 
@@ -179,12 +193,14 @@ The following examples **DO NOT** qualify as subsequences of $(a_n)$:
 
 **Theorem:** $\lim a_n = a \quad\Rightarrow\quad \lim a_{n_k} = a$
 
+\pause
+
 **Proof:** let $\epsilon>0$ be arbitrary, then
 
 $$\begin{aligned}
 \exists\, N \in \mathbb{N} \quad \text{s.t.}\quad n \geq N & \Rightarrow |a_n - a| < \epsilon \\[5mm]
-k \geq N & \Rightarrow n_k \geq N \qquad\qquad\quad \text{(use $n_k\geq k$)} \\[2mm]
-          & \Rightarrow |a_{n_k} - a| < \epsilon
+\pause k \geq N & \Rightarrow n_k \geq N \qquad\qquad\quad \text{(use $n_k\geq k$)} \\[2mm]
+          \pause & \Rightarrow |a_{n_k} - a| < \epsilon
 \end{aligned}$$
 
 ---
@@ -193,11 +209,13 @@ k \geq N & \Rightarrow n_k \geq N \qquad\qquad\quad \text{(use $n_k\geq k$)} \\[
 
 **Example:** $(a_n) = (-1,1,-1,1,\dots)$ diverges
 
+\pause
+
 Take two subsequences:
 $$\begin{aligned}
 n_k = 2k   & \quad\Rightarrow\quad & (a_{n_k}) = (1,1,1,\dots) \\[2mm]
            & \quad\Rightarrow\quad & \lim a_{n_k} = 1 \\[5mm]
-n_k = 2k-1 & \quad\Rightarrow\quad & (a_{n_k}) = (-1,-1,-1,\dots) \\[2mm]
+\pause n_k = 2k-1 & \quad\Rightarrow\quad & (a_{n_k}) = (-1,-1,-1,\dots) \\[2mm]
            & \quad\Rightarrow\quad & \lim a_{n_k} = -1
 \end{aligned}$$
 
@@ -209,10 +227,14 @@ Different subsequences have different limits $\;\Rightarrow\;$ $(a_n)$ diverges
 
 **Theorem:** every bounded sequence has a convergent subsequence
 
+\pause
+
 **Proof:** there exists $M>0$ such that $a_n \in [-M, M]$ for all $n$
 
 ![](../fig/lec05-bolzano.png)
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
+
+\pause
 
 Halving-process gives nested closed intervals
 $$
@@ -229,6 +251,8 @@ NIP $\Rightarrow$ there exists $x\in \bigcap_{n=1}^\infty I_n$
 - pick $n_2 \in \mathbb{N}$ with $n_2 > n_1$ and $a_{n_2} \in I_2$
 - pick $n_3 \in \mathbb{N}$ with $n_3 > n_2$ and $a_{n_3} \in I_3$
   $\quad\quad\vdots$
+
+\pause
 
 Note that
 $$
@@ -265,6 +289,8 @@ $$
 
 **Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k^2}$ converges
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 s_n & = 1 + \frac{1}{4} + \frac{1}{9} + \dots + \frac{1}{n^2} \\[5mm]
@@ -281,10 +307,10 @@ s_n & < 2 \qquad\forall\, n \in \mathbb{N} \qquad \text{*(see next slide)*}\\[5m
 $$\begin{aligned}
 s_n
  & = 1 + \frac{1}{2 \cdot 2} + \frac{1}{3 \cdot 3} + \frac{1}{4 \cdot 4} + \dots + \frac{1}{n\cdot n} \\[4mm]
-  & < 1 + \frac{1}{2 \cdot 1} + \frac{1}{3 \cdot 2} + \frac{1}{4 \cdot 3} + \dots + \frac{1}{n\cdot (n-1)} \\[4mm]
-  & = 1 + \left(1-\frac{1}{2}\right) + \left(\frac{1}{2}-\frac{1}{3}\right) + \left(\frac{1}{3}-\frac{1}{4}\right) + \dots + \left(\frac{1}{n-1}-\frac{1}{n}\right) \\[4mm]
-  & = 1 + 1 - \frac{1}{n} \\[4mm]
-  & < 2
+  \pause & < 1 + \frac{1}{2 \cdot 1} + \frac{1}{3 \cdot 2} + \frac{1}{4 \cdot 3} + \dots + \frac{1}{n\cdot (n-1)} \\[4mm]
+  \pause & = 1 + \left(1-\frac{1}{2}\right) + \left(\frac{1}{2}-\frac{1}{3}\right) + \left(\frac{1}{3}-\frac{1}{4}\right) + \dots + \left(\frac{1}{n-1}-\frac{1}{n}\right) \\[4mm]
+  \pause & = 1 + 1 - \frac{1}{n} \\[4mm]
+  \pause & < 2
 \end{aligned}$$
 
 ---
@@ -319,6 +345,8 @@ For odd powers of $k$ the sums are unknown!
 ## The harmonic series
 
 **Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k}$ **diverges**
+
+\pause
 
 **Proof:**
 $$\begin{aligned}
@@ -383,7 +411,11 @@ $$
 
 Note that $(s_n)$ is increasing since all $a_k > 0$!
 
+\pause
+
 If $\int_1^\infty f(x)\,dx < \infty$, then $(s_n)$ also bounded and hence convergent
+
+\pause
 
 If $\int_1^\infty f(x)\,dx = \infty$, then $(s_n)$ unbounded and hence divergent
 

@@ -23,6 +23,8 @@ x \leq y + \epsilon \quad\forall\,\epsilon > 0
 x \leq y
 $$
 
+\pause
+
 **Proof:** assume $x > y$
 
 Taking $0 < \epsilon < x-y$ gives
@@ -58,10 +60,14 @@ $$
 U(f,P)-L(f,P) < \epsilon
 $$
 
+\pause
+
 Let $P_c = P \cup \{c\}$ then
 $$
 U(f,P_c)-L(f,P_c) < \epsilon
 $$
+
+\pause
 
 Then $Q = P_c \cap [a,c]$ is a partition of $[a,c]$ and
 $$
@@ -76,8 +82,8 @@ $$
 $$\begin{aligned}
 U(f,Q) - L(f,Q)
 & = \sum_{k=1}^{m} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
-& \leq \sum_{k=1}^{n} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
-& = U(f,P_c) - L(f,P_c) \\[3mm]
+\pause & \leq \sum_{k=1}^{n} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
+\pause & = U(f,P_c) - L(f,P_c) \\[3mm]
 & < \epsilon
 \end{aligned}$$
 
@@ -94,11 +100,13 @@ $$
 U(f,P_i) - L(f,P_i) < \tfrac{1}{2}\epsilon, \qquad i=1,2
 $$
 
+\pause
+
 Then $P = P_1 \cup P_2$ is a partition of $[a,b]$ and
 $$\begin{aligned}
 U(f,P) & = U(f,P_1) + U(f,P_2) \\[3mm]
-L(f,P) & = L(f,P_1) + L(f,P_2) \\[3mm]
-U(f,P) - L(f,P) & < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon \;\; = \;\; \epsilon
+\pause L(f,P) & = L(f,P_1) + L(f,P_2) \\[3mm]
+\pause U(f,P) - L(f,P) & < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon \;\; = \;\; \epsilon
 \end{aligned}$$
 
 Conclusion: $f$ is integrable on $[a,b]$
@@ -110,10 +118,10 @@ Conclusion: $f$ is integrable on $[a,b]$
 **Proof ($\Leftarrow$, ctd):** let $\epsilon$ and $P_1,P_2$ be as before
 $$\begin{aligned}
 \int_a^b f & \leq U(f,P) \\[3mm]
-& < L(f,P) + \epsilon \\[3mm]
-& = L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
-& \leq \int_a^c f + \int_c^b f + \epsilon \\[8mm]
-\int_a^b f & \leq \int_a^c f + \int_c^b f
+\pause & < L(f,P) + \epsilon \\[3mm]
+\pause & = L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
+\pause & \leq \int_a^c f + \int_c^b f + \epsilon \\[8mm]
+\pause \int_a^b f & \leq \int_a^c f + \int_c^b f
 \end{aligned}$$
 
 ---
@@ -124,10 +132,10 @@ $$\begin{aligned}
 $$\begin{aligned}
 \int_a^c f + \int_c^b f
 & \leq U(f,P_1) + U(f,P_2) \\[3mm]
-& < L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
-& = L(f,P) + \epsilon \\[3mm]
-& \leq \int_a^b f + \epsilon \\[8mm]
-\int_a^c f + \int_c^b f & \leq \int_a^b f
+\pause & < L(f,P_1) + L(f,P_2) + \epsilon \\[3mm]
+\pause & = L(f,P) + \epsilon \\[3mm]
+\pause & \leq \int_a^b f + \epsilon \\[8mm]
+\pause \int_a^c f + \int_c^b f & \leq \int_a^b f
 \end{aligned}$$
 
 ---
@@ -166,14 +174,16 @@ $$
 m \leq f(x) \leq M \quad\Rightarrow\quad m(b-a) \leq \int_a^b f \leq M(b-a)
 $$
 
+\pause
+
 **Proof:** for all partitions $P$ of $[a,b]$
 $$
 L(f,P) \leq \int_a^b f \leq U(f,P)
 $$
-Taking $P = \{a,b\}$ gives
+\pause Taking $P = \{a,b\}$ gives
 $$\begin{aligned}
 U(f,P) & = (b-a)\cdot \sup\{f(x)\,:\, x\in[a,b]\} \;\; \leq \;\; M(b-a) \\[3mm]
-L(f,P) & = (b-a)\cdot \inf\{f(x)\,:\, x\in[a,b]\} \;\;\; \geq \;\; m(b-a)
+\pause L(f,P) & = (b-a)\cdot \inf\{f(x)\,:\, x\in[a,b]\} \;\;\; \geq \;\; m(b-a)
 \end{aligned}$$
 
 ---
@@ -184,6 +194,8 @@ L(f,P) & = (b-a)\cdot \inf\{f(x)\,:\, x\in[a,b]\} \;\;\; \geq \;\; m(b-a)
 $$
 f(x) \leq g(x) \quad\text{for all } x\in [a,b] \quad\Rightarrow\quad \int_a^b f \leq \int_a^b g
 $$
+
+\pause
 
 **Proof:** since $0 \leq g(x) - f(x)$ for all $x \in [a,b]$ we have
 
@@ -201,11 +213,13 @@ $$
 \left|\int_a^b f\right| \leq \int_a^b |f|
 $$
 
+\pause
+
 **Proof:** let $P$ be any partition of $[a,b]$ and
 $$\begin{aligned}
 M_k   & = \sup\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
 m_k   & = \inf\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
-M_k' & = \sup\{|f(x)|\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+\pause M_k' & = \sup\{|f(x)|\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
 m_k' & = \inf\{|f(x)|\,:\, x\in[x_{k-1},x_k]\}
 \end{aligned}$$
 
@@ -219,10 +233,10 @@ m_k' & = \inf\{|f(x)|\,:\, x\in[x_{k-1},x_k]\}
 $$\begin{aligned}
 M_k' - \tfrac{1}{2}\epsilon & < |f(y)| \\[3mm]
 m_k' + \tfrac{1}{2}\epsilon & > |f(z)| \\[6mm]
-M_k'-m_k' -\epsilon & < |f(y)| - |f(z)| \\[2mm]
-& \leq |f(y)-f(z)| \\[2mm]
-& \leq M_k - m_k \\[6mm]
-M_k'-m_k' & \leq M_k - m_k
+\pause M_k'-m_k' -\epsilon & < |f(y)| - |f(z)| \\[2mm]
+\pause & \leq |f(y)-f(z)| \\[2mm]
+\pause & \leq M_k - m_k \\[6mm]
+\pause M_k'-m_k' & \leq M_k - m_k
 \end{aligned}$$
 
 ---
@@ -274,10 +288,10 @@ $$
 $$\begin{aligned}
 F(b)-F(a)
 & = \sum_{k=1}^n \big[F(x_k)-F(x_{k-1})\big] \\[1mm]
-& \stackrel{\text{MVT}}{=} \sum_{k=1}^n f(t_k)(x_k-x_{k-1}) \qquad t_k \in (x_{k-1},x_k) \\[1mm]
-& \leq \sum_{k=1}^n M_k(x_k-x_{k-1}) \\[1mm]
-& = U(f,P) \\[5mm]
-F(b)-F(a) & \geq L(f,P) \qquad \text{by similar proof}
+\pause & \stackrel{\text{MVT}}{=} \sum_{k=1}^n f(t_k)(x_k-x_{k-1}) \qquad t_k \in (x_{k-1},x_k) \\[1mm]
+\pause & \leq \sum_{k=1}^n M_k(x_k-x_{k-1}) \\[1mm]
+\pause & = U(f,P) \\[5mm]
+\pause F(b)-F(a) & \geq L(f,P) \qquad \text{by similar proof}
 \end{aligned}$$
 
 ---
@@ -289,10 +303,14 @@ $$
 L(f,P) \leq F(b) - F(a) \leq U(f,P)
 $$
 
+\pause
+
 Taking sup/inf over all partitions gives
 $$
 L(f) \leq F(b) - F(a) \leq U(f)
 $$
+
+\pause
 
 Since $f$ is integrable it follows that
 $$
@@ -323,12 +341,14 @@ $$
 |f(x)| \leq M \qquad\forall\,x \in [a,b]
 $$
 
+\pause
+
 If $x,y \in [a,b]$ with $x \geq y$, then
 $$\begin{aligned}
 |F(x) - F(y)|
 & = \left|\int_y^x f(t)\,dt\right| \\[3mm]
-& \leq \int_y^x |f(t)|\,dt \\[3mm]
-& \leq M |x-y|
+\pause & \leq \int_y^x |f(t)|\,dt \\[3mm]
+\pause & \leq M |x-y|
 \end{aligned}$$
 
 For given $\epsilon>0$ take $\delta=\epsilon/M$
@@ -342,7 +362,7 @@ For given $\epsilon>0$ take $\delta=\epsilon/M$
 $$\begin{aligned}
 \frac{F(x)-F(c)}{x-c}-f(c)
 & = \frac{1}{x-c}\int_c^x f(t)\,dt - f(c) \\[7mm]
-& = \frac{1}{x-c}\int_c^x f(t)-f(c)\,dt
+\pause & = \frac{1}{x-c}\int_c^x f(t)-f(c)\,dt
 \end{aligned}$$
 
 ---
@@ -354,11 +374,13 @@ $$
 |x-c| < \delta \quad\Rightarrow\quad |f(x)-f(c)| < \epsilon
 $$
 
+\pause
+
 Since $|t-c| \leq |x-c| < \delta$ it follows that
 $$\begin{aligned}
 \left|\frac{F(x)-F(c)}{x-c}-f(c)\right|
 & = \frac{1}{|x-c|}\left|\int_c^x f(t)-f(c)\,dt\right| \\[5mm]
-& \leq \frac{1}{|x-c|} \cdot |x-c|\cdot \epsilon \\[5mm]
+\pause & \leq \frac{1}{|x-c|} \cdot |x-c|\cdot \epsilon \\[5mm]
 & = \epsilon
 \end{aligned}$$
 
@@ -384,10 +406,14 @@ $$
 g(x) = \begin{cases} \phantom{-}0 & \text{if } x \neq 1 \\ -1 & \text{if } x = 1 \end{cases}
 $$
 
+\pause
+
 **Exercise:** show that $g$ is integrable and
 $$
 \int_0^x g(t)\,dt = 0 \qquad \forall\,x\in[0,2]
 $$
+
+\pause
 
 Hence,
 $$

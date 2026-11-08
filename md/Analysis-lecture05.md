@@ -49,9 +49,15 @@ Recall: $V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon
 
 **Example:** the interval $(c,d)$ is open
 
+\pause
+
 Take $x\in (c,d)$ arbitrary
 
+\pause
+
 Take $\epsilon=\min\{|x-c|,|x-d|\}$, then $V_\epsilon(x)\subseteq (c,d)$
+
+\pause
 
 **Example:** the interval $[c,d)$ is **NOT** open
 
@@ -79,9 +85,15 @@ Then $x \in V_\epsilon(0)$ but $x\notin\mathbb{Q}$
 1. Unions of **arbitrary** collections of open sets are open
 2. Intersections of **finite** collections of open sets are open
 
+\pause
+
 **Proof (1):** let $O = \bigcup_{i\in I} O_i$ with each $O_i$ open
 
+\pause
+
 $x \in O \;\Rightarrow\; x \in O_i$ for some $i \in I$
+
+\pause
 
 There exists $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_i \subseteq O$
 
@@ -94,11 +106,19 @@ There exists $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_i \subseteq O$
 1. Unions of **arbitrary** collections of open sets are open
 2. Intersections of **finite** collections of open sets are open
 
+\pause
+
 **Proof (2):** let $O = O_1 \cap O_2 \cap \dots \cap O_n$ with each $O_i$ open
+
+\pause
 
 $x \in O \;\Rightarrow\; x \in O_i$ for all $i=1,\dots,n$
 
+\pause
+
 For all $i=1,\dots,n$ there exists $\epsilon_i>0$ such that $V_{\epsilon_i}(x)\subseteq O_i$
+
+\pause
 
 For $\epsilon=\min\{\epsilon_1,\dots,\epsilon_n\}$ we have $V_\epsilon(x)\subseteq O_i$ for all $i=1,\dots,n$
 
@@ -126,6 +146,8 @@ $$
 \exists\,\epsilon>0 \quad V_\epsilon(a)\cap A = \{a\}
 $$
 
+\pause
+
 **Example:** $a=1$ is an isolated point of $A = \displaystyle\left\{\frac{1}{n} \,:\, n\in\mathbb{N}\right\}$
 
 For $0 < \epsilon < \tfrac{1}{2}$ we have $V_\epsilon(1) \cap A = \{1\}$
@@ -151,6 +173,8 @@ $$
 **Example:** $x=0$ is a limit point of
 $A = \displaystyle\left\{\frac{1}{n} \,:\, n\in\mathbb{N}\right\}$
 
+\pause
+
 Take $\epsilon>0$ arbitrary
 
 Take $n\in\mathbb{N}$ such that $\displaystyle\frac{1}{n} < \epsilon$
@@ -171,6 +195,8 @@ Then $\displaystyle\frac{1}{n} \in V_\epsilon(0) \cap A$
    a_n \neq x \quad\forall\,n\in\mathbb{N}\quad\text{and}\quad x = \lim a_n
    $$
 
+\pause
+
 **Proof (1 $\Rightarrow$ 2):** let $n\in\mathbb{N}$ and set $\epsilon=1/n$
 
 There exists $a_n \in V_\epsilon(x) \cap A$ with $a_n \neq x$
@@ -188,6 +214,8 @@ Note that $|a_n-x| < \epsilon = \displaystyle\frac{1}{n}$
    $$
    a_n \neq x \quad\forall\,n\in\mathbb{N}\quad\text{and}\quad x = \lim a_n
    $$
+
+\pause
 
 **Proof (2 $\Rightarrow$ 1):** for all $\epsilon>0$ there exists $N\in\mathbb{N}$ such that
 $$
@@ -228,11 +256,17 @@ For $x=1$ take $a_n = \displaystyle\frac{n}{n+1}$
 1. $F$ is closed
 2. Every Cauchy sequence in $F$ has its limit in $F$
 
+\pause
+
 **Proof (1 $\Rightarrow$ 2):** let $(a_n)$ be a Cauchy sequence in $F$
 
 $x = \lim a_n$ exists; now consider two cases:
 
+\pause
+
 - $x \neq a_n$ for all $n \in \mathbb{N} \;\Rightarrow\; x$ is a limit point of $F\;\Rightarrow\; x\in F$
+
+  \pause
 
 - $x = a_n$ for some $n \in \mathbb{N} \;\Rightarrow\; x \in F$ holds trivially
 
@@ -247,7 +281,11 @@ $x = \lim a_n$ exists; now consider two cases:
 
 **Proof (2 $\Rightarrow$ 1):** let $x$ be a limit point of $F$
 
+\pause
+
 $x = \lim a_n$ with $a_n \in F$ and $a_n \neq x$ for all $n\in\mathbb{N}$
+
+\pause
 
 $(a_n)$ convergent $\;\Rightarrow\;$ $(a_n)$ Cauchy $\;\Rightarrow\;$ $x\in F$ by assumption
 
@@ -256,6 +294,8 @@ $(a_n)$ convergent $\;\Rightarrow\;$ $(a_n)$ Cauchy $\;\Rightarrow\;$ $x\in F$ b
 ## Closed sets
 
 **Example:** $[c,d]$ is closed
+
+\pause
 
 Let $x$ be a limit point of $[c,d]$
 
@@ -276,6 +316,8 @@ $$
 
 **Theorem:** $\overline{A}$ is closed
 
+\pause
+
 **Proof:** show that
 $$
 x \text{ limit point of } \overline{A}
@@ -291,13 +333,15 @@ $$
 
 $\overline{A} = A \cup L \quad\text{with}\quad L = \{\text{limit points of } A\}$
 
+\pause
+
 $$\begin{aligned}
 x \text{ limit point of $\overline{A}$} &\Rightarrow \forall\,\epsilon>0 \quad \exists\,y \in V_\epsilon(x)\cap\overline{A} \quad y \neq x \\
-& \quad \textit{(note: either } y \in A \textit{ or } y \in L\textit{)} \\[3mm]
-(1)\quad y \in A &\Rightarrow x \text{ is a limit point of $A$} \\[3mm]
-(2)\quad y \in L &\Rightarrow \forall\,\delta>0 \quad \exists\, z \in V_\delta(y) \cap A \quad z \neq y \\
-& \quad \textit{(note: } V_\delta(y) \subseteq V_\epsilon(x)\setminus\{x\} \textit{ for } \delta \textit{ small enough)} \\[3mm]
-&\Rightarrow x \text{ is a limit point of $A$}
+\pause & \quad \textit{(note: either } y \in A \textit{ or } y \in L\textit{)} \\[3mm]
+\pause (1)\quad y \in A &\Rightarrow x \text{ is a limit point of $A$} \\[3mm]
+\pause (2)\quad y \in L &\Rightarrow \forall\,\delta>0 \quad \exists\, z \in V_\delta(y) \cap A \quad z \neq y \\
+\pause & \quad \textit{(note: } V_\delta(y) \subseteq V_\epsilon(x)\setminus\{x\} \textit{ for } \delta \textit{ small enough)} \\[3mm]
+\pause &\Rightarrow x \text{ is a limit point of $A$}
 \end{aligned}$$
 
 ---
@@ -317,6 +361,8 @@ If $x < 0$ or $x > 1$ then $x$ is **NOT** a limit point of $A$ (exercise!)
 ## Closure
 
 **Example:** $\overline{\mathbb{Q}} = \mathbb{R}$
+
+\pause
 
 Take $x \in \mathbb{R}$ and $\epsilon>0$ arbitrary
 
@@ -357,6 +403,8 @@ So each $x\in\mathbb{R}$ is a limit point of $\mathbb{Q}$
 1. Unions of **finite** collections of closed sets are closed
 2. Intersections of **arbitrary** collections of closed sets are closed
 
+\pause
+
 **Proof (1):**
 $$\begin{aligned}
 F_1,\dots,F_n \text{ closed}
@@ -374,6 +422,8 @@ F_1,\dots,F_n \text{ closed}
 
 1. Unions of **finite** collections of closed sets are closed
 2. Intersections of **arbitrary** collections of closed sets are closed
+
+\pause
 
 **Proof (2):**
 $$\begin{aligned}

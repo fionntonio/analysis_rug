@@ -22,7 +22,11 @@ Tutorial: [Tutorial 2](#tutorials/tutorial-2)
 
 *[Source: James Stewart, *Calculus Early Transcendentals*, 7th edition, Cengage, 2012]*
 
+\pause
+
 Equation of tangent line: $y = f'(x_1)(x - x_1) + f(x_1)$
+
+\pause
 
 Root of tangent line: $\displaystyle x_2 := x_1 - \frac{f(x_1)}{f'(x_1)}$
 
@@ -103,9 +107,15 @@ $$
 
 **Example:** $\lim \displaystyle\frac{1}{n} = 0$
 
+\pause
+
 Let $\epsilon > 0$ be arbitrary
 
+\pause
+
 Archimedean property $\;\Rightarrow\; \exists\,N \in \mathbb{N} \quad\text{s.t.}\quad \displaystyle\frac{1}{N} < \epsilon$
+
+\pause
 
 This choice of $N$ gives
 
@@ -128,10 +138,10 @@ Note:
 $$
 \left|\frac{6n+7}{3n+1}-2\right|
 =
-\left|\frac{6n+7}{3n+1}-\frac{6n+2}{3n+1}\right|
-=
+\pause \left|\frac{6n+7}{3n+1}-\frac{6n+2}{3n+1}\right|
+\pause =
 \frac{5}{3n+1}
-< \frac{5}{3n}
+\pause < \frac{5}{3n}
 $$
 
 ---
@@ -140,9 +150,13 @@ $$
 
 **Example:** $\lim \displaystyle\left(\frac{6n+7}{3n+1}\right) = 2$
 
+\pause
+
 Let $\epsilon > 0$ be arbitrary
 
 Choose $N\in\mathbb{N}$ such that $\displaystyle\frac{1}{N} < \frac{3}{5}\epsilon$
+
+\pause
 
 This choice of $N$ gives
 
@@ -201,11 +215,17 @@ $$
 
 *[no number $a\in\mathbb{R}$ can be a limit]*
 
+\pause
+
 Choose $\epsilon = 1$ and $N\in\mathbb{N}$ arbitrary
+
+\pause
 
 Case $a \geq 0$:
 
 $n=2N+1 \;\Rightarrow\; |a_n - a| = |{-1}-a| = 1 + a \geq \epsilon$
+
+\pause
 
 Case $a < 0$:
 
@@ -233,19 +253,23 @@ $(b_n) = (1,4,9,16,25,\dots)$ is **NOT** bounded
 
 **Theorem:** $(a_n)$ is convergent $\;\Rightarrow\; (a_n)$ is bounded
 
+\pause
+
 **Proof:** let $a=\lim a_n$ then for $\epsilon = 1$ there exists $N \in \mathbb{N}$ such that
 
 $$\begin{aligned}
 n \geq N
 & \quad\Rightarrow\quad
 |a_n-a| < 1 \\[2mm]
-& \quad\Rightarrow\quad
+\pause & \quad\Rightarrow\quad
 \big||a_n|-|a|\big| < 1 \\[2mm]
-& \quad\Rightarrow\quad
+\pause & \quad\Rightarrow\quad
 |a_n|-|a| < 1 \\[2mm]
-& \quad\Rightarrow\quad
+\pause & \quad\Rightarrow\quad
 |a_n| < 1 + |a|
 \end{aligned}$$
+
+\pause
 
 For $M = \max\{|a_1|,|a_2|,\dots,|a_{N-1}|,1+|a|\}$ we have
 
@@ -301,6 +325,8 @@ $$
 \end{split}
 $$
 
+\pause
+
 Let $\epsilon>0$ be arbitrary, then
 
 $$
@@ -309,6 +335,8 @@ $$
 \exists\,N_2 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \tfrac{1}{2}\epsilon
 \end{split}
 $$
+
+\pause
 
 Define $N = \max\{N_1,N_2\}$ then
 
@@ -324,10 +352,10 @@ $$
 
 $$\begin{aligned}
 |a_nb_n - ab| & =    |a_nb_n - ab_n + ab_n - ab| \\[5mm]
-              & =    |b_n(a_n-a) + a(b_n-b)| \\[5mm]
-              & \leq |b_n(a_n-a)| + |a(b_n-b)| \\[5mm]
-              & =    |b_n|\,|a_n-a| + |a|\,|b_n-b| \\[5mm]
-              & \leq M |a_n-a| + |a|\,|b_n-b|
+              \pause & =    |b_n(a_n-a) + a(b_n-b)| \\[5mm]
+              \pause & \leq |b_n(a_n-a)| + |a(b_n-b)| \\[5mm]
+              \pause & =    |b_n|\,|a_n-a| + |a|\,|b_n-b| \\[5mm]
+              \pause & \leq M |a_n-a| + |a|\,|b_n-b|
 \end{aligned}$$
 
 Recall: $(b_n)$ is convergent and therefore bounded!
@@ -342,6 +370,8 @@ $$
 |a_nb_n - ab| \leq M |a_n-a| + |a||b_n-b|
 $$
 
+\pause
+
 Let $\epsilon>0$ be arbitrary, then
 
 $$
@@ -350,6 +380,8 @@ $$
 \exists\, N_2 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \frac{\epsilon}{2|a|}
 \end{split}
 $$
+
+\pause
 
 Define $N = \max\{N_1,N_2\}$ then
 
@@ -380,9 +412,9 @@ For $\epsilon = |a|$ there exists $N \in \mathbb{N}$ such that
 
 $$\begin{aligned}
 n \geq N & \quad\Rightarrow\quad  |a_n - a| < \epsilon \\[5mm]
-         & \quad\Rightarrow\quad  {-\epsilon} < a_n - a < \epsilon \\[5mm]
-         & \quad\Rightarrow\quad  a-\epsilon < a_n < a+\epsilon \\[5mm]
-         & \quad\Rightarrow\quad  a_n < a+|a|=0 \\[3mm]
+         \pause & \quad\Rightarrow\quad  {-\epsilon} < a_n - a < \epsilon \\[5mm]
+         \pause & \quad\Rightarrow\quad  a-\epsilon < a_n < a+\epsilon \\[5mm]
+         \pause & \quad\Rightarrow\quad  a_n < a+|a|=0 \\[3mm]
          &                        \text{Contradiction!}
 \end{aligned}$$
 

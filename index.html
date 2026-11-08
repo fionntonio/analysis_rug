@@ -300,6 +300,8 @@
     }
 
     .slide-content { display: flow-root; transform-origin: top left; }
+    /* Content after a \pause; it keeps its space, as in Beamer. */
+    #content .pause-hidden { visibility: hidden; }
     .slide-card img { max-height: 300px; object-fit: contain; }
     .slide-card .katex-display { overflow: visible; }
 
@@ -721,15 +723,117 @@
     return { src: src, store: store };
   }
 
+  // ── Pauses (Beamer's \pause) ──────────────────────────────────────
+  // Inside math, everything after the n-th \pause is wrapped in
+  // \htmlClass{md-pause-n}{…}. A wrapper cannot span a cell separator
+  // (& or \\) or a closing group (}, \right, \end), so it is closed
+  // there and reopened afterwards.
+  var MATH_TOKEN = new RegExp([
+    '\\\\\\\\\\s*(?:\\[[^\\]]*\\])?',              // \\ with optional [skip]
+    '\\\\(?:begin|end)\\s*\\{[^}]*\\}',
+    '\\\\(?:left|right)(?![a-zA-Z])\\s*(?:\\\\[a-zA-Z]+|\\\\.|.)',
+    '\\\\[a-zA-Z]+|\\\\.',
+    '[{}&]',
+    '[^\\\\{}&]+'
+  ].join('|'), 'g');
+
+  function pauseMath(tex, newId) {
+    if (!/\\pause(?![a-zA-Z])/.test(tex)) return tex;
+    var out = '';
+    var stack = [{ open: 0, active: [] }];
+    function top() { return stack[stack.length - 1]; }
+    function openWrapper(frame, id) {
+      out += '\\htmlClass{md-pause-' + id + '}{';
+      frame.open++;
+    }
+    function closeWrappers(frame) {
+      out += '}'.repeat(frame.open);
+      frame.open = 0;
+    }
+    (tex.match(MATH_TOKEN) || []).forEach(function (tok) {
+      var frame = top();
+      if (/^\\pause(?![a-zA-Z])/.test(tok)) {
+        var id = newId();
+        stack.forEach(function (f) { f.active.push(id); });
+        openWrapper(frame, id);
+      } else if (tok === '&' || /^\\\\/.test(tok)) {
+        closeWrappers(frame);
+        out += tok;
+        if (frame.active.length) openWrapper(frame, frame.active[frame.active.length - 1]);
+      } else if (tok === '{' || /^\\(begin|left)(?![a-zA-Z])/.test(tok)) {
+        out += tok;
+        stack.push({ open: 0, active: [] });
+      } else if ((tok === '}' || /^\\(end|right)(?![a-zA-Z])/.test(tok)) && stack.length > 1) {
+        closeWrappers(frame);
+        stack.pop();
+        out += tok;
+        var parent = top();
+        if (frame.active.length) openWrapper(parent, frame.active[frame.active.length - 1]);
+      } else {
+        out += tok;
+      }
+    });
+    while (stack.length) closeWrappers(stack.pop());
+    return out;
+  }
+
+  // Give every element after a pause a data-step attribute, the number of the
+  // pause after which it appears. Pauses are numbered in document order.
+  function markPauses(root) {
+    var steps = new Map();
+    var anchors = [];
+    root.querySelectorAll('.md-pause, [class*="md-pause-"]').forEach(function (el) {
+      var m = (el.getAttribute('class') || '').match(/md-pause-(\d+)/);
+      var key = m ? 'math' + m[1] : el;
+      if (!steps.has(key)) {
+        steps.set(key, anchors.length + 1);
+        // Content after a pause in a formula is hidden too.
+        anchors.push(m ? (el.closest('.katex-display') || el.closest('.katex')) : el);
+      }
+      if (m) el.dataset.step = steps.get(key);
+    });
+    function mark(node, step) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (!node.textContent.trim()) return;
+        var span = document.createElement('span');
+        node.replaceWith(span);
+        span.appendChild(node);
+        node = span;
+      } else if (node.nodeType !== Node.ELEMENT_NODE) {
+        return;
+      }
+      node.dataset.step = Math.max(step, Number(node.dataset.step) || 0);
+    }
+    anchors.forEach(function (anchor, i) {
+      for (var n = anchor; n && n !== root; n = n.parentNode) {
+        for (var sib = n.nextSibling; sib; ) {
+          var next = sib.nextSibling;
+          mark(sib, i + 1);
+          sib = next;
+        }
+      }
+    });
+    root.querySelectorAll('.md-pause').forEach(function (el) {
+      var parent = el.parentNode;
+      el.remove();
+      if (parent.nodeName === 'P' && !parent.textContent.trim() && !parent.children.length) parent.remove();
+    });
+  }
+
   function restoreMath(html, store) {
+    var pauseCount = 0;
+    function newId() { return ++pauseCount; }
     store.forEach(function (item, i) {
       var id  = item.display ? '@@MD' + i + '@@' : '@@MI' + i + '@@';
       var out;
       try {
-        out = katex.renderToString(item.tex.trim(), {
+        out = katex.renderToString(pauseMath(item.tex.trim(), newId), {
           displayMode: item.display,
           throwOnError: false,
-          trust: false
+          strict: function (code) { return code === 'htmlExtension' ? 'ignore' : 'warn'; },
+          trust: function (context) {
+            return context.command === '\\htmlClass' && /^md-pause-\d+$/.test(context.class);
+          }
         });
       } catch (e) {
         out = '<span style="color:#c00">[math error]</span>';
@@ -749,6 +853,9 @@
     // Fix image paths: ../fig/ -> fig/
     html = html.replace(/(<img[^>]+src=")\.\.\/fig\//g, '$1fig/');
 
+    // A \pause outside math (math is still shielded at this point).
+    html = html.replace(/\\pause(?![a-zA-Z])/g, '<span class="md-pause"></span>');
+
     html = restoreMath(html, protected_.store);
 
     // Workaround to make Markdown contents links work.
@@ -764,6 +871,7 @@
       usedIds.add(id);
       heading.id = id;
     });
+    markPauses(template.content);
     return template.innerHTML;
   }
 
@@ -894,7 +1002,30 @@
   new ResizeObserver(fitSlide).observe(contentEl);
   if (document.fonts) document.fonts.addEventListener('loadingdone', fitSlide);
 
-  function showSlide(idx) {
+  // Steps of the current slide: content with data-step > step is hidden.
+  let step = 0;
+  let stepEls = [];
+  let maxStep = 0;
+
+  function setStep(s) {
+    step = s;
+    stepEls.forEach(function (el) { el.classList.toggle('pause-hidden', Number(el.dataset.step) > step); });
+    prevBtn.disabled = slideIdx === 0 && step === 0;
+    nextBtn.disabled = slideIdx === slides.length - 1 && step === maxStep;
+  }
+
+  function forward() {
+    if (step < maxStep) setStep(step + 1);
+    else if (slideIdx < slides.length - 1) showSlide(slideIdx + 1);
+  }
+
+  // As in Beamer, going back from the first step shows the previous slide complete.
+  function backward() {
+    if (step > 0) setStep(step - 1);
+    else if (slideIdx > 0) showSlide(slideIdx - 1, true);
+  }
+
+  function showSlide(idx, complete) {
     slideIdx = Math.max(0, Math.min(idx, slides.length - 1));
     contentEl.innerHTML =
       '<div class="slide-wrap"><div class="slide-frame"><div class="slide-card"><div class="slide-content">'
@@ -906,12 +1037,13 @@
     fitSlide();
     contentEl.scrollTop = 0;
     slideCounter.textContent = (slideIdx + 1) + ' / ' + slides.length;
-    prevBtn.disabled = slideIdx === 0;
-    nextBtn.disabled = slideIdx === slides.length - 1;
+    stepEls = Array.from(contentEl.querySelectorAll('[data-step]'));
+    maxStep = stepEls.reduce(function (m, el) { return Math.max(m, Number(el.dataset.step)); }, 0);
+    setStep(complete ? maxStep : 0);
   }
 
-  prevBtn.addEventListener('click', function () { showSlide(slideIdx - 1); });
-  nextBtn.addEventListener('click', function () { showSlide(slideIdx + 1); });
+  prevBtn.addEventListener('click', backward);
+  nextBtn.addEventListener('click', forward);
 
   // Keyboard navigation
   document.addEventListener('keydown', function (e) {
@@ -926,10 +1058,10 @@
     }
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
       e.preventDefault();
-      showSlide(slideIdx + 1);
+      forward();
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
       e.preventDefault();
-      showSlide(slideIdx - 1);
+      backward();
     }
   });
 
@@ -942,7 +1074,7 @@
     if (mode !== 'slides') return;
     var dx = e.changedTouches[0].clientX - touchX0;
     if (Math.abs(dx) > 48) {
-      dx < 0 ? showSlide(slideIdx + 1) : showSlide(slideIdx - 1);
+      dx < 0 ? forward() : backward();
     }
   }, { passive: true });
 

@@ -33,12 +33,14 @@ $$
 
 **Theorem:** $f : I \to \mathbb{R}$ differentiable at $c\in I \;\Rightarrow\; f$ continuous at $c$
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 \lim_{x\to c} \big[f(x)-f(c)\big]
  & = \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \cdot (x-c) \\[4mm]
- & = \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \cdot \lim_{x\to c} \big[x-c\big] \\[4mm]
- & = f'(c)\cdot 0 \\[4mm]
+ \pause & = \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \cdot \lim_{x\to c} \big[x-c\big] \\[4mm]
+ \pause & = f'(c)\cdot 0 \\[4mm]
  & = 0
 \end{aligned}$$
 
@@ -61,6 +63,8 @@ $$
 \lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = \lim_{x\to 0} \frac{|x|}{x}\qquad\text{does \textbf{NOT} exist}
 $$
 
+\pause
+
 **Exercise:** show $f$ is differentiable at every $c\neq 0$ and
 $$
 f'(c) = \begin{cases} \phantom{-}1 & \text{ if } c > 0 \\ -1 & \text{ if } c < 0 \end{cases}
@@ -72,15 +76,19 @@ $$
 
 **Example:** $f(x) = \displaystyle\frac{x}{1+|x|} \;\Rightarrow\; f'(0) = 1$
 
+\pause
+
 Apply the definition:
 
 $$\begin{aligned}
 \left|\frac{f(x)-f(0)}{x-0} - 1\right|
 & = \left|\frac{1}{1+|x|} - 1\right|
-= \frac{|x|}{1+|x|}
-\leq |x| \\[8mm]
-f'(0) & = \lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = 1 \quad\text{by $\epsilon,\delta$-argument}
+\pause = \frac{|x|}{1+|x|}
+\pause \leq |x| \\[8mm]
+\pause f'(0) & = \lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = 1 \quad\text{by $\epsilon,\delta$-argument}
 \end{aligned}$$
+
+\pause
 
 **Remark:** for $c \neq 0$ we can compute $f'(c)$ using calculus rules
 
@@ -103,15 +111,19 @@ Then $f'(c) = 0$
 
 **Proof (maximum):** $f(c) \geq f(x)$ for all $x \in (a,b)$
 
+\pause
+
 Take sequences $(x_n)$ and $(y_n)$ in $(a,b)$ such that
 $$
 x_n < c < y_n \quad\forall\,n\in\mathbb{N} \quad\text{ and }\quad \lim x_n = \lim y_n = c
 $$
 
+\pause
+
 $f'(c)=0$ by the order limit theorem:
 $$\begin{aligned}
 f'(c) & = \lim \frac{f(x_n)-f(c)}{x_n-c} \;\; \geq 0 \\[4mm]
-f'(c) & = \lim \frac{f(y_n)-f(c)}{y_n-c} \;\; \leq 0
+\pause f'(c) & = \lim \frac{f(y_n)-f(c)}{y_n-c} \;\; \leq 0
 \end{aligned}$$
 
 ---
@@ -136,9 +148,13 @@ f'(a) > L > f'(b)
 $$
 then there exists $c \in (a,b)$ with $f'(c)=L$
 
+\pause
+
 **Notes:**
 - proof $\neq$ intermediate value theorem applied to $f'$!
 - we do **NOT** assume $f'$ to be continuous!
+
+\pause
 
 **Proof:** restrict to the case $f'(a) < 0 < f'(b)$
 
@@ -152,9 +168,13 @@ Otherwise replace $f(x)$ by $\pm(f(x) - Lx)$
 
 Claim: $\exists\,s \in (a,b)$ s.t. $f(s) < f(a)$
 
+\pause
+
 Otherwise $f(x) \geq f(a) \quad\forall\,x\in (a,b)\quad$ so that
 $$f'(a) = \lim_{x\to a} \frac{f(x)-f(a)}{x-a} \geq 0 \qquad\text{Contradiction!}
 $$
+
+\pause
 
 Similarly: $\exists\,t \in (a,b)$ s.t. $f(t) < f(b)$
 
@@ -177,6 +197,8 @@ Interior extremum theorem $\;\Rightarrow\; f'(c)=0$ for some $c\in(a,b)$
 **Example:**
 $f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\[3mm] 0 & \text{if } x \notin\mathbb{Q} \end{cases}$
 is **NOT** a derivative
+
+\pause
 
 Assume there exists $F : \mathbb{R} \to \mathbb{R}$ such that $F'(x)=f(x)$
 
@@ -211,9 +233,13 @@ Then there exists $c\in(a,b)$ such that $f'(c)=0$
 
 **Proof:** $f$ cont. and $[a,b]$ cpt. $\;\Rightarrow\; f$ attains max/min values
 
+\pause
+
 $f(a) = f(b)$ both max and min $\;\Rightarrow\; f$ is constant
 $\;\Rightarrow\; f'(x)=0$ for all $x$
 $\;\Rightarrow\;$ take any $c\in(a,b)$
+
+\pause
 
 Otherwise, a max or min is attained at $c \in (a,b)$
 
@@ -240,6 +266,8 @@ $$
 f'(c) = \frac{f(b)-f(a)}{b-a}
 $$
 
+\pause
+
 **Proof:** apply Rolle's theorem to
 $$
 h(x) = f(x) - \bigg[{\frac{f(b)-f(a)}{b-a}(x-a) + f(a)}\bigg]
@@ -252,10 +280,12 @@ $$
 **Proof:**
 $$\begin{aligned}
 k(x) & = \frac{f(b)-f(a)}{b-a}(x-a) + f(a) \\[5mm]
-h(x) & = f(x) - k(x) \quad\text{is continuous on $[a,b]$} \\
+\pause h(x) & = f(x) - k(x) \quad\text{is continuous on $[a,b]$} \\
      &   \phantom{f(x) - k(x) \quad} \text{and differentiable on $(a,b)$}\\[5mm]
-h(a) & = h(b) \;\; = \;\; 0
+\pause h(a) & = h(b) \;\; = \;\; 0
 \end{aligned}$$
+
+\pause
 
 By Rolle's theorem: $\exists\,c \in (a,b)$ s.t.
 $$
@@ -272,12 +302,14 @@ $$
 
 **Example:** $f(x) = \arctan(x)$ is uniformly continuous on $\mathbb{R}$
 
+\pause
+
 MVT $\;\Rightarrow\; \forall\,x,y \in \mathbb{R} \quad\exists\,c\in(x,y)\quad$ such that
 $$\begin{aligned}
 \arctan(x)-\arctan(y)\phantom{|}
  & = \arctan'(c)(x-y) \\[3mm]
- & = \frac{1}{1+c^2}(x-y) \\[7mm]
-|\arctan(x)-\arctan(y)|
+ \pause & = \frac{1}{1+c^2}(x-y) \\[7mm]
+\pause |\arctan(x)-\arctan(y)|
  & \leq |x-y|
 \end{aligned}$$
 

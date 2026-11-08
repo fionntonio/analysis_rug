@@ -35,11 +35,19 @@ every sequence in $K$ has a convergent subseq. with a limit in $K$
 
 **Proof:**
 
+\pause
+
 Let $(y_n)\subseteq f(K)$ be arbitrary
+
+\pause
 
 There exists $(x_n)\subseteq K$ such that $y_n=f(x_n)$ for all $n$
 
+\pause
+
 $K$ compact $\;\Rightarrow\;$ some subsequence $x_{n_k}\to x \in K$
+
+\pause
 
 $f$ continuous $\;\Rightarrow\;$ $y_{n_k} = f(x_{n_k}) \to f(x) \in f(K)$
 
@@ -64,6 +72,8 @@ Counter example:
 **Theorem:** let $K\subseteq\mathbb{R}$ be compact and $f : K \to \mathbb{R}$ continuous
 
 then $f$ attains a maximum and a minimum on $K$
+
+\pause
 
 **Proof (max):**
 
@@ -108,12 +118,16 @@ $$
 
 **Example:** $f(x)=ax+b$ is uniformly continuous on $\mathbb{R}$
 
+\pause
+
 For $x,y \in \mathbb{R}$ we have
 $$\begin{aligned}
 |f(x)-f(y)|
 & = |(ax+b)-(ay+b)| \\[5mm]
 & = |a|\,|x-y|
 \end{aligned}$$
+
+\pause
 
 Let $\epsilon>0$ and pick $\delta = \epsilon / |a|$, then for all $x, y \in \mathbb{R}$ we have
 $$
@@ -130,13 +144,17 @@ $$
 
 **Example:** $f(x)=x^2$ is uniformly continuous on $[a,b]$
 
+\pause
+
 For $x,y \in [a,b]$ we have
 $$\begin{aligned}
 |f(x)-f(y)|
 & = |x+y|\,|x-y| \\[3mm]
-& \leq (|x| + |y|)\,|x-y| \\[3mm]
-& \leq 2M|x-y| \quad\qquad M := \max\{|a|,|b|\}
+\pause & \leq (|x| + |y|)\,|x-y| \\[3mm]
+\pause & \leq 2M|x-y| \quad\qquad M := \max\{|a|,|b|\}
 \end{aligned}$$
+
+\pause
 
 For $\epsilon>0$ take $\delta = \epsilon / 2M$, then for all $x,y \in [a,b]$ we have
 $$
@@ -171,6 +189,8 @@ $$
 
 **Example:** $f(x)=x^2$ is **NOT** uniformly continuous on $\mathbb{R}$
 
+\pause
+
 For any $\delta>0$ we have
 $$
 x = \frac{1}{\delta} + \frac{\delta}{2}, \qquad
@@ -178,7 +198,7 @@ y = \frac{1}{\delta}
 \qquad\Rightarrow\qquad
 |x-y| = \frac{\delta}{2} < \delta
 $$
-but
+\pause but
 $$
 |x^2 - y^2| = 1+\frac{\delta^2}{4} > 1
 $$
@@ -221,6 +241,8 @@ $\displaystyle |f(x_n)-f(y_n)| = 2+\frac{1}{n^2} > 2 \quad \forall\,n\in\mathbb{
 
 **Example:** $f(x)=\displaystyle\frac{1}{x}$ is unif. cont. on $[a,\infty)$ for all $a>0$
 
+\pause
+
 For $x,y \in [a,\infty)$ we have
 $$
 \left|\frac{1}{x}-\frac{1}{y}\right|
@@ -231,6 +253,8 @@ $$
 \leq
 \frac{|x-y|}{a^2}
 $$
+
+\pause
 
 For $\epsilon>0$ take $\delta = a^2\epsilon$, then for all $x,y \in [a,\infty)$ we have
 $$
@@ -261,6 +285,8 @@ $\displaystyle |f(x_n)-f(y_n)| = 1 \quad\forall\,n \in \mathbb{N}$
 
 **Example:** $\sqrt{x}$ is uniformly continuous on $[1,\infty)$
 
+\pause
+
 For $x,y\geq 1$ we have
 $$
 \left|\sqrt{x}-\sqrt{y}\right|
@@ -281,7 +307,11 @@ For given $\epsilon>0$ take $\delta=2\epsilon$ to satisfy the definition
 **Theorem:** if $f : K \to \mathbb{R}$ is continuous and $K$ is compact then
 $f$ is uniformly continuous on $K$
 
+\pause
+
 **Proof:** let $\epsilon>0$ be arbitrary
+
+\pause
 
 For all $c \in K$ there exists $\delta_c>0$ such that
 $$
@@ -290,9 +320,15 @@ $$
 |f(x)-f(c)| < \tfrac{1}{2}\epsilon
 $$
 
+\pause
+
 $O_c = (c-\delta_c, c+\delta_c)$, with $c \in K$, form an open cover for $K$
 
+\pause
+
 $K \subseteq O_{c_1} \cup \dots \cup O_{c_n}$ for some $c_1,\dots,c_n \in K$
+
+\pause
 
 Take $x,y \in K$ with $|x-y| < \delta = \min\{\delta_{c_1},\dots,\delta_{c_n}\}$
 
@@ -304,9 +340,11 @@ Take $x,y \in K$ with $|x-y| < \delta = \min\{\delta_{c_1},\dots,\delta_{c_n}\}$
 $$\begin{aligned}
 |x-c_i| & < \delta_{c_i} \quad \text{for some } i=1,\dots,n \\[2mm]
 |f(x)-f(c_i)| & < \tfrac{1}{2}\epsilon \\[8mm]
-|c_i-y| & \leq |c_i-x| + |x-y| \;\; < \;\; \delta_{c_i} + \delta \;\; \leq \;\; 2\delta_{c_i} \\[2mm]
+\pause |c_i-y| & \leq |c_i-x| + |x-y| \;\; < \;\; \delta_{c_i} + \delta \;\; \leq \;\; 2\delta_{c_i} \\[2mm]
 |f(c_i)-f(y)| & < \tfrac{1}{2}\epsilon
 \end{aligned}$$
+
+\pause
 
 Apply triangle inequality with (1) and (2) $\;\Rightarrow\; |f(x)-f(y)| < \epsilon$
 
@@ -342,6 +380,8 @@ f(a) > L  > f(b)
 $$
 then $f(c)=L$ for some $c\in (a,b)$
 
+\pause
+
 **Proof:** without loss of generality we can assume
 - $L=0$, otherwise replace $f(x)$ by $f(x)-L$
 - $f(a) < 0 < f(b)$, otherwise replace $f(x)$ by $-f(x)$
@@ -369,7 +409,11 @@ At the right endpoint of each $I_n$ we have $f \geq 0$
 - $I_0 \supseteq I_1 \supseteq I_2 \supseteq \cdots$
 - $\text{length}(I_n) = (b-a) / 2^n$
 
+\pause
+
 NIP $\;\Rightarrow\; \exists\,c\in [a,b]$ such that $c \in I_n = [a_n,b_n] \quad \forall\,n \in \mathbb{N}$
+
+\pause
 
 Note that
 $$
@@ -391,6 +435,8 @@ The continuity of $f$ implies
 $$
 f(c) = \lim f(a_n) = \lim f(b_n)
 $$
+
+\pause
 
 The Order Limit Theorem gives:
 $$
@@ -423,10 +469,18 @@ IVT $\;\Rightarrow\; p(c) = 0$ for some $c \in (0,2)$
 **Example:** if $f : [a,b] \to \mathbb{R}$ is continuous and $f([a,b])\subseteq [a,b]$
 then $f(c) = c$ for some $c \in [a,b]$
 
+\pause
+
 Assume $f(a)\neq a$ and $f(b) \neq b$ (otherwise nothing to prove)
+
+\pause
 
 $f([a,b])\subseteq [a,b] \;\Rightarrow\; f(a) > a, \; f(b) < b$
 
+\pause
+
 $g(x) = f(x) - x$ is continuous and $g(b) < 0 < g(a)$
+
+\pause
 
 IVT $\;\Rightarrow\; g(c) = 0$ for some $c \in (a,b)$

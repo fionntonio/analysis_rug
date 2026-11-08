@@ -65,6 +65,8 @@ whose limit is contained in $K$
 
 **Example:** every finite set is compact
 
+\pause
+
 Let $K = \{a_1,a_2,\dots,a_p\}$
 
 Let $(x_n) \subseteq K$ be arbitrary
@@ -80,6 +82,8 @@ $\lim x_{n_k} = a_1 \in K$
 ## Sequential definition
 
 **Example:** $[a,b]$ is compact
+
+\pause
 
 Let $(x_n) \subseteq [a,b]$ be arbitrary
 
@@ -101,6 +105,8 @@ Take $x_n = \displaystyle\frac{1}{n} \in (0,1]$
 
 Every subsequence $(x_{n_k})$ satisfies $\lim x_{n_k} = 0$, but $0 \notin (0,1]$
 
+\pause
+
 **Example:** $\mathbb{R}$ is NOT compact
 
 $x_n = n$ has no convergent subsequence
@@ -110,6 +116,8 @@ $x_n = n$ has no convergent subsequence
 ## Characterization of compact sets
 
 **Theorem:** $K\subseteq\mathbb{R}$ compact $\;\Leftrightarrow\; K$ closed and bounded
+
+\pause
 
 **Proof ($\Rightarrow$):**
 
@@ -131,9 +139,15 @@ Contradiction!
 
 Let $x$ be a limit point of $K$ *[to prove: $x\in K$]*
 
+\pause
+
 There exists $(x_n)\subseteq K$ such that $x = \lim x_n$
 
+\pause
+
 $K$ compact $\;\Rightarrow\;$ there exists a subsequence $(x_{n_k})\to y\in K$
+
+\pause
 
 $(x_{n_k}) \to x$ as well $\;\Rightarrow\;$ $x=y\in K$
 
@@ -149,9 +163,15 @@ Let $(x_n) \subseteq K$
 
 $K$ bounded $\;\Rightarrow\; (x_n)$ is bounded
 
+\pause
+
 B--W Theorem $\;\Rightarrow\;$ $(x_n)$ has a convergent subsequence
 
+\pause
+
 Let $x = \lim x_{n_k}$
+
+\pause
 
 $K$ closed $\;\Rightarrow\; x \in K$
 
@@ -179,7 +199,11 @@ $$
 
 **Example:** $K = \{1/n \,:\, n\in\mathbb{N}\} \cup \{0\}$ is compact
 
+\pause
+
 $K$ is bounded: $|x| \leq 1$ for each $x \in K$
+
+\pause
 
 $K$ is closed:
 - if $x < 0$ or $x>0$, then $x$ is not a limit point of $K$ (exercise!)
@@ -222,7 +246,11 @@ $$
 
 - $O_1 = (0,\tfrac{1}{2})$ and $O_2 = (\tfrac{1}{3}, 5)$
 
+  \pause
+
 - $O_n = (-\tfrac{n}{10}, \tfrac{n}{10}), \; n \in \mathbb{N}$ has a finite subcover!
+
+  \pause
 
 - $O_a = (\tfrac{1}{a},2), \; a \geq 1$ does **NOT** have a finite subcover!
 
@@ -232,11 +260,15 @@ $$
 
 **Theorem:** $K$ cpt. $\Leftrightarrow$ any open cover for $K$ has a finite subcover
 
+\pause
+
 **Proof ($\Rightarrow$):**
 
 Let $O_\lambda$, $\lambda \in \Lambda$, be an open cover for $K$ **without** finite subcover
 
 Take a bounded, closed interval $J_1\supseteq K$
+
+\pause
 
 Halving process: construct $J_n$ be closed intervals s.t.
 - $J_1 \supseteq J_2 \supseteq J_3 \supseteq \cdots$
@@ -254,11 +286,19 @@ Halving process: construct $J_n$ be closed intervals s.t.
 
 $K\cap J_n$ compact for all $n\in\mathbb{N} \;\Rightarrow\; \bigcap_{n=1}^\infty (K\cap J_n) \neq \varnothing$
 
+\pause
+
 There exists $x \in K$ such that $x \in J_n$ for all $n$
+
+\pause
 
 $x \in O_\lambda$ for some $\lambda \in \Lambda$ and let $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_\lambda$
 
+\pause
+
 There exists $N \in \mathbb{N}$ such that $\text{length}(J_N) < \epsilon$
+
+\pause
 
 Hence, $K \cap J_N \subseteq J_N \subseteq V_\epsilon(x) \subseteq O_\lambda$. Contradiction!
 
@@ -271,6 +311,8 @@ Hence, $K \cap J_N \subseteq J_N \subseteq V_\epsilon(x) \subseteq O_\lambda$. C
 **Proof ($\Leftarrow$):**
 
 $O_n = (-n,n)$, $n \in \mathbb{N}$, is an open cover for $K$
+
+\pause
 
 $K \subseteq O_1 \cup O_2 \cup \dots \cup O_N = (-N, N)$ for some $N \in \mathbb{N}$
 
@@ -288,6 +330,8 @@ Let $y$ be a limit point of $K$
 
 There exists $(y_n) \subseteq K$ with $y = \lim y_n$. Assume $y \notin K$
 
+\pause
+
 Let $x \in K$ and $O_x = V_\epsilon(x)$ with $\epsilon = \tfrac{1}{2}|x-y|$
 
 The sets $O_x$, where $x \in K$, form an open cover for $K$
@@ -302,7 +346,11 @@ The sets $O_x$, where $x \in K$, form an open cover for $K$
 
 There exist $x_1,\dots,x_n \in K$ such that $K \subseteq O_{x_1} \cup \dots \cup O_{x_n}$
 
+\pause
+
 Pick $N \in \mathbb{N}$ such that $|y_N - y| < \min\big\{\tfrac{1}{2}|x_i-y| \,:\, i=1,\dots,n\big\}$
+
+\pause
 
 Hence, $y_N \notin O_{x_1} \cup \dots \cup O_{x_n}$. Contradiction!
 
@@ -339,10 +387,18 @@ Therefore, $K \subseteq O_{\lambda_1} \cup \dots \cup O_{\lambda_p}$
 
 Let $O_\lambda$, where $\lambda \in \Lambda$, be an open cover for $K$
 
+\pause
+
 $0 \in O_{\lambda_0}$ for some $\lambda_0 \in \Lambda$ and $V_\epsilon(0) \subseteq O_{\lambda_0}$ for some $\epsilon > 0$
+
+\pause
 
 Pick $N\in \mathbb{N}$ such that $1/N < \epsilon$
 
+\pause
+
 $1/n \in V_\epsilon(0) \subseteq O_{\lambda_0}$ for all $n \geq N$
+
+\pause
 
 Pick $\lambda_1,\dots,\lambda_{N-1}$ such that $1/n \in O_{\lambda_n}$ for $n < N$

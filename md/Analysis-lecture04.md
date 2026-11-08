@@ -46,12 +46,14 @@ $$
 
 **Theorem:** $(a_n)$ convergent $\;\Rightarrow\; (a_n)$ Cauchy
 
+\pause
+
 **Proof:** assume $a = \lim a_n$
 
 For all $\epsilon>0$ there exists $N \in \mathbb{N}$ such that
 $$\begin{aligned}
 n \geq N    & \quad\Rightarrow\quad |a_n - a| < \tfrac{1}{2}\epsilon \\[6mm]
-m, n \geq N & \quad\Rightarrow\quad |a_n - a_m|  = |(a_n - a) - (a_m - a)| \\[3mm]
+\pause m, n \geq N & \quad\Rightarrow\quad |a_n - a_m|  = |(a_n - a) - (a_m - a)| \\[3mm]
 &                       \hspace{16mm} \leq |a_n-a| + |a_m-a| \\[3mm]
 &                       \hspace{16mm} < \epsilon
 \end{aligned}$$
@@ -62,14 +64,18 @@ m, n \geq N & \quad\Rightarrow\quad |a_n - a_m|  = |(a_n - a) - (a_m - a)| \\[3m
 
 **Lemma:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ bounded
 
+\pause
+
 **Proof:** for $\epsilon=1$ there exists $N \in \mathbb{N}$ such that
 $$\begin{aligned}
 n,m \geq N & \Rightarrow |a_n - a_m| < 1 \\[1mm]
-n \geq N & \Rightarrow |a_n - a_N| < 1 \quad\text{(fix $m = N$)} \\[1mm]
-& \Rightarrow \big||a_n|-|a_N|\big| < 1 \\[1mm]
-& \Rightarrow |a_n|-|a_N|< 1 \\[1mm]
-& \Rightarrow |a_n| < 1 + |a_N|
+\pause n \geq N & \Rightarrow |a_n - a_N| < 1 \quad\text{(fix $m = N$)} \\[1mm]
+\pause & \Rightarrow \big||a_n|-|a_N|\big| < 1 \\[1mm]
+\pause & \Rightarrow |a_n|-|a_N|< 1 \\[1mm]
+\pause & \Rightarrow |a_n| < 1 + |a_N|
 \end{aligned}$$
+
+\pause
 
 For $M = \max\big\{|a_1|,|a_2|,\dots,|a_{N-1}|, 1+|a_N|\big\}$ we have
 $$
@@ -81,6 +87,8 @@ $$
 ## Cauchy sequences
 
 **Theorem:** $(a_n)$ Cauchy $\;\Rightarrow\; (a_n)$ convergent
+
+\pause
 
 **Proof:**
 
@@ -98,8 +106,10 @@ $$
 n,m \geq N \quad\Rightarrow\quad |a_n-a_m|< \tfrac{1}{2}\epsilon
 $$
 
+\pause
+
 Fix an index $n_k \geq N$ such that $|a_{n_k} - a| < \tfrac{1}{2}\epsilon$, then
-$$\begin{aligned}
+\pause $$\begin{aligned}
 n \geq N \quad\Rightarrow\quad |a_n - a| & = |a_n - a_{n_k} + a_{n_k} - a| \\[3mm]
 & \leq |a_n-a_{n_k}| + |a_{n_k}-a| \\[3mm]
 & < \epsilon
@@ -140,6 +150,8 @@ n \geq N \quad\Rightarrow\quad |a_n - a| & = |a_n - a_{n_k} + a_{n_k} - a| \\[3m
    n > m \geq N \quad\Rightarrow\quad |a_{m+1} + a_{m+2} + \dots + a_n| < \epsilon
    $$
 
+\pause
+
 **Proof:** note that $|s_n-s_m| = |a_{m+1} + \dots + a_n|$
 
 Statement 1 $\;\Leftrightarrow\;$ $(s_n)$ converges $\;\Leftrightarrow\;$ $(s_n)$ Cauchy $\;\Leftrightarrow\;$ Statement 2
@@ -149,6 +161,8 @@ Statement 1 $\;\Leftrightarrow\;$ $(s_n)$ converges $\;\Leftrightarrow\;$ $(s_n)
 ## Cauchy criterion
 
 **Example:** $\displaystyle \sum_{k=1}^\infty\frac{1}{k}$ diverges
+
+\pause
 
 For any $m \in \mathbb{N}$ and $n = 2m$ we have
 $$\begin{aligned}
@@ -164,6 +178,8 @@ Hence, the Cauchy criterion fails
 ## Necessary condition for convergence
 
 **Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
+
+\pause
 
 **Proof:** let $\epsilon>0$ be arbitrary
 
@@ -210,6 +226,8 @@ diverges since **$\lim a_k$ does not exist**
 1. $\sum_{k=1}^\infty b_k$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
 2. $\sum_{k=1}^\infty a_k$ diverges $\;\Rightarrow\;$ $\sum_{k=1}^\infty b_k$ diverges
 
+\pause
+
 **Proof:**
 $$\begin{aligned}
 |a_{m+1} + a_{m+2} + \dots + a_n| & = a_{m+1} + a_{m+2} + \dots + a_n \\[2mm]
@@ -223,6 +241,8 @@ Apply the Cauchy criterion for series
 ## Comparison test
 
 **Example:** $\displaystyle \sum_{k=1}^\infty \frac{1}{k!}$ converges
+
+\pause
 
 For $k\geq 4$ we have
 $$
@@ -245,6 +265,8 @@ $$
 - $\lim a_k = 0$
 
 then the **alternating series** $\sum_{k=1}^\infty (-1)^{k+1}a_k$ converges
+
+\pause
 
 **Proof:** consider the partial sums
 $$
@@ -273,9 +295,9 @@ NIP $\;\Rightarrow\;$ there exists $s\in\mathbb{R}$ such that $s \in I_n$ for al
 Choose $N \in \mathbb{N}$ such that $a_{2N} < \epsilon$, then
 $$\begin{aligned}
 n \geq 2N & \Rightarrow s, s_n \in I_N = [s_{2N}, s_{2N-1}] \\[4mm]
-& \Rightarrow |s-s_n| \leq s_{2N-1}-s_{2N} \\[4mm]
-& \Rightarrow |s-s_n| \leq a_{2N} \\[4mm]
-& \Rightarrow |s-s_n| < \epsilon
+\pause & \Rightarrow |s-s_n| \leq s_{2N-1}-s_{2N} \\[4mm]
+\pause & \Rightarrow |s-s_n| \leq a_{2N} \\[4mm]
+\pause & \Rightarrow |s-s_n| < \epsilon
 \end{aligned}$$
 
 ---
@@ -301,12 +323,18 @@ $$
 
 **Theorem:** $\sum_{k=1}^\infty |a_k|$ converges $\;\Rightarrow\;$ $\sum_{k=1}^\infty a_k$ converges
 
+\pause
+
 **Proof:** note that
 $$
 0 \leq a_k + |a_k| \leq 2|a_k| \quad\text{for all}\quad k \in \mathbb{N}
 $$
 
+\pause
+
 Comparison Test $\;\Rightarrow\;$ $\sum_{k=1}^\infty \big(a_k + |a_k|\big)$ converges
+
+\pause
 
 Apply Algebraic Limit Theorem:
 $$
@@ -322,8 +350,11 @@ $$
 - **absolutely convergent** if $\sum_{k=1}^\infty |a_k|$ converges
 - **conditionally convergent** if it converges but $\sum_{k=1}^\infty |a_k|$ diverges
 
+\pause
+
 **Examples:**
 - $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k^2}$ converges absolutely
+\pause
 - $\displaystyle\sum_{k=1}^\infty \frac{(-1)^{k+1}}{k}$ converges conditionally
 
 ---
@@ -346,9 +377,11 @@ $$
 Partial sums:
 $$\begin{aligned}
 s_n  & = a + ar + ar^2 + ar^3 + \cdots + ar^{n-1} \\[3mm]
-rs_n & = \quad\;\;\; ar + ar^2 + ar^3 + \cdots + ar^{n-1} + ar^n \\[3mm]
-(1-r)s_n & = a(1-r^n)
+\pause rs_n & = \quad\;\;\; ar + ar^2 + ar^3 + \cdots + ar^{n-1} + ar^n \\[3mm]
+\pause (1-r)s_n & = a(1-r^n)
 \end{aligned}$$
+
+\pause
 
 For $|r| < 1$ we have:
 $$
@@ -365,12 +398,14 @@ $$
 
 **Example:** we have $0.999\ldots = 1$
 
+\pause
+
 This follows from
 $$\begin{aligned}
 0.999\dots
 & = \sum_{k=1}^\infty \frac{9}{10^k} \\[2mm]
-& = \frac{1}{10} \sum_{k=0}^\infty 9\left(\frac{1}{10}\right)^k \\[2mm]
-& = \frac{1}{10}\cdot \frac{9}{1-1/10} \;\; = \;\; 1
+\pause & = \frac{1}{10} \sum_{k=0}^\infty 9\left(\frac{1}{10}\right)^k \\[2mm]
+\pause & = \frac{1}{10}\cdot \frac{9}{1-1/10} \;\; = \;\; 1
 \end{aligned}$$
 
 ---
@@ -381,6 +416,8 @@ $$\begin{aligned}
 $$
 \sum_{k=1}^\infty a_k = \sum_{k=1}^\infty (b_k - b_{k+1})
 $$
+
+\pause
 
 Successive terms cancel each other:
 $$\begin{aligned}
@@ -398,10 +435,12 @@ The series converges $\; \Leftrightarrow \; (b_n)$ converges
 **Example:**
 $\displaystyle\sum_{k=1}^\infty \frac{1}{k(k+1)} = \frac{1}{2} + \frac{1}{6} + \frac{1}{12} + \frac{1}{20} + \cdots = 1$
 
+\pause
+
 Solution:
 $$\begin{aligned}
 s_n & = \sum_{k=1}^n \left(\frac{1}{k} - \frac{1}{k+1}\right) \\[3mm]
-& = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{n} - \frac{1}{n+1}\right) \\[3mm]
+\pause & = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \cdots + \left(\frac{1}{n} - \frac{1}{n+1}\right) \\[3mm]
 & = 1 - \frac{1}{n+1} \to 1
 \end{aligned}$$
 
@@ -412,9 +451,11 @@ s_n & = \sum_{k=1}^n \left(\frac{1}{k} - \frac{1}{k+1}\right) \\[3mm]
 **Example:**
 $\displaystyle\sum_{k=1}^\infty \frac{1}{k^2+7k+12} = \frac{1}{4}$
 
+\pause
+
 Solution:
 $$\begin{aligned}
 \frac{1}{k^2+7k+12} & = \frac{1}{(k+3)(k+4)} \;\; = \;\; \frac{1}{k+3} - \frac{1}{k+4} \\[6mm]
-s_n & = \left(\frac{1}{4} - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) + \cdots + \left(\frac{1}{n+3} - \frac{1}{n+4}\right) \\[3mm]
+\pause s_n & = \left(\frac{1}{4} - \frac{1}{5}\right) + \left(\frac{1}{5} - \frac{1}{6}\right) + \cdots + \left(\frac{1}{n+3} - \frac{1}{n+4}\right) \\[3mm]
 & = \frac{1}{4} - \frac{1}{n+4} \to \frac{1}{4}
 \end{aligned}$$

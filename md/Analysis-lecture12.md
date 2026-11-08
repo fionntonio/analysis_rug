@@ -25,10 +25,14 @@ $$
 \sum_{n=0}^\infty a_n x^n \text{ uniformly conv.~on } [-|c|,|c|]
 $$
 
+\pause
+
 **Proof:** for $|x| \leq |c|$ we have
 $$
 |a_n x^n| = |a_n|\cdot |x|^n \leq |a_n|\cdot |c|^n = |a_n c^n| =: M_n
 $$
+
+\pause
 
 Apply Weierstrass' test:
 $$
@@ -52,13 +56,15 @@ Then $f$ is continuous on $A$
 
 **Corollary:** $\displaystyle\sum_{n=0}^\infty a_n x^n$ is a continuous function on $(-R,R)$
 
+\pause
+
 **Proof:** take $x_0 \in (-R,R)$ and $|x_0| < c < d < R$, then
-$$\begin{aligned}
+\pause $$\begin{aligned}
 \text{PS convergent at } d
 & \Rightarrow  \text{PS absolutely convergent at } c \\[3mm]
-& \Rightarrow  \text{PS uniformly convergent on } [-c,c]\\[3mm]
-& \Rightarrow  \text{PS continuous on } [-c,c] \\[1mm]
-&              \quad\textit{[each term $a_n x^n$ is continuous!]}\\[3mm]
+\pause & \Rightarrow  \text{PS uniformly convergent on } [-c,c]\\[3mm]
+\pause & \Rightarrow  \text{PS continuous on } [-c,c] \\[1mm]
+\pause &              \quad\textit{[each term $a_n x^n$ is continuous!]}\\[3mm]
 & \Rightarrow  \text{PS continuous at } x_0
 \end{aligned}$$
 ---
@@ -87,10 +93,14 @@ $$
 \sum_{n=0}^\infty na_n x^{n-1} \text{ conv.~on } (-R,R)
 $$
 
+\pause
+
 **Proof:** if $|c|<1$, then there exists $M > 0$ s.t.
 $$
 |nc^{n-1}| \leq M \quad\forall\,n\in\mathbb{N}
 $$
+
+\pause
 
 Let $|x| < t < R$, then
 $$
@@ -129,6 +139,8 @@ $$
 \bigg(\sum_{n=0}^\infty a_n x^n\bigg)' = \sum_{n=1}^\infty na_n x^{n-1} \qquad \forall\,x \in (-R,R)
 $$
 
+\pause
+
 **Proof:** let $0 \leq c < R$, then
 
 - $\sum_{n=0}^\infty na_n x^{n-1} \text{ converges uniformly on } [-c,c]$
@@ -146,6 +158,8 @@ $$\begin{aligned}
 \sum_{n=1}^\infty \frac{(-1)^{n+1}}{n}x^n & \to f(x) \tag{$*$} \\[3mm]
 \sum_{n=1}^\infty (-1)^{n+1}x^{n-1}       & \to \frac{1}{1+x} = f'(x) \;\;\Rightarrow\;\; f(x) = \log|1+x| + C
 \end{aligned}$$
+
+\pause
 
 Note that:
 
@@ -180,9 +194,9 @@ $$
 | | | | | |
 |---|---|---|---|---|
 | $f(x)$ | $=$ | $a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$ | $\Rightarrow$ | $f(0) = a_0$ |
-| $f'(x)$ | $=$ | $a_1 + 2a_2 x + 3a_3 x^2 + \cdots$ | $\Rightarrow$ | $f'(0) = a_1$ |
-| $f''(x)$ | $=$ | $2a_2 + 6a_3 x + \cdots$ | $\Rightarrow$ | $f''(0) = 2a_2$ |
-| $f'''(x)$ | $=$ | $6a_3 + \cdots$ | $\Rightarrow$ | $f'''(0) = 6a_3$ |
+| \pause $f'(x)$ | $=$ | $a_1 + 2a_2 x + 3a_3 x^2 + \cdots$ | $\Rightarrow$ | $f'(0) = a_1$ |
+| \pause $f''(x)$ | $=$ | $2a_2 + 6a_3 x + \cdots$ | $\Rightarrow$ | $f''(0) = 2a_2$ |
+| \pause $f'''(x)$ | $=$ | $6a_3 + \cdots$ | $\Rightarrow$ | $f'''(0) = 6a_3$ |
 
 Taylor's formula: $\displaystyle \quad a_n = \frac{f^{(n)}(0)}{n!}$
 ---
@@ -209,6 +223,8 @@ s_n(x) & = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}x^k \hspace{28mm}\text{(partial sum
 E_n(x) & = f(x) - s_n(x) \hspace{30mm}\text{(remainder)}
 \end{aligned}$$
 
+\pause
+
 **Theorem:** for $n \in \mathbb{N}$ and $x > 0$ there exists $c \in (0,x)$ such that
 $$
 E_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
@@ -228,12 +244,14 @@ $$
 
 Then $h^{(n+1)}(c) = 0$ for some $c \in (0,x)$
 
+\pause
+
 **Proof:** repeated application of Rolle's theorem gives
 $$\begin{aligned}
 h(0) = h(x) & \Rightarrow h'(c_1) = 0 \text{ for some } c_1 \in (0,x) \\
-h'(0) = h'(c_1) & \Rightarrow h''(c_2) = 0 \text{ for some } c_2 \in (0,c_1) \\
+\pause h'(0) = h'(c_1) & \Rightarrow h''(c_2) = 0 \text{ for some } c_2 \in (0,c_1) \\
 & \vdots \\
-h^{(n)}(0) = h^{(n)}(c_n) & \Rightarrow h^{(n+1)}(c_{n+1}) = 0 \text{ for some } c_{n+1} \in (0,c_n)
+\pause h^{(n)}(0) = h^{(n)}(c_n) & \Rightarrow h^{(n+1)}(c_{n+1}) = 0 \text{ for some } c_{n+1} \in (0,c_n)
 \end{aligned}$$
 ---
 
@@ -244,10 +262,14 @@ $$
 E_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
 $$
 
+\pause
+
 **Proof:** fix $x>0$ and consider
 $$
 h(t) = f(t) - s_n(t) - \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right)t^{n+1}
 $$
+
+\pause
 
 Note that:
 $$
@@ -266,6 +288,8 @@ $$
 f^{(n+1)}(c) - \underbrace{s_n^{(n+1)}(c)}_{= \, 0} - (n+1)! \left(\frac{f(x) - s_n(x)}{x^{n+1}}\right) = 0
 $$
 
+\pause
+
 Rearranging gives
 $$
 f(x) - s_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
@@ -280,6 +304,8 @@ Assume $f$ is inf. often differentiable on interval around $a$
 $$
 \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
 $$
+
+\pause
 
 **Lagrange remainder:** for $x>a$ there exists $c \in (a,x)$ such that
 $$
@@ -309,6 +335,8 @@ For $x \neq 0$ there exists $c \in (-|x|,|x|)$ such that
 $$
 e^x = \sum_{k=0}^n \frac{1}{k!}x^k + \frac{e^c}{(n+1)!}x^{n+1}
 $$
+
+\pause
 
 For any $a>0$ we have
 $$
@@ -350,12 +378,16 @@ $$
 \frac{|x|^{n+1}}{(n+1)!}
 $$
 
+\pause
+
 Remainder converges to 0 uniformly on any interval $[-a,a]$:
 $$
 \sup_{x\in[-a,a]} |E_n(x)| \leq  \frac{a^{n+1}}{(n+1)!} \to 0
 \quad\text{as}\quad
 n\to\infty
 $$
+
+\pause
 
 Conclusion:
 $$
@@ -385,10 +417,14 @@ f(x) = \ln(1+x)
 f^{(n)}(x) = \frac{(-1)^{n+1} (n-1)!}{(1+x)^n} \qquad \forall\, n \in \mathbb{N}
 $$
 
+\pause
+
 For $x>0$ there exists $c \in (0,x)$ such that
 $$
 \ln(1+x) = \sum_{k=1}^n \frac{(-1)^{k+1}}{k}x^k + \frac{(-1)^n}{(n+1)(1+c)^{n+1}}\,x^{n+1}
 $$
+
+\pause
 
 **Exercise:** prove that
 
@@ -410,7 +446,11 @@ $$
 \arctan(x) = x - \frac{1}{3} x^3 + \frac{1}{5}x^5 - \frac{1}{7}x^7 + \cdots
 $$
 
+\pause
+
 The convergence is uniform on $[-1,1]$
+
+\pause
 
 For $x=1$ we get
 $$
@@ -439,9 +479,9 @@ The Taylor series of $f$ does **NOT** converge to $f$!
 
 $$\begin{aligned}
 \sqrt{x} & = 1 + \tfrac{1}{2}(x-1) - \tfrac{1}{8}(x-1)^2 + E_3(x) \\[2mm]
-\sqrt{5} & \approx 1 + \tfrac{4}{2} - \tfrac{16}{8} \;\; = \;\; 1 \\[6mm]
-\sqrt{x} & = 2 + \tfrac{1}{4}(x-4) - \tfrac{1}{64}(x-4)^2 + \widetilde{E}_3(x) \\[2mm]
-\sqrt{5} & \approx 2 + \tfrac{1}{4} - \tfrac{1}{64} \;\; = \;\; 2.234375
+\pause \sqrt{5} & \approx 1 + \tfrac{4}{2} - \tfrac{16}{8} \;\; = \;\; 1 \\[6mm]
+\pause \sqrt{x} & = 2 + \tfrac{1}{4}(x-4) - \tfrac{1}{64}(x-4)^2 + \widetilde{E}_3(x) \\[2mm]
+\pause \sqrt{5} & \approx 2 + \tfrac{1}{4} - \tfrac{1}{64} \;\; = \;\; 2.234375
 \end{aligned}$$
 
 Truncated Taylor series around $x=4$ much more accurate!
