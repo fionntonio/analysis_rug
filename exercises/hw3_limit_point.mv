@@ -87,6 +87,9 @@ $A$ at most in $c$.
 <hint title="💡 Hint (click to open/close)">
 Recall that `c is a _limit point_ of A` unfolds to
 `∀ ε > 0, ∃ y ∈ A, 0 < | y - c | < ε`. A proof by contradiction works well.
+It can help to rewrite the quantifiers pushing the negation of the conclusion
+by one quantifier at a time, and then check the definition of limit point
+directly.
 `Rabs_pos_lt` gives `0 < | t |` from `t ≠ 0`.
 </hint>
 

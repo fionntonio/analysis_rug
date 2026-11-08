@@ -13,18 +13,15 @@ Waterproof versions of the four peer-review homework assignments of
 
 Model solutions are in [`solutions/`](solutions). Each assignment is cut into
 small steps, with a collapsible hint per step; only the parts inside
-`<input-area>` are meant to be edited.
+`<input-area>` are meant to be edited. Some lemmas are marked optional and `Admitted.`, they are left to be proved after the rest for th einterested students.
 
 ## Checking a notebook
 
-All four homeworks use the course library (`RUG.Analysis.*`), so build it once:
+In VS Code, open the `.mv` file with the Waterproof extension.
 
-```sh
-dune build
-```
-
-In VS Code, open the `.mv` file with the Waterproof extension. From the command
-line:
+### Manual check (not recommended if you don't know what you are doing)
+If you use the command line, you need to install `rocq-waterproof` and
+`coq-lsp`. Then build the analysis library running `dune build` in the repository and finally run the checker
 
 ```sh
 exercises/check_mv.sh exercises/hw2_series_ratio.mv
@@ -32,5 +29,3 @@ exercises/check_mv.sh exercises/hw2_series_ratio.mv
 
 The script calls `fcc` on the notebook and prints the errors it finds (an
 unfinished exercise counts as an error: `Attempt to save an incomplete proof`).
-It passes the load path of the *built* library explicitly, because the two `-R`
-entries of `_CoqProject` make `fcc` look for `.vo` files next to the sources.
