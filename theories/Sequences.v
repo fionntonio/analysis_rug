@@ -141,10 +141,10 @@ Proof.
      [By lim_const_seq we conclude that (fun _ : ℕ => c) ⟶ c.]*)
   Define s := constant_seq c.
   We need to show
-    ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜s(n) - c｜ < ε.
+    ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |s(n) - c| < ε.
   Take ε > 0. Choose N1 := O. { Indeed, N1 ∈ ℕ. }
 
-  We need to show that ∀ n ≥ N1, ｜s(n) - c｜ < ε.
+  We need to show that ∀ n ≥ N1, |s(n) - c| < ε.
   Take n ≥ N1.
   It holds that s n = c.
   We conclude that (&
@@ -164,11 +164,11 @@ Proof.
       [By lim_d_0 we conclude that (fun n : ℕ => Rdiv 1 (INR n + 1)) ⟶ 0.]
       The proof below is an adaptation of the proof in Waterproof. *)
   We need to show
-      ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜harmonic(n) - 0｜ < ε.
+      ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |harmonic(n) - 0| < ε.
   Take ε > 0.
   By the Archimedean property it holds that ∃ n1 ∈ ℕ, n1 > / ε.
   Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
-  We need to show that ∀ n ≥ N1, ｜harmonic(n) - 0｜ < ε.
+  We need to show that ∀ n ≥ N1, |harmonic(n) - 0| < ε.
 
   Take n ≥ N1.
   We need to show that Rabs (1 / (n + 1) - 0) < ε.

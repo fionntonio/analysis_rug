@@ -10,4 +10,4 @@
  (name waterproof-analysis)
  (synopsis "Formalized real analysis with Waterproof")
  (authors "Fionn Donoghue" "Marcello Seri")
- (depends rocq-core rocq-stdlib (coq-waterproof (>= 3.1.0+9.1))))
+ (depends rocq-core rocq-stdlib (rocq-waterproof (>= 3.1.1+9.1))))
