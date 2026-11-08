@@ -411,13 +411,13 @@ Proof.
     We claim that a ⟶ x.
     {
       We need to show
-        ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε.
+        ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a(n) - x| < ε.
       Take ε > 0.
       By the Archimedean property it holds that
         ∃ n1 ∈ ℕ, n1 > / ε as (Arch_N).
       Obtain such an n1. Choose N1 := n1. { Indeed, N1 ∈ ℕ. }
 
-      We need to show that ∀ n ≥ N1, ｜a(n) - x｜ < ε.
+      We need to show that ∀ n ≥ N1, |a(n) - x| < ε.
       By Arch_N it holds that INR N1 > / ε as (H_arch_bound).
       Take n ≥ N1.
       It holds that n >= N1 as (Order_N).
@@ -432,7 +432,7 @@ Proof.
       By seq_n it holds that 0 < |a(n) - x| < 1 / (n + 1) as (seq_bound).
       By seq_bound and H_inv_bound it holds that
         (& |a(n) - x| < 1 / (n + 1) < ε).
-      Indeed, ｜a(n) - x｜ < ε.
+      Indeed, |a(n) - x| < ε.
     }
     Choose a0 := a.
     By H_A and H_neq it holds that
@@ -451,11 +451,11 @@ Proof.
     Obtain a according to (Hrp).
     By Hrp it holds that a ⟶ x as (lim_a).
     By lim_a it holds that
-      ∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε0 as (eps_a).
+      ∀ ε0 > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a(n) - x| < ε0 as (eps_a).
     Use ε0 := ε in (eps_a). { Indeed, ε > 0. }
-    It holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, ｜a(n) - x｜ < ε as (N_eps).
+    It holds that ∃ N1 ∈ ℕ, ∀ n ≥ N1, |a(n) - x| < ε as (N_eps).
     Obtain N1 according to (N_eps).
-    It holds that ｜a(N1) - x｜ < ε.
+    It holds that |a(N1) - x| < ε.
     By Hrp it holds that ∀ n ∈ ℕ, a n ∈ A as (a_in).
     Use n := N1 in (a_in). { Indeed, N1 ∈ ℕ. }
     It holds that a(N1) ∈ A.
@@ -464,7 +464,7 @@ Proof.
     It holds that a(N1) ≠ x.
     It holds that Rabs (a(N1) - x) > 0.
     Choose y := a(N1). { Indeed, y ∈ A. }
-    We conclude that 0 < Rabs (y - x) < ε.
+    We conclude that 0 < |y - x| < ε.
 Qed.
 
 (** ** Open/closed duality *)

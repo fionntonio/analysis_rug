@@ -49,7 +49,7 @@ Proof.
   We show both directions.
 
   - We need to show that a is _Cauchy_
-        ⇨ ∀ eps, eps > 0 ⇨ ∃ N, ∀ n, ∀ m, (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ ｜a(n) - a(m)｜ < eps.
+        ⇨ ∀ eps, eps > 0 ⇨ ∃ N, ∀ n, ∀ m, (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ |a(n) - a(m)| < eps.
     Assume that a is _Cauchy_ as (HC).
     Take eps > 0. It holds that eps > 0.
     It holds that
@@ -57,18 +57,18 @@ Proof.
     Obtain such a N1. Choose (N1).
     Take n : ℕ. Take m : ℕ. 
     Assume that (n ≥ N1)%nat as (Hn) and (m ≥ N1)%nat as (Hm).
-    By H' we conclude that ｜a(n) - a(m)｜ < eps.
+    By H' we conclude that |a(n) - a(m)| < eps.
 
   - We need to show that (∀ eps, eps > 0 ⇨ ∃ N, ∀ n, ∀ m,
-          (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ ｜a(n) - a(m)｜ < eps)
+          (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ |a(n) - a(m)| < eps)
         ⇨ a is _Cauchy_.
     Assume that ∀ eps, eps > 0 ⇨ ∃ N, ∀ n, ∀ m,
-          (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ ｜a(n) - a(m)｜ < eps as (HC).
+          (n ≥ N)%nat ⇨ (m ≥ N)%nat ⇨ |a(n) - a(m)| < eps as (HC).
     We need to show that
       ∀ ε > 0, ∃ N1 ∈ ℕ, ∀ n ≥ N1, ∀ m ≥ N1, |a n - a m| < ε.
     Take ε > 0.
     By HC it holds that
-      ∃ N1, ∀ n, ∀ m, (n ≥ N1)%nat ⇨ (m ≥ N1)%nat ⇨ ｜a(n) - a(m)｜ < ε.
+      ∃ N1, ∀ n, ∀ m, (n ≥ N1)%nat ⇨ (m ≥ N1)%nat ⇨ |a(n) - a(m)| < ε.
     Obtain such a N1.
     Choose N2 := N1%nat. { Indeed, N2 ∈ ℕ. }
     We need to show that
