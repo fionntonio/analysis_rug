@@ -71,32 +71,26 @@ Use them as any other lemma, e.g. `By S_INR it holds that INR (S n) = INR n + 1.
 
 ## Part 1: the exact value of the error
 
-Show that for $x > 0$ and $n \geq 1$,
+For $x > 0$ and $n \geq 1$,
 $$
 \frac{n}{nx+1} - \frac{1}{x} = -\frac{1}{(nx+1)x}.
 $$
 The statement is about a *real* number `nR` instead of `INR n`: this keeps the
 algebra readable, and we will apply it with `nR := INR n`.
 
-**Waterproof remark.** The automation needs `u * / u = 1` (`Rinv_r`) for each
-denominator `u`; with those facts in the context, `We conclude that ...` proves
-the identity.
-
-<hint title="💡 Hint (click to open/close)">
-Once the denominators are taken care of, this is a polynomial identity.
-</hint>
+This identity is given to you, so that you can spend the lab on the estimates.
+Note how the proof works: the automation needs `u * / u = 1` (`Rinv_r`) for
+each denominator `u`; with those facts in the context, `We conclude that ...`
+proves the identity. You will need the same trick later on.
 
 ```coq
 Lemma diff_value (nR x : ℝ) (Hx : 0 < x) (Hn : 1 ≤ nR) :
   nR / (nR*x + 1) - 1/x = - (/ (nR*x + 1) * / x).
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that nR*x + 1 > 0 as (Hpos).
+By Rinv_r it holds that (nR*x + 1) * / (nR*x + 1) = 1 as (E1).
+By Rinv_r it holds that x * / x = 1 as (E2).
+We conclude that nR / (nR*x + 1) - 1/x = - (/ (nR*x + 1) * / x).
 Qed.
 ```
 
@@ -133,27 +127,19 @@ Proof.
 Qed.
 ```
 
-Also prove the following auxiliary fact, which turns "$m$ is large" into
-"$1/m$ is small".
-
-**Waterproof remark.** As in Part 2, the automation cannot compare inverses on
-its own. Use `Rinv_lt_contravar : 0 < r1 * r2 → r1 < r2 → / r2 < / r1` and
+The following auxiliary fact, which turns "$m$ is large" into "$1/m$ is
+small", is also given to you. It shows how to compare inverses with
+`Rinv_lt_contravar : 0 < r1 * r2 → r1 < r2 → / r2 < / r1` and
 `Rinv_inv : / / r = r`.
-
-<hint title="💡 Hint (click to open/close)">
-Taking inverses reverses inequalities between positive numbers.
-</hint>
 
 ```coq
 Lemma small_inv (m ε : ℝ) (Hε : ε > 0) (Hm : m > / ε) : 1 / m < ε.
 Proof.
-```
-<input-area>
-```coq
-
-```
-</input-area>
-```coq
+It holds that / ε > 0 as (Hinv).
+It holds that m > 0 as (Hm0).
+By Rinv_lt_contravar it holds that / m < / / ε as (Hlt).
+By Rinv_inv it holds that / / ε = ε as (Einv).
+We conclude that (& 1 / m = / m < / / ε = ε).
 Qed.
 ```
 
