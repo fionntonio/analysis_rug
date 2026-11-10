@@ -26,7 +26,7 @@ Tutorial: [Tutorial 1](#tutorials/tutorial-1)
 | $\mathbb{Q}$ | yes | $+, -, \times$, $\div$ |
 | $\mathbb{R}$ | yes | $+, -, \times$, $\div$ |
 
-What is the **difference** between $\mathbb{Q}$ and $\mathbb{R}$?
+What is the <span style="color:red">difference</span> between $\mathbb{Q}$ and $\mathbb{R}$?
 
 ---
 
@@ -44,7 +44,7 @@ What is the **difference** between $\mathbb{Q}$ and $\mathbb{R}$?
 
 *[Source: Wikipedia, public domain]*
 
-$\mathbb{Q}$ has **gaps**: numbers like $\sqrt{2}$, $e$, and $\pi$ do not belong to $\mathbb{Q}$!
+$\mathbb{Q}$ has <span style="color:red">gaps</span>: numbers like $\sqrt{2}$, $e$, and $\pi$ do not belong to $\mathbb{Q}$!
 
 How to interpret $\mathbb{R}$ as a line?
 
@@ -54,7 +54,7 @@ How to interpret $\mathbb{R}$ as a line?
 
 ## Upper bounds
 
-**Definition:** $A \subseteq \mathbb{R}$ is called **bounded above** if
+**Definition:** $A \subseteq \mathbb{R}$ is called <span style="color:red">bounded above</span> if
 $$
 \exists\, b \in \mathbb{R} \qquad\text{such that}\qquad a \leq b \qquad\forall\, a \in A
 $$
@@ -64,7 +64,7 @@ $$
 **Example:**
 $A = \displaystyle \bigg\{\frac{1}{n} \,:\, n \in \mathbb{N}\bigg\} = \bigg\{1,\frac{1}{2},\frac{1}{3},\dots\bigg\}$
 
-Any number $b \geq 1$ is an **upper bound** for $A$
+Any number $b \geq 1$ is an <span style="color:red">upper bound</span> for $A$
 
 ---
 
@@ -74,7 +74,7 @@ Any number $b \geq 1$ is an **upper bound** for $A$
 
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-**Definition:** $s\in\mathbb{R}$ is called the **least upper bound** of $A\subseteq\mathbb{R}$ if
+**Definition:** $s\in\mathbb{R}$ is called the <span style="color:red">least upper bound</span> of $A\subseteq\mathbb{R}$ if
 
 - $s$ is an upper bound for $A$
 - if $b$ is any upper bound for $A$ then $s \leq b$
@@ -102,7 +102,7 @@ Any number $b \geq 1$ is an **upper bound** for $A$
 
 **Lemma:** if $s$ is an upper bound for $A$ then
 $$
-s = \sup A
+{\color{blue} s = \sup A}
 \quad\Leftrightarrow\quad
 \forall\,\epsilon>0 \quad \exists \, a\in A\quad \text{s.t.} \quad s-\epsilon < a
 $$
@@ -124,10 +124,10 @@ s - \epsilon < s & \Rightarrow s-\epsilon \text{ is not an upper bound for } A \
 $$
 s = \sup A
 \quad\Leftrightarrow\quad
-\forall\,\epsilon>0 \quad \exists \, a\in A\quad \text{s.t.} \quad s-\epsilon < a
+{\color{blue} \forall\,\epsilon>0 \quad \exists \, a\in A\quad \text{s.t.} \quad s-\epsilon < a}
 $$
 
-**Proof ($\Leftarrow$):** let $b$ be **any** upper bound for $A$
+**Proof ($\Leftarrow$):** let $b$ be <span style="color:red">any</span> upper bound for $A$
 
 - if $b < s$ then for $\epsilon = s - b$ there exists $a \in A$ such that $b = s - \epsilon < a$
 - so $b$ is not an upper bound: contradiction!
@@ -150,7 +150,7 @@ $$
 
 ## Lower bounds
 
-**Definition:** $A \subseteq \mathbb{R}$ is called **bounded below** if
+**Definition:** $A \subseteq \mathbb{R}$ is called <span style="color:red">bounded below</span> if
 $$
 \exists\,\ell \in \mathbb{R} \qquad\text{such that}\qquad \ell \leq a \qquad\forall\, a \in A
 $$
@@ -160,7 +160,7 @@ $$
 **Example:**
 $A = \displaystyle \bigg\{\frac{1}{n} \,:\, n \in \mathbb{N}\bigg\}$
 
-Any number $\ell \leq 0$ is a **lower bound** for $A$
+Any number $\ell \leq 0$ is a <span style="color:red">lower bound</span> for $A$
 
 ---
 
@@ -170,7 +170,7 @@ Any number $\ell \leq 0$ is a **lower bound** for $A$
 
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-**Definition:** $i\in\mathbb{R}$ is called the **greatest lower bound** of $A\subseteq\mathbb{R}$ if
+**Definition:** $i\in\mathbb{R}$ is called the <span style="color:red">greatest lower bound</span> of $A\subseteq\mathbb{R}$ if
 
 - $i$ is a lower bound for $A$
 - if $\ell$ is any lower bound for $A$ then $\ell \leq i$
@@ -201,8 +201,8 @@ $$
 **Examples:**
 $$
 \begin{split}
-\sup\bigg\{\frac{1}{2}, \frac{2}{3}, \frac{3}{4}, \frac{4}{5},\dots\bigg\} & = 1 \qquad\text{but there is \textbf{no largest element}!} \\[3mm]
-\inf\bigg\{1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \dots\bigg\} & = 0 \qquad\text{but there is \textbf{no smallest element}!}
+\sup\bigg\{\frac{1}{2}, \frac{2}{3}, \frac{3}{4}, \frac{4}{5},\dots\bigg\} & = 1 \qquad\text{but there is {\color{red}no largest element}!} \\[3mm]
+\inf\bigg\{1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \dots\bigg\} & = 0 \qquad\text{but there is {\color{red}no smallest element}!}
 \end{split}
 $$
 
@@ -226,7 +226,7 @@ $$
 every nonempty subset of $\mathbb{R}$ that is bounded above
 has a least upper bound
 
-*An axiom is a starting point of reasoning and accepted as truth*
+<span style="color:gray">An axiom is a starting point of reasoning and accepted as truth</span>
 
 ---
 
@@ -240,15 +240,15 @@ has a least upper bound
 
 \pause
 
-**Proof (1):** if (1) is **NOT** true, then $\mathbb{N}$ is bounded above
+**Proof (1):** if (1) is <span style="color:red">NOT</span> true, then $\mathbb{N}$ is bounded above
 
-AoC $\;\Rightarrow\;\alpha = \sup \mathbb{N}$ exists
+AoC $\;\Rightarrow\;\alpha = \sup \mathbb{N}$ exists $\qquad$ <span style="color:gray">[Note that $\alpha \notin \mathbb{N}$]</span>
 
-$\alpha-1$ is **NOT** an upper bound for $\mathbb{N}$
+$\alpha-1$ is <span style="color:red">NOT</span> an upper bound for $\mathbb{N}$
 
 There exists $n \in \mathbb{N}$ such that $\alpha -1 < n \;\Rightarrow\; \alpha < n+1$
 
-$n+1 \in \mathbb{N} \;\Rightarrow\; \alpha$ is **NOT** an upper bound for $\mathbb{N}$. Contradiction!
+$n+1 \in \mathbb{N} \;\Rightarrow\; \alpha$ is <span style="color:red">NOT</span> an upper bound for $\mathbb{N}$. Contradiction!
 
 ---
 
@@ -277,8 +277,8 @@ Therefore $1/n < 1/x = y$
 **Proof:**
 - Note that $0$ is a lower bound
 - Archimedean Property: $\ell > 0 \;\Rightarrow\; \exists\,n \in \mathbb{N}$ s.t. $\displaystyle\frac{1}{n} < \ell$
-- Therefore $\ell > 0$ is **NOT** a lower bound
-- Conclusion: $0$ is the **greatest** lower bound
+- Therefore $\ell > 0$ is <span style="color:red">NOT</span> a lower bound
+- Conclusion: $0$ is the <span style="color:red">greatest</span> lower bound
 
 ---
 
@@ -310,13 +310,13 @@ $$
 
 \pause
 
-**Every** $b_n$ is an upper bound for $A$
+<span style="color:red">Every</span> $b_n$ is an upper bound for $A$
 
 AoC $\;\Rightarrow\; x := \sup A$ exists
 
 $a_n \leq x \quad\forall\, n \in \mathbb{N}\quad$ (since $x = $ upper bound for $A$)
 
-$x \leq b_n \quad\forall\, n \in \mathbb{N}\quad$ (since $x = $ **least** upper bound of $A$)
+$x \leq b_n \quad\forall\, n \in \mathbb{N}\quad$ (since $x = $ <span style="color:red">least</span> upper bound of $A$)
 
 $x \in [a_n, b_n] \quad\forall\, n \in \mathbb{N}$
 
@@ -344,7 +344,7 @@ $$
 **Proof:**
 $$\begin{aligned}
 x \leq 0 & \Rightarrow x \notin I_n \text{ for all } n \in \mathbb{N} \\[5mm]
-\pause x > 0 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad \frac{1}{k} < x \qquad\text{(by AP)} \\[2mm]
+\pause x > 0 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad \frac{1}{k} < x \qquad\text{{\color{gray} (by AP)}} \\[2mm]
 & \Rightarrow \exists\, k \in \mathbb{N} \quad\text{s.t.}\quad x \notin I_k
 \end{aligned}$$
 
@@ -458,7 +458,7 @@ Hint: it is sufficient to show that $\displaystyle \left|\frac{1}{y}\right| = \f
 **Triangle inequality:**
 $$
 |x + y| \leq |x| + |y|
-\qquad\text{(\textbf{important!})}
+\qquad\text{{\color{red}(important!)}}
 $$
 
 \pause
@@ -477,7 +477,7 @@ x+y & \leq  |x| + y \;\;\leq\;\; |x| + |y| \\[5mm]
 **Reverse triangle inequality:**
 $$
 \big||x| - |y|\big| \leq |x - y|
-\qquad\text{(\textbf{important!})}
+\qquad\text{{\color{red}(important!)}}
 $$
 
 \pause

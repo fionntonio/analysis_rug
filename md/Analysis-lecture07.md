@@ -18,9 +18,9 @@ Tutorial: [Tutorial 7](#tutorials/tutorial-7)
 
 ## Limit of a function
 
-Let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$.
+Let $f : A \to \mathbb{R}$ and $c$ a <span style="color:red">limit point</span> of $A$.
 
-**Question:** if $\lim f(x_n)=L$ **for all** $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$, can we claim that
+**Question:** if $\lim f(x_n)=L$ <span style="color:red">for all</span> $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$, can we claim that
 $$
 \displaystyle\lim_{x\to c} f(x) = L
 $$
@@ -30,7 +30,7 @@ in the sense of the definition from Calculus 1?
 
 ## $\epsilon$ and $\delta$ definition
 
-**Definition:** let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$
+**Definition:** let $f : A \to \mathbb{R}$ and $c$ a <span style="color:red">limit point</span> of $A$
 
 We say that $\displaystyle\lim_{x\to c} f(x) = L$ when
 
@@ -42,7 +42,7 @@ $$
 |f(x) - L| < \epsilon
 $$
 
-**Note:** $f$ **need not** be defined at $c$
+**Note:** $f$ <span style="color:red">need not</span> be defined at $c$
 
 ---
 
@@ -89,19 +89,19 @@ $$\begin{aligned}
 
 With $\epsilon>0$ and $\delta = \sqrt{c}\cdot\epsilon$ the definition is satisfied
 
-*Exercise: adapt the proof for $c=0$*
+<span style="color:gray">Exercise: adapt the proof for $c=0$</span>
 
 ---
 
 ## Sequential characterization
 
-**Theorem:** let $f : A \to \mathbb{R}$ and $c$ a **limit point** of $A$
+**Theorem:** let $f : A \to \mathbb{R}$ and $c$ a <span style="color:red">limit point</span> of $A$
 
 The following statements are equivalent
 
 1. $\displaystyle\lim_{x\to c} f(x) = L$
 
-2. $\lim f(x_n)=L$ **for all** $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$
+2. $\lim f(x_n)=L$ <span style="color:red">for all</span> $(x_n)\subseteq A$ with $x_n\neq c$ and $\lim x_n = c$
 
 **Proof:** see book
 
@@ -111,7 +111,7 @@ The following statements are equivalent
 
 **Corollary:** consider $f : A \to \mathbb{R}$ and let $c$ be a limit point of $A$
 
-$\displaystyle\lim_{x\to c} f(x)$ does **NOT** exist if there exist $(x_n), (y_n)\subseteq A$ s.t.
+$\displaystyle\lim_{x\to c} f(x)$ does <span style="color:red">NOT</span> exist if there exist $(x_n), (y_n)\subseteq A$ s.t.
 
 - $x_n \neq c$ and $y_n\neq c$
 
@@ -170,7 +170,7 @@ Then
 
 ## $\epsilon$ and $\delta$ definition
 
-**Definition:** $f : A \to \mathbb{R}$ is **continuous** at $c \in A$ if
+**Definition:** $f : A \to \mathbb{R}$ is <span style="color:red">continuous</span> at $c \in A$ if
 $$
 \forall\,\epsilon>0 \quad
 \exists\,\delta>0\quad\text{s.t.}\quad
@@ -183,7 +183,7 @@ $$
 
 **Notes:**
 
-- $f(c)$ needs to be defined, but $c$ **need not** be a limit point of $A$
+- $f(c)$ needs to be defined, but $c$ <span style="color:red">need not</span> be a limit point of $A$
 
 - $\delta$ may depend on both $\epsilon$ and $c$
 
@@ -191,7 +191,7 @@ $$
 
 ## $\epsilon$ and $\delta$ definition
 
-**Example:** if $c\in A$ is **isolated** then $f : A \to \mathbb{R}$ is continuous at $c$
+**Example:** if $c\in A$ is <span style="color:red">isolated</span> then $f : A \to \mathbb{R}$ is continuous at $c$
 
 \pause
 
@@ -274,7 +274,7 @@ If $c$ is a limit point of $A$ then 1 and 2 are also equivalent with
 
 **Corollary:** let $f : A \to \mathbb{R}$ and $c\in A$ a limit point
 
-$f$ is **NOT** continuous at $x=c$ if there exists $(x_n) \subseteq A$ s.t.
+$f$ is <span style="color:red">NOT</span> continuous at $x=c$ if there exists $(x_n) \subseteq A$ s.t.
 
 - $x_n \neq c$
 
@@ -312,7 +312,7 @@ continuous at $x=0$
 
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-$g(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is **NOWHERE** continuous!
+$g(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is <span style="color:red">NOWHERE</span> continuous!
 
 ---
 
@@ -322,7 +322,7 @@ $g(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin
 
 **Proof** of discontinuity at $c \in \mathbb{Q}$:
 
-Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ (note: $x_n \notin \mathbb{Q}$)
+Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ <span style="color:gray">(note: $x_n \notin \mathbb{Q}$)</span>
 
 Then $\lim x_n = c$
 
@@ -334,7 +334,7 @@ But $\lim g(x_n) = 0 \neq g(c)$
 
 **Proof** of discontinuity at $c \in \mathbb{R}\setminus \mathbb{Q}$:
 
-Take $x_n \in \mathbb{Q}$ s.t. $|x_n-c| < \frac{1}{n}$ for all $n\in\mathbb{N}$ ($\mathbb{Q}$ is dense in $\mathbb{R}$!)
+Take $x_n \in \mathbb{Q}$ s.t. $|x_n-c| < \frac{1}{n}$ for all $n\in\mathbb{N}$ <span style="color:gray">($\mathbb{Q}$ is dense in $\mathbb{R}$!)</span>
 
 Then $\lim x_n = c$
 
@@ -348,7 +348,7 @@ But $\lim g(x_n) = 1 \neq g(c)$
 
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-$h(x) = \begin{cases} x & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is **ONLY** continuous at $x = 0$!
+$h(x) = \begin{cases} x & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q} \end{cases}$ is <span style="color:red">ONLY</span> continuous at $x = 0$!
 
 ---
 
@@ -380,7 +380,7 @@ Discontinuous at each $c \in \mathbb{Q}$, but continuous at each $c \in \mathbb{
 
 **Proof** of discontinuity at $c \in \mathbb{Q}$:
 
-Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ (note: $x_n \notin \mathbb{Q}$)
+Take $x_n = c + \displaystyle\frac{\sqrt{2}}{n}$ <span style="color:gray">(note: $x_n \notin \mathbb{Q}$)</span>
 
 Then $\lim x_n = c$
 
@@ -396,7 +396,7 @@ Let $\epsilon > 0$ and pick $k \in \mathbb{N}$ with $\displaystyle\frac{1}{k} < 
 
 \pause
 
-$(c-1,c+1)$ contains **finitely** many $r \in \mathbb{Q}$ with denominator $\leq k$
+$(c-1,c+1)$ contains <span style="color:red">finitely</span> many $r \in \mathbb{Q}$ with denominator $\leq k$
 
 \pause
 

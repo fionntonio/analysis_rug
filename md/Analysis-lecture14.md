@@ -78,18 +78,18 @@ $$
 
 ## The split property
 
-**Proof ($\Rightarrow$, ctd):** $m < n$ implies
+**Proof ($\Rightarrow$, ctd):** ${\color{red} m} < {\color{blue} n}$ implies
 $$\begin{aligned}
 U(f,Q) - L(f,Q)
-& = \sum_{k=1}^{m} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
-\pause & \leq \sum_{k=1}^{n} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
+& = \sum_{k=1}^{{\color{red} m}} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
+\pause & \leq \sum_{k=1}^{{\color{blue} n}} (M_k - m_k)(x_k-x_{k-1}) \\[3mm]
 \pause & = U(f,P_c) - L(f,P_c) \\[3mm]
 & < \epsilon
 \end{aligned}$$
 
 Conclusion: $f$ is integrable on $[a,c]$
 
-*Proof for $[c,b]$ is similar*
+<span style="color:gray">Proof for $[c,b]$ is similar</span>
 
 ---
 
@@ -217,13 +217,13 @@ $$
 
 **Proof:** let $P$ be any partition of $[a,b]$ and
 $$\begin{aligned}
-M_k   & = \sup\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
-m_k   & = \inf\{f(x)\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
-\pause M_k' & = \sup\{|f(x)|\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
-m_k' & = \inf\{|f(x)|\,:\, x\in[x_{k-1},x_k]\}
+{\color{red} M_k}   & = \sup\{{\color{red} f(x)}\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+{\color{red} m_k}   & = \inf\{{\color{red} f(x)}\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+\pause {\color{blue} M_k'} & = \sup\{{\color{blue}|f(x)|}\,:\, x\in[x_{k-1},x_k]\} \\[3mm]
+{\color{blue} m_k'} & = \inf\{{\color{blue}|f(x)|}\,:\, x\in[x_{k-1},x_k]\}
 \end{aligned}$$
 
-**Claim:** $M_k'-m_k' \leq M_k - m_k$
+**Claim:** ${\color{blue} M_k'-m_k'} \leq {\color{red} M_k - m_k}$
 
 ---
 
@@ -231,12 +231,12 @@ m_k' & = \inf\{|f(x)|\,:\, x\in[x_{k-1},x_k]\}
 
 **Proof (ctd):** for all $\epsilon>0$ there exist $y,z \in [x_{k-1},x_k]$ s.t.
 $$\begin{aligned}
-M_k' - \tfrac{1}{2}\epsilon & < |f(y)| \\[3mm]
-m_k' + \tfrac{1}{2}\epsilon & > |f(z)| \\[6mm]
-\pause M_k'-m_k' -\epsilon & < |f(y)| - |f(z)| \\[2mm]
+{\color{blue} M_k'} - \tfrac{1}{2}\epsilon & < |f(y)| \\[3mm]
+{\color{blue} m_k'} + \tfrac{1}{2}\epsilon & > |f(z)| \\[6mm]
+\pause {\color{blue} M_k'-m_k'} -\epsilon & < |f(y)| - |f(z)| \\[2mm]
 \pause & \leq |f(y)-f(z)| \\[2mm]
-\pause & \leq M_k - m_k \\[6mm]
-\pause M_k'-m_k' & \leq M_k - m_k
+\pause & \leq {\color{red} M_k - m_k} \\[6mm]
+\pause {\color{blue} M_k'-m_k'} & \leq {\color{red} M_k - m_k}
 \end{aligned}$$
 
 ---
@@ -246,8 +246,8 @@ m_k' + \tfrac{1}{2}\epsilon & > |f(z)| \\[6mm]
 **Proof (ctd):** let $P$ be any partition of $[a,b]$ then
 $$\begin{aligned}
 U(|f|,P) - L(|f|,P)
-& = \sum_{k=1}^n (M_k' - m_k')(x_k-x_{k-1}) \\[4mm]
-& \leq \sum_{k=1}^n (M_k - m_k)(x_k-x_{k-1}) \\[4mm]
+& = \sum_{k=1}^n ({\color{blue}M_k' - m_k'})(x_k-x_{k-1}) \\[4mm]
+& \leq \sum_{k=1}^n ({\color{red} M_k - m_k})(x_k-x_{k-1}) \\[4mm]
 & = U(f,P) - L(f,P)
 \end{aligned}$$
 
@@ -329,7 +329,7 @@ $$
 Then
 
 1. $F$ is uniformly continuous on $[a,b]$
-2. if $f$ is **continuous** at $c$, then $F$ is differentiable at $c$ and
+2. if $f$ is <span style="color:red">continuous</span> at $c$, then $F$ is differentiable at $c$ and
    $$F'(c) = f(c)$$
 
 ---
@@ -393,9 +393,9 @@ $f(x) = \begin{cases} 1 & \text{if } x \neq 1 \\ 0 & \text{if } x = 1 \end{cases
 
 $f$ is integrable on $[0,2]$ and define $F(x) = \displaystyle\int_0^x f(t)\,dt$
 
-**Common mistake:** $F'(1) = f(1) = 0$
+<span style="color:red">Common mistake:</span> $F'(1) = f(1) = 0$
 
-FTC2 **NOT** applicable because $f$ is not continuous at $x=1$!
+FTC2 <span style="color:red">NOT</span> applicable because $f$ is not continuous at $x=1$!
 
 ---
 

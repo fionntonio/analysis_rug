@@ -64,7 +64,7 @@ Then $f$ is continuous on $A$
 & \Rightarrow  \text{PS absolutely convergent at } c \\[3mm]
 \pause & \Rightarrow  \text{PS uniformly convergent on } [-c,c]\\[3mm]
 \pause & \Rightarrow  \text{PS continuous on } [-c,c] \\[1mm]
-\pause &              \quad\textit{[each term $a_n x^n$ is continuous!]}\\[3mm]
+\pause &              \quad{\color{gray}\textit{[each term $a_n x^n$ is continuous!]}}\\[3mm]
 & \Rightarrow  \text{PS continuous at } x_0
 \end{aligned}$$
 ---
@@ -79,7 +79,7 @@ $$
 $$
 In particular, the PS is continuous on $[-R,R]$
 
-What if convergence is **conditional** at $x=R$ or $x=-R$?
+What if convergence is <span style="color:red">conditional</span> at $x=R$ or $x=-R$?
 ---
 
 # Term-wise differentiation
@@ -129,7 +129,7 @@ $$
 f' = \sum_{n=1}^\infty f_n'
 $$
 
-*[Term-wise Differentiability Theorem]*
+<span style="color:gray">[Term-wise Differentiability Theorem]</span>
 ---
 
 ## Differentiation can be done term-by-term!
@@ -148,7 +148,7 @@ $$
 
 Now apply Term-wise Differentiability Theorem
 
-*[Note: we can apply the theorem any number of times!]*
+<span style="color:gray">[Note: we can apply the theorem any number of times!]</span>
 ---
 
 ## Differentiation
@@ -205,7 +205,7 @@ Taylor's formula: $\displaystyle \quad a_n = \frac{f^{(n)}(0)}{n!}$
 
 Assume $f$ is inf. often differentiable on interval around $x=0$
 
-**Definition:** the Taylor series of $f$ around $x=0$ is given by
+**Definition:** the <span style="color:red">Taylor series of $f$ around $x=0$</span> is given by
 $$
 \sum_{n=0}^\infty \frac{f^{(n)}(0)}{n!} x^n
 $$
@@ -219,8 +219,8 @@ $$
 
 **Definition:**
 $$\begin{aligned}
-s_n(x) & = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}x^k \hspace{28mm}\text{(partial sum)} \\[4mm]
-E_n(x) & = f(x) - s_n(x) \hspace{30mm}\text{(remainder)}
+s_n(x) & = \sum_{k=0}^n \frac{f^{(k)}(0)}{k!}x^k \hspace{28mm}\text{{\color{red} (partial sum)}} \\[4mm]
+E_n(x) & = f(x) - s_n(x) \hspace{30mm}\text{{\color{red} (remainder)}}
 \end{aligned}$$
 
 \pause
@@ -230,7 +230,7 @@ $$
 E_n(x) = \frac{f^{(n+1)}(c)}{(n+1)!} x^{n+1}
 $$
 
-**Note:** $c$ depends on both $n$ and $x$!
+**Note:** <span style="color:red">$c$ depends on both $n$ and $x$!</span>
 
 *If $x<0$, then $c \in (x,0)$*
 ---
@@ -240,7 +240,7 @@ $$
 **Lemma:** assume that
 
 - $x>0$ and $h(t)$ is $n+1$ times differentiable on $[0,x]$
-- $h(x)=0$ and $h^{(k)}(0) = 0$ for all $k = 0,\dots,n$
+- <span style="color:red">$h(x)=0$</span> and <span style="color:red">$h^{(k)}(0) = 0$</span> for all $k = 0,\dots,n$
 
 Then $h^{(n+1)}(c) = 0$ for some $c \in (0,x)$
 
@@ -300,7 +300,7 @@ $$
 
 Assume $f$ is inf. often differentiable on interval around $a$
 
-**Definition:** the Taylor series of $f$ around $x=a$ is given by
+**Definition:** the <span style="color:red">Taylor series of $f$ around $x=a$</span> is given by
 $$
 \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
 $$
@@ -468,7 +468,7 @@ f(x) = \begin{cases} e^{-1/x^2} & \text{if } x \neq 0 \\ 0 & \text{if } x = 0 \e
 f^{(n)}(0)=0 \quad\forall\,n\in\mathbb{N}
 $$
 
-The Taylor series of $f$ does **NOT** converge to $f$!
+The Taylor series of $f$ does <span style="color:red">NOT</span> converge to $f$!
 ---
 
 # Applications

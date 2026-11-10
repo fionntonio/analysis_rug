@@ -17,12 +17,12 @@ Tutorial: [Tutorial 5](#tutorials/tutorial-5)
 
 ## Motivation
 
-**Closed interval** (endpoints included):
+<span style="color:red">Closed interval</span> (endpoints included):
 $$
 [a,b] = \big\{x \in \mathbb{R} \,:\, a \leq x \leq b\big\}
 $$
 
-**Open interval** (endpoints not included):
+<span style="color:red">Open interval</span> (endpoints not included):
 $$
 (a,b) = \big\{x \in \mathbb{R} \,:\, a < x < b\big\}
 $$
@@ -33,7 +33,7 @@ How to define open and closed for *arbitrary* sets?
 
 ## Open sets
 
-**Definition:** $O\subseteq\mathbb{R}$ is **open** if
+**Definition:** $O\subseteq\mathbb{R}$ is <span style="color:red">open</span> if
 
 $$
 \forall\,a \in O \quad\exists\,\epsilon>0 \quad\text{s.t.}\quad V_\epsilon(a) \subseteq O
@@ -59,7 +59,7 @@ Take $\epsilon=\min\{|x-c|,|x-d|\}$, then $V_\epsilon(x)\subseteq (c,d)$
 
 \pause
 
-**Example:** the interval $[c,d)$ is **NOT** open
+**Example:** the interval $[c,d)$ is <span style="color:red">NOT</span> open
 
 For $x=c$ no $\epsilon>0$ works
 
@@ -67,7 +67,7 @@ For $x=c$ no $\epsilon>0$ works
 
 ## Open sets
 
-**Example:** $\mathbb{Q}$ is **NOT** open
+**Example:** $\mathbb{Q}$ is <span style="color:red">NOT</span> open
 
 Take $\epsilon>0$ arbitrary
 
@@ -82,8 +82,8 @@ Then $x \in V_\epsilon(0)$ but $x\notin\mathbb{Q}$
 
 **Theorem:**
 
-1. Unions of **arbitrary** collections of open sets are open
-2. Intersections of **finite** collections of open sets are open
+1. Unions of <span style="color:red">arbitrary</span> collections of open sets are open
+2. Intersections of <span style="color:red">finite</span> collections of open sets are open
 
 \pause
 
@@ -103,8 +103,8 @@ There exists $\epsilon>0$ such that $V_\epsilon(x)\subseteq O_i \subseteq O$
 
 **Theorem:**
 
-1. Unions of **arbitrary** collections of open sets are open
-2. Intersections of **finite** collections of open sets are open
+1. Unions of <span style="color:red">arbitrary</span> collections of open sets are open
+2. Intersections of <span style="color:red">finite</span> collections of open sets are open
 
 \pause
 
@@ -126,7 +126,7 @@ For $\epsilon=\min\{\epsilon_1,\dots,\epsilon_n\}$ we have $V_\epsilon(x)\subset
 
 ## Unions and intersections
 
-**Warning:** the intersection of infinitely many open sets **NEED NOT BE** open!
+**Warning:** the intersection of infinitely many open sets <span style="color:red">NEED NOT BE</span> open!
 
 Counter example:
 $$\begin{aligned}
@@ -140,7 +140,7 @@ O_n &= \left(-\frac{1}{n},\frac{1}{n}\right) \quad\text{is open for all } n\in\m
 
 ## Isolated points
 
-**Definition:** $a \in A$ is an **isolated point** of $A\subseteq\mathbb{R}$ if
+**Definition:** $a \in A$ is an <span style="color:red">isolated point</span> of $A\subseteq\mathbb{R}$ if
 
 $$
 \exists\,\epsilon>0 \quad V_\epsilon(a)\cap A = \{a\}
@@ -152,19 +152,19 @@ $$
 
 For $0 < \epsilon < \tfrac{1}{2}$ we have $V_\epsilon(1) \cap A = \{1\}$
 
-*[Exercise: show that *all* points of $A$ are isolated]*
+<span style="color:gray">[Exercise: show that <i>all</i> points of $A$ are isolated]</span>
 
 ---
 
 ## Limit points
 
-**Definition:** $x \in \mathbb{R}$ is a **limit point** of $A\subseteq\mathbb{R}$ if
+**Definition:** $x \in \mathbb{R}$ is a <span style="color:red">limit point</span> of $A\subseteq\mathbb{R}$ if
 
 $$
-\forall\,\epsilon>0 \quad V_\epsilon(x) \text{ intersects } A \text{ in some point \textbf{other} than } x
+\forall\,\epsilon>0 \quad V_\epsilon(x) \text{ intersects } A \text{ in some point {\color{red}other} than } x
 $$
 
-**Note:** limit points of $A$ **may** or **may not** belong to $A$!
+**Note:** limit points of $A$ <span style="color:red">may</span> or <span style="color:red">may not</span> belong to $A$!
 
 ---
 
@@ -242,7 +242,7 @@ For $x=1$ take $a_n = \displaystyle\frac{n}{n+1}$
 
 ## Closed sets
 
-**Definition:** a set is **closed** if it contains its limit points
+**Definition:** a set is <span style="color:red">closed</span> if it contains its limit points
 
 **Moral:** you can't leave a closed set by taking limits
 (see next Theorem)
@@ -309,7 +309,7 @@ Order limit theorem $\;\Rightarrow\; c \leq x \leq d \;\Rightarrow\; x \in [c,d]
 
 ## Closure
 
-**Definition:** the **closure** of $A$ is defined as
+**Definition:** the <span style="color:red">closure</span> of $A$ is defined as
 $$
 \overline{A} = A \cup \{\text{all limit points of } A\}
 $$
@@ -337,10 +337,10 @@ $\overline{A} = A \cup L \quad\text{with}\quad L = \{\text{limit points of } A\}
 
 $$\begin{aligned}
 x \text{ limit point of $\overline{A}$} &\Rightarrow \forall\,\epsilon>0 \quad \exists\,y \in V_\epsilon(x)\cap\overline{A} \quad y \neq x \\
-\pause & \quad \textit{(note: either } y \in A \textit{ or } y \in L\textit{)} \\[3mm]
+\pause & \quad {\color{gray}\textit{(note: either } y \in A \textit{ or } y \in L\textit{)}} \\[3mm]
 \pause (1)\quad y \in A &\Rightarrow x \text{ is a limit point of $A$} \\[3mm]
 \pause (2)\quad y \in L &\Rightarrow \forall\,\delta>0 \quad \exists\, z \in V_\delta(y) \cap A \quad z \neq y \\
-\pause & \quad \textit{(note: } V_\delta(y) \subseteq V_\epsilon(x)\setminus\{x\} \textit{ for } \delta \textit{ small enough)} \\[3mm]
+\pause & \quad {\color{gray}\textit{(note: } V_\delta(y) \subseteq V_\epsilon(x)\setminus\{x\} \textit{ for } \delta \textit{ small enough)}} \\[3mm]
 \pause &\Rightarrow x \text{ is a limit point of $A$}
 \end{aligned}$$
 
@@ -354,7 +354,7 @@ All points of $A$ are limit points
 
 Also $x=0$ and $x=1$ are limit points
 
-If $x < 0$ or $x > 1$ then $x$ is **NOT** a limit point of $A$ (exercise!)
+If $x < 0$ or $x > 1$ then $x$ is <span style="color:red">NOT</span> a limit point of $A$ (exercise!)
 
 ---
 
@@ -400,8 +400,8 @@ So each $x\in\mathbb{R}$ is a limit point of $\mathbb{Q}$
 
 **Theorem:**
 
-1. Unions of **finite** collections of closed sets are closed
-2. Intersections of **arbitrary** collections of closed sets are closed
+1. Unions of <span style="color:red">finite</span> collections of closed sets are closed
+2. Intersections of <span style="color:red">arbitrary</span> collections of closed sets are closed
 
 \pause
 
@@ -420,8 +420,8 @@ F_1,\dots,F_n \text{ closed}
 
 **Theorem:**
 
-1. Unions of **finite** collections of closed sets are closed
-2. Intersections of **arbitrary** collections of closed sets are closed
+1. Unions of <span style="color:red">finite</span> collections of closed sets are closed
+2. Intersections of <span style="color:red">arbitrary</span> collections of closed sets are closed
 
 \pause
 
@@ -438,7 +438,7 @@ F_i \text{ closed for all } i \in I
 
 ## Unions and intersections
 
-**Warning:** the union of infinitely many closed sets **NEED NOT BE** closed!
+**Warning:** the union of infinitely many closed sets <span style="color:red">NEED NOT BE</span> closed!
 
 Counter example:
 $$\begin{aligned}

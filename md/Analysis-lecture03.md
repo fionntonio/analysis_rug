@@ -18,7 +18,7 @@ Tutorial: [Tutorial 3](#tutorials/tutorial-3)
 
 ## Sequences and limits
 
-**Definition:** $(a_n)$ **converges** to $a$ if
+**Definition:** $(a_n)$ <span style="color:red">converges</span> to $a$ if
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
 n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
@@ -33,7 +33,7 @@ $$
 
 ## Monotone sequences
 
-**Definition:** $(a_n)$ is called **monotone** if it is either
+**Definition:** $(a_n)$ is called <span style="color:red">monotone</span> if it is either
 
 - increasing: $\quad\; a_n \leq a_{n+1} \quad\forall\,n \in \mathbb{N}$
 
@@ -46,7 +46,7 @@ $$
 **Examples:**
 - $(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\tfrac{1}{4},\dots)$ is monotone
 - $(b_n) = (1,1,2,2,4,4,8,8,\dots)$ is monotone
-- $(c_n) = (1,0,1,0,\dots)$ is **NOT** monotone
+- $(c_n) = (1,0,1,0,\dots)$ is <span style="color:red">NOT</span> monotone
 
 ---
 
@@ -104,7 +104,7 @@ $$\begin{aligned}
 
 ## Monotone convergence theorem
 
-**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+<span style="color:gray">**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges</span>
 
 Induction proof that $(a_n)$ is bounded:
 $$\begin{aligned}
@@ -118,7 +118,7 @@ $$\begin{aligned}
 
 ## Monotone convergence theorem
 
-**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges
+<span style="color:gray">**Example:** if $a_{n+1} = \sqrt{1+a_n}$ with $a_1=1$ then $(a_n)$ converges</span>
 
 $(a_n)$ bounded and increasing $\;\Rightarrow\;$ $a = \lim a_n$ exists by MCT
 
@@ -148,7 +148,7 @@ If $(a_n)$ is a sequence then
 $$
 (a_{n_k}) = (a_{n_1}, a_{n_2}, a_{n_3}, \dots)
 $$
-is called a **subsequence** of $(a_n)$
+is called a <span style="color:red">subsequence</span> of $(a_n)$
 
 **Note:** $n_k \geq k$ for all $k \in \mathbb{N}$
 
@@ -179,13 +179,13 @@ n_k = k+4
 
 ## Subsequences
 
-**Warning:** the indices $n_k$ must be **strictly increasing**!
+**Warning:** the indices $n_k$ must be <span style="color:red">strictly increasing</span>!
 
-The following examples **DO NOT** qualify as subsequences of $(a_n)$:
+The following examples <span style="color:red">DO NOT</span> qualify as subsequences of $(a_n)$:
 - $(a_3, a_5, a_1, a_7, a_2,\dots)$
-  *[the ordering of the terms is not respected]*
+  <span style="color:gray">[the ordering of the terms is not respected]</span>
 - $(a_1, a_1, a_2, a_3, a_4,\dots)$
-  *[repetitions are not allowed]*
+  <span style="color:gray">[repetitions are not allowed]</span>
 
 ---
 
@@ -246,7 +246,7 @@ NIP $\Rightarrow$ there exists $x\in \bigcap_{n=1}^\infty I_n$
 
 ## Bolzano--Weierstrass theorem
 
-**Proof (ctd):** each $I_k$ contains **infinitely many** terms of the seq.
+**Proof (ctd):** each $I_k$ contains <span style="color:red">infinitely many</span> terms of the seq.
 - pick $n_1 \in \mathbb{N}$ with $a_{n_1} \in I_1$
 - pick $n_2 \in \mathbb{N}$ with $n_2 > n_1$ and $a_{n_2} \in I_2$
 - pick $n_3 \in \mathbb{N}$ with $n_3 > n_2$ and $a_{n_3} \in I_3$
@@ -273,15 +273,15 @@ $$
 ## How to add infinitely many numbers?
 
 **Definition:**
-- infinite **series**:
+- infinite <span style="color:red">series</span>:
 $$
 \sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots
 $$
-- $n$-th **partial sum**:
+- $n$-th <span style="color:red">partial sum</span>:
 $$
 s_n = a_1 + a_2 + \dots + a_n
 $$
-- if $\lim s_n = s$, then we say the series **converges** to $s$
+- if $\lim s_n = s$, then we say the series <span style="color:red">converges</span> to $s$
 
 ---
 
@@ -295,7 +295,7 @@ $$
 $$\begin{aligned}
 s_n & = 1 + \frac{1}{4} + \frac{1}{9} + \dots + \frac{1}{n^2} \\[5mm]
 s_n & < s_{n+1} \qquad\forall\, n \in \mathbb{N} \\[5mm]
-s_n & < 2 \qquad\forall\, n \in \mathbb{N} \qquad \text{*(see next slide)*}\\[5mm]
+s_n & < 2 \qquad\forall\, n \in \mathbb{N} \qquad \text{{\color{gray}(see next slide)}}\\[5mm]
 \text{MCT} & \Rightarrow \lim s_n \text{ exists}
 \end{aligned}$$
 
@@ -344,7 +344,7 @@ For odd powers of $k$ the sums are unknown!
 
 ## The harmonic series
 
-**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k}$ **diverges**
+**Theorem:** $\displaystyle\sum_{k=1}^\infty \frac{1}{k}$ <span style="color:red">diverges</span>
 
 \pause
 

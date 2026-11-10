@@ -17,7 +17,7 @@ Tutorial: [Tutorial 10](#tutorials/tutorial-10)
 
 ## Sequences of functions
 
-Consider a **sequence of functions** $f_n : A \to \mathbb{R}$
+Consider a <span style="color:red">sequence of functions</span> $f_n : A \to \mathbb{R}$
 
 1. What does "$f = \lim f_n$" mean?
 
@@ -28,14 +28,14 @@ Consider a **sequence of functions** $f_n : A \to \mathbb{R}$
 
 **Definition:** consider $f_n : A \to \mathbb{R}$
 
-$(f_n)$ **converges pointwise** to $f : A \to \mathbb{R}$ if for all **fixed** $x \in A$
+$(f_n)$ <span style="color:red">converges pointwise</span> to $f : A \to \mathbb{R}$ if for all <span style="color:red">fixed</span> $x \in A$
 $$
 \lim f_n(x) = f(x)
 $$
 
 \pause
 
-Thus: for each **fixed** $x \in A$ we have
+Thus: for each <span style="color:red">fixed</span> $x \in A$ we have
 $$
 \forall\,\epsilon>0 \quad
 \exists\,N_{\epsilon, x} \in \mathbb{N}
@@ -44,7 +44,7 @@ n \geq N_{\epsilon, x}
 \quad\Rightarrow\quad
 |f_n(x)-f(x)| < \epsilon
 $$
-*[So $N$ depends on *both* $\epsilon$ and $x$!]*
+<span style="color:gray">[So $N$ depends on <i>both</i> $\epsilon$ and $x$!]</span>
 ---
 
 ## The classical example
@@ -69,7 +69,7 @@ n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = 0 < \epsilon \\[8mm]
 n \geq N_{\epsilon, x} & \Rightarrow |f_n(x)-f(x)| = |x^n-0| = x^n < \epsilon
 \end{aligned}$$
 
-*[Observe how $N$ depends on both $\epsilon$ and $x$!]*
+<span style="color:gray">[Observe how $N$ depends on both $\epsilon$ and $x$!]</span>
 ---
 
 ## The triangle sequence
@@ -98,7 +98,7 @@ n \geq N_{\epsilon,x} & \Rightarrow \frac{1}{n} < x
 \;\; \Rightarrow \;\; |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
 \end{aligned}$$
 
-*[Observe how $N$ depends on $x$!]*
+<span style="color:gray">[Observe how $N$ depends on $x$!]</span>
 ---
 
 ## The triangle sequence
@@ -116,7 +116,7 @@ n \geq N_{\epsilon,x} & \Rightarrow |f_n(x)-f(x)| = |0-0| = 0 < \epsilon
 
 ## Uniform convergence
 
-**Definition:** $(f_n)$ **converges uniformly** to $f : A \to \mathbb{R}$ if
+**Definition:** $(f_n)$ <span style="color:red">converges uniformly</span> to $f : A \to \mathbb{R}$ if
 
 $$
 \forall\,\epsilon>0\quad
@@ -126,10 +126,10 @@ n \geq N_\epsilon
 \quad\Rightarrow\quad
 |f_n(x)-f(x)| < \epsilon
 \quad
-\forall\, x \in A
+{\color{red}\forall\, x \in A}
 $$
 
-**Note:** uniform means that **$N_\epsilon$ is independent of $x \in A$**
+**Note:** uniform means that <span style="color:red">$N_\epsilon$ is independent of $x \in A$</span>
 ---
 
 ## Uniform convergence
@@ -137,16 +137,16 @@ $$
 ![](../fig/lec12-uniform.png)
 *[Source: Stephen Abbott, *Understanding Analysis*, Springer, 2015]*
 
-$f_n\to f$ uniformly means that for $n\geq N$ the graph of $f_n$ is within an **$\epsilon$-ribbon** around the graph of $f$
+$f_n\to f$ uniformly means that for $n\geq N$ the graph of $f_n$ is within an <span style="color:red">$\epsilon$-ribbon</span> around the graph of $f$
 
-*[Note: the graph of $f_n$ lies within a $\epsilon$-tubular neighbourhood of the graph of $f$]*
+<span style="color:gray">[Note: the graph of $f_n$ lies within a $\epsilon$-tubular neighbourhood of the graph of $f$]</span>
 ---
 
 ## The classical example
 
 ![](../fig/lec12-example1b.svg)
 
-**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
+**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does <span style="color:red">NOT</span> converge uniformly to
 $$
 f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
 $$
@@ -157,7 +157,7 @@ In the figure: $\epsilon=1/4$
 
 ![](../fig/lec12-example2b.svg)
 
-**Example:** the triangle sequence does **NOT** converge uniformly to $0$
+**Example:** the triangle sequence does <span style="color:red">NOT</span> converge uniformly to $0$
 
 (the dotted line is an $\epsilon$-ribbon around $f=0$ for $\epsilon=\tfrac{1}{2}$)
 ---
@@ -178,7 +178,7 @@ n \geq N_\epsilon
 \pause & \Rightarrow \sup_{x\in A} |f_n(x)-f(x)| \leq \epsilon
 \end{aligned}$$
 
-*[Note: $\sup_{x\in A} |f_n(x)-f(x)| \to 0$ implies that $|f_n-f|$ is bounded on $A$ for all $n$ sufficiently large]*
+<span style="color:gray">[Note: $\sup_{x\in A} |f_n(x)-f(x)| \to 0$ implies that $|f_n-f|$ is bounded on $A$ for all $n$ sufficiently large]</span>
 ---
 
 ## A useful characterization
@@ -216,7 +216,7 @@ $$
 
 ## A useful characterization
 
-**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does **NOT** converge uniformly to
+**Example:** on $A=[0,1]$ the seq. $f_n(x)=x^n$ does <span style="color:red">NOT</span> converge uniformly to
 $$
 f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
 $$
@@ -231,7 +231,7 @@ $$
 
 ![](../fig/lec12-example2a.svg)
 
-**Example:** the triangle sequence does **NOT** converge uniformly to zero since
+**Example:** the triangle sequence does <span style="color:red">NOT</span> converge uniformly to zero since
 $$
 \sup_{x\in [0,1]} |f_n(x)-f(x)| = \sup_{x\in [0,1]} f_n(x) = 1
 \quad\text{for all } n\in\mathbb{N}
@@ -327,7 +327,7 @@ $$\begin{aligned}
 
 ## Preservation of continuity
 
-**Example:** the seq. $f_n(x)=x^n$ does **NOT** uniformly converge to
+**Example:** the seq. $f_n(x)=x^n$ does <span style="color:red">NOT</span> uniformly converge to
 $$
 f(x) = \begin{cases} 0 & \text{if } x < 1 \\ 1 & \text{if } x = 1 \end{cases}
 $$
@@ -340,6 +340,6 @@ Reason: each $f_n$ is continuous at $x=1$, but the limit $f$ is not
 
 **Exercise:** for $f_n(x) = x^n$, prove that
 - $f_n\to 0$ uniformly on each set $A=[0,b]$ with $0 < b < 1$
-- $f_n\to 0$ pointwise but **NOT** uniformly on $A=[0,1)$
+- $f_n\to 0$ pointwise but <span style="color:red">NOT</span> uniformly on $A=[0,1)$
 
 **Moral:** whether or not we have uniform convergence also depends on the set $A$!

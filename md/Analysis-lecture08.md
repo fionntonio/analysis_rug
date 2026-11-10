@@ -18,7 +18,7 @@ Tutorial: [Tutorial 8](#tutorials/tutorial-8)
 
 ## Compact sets
 
-**Definition:** $K\subseteq\mathbb{R}$ is **compact** if
+**Definition:** $K\subseteq\mathbb{R}$ is <span style="color:red">compact</span> if
 
 every sequence in $K$ has a convergent subseq. with a limit in $K$
 
@@ -55,7 +55,7 @@ $f$ continuous $\;\Rightarrow\;$ $y_{n_k} = f(x_{n_k}) \to f(x) \in f(K)$
 
 ## Images of compact sets
 
-**Warning:** the previous theorem is **FALSE** for pre-images:
+**Warning:** the previous theorem is <span style="color:red">FALSE</span> for pre-images:
 $$
 f^{-1}(K) = \{x\in A \,:\, f(x) \in K\}
 $$
@@ -63,7 +63,7 @@ $$
 Counter example:
 - $f(x) = 0$ for all $x \in \mathbb{R}$
 - $K = \{0\}$ is compact
-- $f^{-1}(K) = \mathbb{R}$ is **NOT** compact
+- $f^{-1}(K) = \mathbb{R}$ is <span style="color:red">NOT</span> compact
 
 ---
 
@@ -102,15 +102,15 @@ Counter example: $f(x) = x$ has
 
 ## Uniform continuity
 
-**Definition:** $f : A \to \mathbb{R}$ is **uniformly continuous** on $A$ if
+**Definition:** $f : A \to \mathbb{R}$ is <span style="color:red">uniformly continuous</span> on $A$ if
 
 $\forall\,\epsilon>0 \quad \exists\,\delta>0$ such that $\forall\,x,y \in A$
 $$
 |x-y| < \delta \quad\Rightarrow\quad |f(x)-f(y)|<\epsilon
 $$
 
-**Note:** uniform means that **$\delta$ does not depend on $x$ or $y$**
-*[but $\delta$ may still depend on $\epsilon$]*
+**Note:** uniform means that <span style="color:red">$\delta$ does not depend on $x$ or $y$</span>
+<span style="color:gray">[but $\delta$ may still depend on $\epsilon$]</span>
 
 ---
 
@@ -136,7 +136,7 @@ $$
 |f(x) - f(y)| < |a|\delta = \epsilon
 $$
 
-*[What if $a=0$?]*
+<span style="color:gray">[What if $a=0$?]</span>
 
 ---
 
@@ -167,7 +167,7 @@ $$
 
 ## Uniform continuity
 
-**Definition:** $f : A \to \mathbb{R}$ is **uniformly continuous** on $A$ if
+**Definition:** $f : A \to \mathbb{R}$ is <span style="color:red">uniformly continuous</span> on $A$ if
 
 $\forall\,\epsilon>0 \quad \exists\,\delta>0$ such that $\forall\,x,y \in A$
 $$
@@ -187,7 +187,7 @@ $$
 
 ## Uniform continuity
 
-**Example:** $f(x)=x^2$ is **NOT** uniformly continuous on $\mathbb{R}$
+**Example:** $f(x)=x^2$ is <span style="color:red">NOT</span> uniformly continuous on $\mathbb{R}$
 
 \pause
 
@@ -211,7 +211,7 @@ So the definition does not hold for $\epsilon = 1$
 
 **Theorem:** the following statements are equivalent
 
-1. $f : A \to \mathbb{R}$ is **NOT** uniformly continuous on $A$
+1. $f : A \to \mathbb{R}$ is <span style="color:red">NOT</span> uniformly continuous on $A$
 2. There exists $\epsilon_0>0$ and $(x_n),(y_n)\subseteq A$ such that
    $$
    |x_n-y_n| \to 0
@@ -225,7 +225,7 @@ So the definition does not hold for $\epsilon = 1$
 
 ## Uniform continuity
 
-**Example:** $f(x)=x^2$ is **NOT** uniformly continuous on $\mathbb{R}$
+**Example:** $f(x)=x^2$ is <span style="color:red">NOT</span> uniformly continuous on $\mathbb{R}$
 
 $\displaystyle x_n = n+\frac{1}{n}$
 
@@ -267,7 +267,7 @@ $$
 
 ## Uniform continuity
 
-**Example:** $f(x)=\displaystyle\frac{1}{x}$ is **NOT** unif. cont. on $(0,\infty)$
+**Example:** $f(x)=\displaystyle\frac{1}{x}$ is <span style="color:red">NOT</span> unif. cont. on $(0,\infty)$
 
 $x_n = \displaystyle\frac{1}{n+1}$
 
@@ -277,7 +277,7 @@ $\displaystyle |x_n-y_n| \to 0$
 
 $\displaystyle |f(x_n)-f(y_n)| = 1 \quad\forall\,n \in \mathbb{N}$
 
-*[Hence, uniform continuity also depends on the domain!]*
+<span style="color:gray">[Hence, uniform continuity also depends on the domain!]</span>
 
 ---
 

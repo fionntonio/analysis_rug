@@ -18,7 +18,7 @@ Tutorial: [Tutorial 4](#tutorials/tutorial-4)
 
 ## Cauchy sequences
 
-**Definition:** $(a_n)$ **converges** to $a$ if
+**Definition:** $(a_n)$ <span style="color:red">converges</span> to $a$ if
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
 n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
@@ -30,7 +30,7 @@ $$
 
 ## Cauchy sequences
 
-**Definition:** $(a_n)$ is a **Cauchy sequence** if
+**Definition:** $(a_n)$ is a <span style="color:red">Cauchy sequence</span> if
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
 n,m \geq N
@@ -38,7 +38,7 @@ n,m \geq N
 |a_n - a_m| < \epsilon
 $$
 
-**Meaning:** the terms get close to **each other**
+**Meaning:** the terms get close to <span style="color:red">each other</span>
 
 ---
 
@@ -69,7 +69,7 @@ n \geq N    & \quad\Rightarrow\quad |a_n - a| < \tfrac{1}{2}\epsilon \\[6mm]
 **Proof:** for $\epsilon=1$ there exists $N \in \mathbb{N}$ such that
 $$\begin{aligned}
 n,m \geq N & \Rightarrow |a_n - a_m| < 1 \\[1mm]
-\pause n \geq N & \Rightarrow |a_n - a_N| < 1 \quad\text{(fix $m = N$)} \\[1mm]
+\pause n \geq N & \Rightarrow |a_n - a_N| < 1 \quad{\color{gray} \text{(fix $m = N$)}} \\[1mm]
 \pause & \Rightarrow \big||a_n|-|a_N|\big| < 1 \\[1mm]
 \pause & \Rightarrow |a_n|-|a_N|< 1 \\[1mm]
 \pause & \Rightarrow |a_n| < 1 + |a_N|
@@ -123,9 +123,9 @@ n \geq N \quad\Rightarrow\quad |a_n - a| & = |a_n - a_{n_k} + a_{n_k} - a| \\[3m
 
 **Definitions:**
 
-- infinite **series**: $\displaystyle \sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots$
-- $n$-th **partial sum**: $s_n = a_1 + a_2 + \dots + a_n$
-- **convergence**: $\displaystyle \sum_{k=1}^\infty a_k = A \;\stackrel{\text{def}}{\Longleftrightarrow}\; \lim s_n = A$
+- infinite <span style="color:red">series</span>: $\displaystyle \sum_{k=1}^\infty a_k = a_1 + a_2 + a_3 + \cdots$
+- $n$-th <span style="color:red">partial sum</span>: $s_n = a_1 + a_2 + \dots + a_n$
+- <span style="color:red">convergence</span>: $\displaystyle \sum_{k=1}^\infty a_k = A \;\stackrel{\text{def}}{\Longleftrightarrow}\; \lim s_n = A$
 
 ---
 
@@ -195,7 +195,7 @@ n = m+1 \text{ and } m \geq N  & \quad\Rightarrow\quad |a_{m+1}| < \epsilon
 
 **Theorem:** $\sum_{k=1}^\infty a_k$ converges $\;\Rightarrow\;$ $\lim a_k = 0$
 
-**Warning:** the converse is **NOT** true!
+**Warning:** the converse is <span style="color:red">NOT</span> true!
 
 Counter example:
 $$
@@ -209,13 +209,13 @@ $$
 
 ## Necessary condition for convergence
 
-**Note:** the previous theorem also gives a **test for divergence**
+**Note:** the previous theorem also gives a <span style="color:red">test for divergence</span>
 
 **Example:** the series
 $$
 \sum_{k=1}^\infty (-1)^{k+1}\cdot\frac{k+1}{2k} = 1 - \frac{3}{4} + \frac{4}{6} - \frac{5}{8} + \frac{6}{10} - \dots
 $$
-diverges since **$\lim a_k$ does not exist**
+diverges since <span style="color:red">$\lim a_k$ does not exist</span>
 
 ---
 
@@ -264,7 +264,7 @@ $$
 - $0 \leq a_{k+1} \leq a_k$ for all $k\in\mathbb{N}$
 - $\lim a_k = 0$
 
-then the **alternating series** $\sum_{k=1}^\infty (-1)^{k+1}a_k$ converges
+then the <span style="color:red">alternating series</span> $\sum_{k=1}^\infty (-1)^{k+1}a_k$ converges
 
 \pause
 
@@ -347,8 +347,8 @@ $$
 ## Absolute vs. conditional convergence
 
 **Definition:** $\sum_{k=1}^\infty a_k$ is called
-- **absolutely convergent** if $\sum_{k=1}^\infty |a_k|$ converges
-- **conditionally convergent** if it converges but $\sum_{k=1}^\infty |a_k|$ diverges
+- <span style="color:red">absolutely convergent</span> if $\sum_{k=1}^\infty |a_k|$ converges
+- <span style="color:red">conditionally convergent</span> if it converges but $\sum_{k=1}^\infty |a_k|$ diverges
 
 \pause
 
@@ -363,7 +363,7 @@ $$
 
 ## Geometric series
 
-**Definition:** a **geometric series** is of the form
+**Definition:** a <span style="color:red">geometric series</span> is of the form
 $$
 \sum_{k=0}^\infty ar^k = a + ar + ar^2 + ar^3 + \cdots
 $$
@@ -412,7 +412,7 @@ $$\begin{aligned}
 
 ## Telescoping series
 
-**Definition:** **telescoping series** are of the form
+**Definition:** <span style="color:red">telescoping series</span> are of the form
 $$
 \sum_{k=1}^\infty a_k = \sum_{k=1}^\infty (b_k - b_{k+1})
 $$

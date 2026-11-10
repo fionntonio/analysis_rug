@@ -17,7 +17,7 @@ Tutorial: [Tutorial 6](#tutorials/tutorial-6)
 
 ## Open sets
 
-**Definition:** $O\subseteq\mathbb{R}$ is **open** if
+**Definition:** $O\subseteq\mathbb{R}$ is <span style="color:red">open</span> if
 
 $$
 \forall\,a \in O \quad\exists\,\epsilon>0 \quad\text{s.t.}\quad V_\epsilon(a) \subseteq O
@@ -29,7 +29,7 @@ Recall: $V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon
 
 ## Closed sets
 
-**Definition:** $F\subseteq\mathbb{R}$ is **closed** if $F$ contains its limit points
+**Definition:** $F\subseteq\mathbb{R}$ is <span style="color:red">closed</span> if $F$ contains its limit points
 
 **Theorem:** the following statements are equivalent:
 1. $F$ is closed
@@ -53,7 +53,7 @@ Recall: $V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon
 
 ## Sequential definition
 
-**Definition:** $K\subseteq\mathbb{R}$ is **compact** if
+**Definition:** $K\subseteq\mathbb{R}$ is <span style="color:red">compact</span> if
 
 *every* sequence in $K$ has a convergent subsequence
 
@@ -99,7 +99,7 @@ Order Limit Theorem: $a \leq x_{n_k} \leq b$ for all $k \;\Rightarrow\; a \leq x
 
 ## Sequential definition
 
-**Example:** $(0,1]$ is NOT compact
+**Example:** $(0,1]$ is <span style="color:red">NOT</span> compact
 
 Take $x_n = \displaystyle\frac{1}{n} \in (0,1]$
 
@@ -107,7 +107,7 @@ Every subsequence $(x_{n_k})$ satisfies $\lim x_{n_k} = 0$, but $0 \notin (0,1]$
 
 \pause
 
-**Example:** $\mathbb{R}$ is NOT compact
+**Example:** $\mathbb{R}$ is <span style="color:red">NOT</span> compact
 
 $x_n = n$ has no convergent subsequence
 
@@ -121,7 +121,7 @@ $x_n = n$ has no convergent subsequence
 
 **Proof ($\Rightarrow$):**
 
-Assume $K$ is NOT bounded
+Assume $K$ is <span style="color:red">NOT</span> bounded
 
 There exists $(x_n) \subseteq K$ with $|x_n| > n$ for all $n\in\mathbb{N}$
 
@@ -137,7 +137,7 @@ Contradiction!
 
 **Proof ($\Rightarrow$):**
 
-Let $x$ be a limit point of $K$ *[to prove: $x\in K$]*
+Let $x$ be a limit point of $K$ <span style="color:gray">[to prove: $x\in K$]</span>
 
 \pause
 
@@ -231,12 +231,12 @@ Then $\bigcap_{n=1}^\infty K_n$ is nonempty
 
 and assume that the sets $O_\lambda \subseteq \mathbb{R}$, where $\lambda \in \Lambda$, are open
 
-We call the sets $O_\lambda$ an **open cover** for $A$ if
+We call the sets $O_\lambda$ an <span style="color:red">open cover</span> for $A$ if
 $$
 A \subseteq \bigcup_{\lambda \in \Lambda} O_\lambda
 $$
 
-**Does every open cover have a finite subcover?**
+<span style="color:red">Does every open cover have a finite subcover?</span>
 
 ---
 
@@ -252,7 +252,7 @@ $$
 
   \pause
 
-- $O_a = (\tfrac{1}{a},2), \; a \geq 1$ does **NOT** have a finite subcover!
+- $O_a = (\tfrac{1}{a},2), \; a \geq 1$ does <span style="color:red">NOT</span> have a finite subcover!
 
 ---
 
@@ -264,7 +264,7 @@ $$
 
 **Proof ($\Rightarrow$):**
 
-Let $O_\lambda$, $\lambda \in \Lambda$, be an open cover for $K$ **without** finite subcover
+Let $O_\lambda$, $\lambda \in \Lambda$, be an open cover for $K$ <span style="color:red">without</span> finite subcover
 
 Take a bounded, closed interval $J_1\supseteq K$
 
@@ -272,9 +272,9 @@ Take a bounded, closed interval $J_1\supseteq K$
 
 Halving process: construct $J_n$ be closed intervals s.t.
 - $J_1 \supseteq J_2 \supseteq J_3 \supseteq \cdots$
-- $K\cap J_n$ can **NOT** be covered by finitely many $O_\lambda$'s
+- $K\cap J_n$ can <span style="color:red">NOT</span> be covered by finitely many $O_\lambda$'s
 
-*[Note: $\text{Length}(J_n) = \text{Length}(J_1)/2^{n-1} \to 0$]*
+<span style="color:gray">[Note: $\text{Length}(J_n) = \text{Length}(J_1)/2^{n-1} \to 0$]</span>
 
 ---
 

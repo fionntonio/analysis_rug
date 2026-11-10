@@ -18,7 +18,7 @@ Tutorial: [Tutorial 13](#tutorials/tutorial-13)
 
 ## Partitions
 
-**Definition:** a **partition** of $[a,b]$ is a set of the form
+**Definition:** a <span style="color:red">partition</span> of $[a,b]$ is a set of the form
 $$
 P = \{a = x_0 < x_1 < x_2 < \dots < x_n = b\}
 $$
@@ -29,9 +29,9 @@ $$
 
 $P_1 = \{0, \tfrac{1}{4}, \tfrac{1}{2}, 1\}$ is a partition of $[0,1]$
 
-$P_2 = \{0, 1, 2\}$ is NOT a partition of $[0,1]$
+$P_2 = \{0, 1, 2\}$ is <span style="color:red">NOT</span> a partition of $[0,1]$
 
-$P_3 = \{0, \tfrac{1}{2}\}$ is NOT a partition of $[0,1]$
+$P_3 = \{0, \tfrac{1}{2}\}$ is <span style="color:red">NOT</span> a partition of $[0,1]$
 
 ---
 
@@ -39,13 +39,13 @@ $P_3 = \{0, \tfrac{1}{2}\}$ is NOT a partition of $[0,1]$
 
 Let $f : [a,b]\to\mathbb{R}$ be bounded and $P$ be a partition of $[a,b]$
 
-**Definition:** **lower sum** of $f$ w.r.t. $P$
+**Definition:** <span style="color:red">lower sum</span> of $f$ w.r.t. $P$
 $$\begin{aligned}
 m_k & = \inf\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[5mm]
 L(f,P) & = \sum_{k=1}^n m_k (x_k-x_{k-1})
 \end{aligned}$$
 
-"Approximate area below the graph of $f$"
+<span style="color:gray">"Approximate area below the graph of $f$"</span>
 
 ---
 
@@ -53,13 +53,13 @@ L(f,P) & = \sum_{k=1}^n m_k (x_k-x_{k-1})
 
 Let $f : [a,b]\to\mathbb{R}$ be bounded and $P$ be a partition of $[a,b]$
 
-**Definition:** **upper sum** of $f$ w.r.t. $P$
+**Definition:** <span style="color:red">upper sum</span> of $f$ w.r.t. $P$
 $$\begin{aligned}
 M_k & = \sup\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[5mm]
 U(f,P) & = \sum_{k=1}^n M_k (x_k-x_{k-1})
 \end{aligned}$$
 
-"Approximate area above the graph of $f$"
+<span style="color:gray">"Approximate area above the graph of $f$"</span>
 
 ---
 
@@ -75,9 +75,9 @@ $L(f,P) \leq U(f,P)$ for any partition $P$ of $[a,b]$
 
 ## Refinements
 
-**Definition:** $Q$ is called a **refinement** of $P$ if $P \subseteq Q$
+**Definition:** $Q$ is called a <span style="color:red">refinement</span> of $P$ if $P \subseteq Q$
 
-*(Provided that $P$ and $Q$ are partitions of the same interval)*
+<span style="color:gray">(Provided that $P$ and $Q$ are partitions of the same interval)</span>
 
 \pause
 
@@ -87,7 +87,7 @@ $P = \{0, \tfrac{1}{2}, 1\}$ is a partition of $[0,1]$
 
 $Q_1 = \{0, \tfrac{1}{4}, \tfrac{1}{2}, \tfrac{9}{10}, 1\}$ refines $P$
 
-$Q_2 = \{0, \tfrac{1}{2}, 1, 2\}$ does NOT refine $P$
+$Q_2 = \{0, \tfrac{1}{2}, 1, 2\}$ does <span style="color:red">NOT</span> refine $P$
 
 ---
 
@@ -181,7 +181,7 @@ L(f,P_1) & \leq U(f,P_2) \hspace{10mm} \text{for all } P_1, P_2 \in \mathcal{P} 
 
 ## The Riemann integral
 
-**Definition:** a bounded function $f : [a,b] \to \mathbb{R}$ is called **Riemann integrable** if $U(f) = L(f)$
+**Definition:** a bounded function $f : [a,b] \to \mathbb{R}$ is called <span style="color:red">Riemann integrable</span> if $U(f) = L(f)$
 
 **Notation:**
 $$
@@ -219,7 +219,7 @@ $$\begin{aligned}
 & \Rightarrow  \text{PS absolutely convergent at } c \\[3mm]
 & \Rightarrow  \text{PS uniformly convergent on } [-c,c]\\[3mm]
 & \Rightarrow  \text{PS continuous on } [-c,c] \\[1mm]
-&              \quad\textit{[each term $a_n x^n$ is continuous!]}\\[3mm]
+&              \quad{\color{gray}\textit{[each term $a_n x^n$ is continuous!]}}\\[3mm]
 & \Rightarrow  \text{PS continuous at } x_0
 \end{aligned}$$
 
@@ -235,7 +235,7 @@ $$
 $$
 In particular, the PS is continuous on $[-R,R]$
 
-What if convergence is **conditional** at $x=R$ or $x=-R$?
+What if convergence is <span style="color:red">conditional</span> at $x=R$ or $x=-R$?
 
 ---
 
@@ -294,7 +294,7 @@ $$
 f' = \sum_{n=1}^\infty f_n'
 $$
 
-*[Term-wise Differentiability Theorem]*
+<span style="color:gray">[Term-wise Differentiability Theorem]</span>
 
 ---
 
@@ -312,7 +312,7 @@ $$
 
 Now apply Term-wise Differentiability Theorem
 
-*[Note: we can apply the theorem any number of times!]*
+<span style="color:gray">[Note: we can apply the theorem any number of times!]</span>
 
 ---
 
@@ -391,7 +391,7 @@ $$
 Let $P_\epsilon = P_1 \cup P_2$ then
 $$\begin{aligned}
 U(f,P_\epsilon) - L(f,P_\epsilon) & \leq U(f,P_2) - L(f,P_1) \\[3mm]
-\pause & = \big[U(f, P_2) - U(f)\big] + \big[L(f) - L(f,P_1)\big] \\[3mm]
+\pause & = \big[U(f, P_2) - {\color{blue} U(f)}\big] + \big[{\color{blue} L(f)} - L(f,P_1)\big] \\[3mm]
 \pause & < \tfrac{1}{2}\epsilon + \tfrac{1}{2}\epsilon \\[3mm]
 & = \epsilon
 \end{aligned}$$
@@ -466,7 +466,7 @@ P & = \{0, 1 - \tfrac{1}{4}\epsilon, 1+\tfrac{1}{4}\epsilon, 2\} \\[3mm]
 \pause U(f,P) - L(f, P) & < \epsilon
 \end{aligned}$$
 
-*[What if $\epsilon \geq 1$?]*
+<span style="color:gray">[What if $\epsilon \geq 1$?]</span>
 
 ---
 
@@ -478,11 +478,15 @@ P & = \{0, 1 - \tfrac{1}{4}\epsilon, 1+\tfrac{1}{4}\epsilon, 2\} \\[3mm]
 
 **Example:**
 $f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q}\end{cases}$
-is NOT integrable on $[0,1]$
+is <span style="color:red">NOT</span> integrable on $[0,1]$
 
 ---
 
 ## Integrals of discontinuous functions
+
+**Example:**
+$f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\ 0 & \text{if } x \notin\mathbb{Q}\end{cases}$
+is <span style="color:red">NOT</span> integrable on $[0,1]$
 
 Let $P$ be any partition of $[0,1]$ then
 $$\begin{aligned}
@@ -498,9 +502,9 @@ $$\begin{aligned}
 
 ## Integrals of discontinuous functions
 
-**Example:** any **increasing** function $f : [a,b]\to\mathbb{R}$ is integrable
+**Example:** any <span style="color:red">increasing</span> function $f : [a,b]\to\mathbb{R}$ is integrable
 
-For **any** partition of $[a,b]$ we have
+For <span style="color:red">any</span> partition of $[a,b]$ we have
 $$\begin{aligned}
 M_k & = \sup\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[2mm]
 & = f(x_k) \\[6mm]
@@ -512,7 +516,7 @@ M_k & = \sup\{f(x) \,:\, x \in [x_{k-1},x_k]\} \\[2mm]
 
 ## Integrals of discontinuous functions
 
-**Example (ctd):** an **equispaced** partition $P$ gives
+**Example (ctd):** an <span style="color:red">equispaced</span> partition $P$ gives
 $$\begin{aligned}
 U(f,P) - L(f,P)
 & = \sum_{k=1}^n (M_k-m_k)(x_k-x_{k-1}) \\[2mm]
@@ -520,4 +524,4 @@ U(f,P) - L(f,P)
 \pause & = \frac{(b-a)(f(b)-f(a))}{n} \to 0 \quad\text{ as }\quad n \to \infty
 \end{aligned}$$
 
-**Exercise:** show that decreasing functions are also integrable
+<span style="color:gray">**Exercise:** show that decreasing functions are also integrable</span>

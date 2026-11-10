@@ -46,7 +46,7 @@ Iterative process: $\displaystyle x_{n+1} := x_n - \frac{f(x_n)}{f'(x_n)} \qquad
 
 ## Sequences
 
-**Definition:** a **sequence** is a function with domain $\mathbb{N}$
+**Definition:** a <span style="color:red">sequence</span> is a function with domain $\mathbb{N}$
 
 Sequences can be written as infinite lists of numbers:
 - $(1, \tfrac{1}{2}, \tfrac{1}{3}, \tfrac{1}{4}, \dots)$
@@ -57,7 +57,7 @@ Sequences can be written as infinite lists of numbers:
 
 ## Limits
 
-**Definition:** $(a_n)$ **converges** to $a$ if
+**Definition:** $(a_n)$ <span style="color:red">converges</span> to $a$ if
 
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
@@ -78,7 +78,7 @@ $$
 V_\epsilon(a) = \{x \in \mathbb{R} \,:\, |x-a|<\epsilon\} = (a-\epsilon, a+\epsilon)
 $$
 
-is called the **$\epsilon$-neighborhood** of $a$
+is called the <span style="color:red">$\epsilon$-neighborhood</span> of $a$
 
 ![](../fig/lec04-epsnbh.png)
 
@@ -88,7 +88,7 @@ is called the **$\epsilon$-neighborhood** of $a$
 
 ## Limits
 
-**Alternative definition:** $(a_n)$ **converges** to $a$ if
+**Alternative definition:** $(a_n)$ <span style="color:red">converges</span> to $a$ if
 
 $$
 \forall\,\epsilon>0 \quad\exists\,N \in \mathbb{N} \quad\text{s.t.}\quad
@@ -177,17 +177,17 @@ $$
 - $\lim \sqrt[n]{n} = 1$
 - $\lim n! / n^n = 0$
 
-*[For a proof, see document "Course information" on Brightspace]*
+<span style="color:gray">[For a proof, see document "Course information" on Brightspace]</span>
 
 ---
 
 ## Divergent sequences
 
-**Definition:** a sequence that does not converge is called **divergent**
+**Definition:** a sequence that does not converge is called <span style="color:red">divergent</span>
 
 **Example:** $(a_n) = (-1, 1, -1, 1, \dots)$ is divergent
 
-*[But how to prove this?]*
+<span style="color:gray">[But how to prove this?]</span>
 
 ---
 
@@ -196,15 +196,15 @@ $$
 **Definition of convergence:**
 
 $$
-\forall\,\epsilon>0 \quad \exists\, N \in \mathbb{N} \quad\text{s.t.}\quad
-n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon
+\forall\,\epsilon>0 \quad {\color{blue}\exists\, N \in \mathbb{N} \quad\text{s.t.}\quad
+n \geq N \quad\Rightarrow\quad |a_n - a| < \epsilon}
 $$
 
 **Logical negation:**
 
 $$
 \exists\,\epsilon>0 \quad\text{s.t.}\quad
-\forall\,N\in \mathbb{N}\quad\exists\, n \geq N \quad\text{s.t.}\quad |a_n-a| \geq \epsilon
+{\color{red}\forall\,N\in \mathbb{N}\quad\exists\, n \geq N \quad\text{s.t.}\quad |a_n-a| \geq \epsilon}
 $$
 
 ---
@@ -213,7 +213,7 @@ $$
 
 **Example:** $(a_n) = (-1,1,-1,1,\dots)$ diverges
 
-*[no number $a\in\mathbb{R}$ can be a limit]*
+<span style="color:gray">[no number $a\in\mathbb{R}$ can be a limit]</span>
 
 \pause
 
@@ -235,7 +235,7 @@ $n=2N \;\Rightarrow\; |a_n - a| = |1-a| = 1 - a > \epsilon$
 
 ## Bounded sequences
 
-**Definition:** $(a_n)$ is **bounded** if
+**Definition:** $(a_n)$ is <span style="color:red">bounded</span> if
 
 $$
 \exists\, M > 0 \quad\text{s.t.}\quad |a_n| \leq M \quad\forall\, n \in \mathbb{N}
@@ -245,7 +245,7 @@ $$
 
 $(a_n) = (1,\tfrac{1}{2},\tfrac{1}{3},\dots)$ is bounded (take $M=1$)
 
-$(b_n) = (1,4,9,16,25,\dots)$ is **NOT** bounded
+$(b_n) = (1,4,9,16,25,\dots)$ is <span style="color:red">NOT</span> bounded
 
 ---
 
@@ -285,7 +285,7 @@ $$
 
 **Warning:** the converse is not true!
 
-$(a_n) = (-1, 1, -1, 1, \dots)$ is bounded but **NOT** convergent
+$(a_n) = (-1, 1, -1, 1, \dots)$ is bounded but <span style="color:red">NOT</span> convergent
 
 ---
 
@@ -331,8 +331,8 @@ Let $\epsilon>0$ be arbitrary, then
 
 $$
 \begin{split}
-\exists\,N_1 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_1 & \quad\Rightarrow\quad |a_n-a| < \tfrac{1}{2}\epsilon \\[3mm]
-\exists\,N_2 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \tfrac{1}{2}\epsilon
+{\color{blue} \exists\,N_1 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_1} & {\color{blue} \quad\Rightarrow\quad |a_n-a| < \tfrac{1}{2}\epsilon} \\[3mm]
+{\color{red} \exists\,N_2 \in \mathbb{N} \quad\text{s.t.} \quad n\geq N_2} & {\color{red} \quad\Rightarrow\quad |b_n-b| < \tfrac{1}{2}\epsilon}
 \end{split}
 $$
 
@@ -351,7 +351,7 @@ $$
 **Proof of (3):**
 
 $$\begin{aligned}
-|a_nb_n - ab| & =    |a_nb_n - ab_n + ab_n - ab| \\[5mm]
+|a_nb_n - ab| & =    |a_nb_n - {\color{blue} ab_n} + {\color{blue} ab_n} - ab| \\[5mm]
               \pause & =    |b_n(a_n-a) + a(b_n-b)| \\[5mm]
               \pause & \leq |b_n(a_n-a)| + |a(b_n-b)| \\[5mm]
               \pause & =    |b_n|\,|a_n-a| + |a|\,|b_n-b| \\[5mm]
@@ -376,8 +376,8 @@ Let $\epsilon>0$ be arbitrary, then
 
 $$
 \begin{split}
-\exists\, N_1 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_1 & \quad\Rightarrow\quad |a_n-a| < \frac{\epsilon}{2M} \\[2mm]
-\exists\, N_2 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_2 & \quad\Rightarrow\quad |b_n-b| < \frac{\epsilon}{2|a|}
+{\color{blue} \exists\, N_1 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_1} & {\color{blue} \quad\Rightarrow\quad |a_n-a| < \frac{\epsilon}{2M}} \\[2mm]
+{\color{red} \exists\, N_2 \in \mathbb{N} \quad\text{s.t.}\quad n\geq N_2} & {\color{red} \quad\Rightarrow\quad |b_n-b| < \frac{\epsilon}{2|a|}}
 \end{split}
 $$
 

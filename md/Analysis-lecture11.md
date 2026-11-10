@@ -30,7 +30,7 @@ Tutorial: [Tutorial 11](#tutorials/tutorial-11)
 
 **Exercise:** $f_n(x) = \sqrt{x^2 + 1/n} \to |x|$ uniformly on $[-1,1]$
 
-Every $f_n$ is differentiable at $x=0$, but the limit is **NOT**!
+Every $f_n$ is differentiable at $x=0$, but the limit is <span style="color:red">NOT</span>!
 ---
 
 ## Preservation of differentiability
@@ -38,7 +38,7 @@ Every $f_n$ is differentiable at $x=0$, but the limit is **NOT**!
 **Lemma:** assume that
 
 1. $f_n : [a,b] \to \mathbb{R}$ differentiable for all $n$
-2. $f_n'$ converges uniformly on $[a,b]$ *(note the prime!)*
+2. $f_n'$ converges uniformly on $[a,b]$ <span style="color:gray">(note the prime!)</span>
 3. $f_n(x_0)$ converges for some $x_0\in [a,b]$
 
 Then $f_n$ converges uniformly on $[a,b]$
@@ -75,7 +75,7 @@ g(x)
 \pause & = g'(c)(x-x_0) + g(x_0) \qquad\text{$c$ between $x$ and $x_0$} \\[6mm]
 \pause |g(x)| & \leq |g'(c)|\cdot|x-x_0| + |g(x_0)| \\[3mm]
 \pause & \leq |g'(c)|\cdot(b-a) + |g(x_0)| \\[6mm]
-\pause |f_n(x) - f_m(x)| & \leq |f_n'(c)-f_m'(c)|\cdot(b-a) + |f_n(x_0) - f_m(x_0)|
+\pause |f_n(x) - f_m(x)| & \leq {\color{red}|f_n'(c)-f_m'(c)|}\cdot(b-a) + {\color{blue} |f_n(x_0) - f_m(x_0)|}
 \end{aligned}$$
 ---
 
@@ -92,7 +92,7 @@ $$
 f_n \to f \quad\text{uniformly} \qquad\text{and}\qquad f'=g
 $$
 
-**Moral:** $(\lim f_n)' = \lim (f_n')$ *— limit and derivative can be swapped*
+**Moral:** $(\lim f_n)' = \lim (f_n')$ <span style="color:gray">— limit and derivative can be swapped</span>
 ---
 
 ## Preservation of differentiability
@@ -242,7 +242,7 @@ $$
 f' = \sum_{n=1}^\infty f_n'
 $$
 
-*Term-wise Differentiability Theorem*
+<span style="color:gray">Term-wise Differentiability Theorem</span>
 ---
 
 ## Preservation of differentiability
@@ -264,7 +264,7 @@ differentiable on every $[-c,c]$
 
 - $\sum_{n=1}^\infty f_n(x)$ converges at $x=0$
 
-Apply "Term-wise Differentiability Theorem" *(needs compact intervals!)*
+Apply "Term-wise Differentiability Theorem" <span style="color:gray">(needs compact intervals!)</span>
 ---
 
 ## From function series to power series
@@ -347,12 +347,12 @@ $$
 - $|x| < R \;\;\Rightarrow\;\;$ PS converges at $x$
 - $|x| > R \;\;\Rightarrow\;\;$ PS diverges at $x$
 
-$R$ is called the **radius of convergence**
+$R$ is called the <span style="color:red">radius of convergence</span>
 ---
 
 ## Radius of convergence
 
-Methods for **computing** $R$ from the $a_n$'s
+Methods for <span style="color:red">computing</span> $R$ from the $a_n$'s
 
 **Root test:** if $L = \lim \sqrt[n]{|a_n|}$ exists, then $R = 1/L$
 
@@ -360,7 +360,7 @@ Methods for **computing** $R$ from the $a_n$'s
 
 **Ratio test:** if $L = \lim \left|\displaystyle\frac{a_{n+1}}{a_n}\right|$ exists, then $R = 1/L$
 
-*[interpret $L = 0$ as $R = \infty$]*
+<span style="color:gray">[interpret $L = 0$ as $R = \infty$]</span>
 ---
 
 ## Root test
@@ -408,7 +408,7 @@ a_n = \frac{1}{n^2}
 
 | Example | Radius | at $x=-R$ | at $x=R$ |
 |---|---|---|---|
-| $\displaystyle\sum_{n=1}^\infty x^n$ | $R=1$ | **divergent** | **divergent** |
-| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | convergent | **divergent** |
-| \pause $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | **divergent** | convergent |
-| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | convergent | convergent |
+| $\displaystyle\sum_{n=1}^\infty x^n$ | $R=1$ | <span style="color:red">divergent</span> | <span style="color:red">divergent</span> |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n}x^n$ | $R=1$ | <span style="color:blue">convergent</span> | <span style="color:red">divergent</span> |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{(-1)^n}{n}x^n$ | $R=1$ | <span style="color:red">divergent</span> | <span style="color:blue">convergent</span> |
+| \pause $\displaystyle\sum_{n=1}^\infty \frac{1}{n^2}x^n$ | $R=1$ | <span style="color:blue">convergent</span> | <span style="color:blue">convergent</span> |

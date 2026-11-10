@@ -21,7 +21,7 @@ Tutorial: [Tutorial 9](#tutorials/tutorial-9)
 
 **Definition:** let $I\subseteq\mathbb{R}$ be an interval and $f : I \to \mathbb{R}$
 
-$f$ is called **differentiable** at $c \in I$ if
+$f$ is called <span style="color:red">differentiable</span> at $c \in I$ if
 
 $$
 f'(c) := \lim_{x\to c} \frac{f(x)-f(c)}{x-c} \quad\text{exists}
@@ -49,18 +49,18 @@ $$\begin{aligned}
 ## Differentiability versus continuity
 
 **Example:** $f(x) = \begin{cases} 1 & \text{if } x > 0 \\[3mm] 0 & \text{if } x \leq 0 \end{cases}$
-is **NOT** differentiable at $c=0$
+is <span style="color:red">NOT</span> differentiable at $c=0$
 
-Reason: $f$ is **NOT** continuous at $c=0$
+Reason: $f$ is <span style="color:red">NOT</span> continuous at $c=0$
 
 ---
 
 ## Differentiability versus continuity
 
-**Example:** $f(x) = |x|$ continuous but **NOT** differentiable at $c=0$
+**Example:** $f(x) = |x|$ continuous but <span style="color:red">NOT</span> differentiable at $c=0$
 
 $$
-\lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = \lim_{x\to 0} \frac{|x|}{x}\qquad\text{does \textbf{NOT} exist}
+\lim_{x\to 0} \frac{f(x)-f(0)}{x-0} = \lim_{x\to 0} \frac{|x|}{x}\qquad\text{does {\color{red}NOT} exist}
 $$
 
 \pause
@@ -130,7 +130,7 @@ f'(c) & = \lim \frac{f(x_n)-f(c)}{x_n-c} \;\; \geq 0 \\[4mm]
 
 ## Interior extremum theorem
 
-**Warning:** previous theorem **need not be true** for closed intervals!
+**Warning:** previous theorem <span style="color:red">need not be true</span> for closed intervals!
 
 Counter-example: $f(x) = x$ on $[0,1]$
 - minimum at $x=0$ but $f'(0) = 1$
@@ -152,7 +152,7 @@ then there exists $c \in (a,b)$ with $f'(c)=L$
 
 **Notes:**
 - proof $\neq$ intermediate value theorem applied to $f'$!
-- we do **NOT** assume $f'$ to be continuous!
+- we do <span style="color:red">NOT</span> assume $f'$ to be continuous!
 
 \pause
 
@@ -196,7 +196,7 @@ Interior extremum theorem $\;\Rightarrow\; f'(c)=0$ for some $c\in(a,b)$
 
 **Example:**
 $f(x) = \begin{cases} 1 & \text{if } x \in \mathbb{Q} \\[3mm] 0 & \text{if } x \notin\mathbb{Q} \end{cases}$
-is **NOT** a derivative
+is <span style="color:red">NOT</span> a derivative
 
 \pause
 
@@ -270,7 +270,7 @@ $$
 
 **Proof:** apply Rolle's theorem to
 $$
-h(x) = f(x) - \bigg[{\frac{f(b)-f(a)}{b-a}(x-a) + f(a)}\bigg]
+h(x) = f(x) - \bigg[{\color{blue}\frac{f(b)-f(a)}{b-a}(x-a) + f(a)}\bigg]
 $$
 
 ---
@@ -351,4 +351,4 @@ Define $g_m(x) = \displaystyle \sum_{n=0}^m h_n(x)$ and let $m \to \infty$
 
 $g(x) = \displaystyle \sum_{n=0}^\infty h_n(x)$
 
-**EVERYWHERE** continuous, **NOWHERE** differentiable!
+<span style="color:red">EVERYWHERE</span> continuous, <span style="color:red">NOWHERE</span> differentiable!
