@@ -233,6 +233,9 @@ Proof.
   (* Power rule with [n = 2]. *)
   By derive_pt_pow it holds that
     derive_pt (fun y => y ^ 2) x0 (derivable_pt_pow 2 x0) = INR 2 * x0 ^ (2 - 1).
+  (** The next two steps help Waterproof simplify [INR 2 * x0 ^ (2 - 1)] to [2 * x0]. *)
+  It holds that INR 2 = 2.
+  It holds that x0 ^ (2 - 1) = x0.
   We conclude that
     derive_pt (fun y => y ^ 2) x0 (derivable_pt_pow 2 x0) = 2 * x0.
 Qed.

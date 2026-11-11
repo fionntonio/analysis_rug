@@ -334,7 +334,7 @@ Proof.
   It holds that |g x| > 0 as (Hgt0).
   By Rmult_gt_0_compat it holds that |g x| * | M | > 0.
   
-  By Hgt0 it holds that g x ≠ 0.
+  By (abs_pos_nonzero (g x) Hgt0) it holds that g x ≠ 0.
   It holds that / g x * g x = 1.
   It holds that / M * M = 1.
 
@@ -486,6 +486,10 @@ Proof.
         as (Hno_y).
       It suffices to show that
         ∃ δ > 0, ∀ x ∈ ℝ, 0 < |x - c| < δ ⇒ |f x - L| < ε.
+      (** The next two steps help Waterproof show that [δ = 1/(n+1)] is positive; without
+          them the automation searches for several seconds. *)
+      By (pos_INR n) it holds that INR n ≥ 0.
+      It holds that 1 / (INR n + 1) > 0.
       Choose δ := 1 / (INR n + 1).
       - Indeed, δ > 0.
       - We need to show that

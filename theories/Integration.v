@@ -417,6 +417,10 @@ Proof.
       By Rabs_triang it holds that
         | (g t - h t) + (h t - phi t) | ≤ | g t - h t | + | h t - phi t |.
       It holds that | g t - h t | = | h t - g t |.
+      (** The next two steps help Waterproof rewrite the sum inside the absolute value, so
+          that the triangle inequality above applies to [| g t - phi t |]. *)
+      It holds that (g t - h t) + (h t - phi t) = g t - phi t.
+      It holds that | (g t - h t) + (h t - phi t) | = | g t - phi t |.
       We conclude that | g t - phi t | ≤ psi2 t.
     - We need to show that | RiemannInt_SF psi2 | < ε.
       By (@StepFun_P30 a b 1 psi sη) it holds that
@@ -546,6 +550,10 @@ Proof.
     By HN it holds that | fn n x - g x | < η.
     It holds that fn n x + m1 * g x = fn n x - g x.
     It holds that 0 ≤ | fn n x + m1 * g x |.
+    (** The next two steps help Waterproof rewrite inside the absolute value
+        and bound [| fn n x + m1 * g x |] by [η]. *)
+    It holds that | fn n x + m1 * g x | = | fn n x - g x |.
+    It holds that | fn n x + m1 * g x | ≤ η.
     We conclude that 0 <= | fn n x + m1 * g x | <= η.
   }
   (** We estimate [|∫ fₙ - ∫ g| ≤ ∫ |fₙ - g| ≤ η (b - a)]. *)

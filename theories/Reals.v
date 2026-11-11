@@ -465,6 +465,17 @@ Proof.
      We conclude that (|x| ≤ a).
 
   Qed.
+
+(** A number with positive absolute value is nonzero.
+
+    Useful to keep Waterproof's automation fast: proving [x ≠ 0] directly
+    from [|x| > 0] in a context with many absolute values makes the
+    automation case-split on the sign of every one of them. Use it as
+    [By (abs_pos_nonzero x Hx) it holds that x ≠ 0.] *)
+Lemma abs_pos_nonzero (x : ℝ) (Hx : |x| > 0) : x ≠ 0.
+Proof.
+  We conclude that x ≠ 0.
+Qed.
 (** ** Density of the rationals *)
 
 (** Density of the rationals: between any two reals [lo < hi] there is a rational
@@ -487,7 +498,7 @@ Proof.
   It holds that (n + 1) > 0.
   It holds that (n + 1) * (hi - lo) > 1.
 
-  By archimed it holds that
+  By (archimed ((n + 1) * lo)) it holds that
     IZR (up ((n + 1) * lo)) > (n + 1) * lo
     ∧ IZR (up ((n + 1) * lo)) - (n + 1) * lo ≤ 1.
 
@@ -506,23 +517,19 @@ Proof.
 
   (** Therefore we have an integer satisfying both bounds *)
   Define m := up ((n + 1) * lo).
-  It holds that
-    (IZR m > (n + 1) * lo) ∧ (IZR m < (n + 1) * hi) as (Hm).
+  It holds that IZR m > (n + 1) * lo.
+  It holds that IZR m < (n + 1) * hi.
 
   (** Now construct the rational p/q *)
   Choose p := m.
   Choose q := Z.of_nat (n + 1)%nat. It holds that (q > 0)%Z.
 
-  (** From Hm we have IZR m > (n+1)*lo and IZR m < (n+1)*hi *)
-  By (Hm) it holds that IZR m > (n + 1) * lo.
-  By (Hm) it holds that IZR m < (n + 1) * hi.
-
   We claim that
     IZR (Z.of_nat (n + 1)%nat) = (n + 1 : ℝ).
   {
-    By INR_IZR_INZ it holds that INR (n + 1)%nat = IZR (Z.of_nat (n + 1)%nat).
-    By plus_INR it holds that INR (n + 1)%nat = INR n + INR 1.
-    By INR_1 it holds that INR 1 = 1.
+    By (INR_IZR_INZ (n + 1)%nat) it holds that
+      INR (n + 1)%nat = IZR (Z.of_nat (n + 1)%nat).
+    By (plus_INR n 1) it holds that INR (n + 1)%nat = INR n + INR 1.
     We conclude that (&
       IZR (Z.of_nat (n + 1)%nat) = INR (n + 1)%nat = INR n + INR 1 = n + 1).
   }
@@ -639,6 +646,11 @@ Proof.
   It holds that (q <> 0)%Z as (Hq0).
   It holds that sqrt 2 = IZR p / IZR q as (Hsqrt).
   By (eq_IZR_contrapositive q 0%Z Hq0) it holds that IZR q ≠ 0 as (HIq).
+  (** The next two steps help Waterproof cancel the division by [IZR q]; the automation
+      cannot reason about inverses on its own. *)
+  By Hsqrt it holds that sqrt 2 * IZR q = IZR p / IZR q * IZR q.
+  By (Rmult_inv_r_id_l (IZR q) (IZR p) HIq) it holds that
+    IZR p * IZR q * / IZR q = IZR p.
   It holds that sqrt 2 * IZR q = IZR p as (Hmul).
   By (sqrt_sqrt 2) it holds that sqrt 2 * sqrt 2 = 2 as (Hsq).
   It holds that IZR p * IZR p = 2 * (IZR q * IZR q) as (Hreal).
@@ -649,7 +661,7 @@ Proof.
   By (eq_IZR (p * p)%Z (2 * (q * q))%Z HIZR) it holds that
     (p * p = 2 * (q * q))%Z as (HZ).
   It holds that (Z.abs q <= Z.of_nat (Z.abs_nat q))%Z as (Hbound).
-  By no_square_double it holds that
+  By (no_square_double (Z.abs_nat q)) it holds that
     ∀ p0 : Z, ∀ q0 : Z,
       (Z.abs q0 <= Z.of_nat (Z.abs_nat q))%Z → (q0 ≠ 0)%Z →
       (p0 * p0 ≠ 2 * (q0 * q0))%Z

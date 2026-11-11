@@ -160,6 +160,8 @@ Proof.
     Take x ∈ (open_ball y r).
     By Hint' it holds that x ∈ (U i).
     It holds that U i x.
+    (** The next step helps Waterproof unfold the membership in the union. *)
+    It holds that ∃ j : Idx, U j x.
     We conclude that x ∈ (fun x => ∃ i : Idx, U i x).
 Qed.
 

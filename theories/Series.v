@@ -996,7 +996,11 @@ Proof.
       partial_sums (fun k => 1 / Rpower (INR k + 1) p) (Nat.add n 0)
         - partial_sums (fun k => 1 / Rpower (INR k + 1) p) n
       ≤ INR 0 * (1 / Rpower (INR n + 1 + 1) p).
-    It holds that (n + 0)%nat = n.
+    (** The next step helps Waterproof replace the index [n + 0] by [n] inside the partial
+        sum. *)
+    By (Nat.add_0_r n) it holds that
+      partial_sums (fun k => 1 / Rpower (INR k + 1) p) (Nat.add n 0)
+        = partial_sums (fun k => 1 / Rpower (INR k + 1) p) n.
     It holds that INR 0%nat = 0.
     We conclude that
       partial_sums (fun k => 1 / Rpower (INR k + 1) p) (Nat.add n 0)

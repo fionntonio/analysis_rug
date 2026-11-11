@@ -806,6 +806,10 @@ Proof.
       It suffices to show that
         ∃ δ > 0, ∀ x ∈ ℝ, ∀ y ∈ ℝ,
           A x → A y → Rabs (x - y) < δ → Rabs (f x - f y) < ε.
+      (** The next two steps help Waterproof show that [δ = 1/(n+1)] is positive; without
+          them the automation searches for several seconds. *)
+      By (pos_INR n) it holds that INR n ≥ 0.
+      It holds that 1 / (INR n + 1) > 0.
       Choose δ := 1 / (INR n + 1).
       - Indeed, δ > 0.
       - We need to show that

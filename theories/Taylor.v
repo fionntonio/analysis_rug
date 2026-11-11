@@ -164,7 +164,9 @@ Proof.
       We claim that ∀ i : ℕ, (i ≤ m)%nat → df 0%nat (pts i) = 0.
       { Take i : ℕ. Assume that (i ≤ m)%nat. It holds that (i ≤ n)%nat as (Hi).
         By (Hzero i Hi) we conclude that df 0%nat (pts i) = 0. }
-      By Emn it holds that pts m ≤ pts n.
+      (** The next two steps help Waterproof use [m = n]: first rewrite, then compare. *)
+      By Emn it holds that pts m = pts n.
+      It holds that pts m ≤ pts n.
       We claim that (1 ≤ 0)%nat → pts 0%nat < pts 0%nat ∧ pts m < pts n.
       { Assume that (1 ≤ 0)%nat. Contradiction. }
       We conclude that
@@ -416,6 +418,9 @@ Proof.
       It holds that sum_f_R0 (fun k => / INR (fact k) * df k x * (x - x) ^ k) 0
         = / INR (fact 0) * df 0%nat x * (x - x) ^ 0.
       It holds that INR (fact 0) = 1.
+      (** The next step helps Waterproof compute [/ 0!]; the automation cannot reason about
+          inverses on its own. *)
+      By Rinv_1 it holds that / INR (fact 0) = 1.
       It holds that (x - x) ^ 0 = 1.
       We conclude that sum_f_R0 (fun k => / INR (fact k) * df k x * (x - x) ^ k) 0 = df 0%nat x.
     - We now show the induction step.

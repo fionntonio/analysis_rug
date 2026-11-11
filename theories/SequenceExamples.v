@@ -146,6 +146,9 @@ Proof.
     Take n ∈ ℕ.
     It holds that INR n + 1 > 0.
     It holds that (INR n + 1)^2 > 0.
+    (** The next step helps Waterproof deal with the division; the automation cannot reason
+        about inverses on its own. *)
+    By Rdiv_lt_0_compat it holds that 0 < 1 / (INR n + 1)^2.
     We conclude that 0 ≤ 1 / (INR n + 1)^2.
   }
   We claim that ∀ n ∈ ℕ, 1 / (INR n + 1)^2 ≤ 1 / (INR n + 1) as (Hle).

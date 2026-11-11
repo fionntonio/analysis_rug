@@ -651,9 +651,16 @@ Proof.
       It holds that |a (S m) * sum_f_R0 b (S m)| ≤ a (S m) * M.
       By (Htel m) it holds that
         |sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m| ≤ (a 0%nat - a (S m)) * M.
+      (** The next step helps Waterproof rewrite the partial sum inside the absolute value
+          using the summation by parts formula. *)
+      It holds that |sum_f_R0 (fun k => a k * b k) (S m)|
+        = |a (S m) * sum_f_R0 b (S m) + - sum_f_R0 (fun k => (a (S k) - a k) * sum_f_R0 b k) m|.
       It holds that |sum_f_R0 (fun k => a k * b k) (S m)| ≤ a 0%nat * M.
       It holds that (m + 1 = S m)%nat as (En).
-      By En we conclude that |sum_f_R0 (fun k => a k * b k) (Nat.add m 1)| ≤ a 0%nat * M.
+      (** The next step helps Waterproof replace the index [m + 1] by [S m] inside the sum. *)
+      By En it holds that
+        sum_f_R0 (fun k => a k * b k) (Nat.add m 1) = sum_f_R0 (fun k => a k * b k) (S m).
+      We conclude that |sum_f_R0 (fun k => a k * b k) (Nat.add m 1)| ≤ a 0%nat * M.
   }
   By (Hall n) we conclude that Rabs (sum_f_R0 (fun k => a k * b k) n) ≤ a 0%nat * M.
 Qed.
